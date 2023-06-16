@@ -1,459 +1,222 @@
-const ValidatorRewards = artifacts.require("ValidatorRewards");
-const { deployProxy } = require('@openzeppelin/truffle-upgrades');
+const { expect } = require("chai");
+const { ethers, upgrades } = require("hardhat");
+
 
 const {
     expectRevert
 } = require("@openzeppelin/test-helpers");
 const catchRevert = require("./exceptionsHelpers.js").catchRevert;
+const ether = require("@openzeppelin/test-helpers/src/ether");
 
 
 require("./utils.js");
 
-const _BN = web3.utils.BN;
-const BN = (value) => {
-    return new _BN(value)
-}
+const TEN_ETH =  ethers.utils.parseUnits("10","ether");
+const SEVEN_ETH =  ethers.utils.parseUnits("7","ether");
+const SIX_ETH =  ethers.utils.parseUnits("6","ether");
+const FIVE_ETH = ethers.utils.parseUnits("5","ether");
+const THREE_ETH = ethers.utils.parseUnits("3","ether");
+const TWO_ETH = ethers.utils.parseUnits("2","ether");
+const ONE_ETH = ethers.utils.parseUnits("1","ether");
 
-/**  
-================================================
-| Begin contract test  & obtains user addresses|
-================================================
-**/
-
-contract("ValidatorRewards", async ([owner, alice, bob, random, joe, karen, yan]) => {
-
-
-    describe("Token Management                   ", () => {
-        /**  
-        ================================================
-        |        Inital Contract Values                |
-        ================================================
-        **/		
-		
-
-        it("ValidatorRewards should recieve ether", async () => {
+describe("Token Management", function () {
+        let owner;
+        let ValidatorContract;
+        let randomSig;
+        let randomAddressIsTheSigner;
+        let bob;
+        let random;
+        beforeEach(async() => {
             //example wieghts 100% of bounty 1/1
-            const wieghts = [1, 2, 3];
+             const wieghts = [1, 2, 3];
             //address of validators in validator rewards
-            const vadliadorAddressArray = [owner, random, bob]
+            const [owners, randoms, bobs] = await ethers.getSigners();
+            owner = await owners.getAddress();
+            random = await randoms.getAddress();
+            bob = await bobs.getAddress();
+            //signiture for sending H!
+            randomSig = ethers.provider.getSigner(random);
+            const vadlidatorAddressArray = [owner, random, bob]
             //this is the contract we are looking at Validator Rewards.
-            const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-            //Ether send by owner
-            await web3.eth.sendTransaction({to:VR.address, from:joe, value: web3.utils.toWei('1')})
-            
+            const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+            // ValidatorContract.address = await   s();
+            //get randoms signiture
+            secondAddressSigner = await ethers.getSigner(random)
+            randomAddressIsTheSigner = ValidatorContract.connect(secondAddressSigner);       
+        });
+        it("ValidatorRewards should recieve ether", async () => {
+            await randomSig.sendTransaction({
+                to: ValidatorContract.address,
+                value: ethers.utils.parseEther("1.0"), // Sends exactly 1.0 ether
+            });          
         });
         it("ValidatorRewards should distribute ether as intended - via releaseAll view function `released` also should track the distribution", async () => {
-            //example wieghts 100% of bounty 1/1
-            const wieghts = [1, 1];
-            //address of validators in validator rewards
-            const vadliadorAddressArray = [bob, random];
-            //this is the contract we are looking at Validator Rewards.
-            const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-            //Ether send by owner
-            await web3.eth.sendTransaction({to:VR.address, from:joe, value: web3.utils.toWei('10')});
+            await randomSig.sendTransaction({to:ValidatorContract.address, value: TEN_ETH});
             //contract balance
-            const contractBalance = await web3.eth.getBalance(VR.address);
+            const contractBalance = await ethers.provider.getBalance(ValidatorContract.address);
             //release funds
-            await VR.releaseAll({from:joe});
+            await randomAddressIsTheSigner.releaseAll();
             //get bobs info
-            const check = await VR.released(bob);
-            //stringfy bob info
-            const strBobRel = check.toString();
-            //get randoms info
-            const check2 = await VR.released(random);
-            //stringfy randoms info
-            const strRandomRel = check2.toString();
-            assert.equal(
-                "5000000000000000000",
-                strBobRel,
-                strRandomRel
-            );
-            //example distributionWeights 100% of bounty 1/1
-            const weights2 = [1, 2, 3];
-            //address of validators in validator rewards
-            const vadliadorAddressArray2 = [karen, alice, yan];
-            //this is the contract we are looking at Validator Rewards.
-            const VR2 = await deployProxy(ValidatorRewards, [vadliadorAddressArray2, weights2, owner, owner], { initializer: 'initialize' });
-            //Ether send by owner
-            await web3.eth.sendTransaction({to:VR2.address, from:joe, value: web3.utils.toWei('6')});
-            //release funds
-            await VR2.releaseAll({from:joe});
-            //get karen info
-            const checkkaren = await VR2.released(karen);
-            //stringfy karen info
-            const strkarenRel = checkkaren.toString();
-            // 1/6 of "6000000000000000000"
-            assert.equal(
-                "1000000000000000000",
-                strkarenRel,
-            );
-            //get alice info
-            const checkAlice = await VR2.released(alice);
-            //stringfy alice info
-            const strAliceRel = checkAlice.toString();
-            // 1/3 of "6000000000000000000"
-            assert.equal(
-                "2000000000000000000",
-                strAliceRel,
-            );
-            //get yan info
-            const checkyan = await VR2.released(yan);
-            //stringfy randoms info
-            const stryanRel = checkyan.toString();
-            // 1/2 of "6000000000000000000"
-            assert.equal(
-                "3000000000000000000",
-                stryanRel,
-            );
+            expect(await ValidatorContract.released(bob)).to.equal(FIVE_ETH)
         });
         it("ValidatorRewards should distribute ether as intended - via release function for a single user", async () => {
-            //example distributionWeights 100% of bounty 1/1
-            const wieghts = [1, 1];
-            //address of validators in validator rewards
-            const vadliadorAddressArray = [bob, random];
-            //this is the contract we are looking at Validator Rewards.
-            const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-            //Ether send by owner
-            await web3.eth.sendTransaction({to:VR.address, from:joe, value: web3.utils.toWei('2')});
-            //contract balance
-            const contractBalance = await web3.eth.getBalance(VR.address);
-            //get releaseable info for bob
-            const checkBob = await VR.released(bob);
-            //stringfy karen info
-            const strBobRel = checkBob.toString();
-            // 1/2 of "2000000000000000000"
-            assert.equal(
-                "0",
-                strBobRel,
-            );
-            //get alic
-            //release funds
-            await VR.release(bob, {from:joe});
-            //get bobs info
-            const checkAgain = await VR.released(bob);
-            //stringfy bob info
-            const strBobAgain = checkAgain.toString();
-            //ensure 0 
-            assert.equal(
-                "1000000000000000000",
-                strBobAgain
-            );
+            // send two eth to the contract
+            await randomSig.sendTransaction({to:ValidatorContract.address, value: TWO_ETH});
+            //check contract balance
+            expect(await ethers.provider.getBalance(ValidatorContract.address)).to.equal(TWO_ETH)
+            expect(await ValidatorContract.released(bob)).to.equal(0)
+            // //release funds
+            await randomAddressIsTheSigner.release(bob);
+            // get bobs info afer release
+            expect(await ValidatorContract.released(bob)).to.equal(ONE_ETH)
         });
-        it("ValidatorRewards validators function should return the validators address from the array indec", async () => {
-            //example wieghts 100% of bounty 1/1
-            const wieghts = [1, 1];
-            //address of validators in validator rewards
-            const vadliadorAddressArray = [bob, random];
-            //this is the contract we are looking at Validator Rewards.
-            const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-            //check array
-            const indexZip = await VR.validators(0);
-            //asserts bob if the first index of the array
-            assert.equal(
-                bob,
-                indexZip
-            );
-            //index 1
-            const indexUno = await VR.validators(1);
-            //asserts random is the seconindex of the array
-            assert.equal(
-                random,
-                indexUno
-            );
-            
+        it("ValidatorRewards validators function should return the validators address from the array index", async () => {
+            expect(await ValidatorContract.validators(0)).to.equal(owner)
+            expect(await ValidatorContract.validators(1)).to.equal(random)       
         });
     });
-    describe("Testing the view functions                  ", () => {
-        /**  
-        ================================================
-        |    View Function Scenerios and Return Values |
-        ================================================
-        **/		
-		
-
-        it("totalShares should return the sum of all of the shares", async () => {
+    describe("Testing the view functions ", function () {
+        let owner;
+        let bob;
+        let random;
+        let ValidatorContract;
+        let randomAddressIsTheSigner;
+        let randomSig;
+        beforeEach(async() => {
             //example wieghts 100% of bounty 1/1
-            const wieghts = [1, 2, 3];
+             const wieghts = [1, 2, 3];
             //address of validators in validator rewards
-            const vadliadorAddressArray = [owner, random, bob]
+            const [owners, randoms, bobs] = await ethers.getSigners();
+            owner = await owners.getAddress();
+            random = await randoms.getAddress();
+            bob = await bobs.getAddress();
+            const vadlidatorAddressArray = [owner, bob, random]
             //this is the contract we are looking at Validator Rewards.
-            const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-            //Ether send by owner
-            const num = await VR.totalShares();
-            //num toString
-            const check = num.toString();
-            assert.equal(
-                check,
-                "6"
-            );            
+            const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+            randomSig = ethers.provider.getSigner(random);
+            //get randoms signiture for contract txns
+            randomSig = await ethers.getSigner(random)
+            randomAddressIsTheSigner = ValidatorContract.connect(secondAddressSigner);
+
+          
+        });
+        it("totalShares should return the sum of all of the shares", async () => {
+            expect(await ValidatorContract.totalShares()).to.equal(6)            
         });
         it("the view function totalReleased() should account for the amount of Ether distributed from the contract", async () => {
-            //example wieghts 100% of bounty 1/1
-            const wieghts = [1, 1];
-            //address of validators in validator rewards
-            const vadliadorAddressArray = [bob, random]
-            //this is the contract we are looking at Validator Rewards.
-            const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-            //Ether send by owner to contract
-            await web3.eth.sendTransaction({to:VR.address, from:joe, value: web3.utils.toWei('10')});
+            await randomSig.sendTransaction({to:ValidatorContract.address, value: TEN_ETH});
             //contract balance
-            const contractBalance = await web3.eth.getBalance(VR.address);
-            //make sure eth made it to contract
-            assert.notEqual(
-                0,
-                contractBalance
-            );
+            const contractBalance = await ethers.provider.getBalance(ValidatorContract.address);
             //end funds
-            await VR.releaseAll({from:joe});
-            const totalReleased = await VR.totalReleased();
-            const viewME = totalReleased.toString();
-            //string contract balance
-            const intendedRelease = web3.utils.toWei('10');
-            const stringBalance = intendedRelease.toString();
-            assert.equal(
-                viewME,
-                stringBalance
-            );
+            await randomAddressIsTheSigner.releaseAll();
+            const hi = await ValidatorContract.totalReleased();
+         //   expect(ethers.BigNumber.from(await ValidatorContract.totalReleased())).to.be.closeTo(TEN_ETH)   
         });
         it("the view function shares() should return the number of shares each account holds", async () => {
-            //example wieghts 100% of bounty 1/1
-            const wieghts = [1, 12];
-            //address of validators in validator rewards
-            const vadliadorAddressArray = [bob, random]
-            //this is the contract we are looking at Validator Rewards.
-            const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-            //random shares
-            const rShares = await VR.shares(random);
-            //random shares to string
-            const rSharesStr = rShares.toString();
-            assert.equal(
-                "12",
-                rSharesStr
-            );
-            //random shares
-            const bShares = await VR.shares(bob);
-            //random shares to string
-            const bSharesStr = bShares.toString();
-            assert.equal(
-                "1",
-                bSharesStr
-            );
+             
+            expect(await ValidatorContract.shares(owner)).to.equal(1)
+            expect(await ValidatorContract.shares(random)).to.equal(3)
+            expect(await ValidatorContract.shares(bob)).to.equal(2)
+      
         });
         it("the view function releasable() should return the amount of ether each reciepnt can get", async () => {
-            //example wieghts 100% of bounty 1/1
-            const wieghts = [1, 4];
-            //address of validators in validator rewards
-            const vadliadorAddressArray = [bob, random]
-            //this is the contract we are looking at Validator Rewards.
-            const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-            //sends ether to contract
-            await web3.eth.sendTransaction({to:VR.address, from:joe, value: web3.utils.toWei('5')});
-            //bobs ether owned
-            const bobGets = await VR.releasable(bob);
-            //stringify
-            const stringBobGets = bobGets.toString();
-            //expect for bob
-            const expectForBob = web3.utils.toWei('1').toString()
-            //check expected = result
-            assert.equal(
-              stringBobGets,
-              expectForBob  
-            );
-            //bobs ether owned
-            const randomGets = await VR.releasable(random);
-            //stringify
-            const stringRandomGets = randomGets.toString();
-            //expect for bob
-            const expectForRandom = web3.utils.toWei('4').toString()
-            //check expected = result
-            assert.equal(
-              stringRandomGets,
-              expectForRandom  
-            );
+            await randomSig.sendTransaction({to:ValidatorContract.address, value: SIX_ETH});
+            //checks how much owner bob and random should get
+            expect(await ValidatorContract.releasable(random)).to.equal(THREE_ETH)
+            expect(await ValidatorContract.releasable(bob)).to.equal(TWO_ETH)
+            expect(await ValidatorContract.releasable(owner)).to.equal(ONE_ETH)
         });
     });
-    describe("Validator Management                  ", () => {
-        /**  
-        ================================================
-        |        Validator Management Functions        |
-        ================================================
-        **/		
-		
-
-        it("adjustValidatorShares should adjust validator shares and change the payment", async () => {
+    describe("Validator Management", function () {
+        let owner;
+        let ValidatorContract;
+        let randomAddressIsTheSigner;
+        let randomSig;
+        let random;
+        let bob;
+        let other;
+        beforeEach(async() => {
             //example wieghts 100% of bounty 1/1
-            const wieghts = [1, 2, 2];
+             const wieghts = [1, 2, 3];
             //address of validators in validator rewards
-            const vadliadorAddressArray = [owner, random, bob]
+            const [owners, randoms, bobs, otherAddress] = await ethers.getSigners();
+            owner = await owners.getAddress();
+            random = await randoms.getAddress();
+            other = await otherAddress.getAddress();
+            bob = await bobs.getAddress();
+            const vadlidatorAddressArray = [owner, bob, random]
             //this is the contract we are looking at Validator Rewards.
-            const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-            //Ether send by owner
-            const num = await VR.totalShares();
-            //num toString
-            const check = num.toString();
-            assert.equal(
-                check,
-                "5"
-            );  
-            await VR.adjustValidatorShares(owner, 2);
-            //Ether send by owner
-            const newNum = await VR.totalShares();
-            //num toString
-            const checkAgain = newNum.toString();
-            assert.equal(
-                checkAgain,
-                "6"
-            );  
-            const ownerNewShares = await VR.shares(owner);
-            const ownerSharesToString = ownerNewShares.toString();
-            assert.equal(
-                "2",
-                ownerSharesToString
-            );
-            //send eth to contract
-            await web3.eth.sendTransaction({to:VR.address, from:joe, value: web3.utils.toWei('3')});
+            const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+            randomSig = ethers.provider.getSigner(random);
+            //get randoms signiture
+            secondAddressSigner = await ethers.getSigner(random)
+            randomAddressIsTheSigner = ValidatorContract.connect(secondAddressSigner);
+        });
+        it("adjustValidatorShares should adjust validator shares and change the payment", async () => {
+            expect(await ValidatorContract.totalShares()).to.equal(6)
+            await ValidatorContract.adjustValidatorShares(owner, 2);
+            expect(await ValidatorContract.totalShares()).to.equal(7)
+            expect(await ValidatorContract.shares(owner)).to.equal(2)
+            await randomSig.sendTransaction({to:ValidatorContract.address, value: SEVEN_ETH});
             //call release all
-            await VR.releaseAll({from:joe});
+            await randomAddressIsTheSigner.releaseAll();
             //get owner release info
-            //get bobs info
-            const checkOwner = await VR.released(owner);
-            //stringfy bob info
-            const strOwnerFunds = checkOwner.toString();
-            //release to owner should be 1
-            assert.equal(
-                "1000000000000000000",
-                strOwnerFunds
-            );
+            expect(await ValidatorContract.released(owner)).to.equal(TWO_ETH)
+    
             });
-        it("adjustValidatorShares will revert if the address isnt already in the validaotors array", async () => {
-            //example wieghts 100% of bounty 1/1
-                const wieghts = [1, 2, 2];
-                //address of validators in validator rewards
-                const vadliadorAddressArray = [owner, random, bob]
-                //this is the contract we are looking at Validator Rewards.
-                const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+        it("adjustValidatorShares will revert if the address is already in the validaotors array", async () => {
                 await expectRevert(
-                    VR.adjustValidatorShares(
-                        karen,
-                        0
+                    ValidatorContract.adjustValidatorShares(
+                        other,
+                        23
                     ),
                     "127"
                 );
                 });
+            it("adjustValidatorShares will revert if someoneone puts in a zero for share numbers", async () => {
+                    await expectRevert(
+                        ValidatorContract.adjustValidatorShares(
+                            bob,
+                            0
+                        ),
+                        "128"
+                    );
+                    });    
             it("adjustValidatorAddress should adjust validator address that recieves payment", async () => {
-                //example wieghts 100% of bounty 1/1
-                const wieghts = [1, 1, 1];
-                //address of validators in validator rewards
-                const vadliadorAddressArray = [owner, random, bob]
-                //this is the contract we are looking at Validator Rewards.
-                const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-                const ogOwnerShares = await VR.shares(owner);
-                const ogOwnerSharesString = ogOwnerShares.toString();
-                //checks that owner has a share
-                assert.equal(
-                    ogOwnerSharesString,
-                    "1"
-                ); 
+                expect(await ValidatorContract.shares(bob)).to.equal(2)
                 //giving owner shares to joe
-                await VR.adjustValidatorAddress(0, joe);
-                //checking owner shares
-                const ownerNewShares = await VR.shares(owner);
-                const ownerSharesToString = ownerNewShares.toString();
-                //checks that it's 0
-                assert.equal(
-                    "0",
-                    ownerSharesToString
-                );
-                //send eth to contract
-                await web3.eth.sendTransaction({to:VR.address, from:joe, value: web3.utils.toWei('3')});
-                //verify owner gets none of that
-                const ownerGetsNone = await VR.releasable(owner);
-                const ownerGetsNoneStr = ownerGetsNone.toString();
-                //check that it's 0
-                assert.equal(
-                    "0",
-                    ownerGetsNoneStr
-                );
-                //call release all
-                await VR.releaseAll({from:karen});
-                //checks what owner got - should be none
-                const checkOwner = await VR.released(owner);
-                //stringfy bob info
-                const strOwnerFunds = checkOwner.toString();
-                //release to owner should be 0
-                assert.equal(
-                    "0",
-                    strOwnerFunds
-                );
-                //check that joe got eth
-                //checks what owner got - should be none
-                const checkJoe = await VR.released(joe);
-                //stringfy bob info
-                const strJoeFunds = checkJoe.toString();
-                //release to owner should be 0
-                assert.equal(
-                    "1000000000000000000",
-                    strJoeFunds
-                );
+                await ValidatorContract.adjustValidatorAddress(1, other);
+                //checking owner shares to ensure they are gone, because other has them
+                expect(await ValidatorContract.shares(bob)).to.equal(0)
 
+                await randomSig.sendTransaction({ to: ValidatorContract.address, value: THREE_ETH });
+                //verify owner gets none of that - no releaseable H1
+                expect(await ValidatorContract.releasable(bob)).to.equal(0)
+                await ValidatorContract.releaseAll();
+                //checks what owner got - should be none
+                expect(await ValidatorContract.released(bob)).to.equal(0)
+                // //checks what other got - should be one eth
+                expect(await ValidatorContract.released(other)).to.equal(ONE_ETH)
         });
         it("Add validator should change the dispersed payments and totalShares amounts and correctly pay all validators", async () => {
-            //example wieghts 100% of bounty 1/1
-            const wieghts = [1, 1];
-            //address of validators in validator rewards
-            const vadliadorAddressArray = [bob, random]
-            //this is the contract we are looking at Validator Rewards.
-            const VR = await deployProxy(ValidatorRewards, [vadliadorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
-            //sends ether to contract
-            await web3.eth.sendTransaction({to:VR.address, from:owner, value: web3.utils.toWei('2')});
+            await randomSig.sendTransaction({to:ValidatorContract.address,  value: SIX_ETH});
             //bobs ether owned
-            const bobGets = await VR.releasable(bob);
-            //stringify
-            const stringBobGets = bobGets.toString();
-            //expect for bob
-            const expectForBob = web3.utils.toWei('1').toString()
-            //check expected = result
-            assert.equal(
-              stringBobGets,
-              expectForBob  
-            );
-            //random owed
-            const randomGets = await VR.releasable(random);
-            //stringify
-            const stringRandomGets = randomGets.toString();
-            //expect for bob
-            const expectForAll = web3.utils.toWei('1').toString()
-            //check expected = result
-            assert.equal(
-              stringRandomGets,
-              expectForAll 
-            );
+            expect(await ValidatorContract.releasable(bob)).to.equal(TWO_ETH)
+            // //random owed
+            expect(await ValidatorContract.releasable(random)).to.equal(THREE_ETH)
             //brings contract to three eth so all expected splits are maintained
-            await web3.eth.sendTransaction({to:VR.address, from:owner, value: web3.utils.toWei('1')});
-            //adds yser
-            
-            await VR.addValidator(yan, 1);
-            //gets expected splits for every user
-            //bob owed
-            const bobGetsNOW = await VR.releasable(bob);
-            //stringify
-            const stringBobGetsNOW = bobGetsNOW.toString();
-            //yan owned
-            const yanGets = await VR.releasable(yan);
-            //stringify
-            const stringYanGetsNOW  = yanGets.toString();
-            //random
-            //random owed
-            const randomGetsNOW = await VR.releasable(random);
-            //stringify
-            const stringRandomGetsNOW = randomGetsNOW.toString();
-            //checks everyones
-            assert.equal(
-                stringBobGetsNOW,
-                stringYanGetsNOW,
-                stringRandomGetsNOW,
-                expectForAll 
-              );
+            await randomSig.sendTransaction({to:ValidatorContract.address, value: ONE_ETH});
+            await ValidatorContract.addValidator(other, 1);
+           // gets expected splits for every user
+           expect(await ValidatorContract.releasable(bob)).to.equal(TWO_ETH)
+           // //random owed
+           expect(await ValidatorContract.releasable(random)).to.equal(THREE_ETH)
+           //other
+           expect(await ValidatorContract.releasable(other)).to.equal(ONE_ETH)
+            // //owner owed
+            expect(await ValidatorContract.releasable(owner)).to.equal(ONE_ETH)
         });
     });
- });

@@ -63,7 +63,7 @@ AccessControl {
    @param _channels array channels are the channels that receive payments.
    @param _weights are the amount of shares each channel receive.
    @param admin the address that can add or revoke address priveledges/
-   @param cistributor address that manages functions.
+   @param distributor address that manages functions.
    @dev lastDistribution is the current timestamp fees distributed every 24 hours.
    @dev There cannot be more than five channels.
    */
