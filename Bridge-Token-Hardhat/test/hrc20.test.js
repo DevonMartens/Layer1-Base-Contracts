@@ -1,4 +1,3 @@
-//const hrc20 = artifacts.require("HRC20");
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
@@ -8,15 +7,9 @@ const {
 } = require("@openzeppelin/test-helpers");
 const catchRevert = require("./exceptionsHelpers.js").catchRevert;
 
-//const { upgrades.deployProxy } = require("@openzeppelin/hardhat-upgrades");
-
 
 require("./utils");
 
-// const _BN = web3.utils.BN;
-// const BN = (value) => {
-//     return new _BN(value)
-// }
 
 const getLastEvent = async (eventName, instance) => {
     const events = await instance.getPastEvents(eventName, {
@@ -27,14 +20,6 @@ const getLastEvent = async (eventName, instance) => {
 };
 
 let hrc20, H
-
-/**  
-================================================
-| Begin contract test  & obtains user addresses|
-================================================
-**/
-
-// contract("HRC20", async ([owner, alice, bob, random]) => {
 
 
 describe( "Testing the initial values to validate expected contract state", function () {
