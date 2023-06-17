@@ -1,7 +1,8 @@
 const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
 
-let H1, fee, vals
+let fee;
+
 const {
     expectRevert
 } = require("@openzeppelin/test-helpers");
@@ -12,7 +13,7 @@ require("./utils");
 
 //add 24 hour increase, claim rewards and getter for "lastDistribution"
 
-contract("FeeContract", async ([owner, alice, bob, random]) => {
+contract("FeeContract", async ([alice, bob, random]) => {
 
 
     describe("Testing the initial values to validate expected contract state", function () {
