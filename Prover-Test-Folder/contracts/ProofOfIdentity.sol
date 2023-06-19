@@ -275,7 +275,7 @@ contract ProofOfIdentity is
         address from,
         address to,
         uint256 tokenId
-    ) public override(ERC721Upgradeable) {
+    ) public override {
         revert(Errors.ID_NOT_TRANSFERABLE);
     }
 

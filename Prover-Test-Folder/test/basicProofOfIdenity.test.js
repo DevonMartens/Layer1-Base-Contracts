@@ -10,8 +10,6 @@ const {
 const catchRevert = require("./exceptionsHelpers.js").catchRevert;
 
 
-require("./utils.js");
-
 
 
 
@@ -651,4 +649,43 @@ describe("Testing the initial values to validate expected contract state", funct
             .withArgs(alice, 1, "NewURI");
         });
 
-    });
+});
+
+        describe("Testing contracts that ERC721 Overrides Should not Allow Token Movement", function () {      
+            let ProofOfIdentityContract;
+            let alice; 
+            let other;
+            // let signerAlice;
+            beforeEach(async() => {
+                const ProofOfIdentity = await ethers.getContractFactory("ProofOfIdentity")
+                const IPermissionsInterface = await ethers.getContractFactory("Dummy")
+                const IPermissionsInterfaceDummyInstance = await IPermissionsInterface.deploy();
+                ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address], { initializer: 'initialize' })
+                const [owners, alices, others] = await ethers.getSigners();
+                owner = await owners.getAddress();
+                alice = await alices.getAddress();
+                other = await others.getAddress();
+                //allows alice to be the signer 
+                const secondAddressSigner = await ethers.getSigner(alice)
+                signerAlice = ProofOfIdentityContract.connect(secondAddressSigner);
+                // tokenId 1 country code "1" , userType 2 ,level 3, expiry block 78886932657, tokenURI - tokenONE
+                await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "tokenONE");
+            }); 
+            it("The contract: ERC721 Overrides should not Allow safeTransferFrom to move the token", async () => {
+                  await expectRevert(
+                    ProofOfIdentityContract["safeTransferFrom(address,address,uint256)"](other, alice, 1),
+                    "102"
+                );
+                await ProofOfIdentityContract.getCurrentTokenId();
+            });
+            it("The contract: ERC721 Overrides should not Allow transferFrom to move the token", async () => {
+                  await expectRevert(
+                    ProofOfIdentityContract.transferFrom(
+                        alice,
+                        other,
+                        1
+                    ),
+                    "102"
+                );
+            });
+        });
