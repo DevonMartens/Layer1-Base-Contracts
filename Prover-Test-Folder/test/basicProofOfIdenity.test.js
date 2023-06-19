@@ -1,9 +1,6 @@
-// const ProofOfIdentity = artifacts.require("ProofOfIdentity");
-// const IPermissionsInterface = artifacts.require("Dummy");
-// const VerifiableIdentity = artifacts.require("VerifiableIdentity");
 const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
-const { getImplementationAddress } = require('@openzeppelin/upgrades-core');
+const { time } = require('@nomicfoundation/hardhat-network-helpers');
 
 
 const {
@@ -13,7 +10,7 @@ const {
 const catchRevert = require("./exceptionsHelpers.js").catchRevert;
 
 
-// require("./utils.js");
+require("./utils.js");
 
 
 
@@ -395,6 +392,7 @@ describe("Testing the initial values to validate expected contract state", funct
         let alice;
         let other;
         let VerifiableIdentityPreventsOnExpiry;
+        let  timestamp;
         beforeEach(async() => {
             const ProofOfIdentity = await ethers.getContractFactory("ProofOfIdentity")
             const IPermissionsInterface = await ethers.getContractFactory("Dummy")
@@ -409,68 +407,78 @@ describe("Testing the initial values to validate expected contract state", funct
             const VerifiableIdentityPreventsOnExpiryFactoryInfo = await ethers.getContractFactory("VerifiableIdentityPreventsOnExpiry")
             // deploy verifiable identity with proof of identity added to it to consult
             VerifiableIdentityPreventsOnExpiry = await VerifiableIdentityPreventsOnExpiryFactoryInfo.deploy(ProofOfIdentityContract.address);  
-            //gets current block
-            const currentBlock = await ethers.provider.getBlockNumber();
-            let currentBlockTimestamp = await ethers.provider.getBlock(currentBlock).timestamp; 
-            // current plus 5
-            const currentPlusFive = currentBlockTimestamp = 5;
-            // NOTE: This token is expired (Alices). Others token will return values.
-            // TOKEN INFO: tokenId 1 country code "1" , userType 2 ,level 3, expiry block NOW, tokenURI - tokenONE
-            // await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, currentPlusFive, "tokenONE");
-            //ensures block.timestamp provided is not expired by adding 5000 seconds
-            const notExpiredTimeStamp = await currentBlockTimestamp + 500000;
-            // TOKEN INFO: tokenId 2 country code "4" , userType 5 ,level 6, expiry block - 78886932789, tokenURI tokenONE
-            await ProofOfIdentityContract.mintIdentity(other, "4", 5, 6, notExpiredTimeStamp, "tokenTWO");    
+            timestamp = await time.latest();
         }); 
-        it("After a token is expired the `getUserTypePreventExpiry`from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
+        it("After a token is expired the `getUserTypePreventOnExpiry`from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
+            const set = timestamp + 5;
+            // TOKEN INFO: tokenId 1 country code "1" , userType 2 ,level 3, expiry block NOW, tokenURI - tokenONE   
+            await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, set, "tokenONE");    
             //time stamp was on mint so this should revert
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
             await delay(10000); 
             //should revert and not return values 7 seconds past
-            await expectRevert(VerifiableIdentityPreventsOnExpiry.getUserTypePreventOnExpiry(
-                    alice
+            await expectRevert(VerifiableIdentityPreventsOnExpiry.getUserAccountTypePreventOnExpiry(alice
                 ),
                 "103"
             );
             
         });
-         it("After a token is expired the `getUserLevelPreventExpiry` from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
-             //time stamp was on mint so this should revert
+         it("After a token is expired the `getUserAccountLevelPreventOnExpiry` from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
+            // current plus 5
+            const set = timestamp + 5;
+            // TOKEN INFO: tokenId 1 country code "1" , userType 2 ,level 3, expiry block NOW, tokenURI - tokenONE   
+            await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, set, "tokenONE");
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
             await delay(7000); 
             //should revert and not return values 7 seconds past
             await expectRevert(
-                VerifiableIdentityPreventsOnExpiry.getUserLevelPreventOnExpiry(
+                VerifiableIdentityPreventsOnExpiry.getUserAccountLevelPreventOnExpiry(
                     alice
                 ),
                 "103"
             );
             
         });
-         it("After a token is expired the `getUserCountryCodePreventExpiry` from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
+         it("After a token is expired the `getUserAccountCountryCodePreventOnExpiry` from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
+            // current plus 5
+            const set = timestamp + 5;
+            // TOKEN INFO: tokenId 1 country code "1" , userType 2 ,level 3, expiry block NOW, tokenURI - tokenONE   
+            await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, set, "tokenONE");    
             //time stamp was on mint so this should revert
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
             await delay(7000); 
             //should revert and not return values 7 seconds past
             await expectRevert(
-                VerifiableIdentityPreventsOnExpiry.getUserCountryCodePreventOnExpiry(
+                VerifiableIdentityPreventsOnExpiry.getUserAccountCountryCodePreventOnExpiry(
                     alice
                 ),
                 "103"
             );
             
         });        
-        it("If a token is NOT expired the `getUserUserTypePreventExpiry`from the VerifiableIdentityPreventsOnExpiry contract should provide accurate information", async () => {
+        it("If a token is NOT expired the `getUserAccountTypePreventExpiry`from the VerifiableIdentityPreventsOnExpiry contract should provide accurate information", async () => {
+            // ensures block.timestamp provided is not expired by adding 5000 seconds
+            const notExpiredTimeStamp = timestamp + 50000000; 
+            // TOKEN INFO: tokenId 2 country code "4" , userType 5 ,level 6, expiry block - 78886932789, tokenURI tokenONE
+            await ProofOfIdentityContract.mintIdentity(other, "4", 5, 6, notExpiredTimeStamp, "tokenTWO")
             //awaits information from other whos token is not expired for 5000 seconds past the start of the test
-            expect(await VerifiableIdentityPreventsOnExpiry.getUserTypePreventOnExpiry(other)).to.equal("4")
+            expect(await VerifiableIdentityPreventsOnExpiry.getUserTypePreventOnExpiry(other)).to.equal(5)
         });
          it("After a token is NOT expired the `getUserLevelPreventExpiry` from the VerifiableIdentityPreventsOnExpiry contract should provide accurate information", async () => {
+            // ensures block.timestamp provided is not expired by adding 5000 seconds
+            const notExpiredTimeStamp = timestamp + 500000;
+            // TOKEN INFO: tokenId 2 country code "4" , userType 5 ,level 6, expiry block - 78886932789, tokenURI tokenONE
+            await ProofOfIdentityContract.mintIdentity(other, "4", 5, 6, notExpiredTimeStamp, "tokenTWO");   
             //awaits information from other whos token is not expired for 5000 seconds past the start of the test
-            expect(await VerifiableIdentityPreventsOnExpiry.getUserLevelPreventOnExpiry(other)).to.equal(5)
+            expect(await VerifiableIdentityPreventsOnExpiry.getUserLevelPreventOnExpiry(other)).to.equal(6)
         });
          it("After a token is NOT expired the `getUserCountryCodePreventExpiry` from the VerifiableIdentityPreventsOnExpiry contract contract should provide accurate information", async () => {
+           //ensures block.timestamp provided is not expired by adding 5000 seconds
+           const notExpiredTimeStamp = timestamp + 500000;
+           // TOKEN INFO: tokenId 2 country code "4" , userType 5 ,level 6, expiry block - 78886932789, tokenURI tokenONE
+           await ProofOfIdentityContract.mintIdentity(other, "4", 5, 6, notExpiredTimeStamp, "tokenTWO");   
             // awaits information from other whos token is not expired for 5000 seconds past the start of the test
-            expect(await VerifiableIdentityPreventsOnExpiry.getUserCountryCodePreventOnExpiry(other)).to.equal(6) 
+            expect(await VerifiableIdentityPreventsOnExpiry.getUserCountryCodePreventOnExpiry(other)).to.equal("4") 
         });
     });
     describe("Testing the User Privilege and Network Removal Functions", function () {

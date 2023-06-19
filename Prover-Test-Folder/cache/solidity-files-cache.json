@@ -113,8 +113,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/UserInformationPreventsOnExpiry.sol": {
-      "lastModificationDate": 1687190095666,
-      "contentHash": "4adb98d0e958fd4bcd67beb84a7ae34b",
+      "lastModificationDate": 1687200371244,
+      "contentHash": "1aea5052718e83810b4a26a72bb8921c",
       "sourceName": "contracts/UserInformationPreventsOnExpiry.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -141,7 +141,8 @@
         }
       },
       "imports": [
-        "./RoleVerification.sol"
+        "./RoleVerification.sol",
+        "./Errors.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -189,8 +190,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/ProofOfIdentity.sol": {
-      "lastModificationDate": 1687193559909,
-      "contentHash": "b9b5f169081b72f3f1ef9f2204f06a57",
+      "lastModificationDate": 1687200360110,
+      "contentHash": "e83d550d0552203666c26a8c889282f9",
       "sourceName": "contracts/ProofOfIdentity.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -222,6 +223,7 @@
         "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol",
         "./IPermissionsInterface.sol",
         "./UserInformation.sol",
+        "./Errors.sol",
         "./UserInformationPreventsOnExpiry.sol",
         "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol"
       ],

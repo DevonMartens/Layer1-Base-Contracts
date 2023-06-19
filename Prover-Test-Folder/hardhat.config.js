@@ -16,13 +16,12 @@ module.exports = {
                 },
           },
      ganache: {
-            url: "http://127.0.0.1:9545",
+            url: "http://127.0.0.1:7545",
             chainId: "31337 ",
             accounts: [
-                `0x3d50F2362150d3D34B0244D03c6be0b70f949fd2`,
-                `0x610b97986aA98F8720D868a9B4A78014f4565418`,
-                `0xbDA3e553DaD01b0D880eb6e22F2b80647164311F`,
-                 `0x27fC672857d8Cab5810D8C54a391273AF6df06f6`,
+              `0xA2f721809Fc53337B841C6dDE1AaB0A115FDd3C9`,
+              `0x6D8ad8c9590B1fC57dB9c9e4B93D2464525Ec87c`,
+`0x7877E6c1B8cBfcBd3E5f9Ea3CC343AF0b44A43d2`
             ]
 
      },

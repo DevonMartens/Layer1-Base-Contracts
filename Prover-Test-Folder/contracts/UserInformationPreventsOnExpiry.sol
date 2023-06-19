@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./RoleVerification.sol";
+import "./Errors.sol";
 
 /**
 @title UserInformationPreventsOnExpiry

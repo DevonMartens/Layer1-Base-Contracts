@@ -11,6 +11,7 @@
         "hardhat": "^2.15.0"
     },
     "dependencies": {
+        "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
         "@nomiclabs/hardhat-ethers": "^2.2.3",
         "@openzeppelin/contracts": "^4.7.0",
         "@openzeppelin/contracts-upgradeable": "^4.9.1",
