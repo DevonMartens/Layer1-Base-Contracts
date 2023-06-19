@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/ValidatorRewards.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> ValidatorRewards.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/37</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/24</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/54</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+&nbsp;
+pragma solidity ^0.8.2;
+&nbsp;
+import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "./Errors.sol";
+&nbsp;
+/// @title ValidatorRewards
+/// @notice This contract ensures fees are sent the validator addresses.
+/// @dev The primary function of this contract is disperse funds from Haven applications.
+&nbsp;
+contract ValidatorRewards is 
+AccessControl,
+Initializable
+{
+&nbsp;
+   /**
+   * @dev Event for when a new Validator is added. Includes their address and total shares.
+   */
+   event ValidatorAdded(
+       address account,
+       uint256 shares
+       );
+&nbsp;
+   /**   
+   * @dev Event for when shares are adjusted.
+   */
+   event SharesAdjusted(
+       address validator,
+       uint256 shares
+       );
+  
+   /**   
+   * @dev Event for when the validator address is changed. Used in `adjustValidatorAddress`.
+   */
+   event UpdatedValidator(
+       address indexed previousValidatorRewardAddress,
+       address indexed newValidatorRewardAddress
+   );
+&nbsp;
+   /**   
+   * @dev Event for when a validator receives a payment.
+   */
+   event PaymentReleased(
+       address indexed to,
+       uint256 indexed amount
+   );
+&nbsp;
+   /**   
+   * @dev Event for when the contract receives a payment.
+   */
+   event PaymentRecieved(
+       address indexed sender,
+       address indexed origin,
+       uint256 indexed amount
+       );
+&nbsp;
+   // Sum of all shares collectively held by addresses for division of H1.
+   uint256 private _totalShares;
+&nbsp;
+   // Sum of all H1 collectively released.
+   uint256 private _totalReleased;
+&nbsp;
+   // Mapping between an address and the number of shares of H1 it receives.
+   // Payment = _shares/_totalShares * contract balance.
+   mapping(address =&gt; uint256) private _shares;
+&nbsp;
+   // Mapping between an address and how much H1 it has received.
+   mapping(address =&gt; uint256) private _released;
+&nbsp;
+   // Array of all the addresses that receive H1.
+   address[] private _validators;
+&nbsp;
+   // Role to control contract distribution.
+   bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
+&nbsp;
+   /**
+   @notice contract deploys with a list of validator addresses and their total shares.
+   @param validatorsList an array of validators to accept fees.
+   @param shares_ an array
+   @param admin the address that can grant and remove permissions.
+   @param distributor the address that calls restricted functions in the contract.
+   @dev the shares for each address are the amount over the total amount for all addresses.
+   */
+<span class="fstat-no" title="function not covered" >   function initialize</span>
+   (
+    address[] memory validatorsList,
+    uint256[] memory shares_, 
+    address admin, 
+    address distributor) 
+    external 
+    initializer
+    {
+<span class="cstat-no" title="statement not covered" >        _grantRole(DEFAULT_ADMIN_ROLE, admin)</span>;
+<span class="cstat-no" title="statement not covered" >        _grantRole(DISTRIBUTOR_ROLE, distributor)</span>;
+<span class="cstat-no" title="statement not covered" >       for (uint256 i = 0; i &lt; validatorsList.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >            _validators.push(validatorsList[i])</span>;
+           _shares[validatorsList[i]] = shares_[i];
+           _totalShares = _totalShares + shares_[i];
+    }
+   }
+&nbsp;
+   /**
+    * @notice Function to receive tokens.
+    * @dev The Wrapped H1 received will be logged with {PaymentRecieved} events. Note that these events are not fully
+    * reliable: it's possible for a contract to receive Wrapped H1 without triggering this function. This only affects the
+    * reliability of the events, and not the actual splitting of Wrapped H1.
+    * To learn more about this see the Solidity documentation for
+    * https://solidity.readthedocs.io/en/latest/contracts.html#fallback-function[fallback
+    * functions].
+    */
+   receive() external payable virtual {
+       emit PaymentRecieved(msg.sender, tx.origin, msg.value);
+   }
+&nbsp;
+&nbsp;
+   /**
+   @notice This function adjusts the total number of shares received by an address.
+   @param account the address that the share number should be adjusted for.
+   @param shares_ the new share number for the account.
+   */
+&nbsp;
+<span class="fstat-no" title="function not covered" >   function adjustValidatorShares(address account, uint256 shares_) external onlyRole(DISTRIBUTOR_ROLE) {</span>
+<span class="cstat-no" title="statement not covered" >       require(isOriginalAddress(account) == false, Errors.NO_DUPLICATES)</span>;
+<span class="cstat-no" title="statement not covered" >       require(shares_ &gt; 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED)</span>;
+       _totalShares -= _shares[account];
+       _totalShares += shares_;
+        _shares[account] = shares_;
+<span class="cstat-no" title="statement not covered" >        emit SharesAdjusted(account, shares_);</span>
+   }
+&nbsp;
+   /**
+   @notice Trades out one validator for another.
+   @param _index the index in the validator address in the array.
+   @param _newValidatorRewardAddress The number of shares owned by the payee.
+   */
+&nbsp;
+<span class="fstat-no" title="function not covered" >   function adjustValidatorAddress(</span>
+       uint256 _index,
+       address _newValidatorRewardAddress
+   ) external onlyRole(DISTRIBUTOR_ROLE) {
+<span class="cstat-no" title="statement not covered" >       require(</span>
+           _validators[_index] != address(0),
+           Errors.INVALID_INDEX
+       );
+<span class="cstat-no" title="statement not covered" >       address previousAddress = _validators[_index];</span>
+<span class="cstat-no" title="statement not covered" >       uint256 sharesAdjusted = _shares[previousAddress];</span>
+       _shares[previousAddress] = 0;
+       _shares[_newValidatorRewardAddress] = sharesAdjusted;
+       _validators[_index] = _newValidatorRewardAddress;  
+<span class="cstat-no" title="statement not covered" >       emit UpdatedValidator(previousAddress, _newValidatorRewardAddress);</span>
+   }
+    
+   /**
+   @notice Add a new validator to the contract.
+   @param account The address of the payee to add.
+   @param shares_ The number of shares owned by the payee.
+   */
+<span class="fstat-no" title="function not covered" >   function addValidator(address account, uint256 shares_) external onlyRole(DISTRIBUTOR_ROLE)  {</span>
+<span class="cstat-no" title="statement not covered" >       require(account != address(0), Errors.ZERO_ADDRESS_NOT_VALID_ARGUMENT)</span>;
+<span class="cstat-no" title="statement not covered" >       require(shares_ &gt; 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED)</span>;
+<span class="cstat-no" title="statement not covered" >       require(_shares[account] == 0, Errors.ADDRESS_ALREADY_HAS_A_VALUE)</span>;
+&nbsp;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >       _validators.push(account)</span>;
+       _shares[account] = shares_;
+       _totalShares = _totalShares + shares_;
+<span class="cstat-no" title="statement not covered" >       emit ValidatorAdded(account, shares_);</span>
+   }
+&nbsp;
+   /**
+   @notice Getter for the total shares held by validators.
+   */
+<span class="fstat-no" title="function not covered" >   function totalShares() public view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >       return _totalShares;</span>
+   }
+&nbsp;
+   /**
+   @notice Getter for the total amount of Wrapped H1 already released.
+   */
+<span class="fstat-no" title="function not covered" >   function totalReleased() public view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >       return _totalReleased;</span>
+   }
+&nbsp;
+&nbsp;
+   /**
+   @notice Getter for the amount of shares held by an account.
+   @param account the account to check the share amount.
+   */
+<span class="fstat-no" title="function not covered" >   function shares(address account) public view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >       return _shares[account];</span>
+   }
+&nbsp;
+&nbsp;
+   /**
+   @notice Getter for the amount of Wrapped H1 already released to a payee.
+   @param account is the account to check the share amount.
+   */
+<span class="fstat-no" title="function not covered" >   function released(address account) public view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >       return _released[account];</span>
+   }
+&nbsp;
+&nbsp;
+   /**
+   @notice Getter for the address of the validator number position of the array of validators.
+   @param index the index in the array.
+   */
+<span class="fstat-no" title="function not covered" >   function validators(uint256 index) public view returns (address) {</span>
+<span class="cstat-no" title="statement not covered" >       return _validators[index];</span>
+   }
+&nbsp;
+   /**
+   @notice Getter for the amount of validator's Wrapped H1 in contract.
+   @param account the account to check the amount of total received and released amount.
+   */
+<span class="fstat-no" title="function not covered" >   function releasable(address account) public view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >       uint256 totalReceived = address(this).balance + totalReleased();</span>
+<span class="cstat-no" title="statement not covered" >       return _pendingPayment(account, totalReceived, released(account));</span>
+   }
+&nbsp;
+   /**
+   @notice Triggers a transfer to `account` of the amount of Wrapped H1 they are owed, according to their percentage of the
+   total shares and their previous withdrawals.
+   @param account the account to check the amount of total received and released amount.
+   */
+&nbsp;
+<span class="fstat-no" title="function not covered" >   function release(address payable account) public {</span>
+<span class="cstat-no" title="statement not covered" >       require(_shares[account] &gt; 0, Errors.ACCOUNT_HAS_NO_SHARES )</span>;
+<span class="cstat-no" title="statement not covered" >       uint256 payment = releasable(account);</span>
+&nbsp;
+       _totalReleased += payment;
+       unchecked {
+           _released[account] += payment;
+       }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >       Address.sendValue(account, payment)</span>;
+<span class="cstat-no" title="statement not covered" >       emit PaymentReleased(account, payment);</span>
+    }
+&nbsp;
+    /**
+    * @dev Triggers a transfer to all validators of the amount of Wrapped H1 they are owed, according to their percentage of the
+    * total shares and their previous withdrawals.
+    */
+&nbsp;
+<span class="fstat-no" title="function not covered" >   function releaseAll() external {</span>
+<span class="cstat-no" title="statement not covered" >         for (uint i; i &lt; _validators.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >             uint256 payment = releasable(_validators[i]);</span>
+       _totalReleased += payment;
+       unchecked {
+           _released[_validators[i]] += payment;
+       }
+<span class="cstat-no" title="statement not covered" >       address payable account = payable(address(_validators[i]));</span>
+<span class="cstat-no" title="statement not covered" >       Address.sendValue(</span>
+           account,
+           payment
+           );
+<span class="cstat-no" title="statement not covered" >       emit PaymentReleased(_validators[i], payment);</span>
+         }
+   }
+&nbsp;
+   /**
+   @notice This view function checks if the address is in the validatorList array.
+   @param validator the address for in the validatorsList.
+   @dev It is used in functions above to ensure no duplicate addresses are added to the validatorList.
+   */
+&nbsp;
+<span class="fstat-no" title="function not covered" >   function isOriginalAddress(address validator) public view returns (bool) {</span>
+<span class="cstat-no" title="statement not covered" >   for (uint i = 0; i &lt; _validators.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >       if (_validators[i] == validator) {</span>
+<span class="cstat-no" title="statement not covered" >           return false;</span>
+       }
+   }
+<span class="cstat-no" title="statement not covered" >       return true;</span>
+       }
+&nbsp;
+   /**
+   @notice internal logic for computing the pending payment of an `account` given the token historical balances and already released amounts.
+   @param account the account to check the amount of total received and released amount.
+   @param totalReceived the account to check the amount of total received and released amount.
+   @param alreadyReleased the account to check the amount of total received and released amount.
+   */
+&nbsp;
+<span class="fstat-no" title="function not covered" >   function _pendingPayment(</span>
+       address account,
+       uint256 totalReceived,
+       uint256 alreadyReleased
+   ) private view returns (uint256) {
+<span class="cstat-no" title="statement not covered" >       return (totalReceived * _shares[account]) / _totalShares - alreadyReleased;</span>
+   }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jun 19 2023 15:44:05 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

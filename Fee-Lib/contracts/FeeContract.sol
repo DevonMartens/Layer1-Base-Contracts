@@ -4,7 +4,7 @@
 pragma solidity ^0.8.2;
 
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./FeeQuery.sol";
 import "./Errors.sol";
@@ -24,7 +24,7 @@ interface IFeeOracle {
 contract FeeContract is 
 FeeQuery, 
 Initializable,
-AccessControl {
+AccessControlUpgradeable {
 
 
    /** 
@@ -69,6 +69,8 @@ AccessControl {
    */
 
    function initialize(address _oracle, address[] memory _channels, uint8[] memory _weights, address admin, address distributor) external initializer {
+       
+       __AccessControl_init();
         _grantRole(
             DEFAULT_ADMIN_ROLE, 
             admin)
