@@ -189,7 +189,7 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/ProofOfIdentity.sol": {
-      "lastModificationDate": 1687176650564,
+      "lastModificationDate": 1687182918184,
       "contentHash": "9c3dec2fe226d6c8179032ad46ee00d2",
       "sourceName": "contracts/ProofOfIdentity.sol",
       "solcConfig": {
@@ -875,8 +875,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/VerifiableIdentity.sol": {
-      "lastModificationDate": 1686991972229,
-      "contentHash": "9a9fb449f9911ad2ab6f0503fc30780e",
+      "lastModificationDate": 1687182306231,
+      "contentHash": "2adbf61951fadeaff42026d6d5b83e6a",
       "sourceName": "contracts/VerifiableIdentity.sol",
       "solcConfig": {
         "version": "0.8.2",

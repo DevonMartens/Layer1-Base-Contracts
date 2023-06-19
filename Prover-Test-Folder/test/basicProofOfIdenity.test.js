@@ -212,8 +212,8 @@ describe("Testing the initial values to validate expected contract state", funct
         });
          it("The proof of identity contract should only allow allow admin to grant PROVER_ROLE", async () => {
             await expectRevert(
-                ProofOfIdentityContract.grantRole(
-                    other, PROVER_ROLE), 
+                signerAlice.grantRole(
+                    PROVER_ROLE, other), 
                     `AccessControl: account ${FROM} is missing role ${DEFAULT_ADMIN_ROLE}`
                     );
         });
@@ -239,7 +239,7 @@ describe("Testing the initial values to validate expected contract state", funct
                 `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
             );
             //confirms original value
-            expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("tokenURI")
+            expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("token")
 
         });
         it("The proof of identity contract's function suspendAccountDeleteTokenAndIdentityBlob should only allow a PROVER_ROLE address to call it", async () => {
@@ -285,9 +285,9 @@ describe("Testing the initial values to validate expected contract state", funct
             const IPermissionsInterfaceDummyInstance = await IPermissionsInterface.deploy();
             ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address],
                  { initializer: 'initialize' })
-                 .then((contract) => contract.deployed())
-            //const implAddress = await hre.upgrades.erc1967.getImplementationAddress(ProofOfIdentityContract.address)
-            const implAddress = await  getImplementationAddress(ProofOfIdentityContract.address)
+                //  .then((contract) => contract.deployed())
+           // const implAddress = await hre.upgrades.erc1967.getImplementationAddress(ProofOfIdentityContract.address)
+           const implAddress = await getImplementationAddress(ProofOfIdentityContract.address)
             const [owners, alices, others] = await ethers.getSigners();
             owner = await owners.getAddress();
             alice = await alices.getAddress();
@@ -300,18 +300,18 @@ describe("Testing the initial values to validate expected contract state", funct
             // gets information for deployment
             const VerifiableIdentityFactoryInfo = await ethers.getContractFactory("VerifiableIdentity")
             // deploy verifiable identity with proof of identity added to it to consult
-            VerifiableIdentity = await VerifiableIdentityFactoryInfo.deploy(implAddress);       
+            VerifiableIdentity = await VerifiableIdentityFactoryInfo.deploy(implAddress.address);       
         }); 
         it("The values for `country code` in a seperate verifiable identity contract should match the values for the original proof of identity", async () => {
             //check that the country code is the same in the original proof of identity
             expect(await ProofOfIdentityContract.getUserAccountCountryCode(alice)).to.equal("1")
-            expect(await ProofOfIdentityContract.getUserAccountCountryCode(other)).to.equal("4")
+            expect(await VerifiableIdentity.getUserCountryCode(other)).to.equal("4")
             //check that the country code is the same in the Verifiable Identity
-            expect(await VerifiableIdentity.getUserAccountCountryCode(alice)).to.equal("1")
-            expect(await await VerifiableIdentity.getUserAccountCountryCode(other)).to.equal("4")
+            expect(await ProofOfIdentityContract.getUserAccountCountryCode(alice)).to.equal("1")
+            expect(await await VerifiableIdentity.getUserCountryCode(other)).to.equal("4")
             //checks against each other
-            expect(await VerifiableIdentity.getUserAccountCountryCode(alice)).to.equal(await ProofOfIdentityContract.getUserAccountCountryCode(alice))
-            expect(await await VerifiableIdentity.getUserAccountCountryCode(other)).to.equal(await ProofOfIdentityContract.getUserAccountCountryCode(other))
+            expect(await VerifiableIdentity.getUserCountryCode(alice)).to.equal(await ProofOfIdentityContract.getUserAccountCountryCode(alice))
+            expect(await await VerifiableIdentity.getUserCountryCode(other)).to.equal(await ProofOfIdentityContract.getUserAccountCountryCode(other))
     
         });
         it("The values for `user type` in a seperate verifiable identity contract should match the values for the original  proof of identity", async () => {
@@ -351,7 +351,9 @@ describe("Testing the initial values to validate expected contract state", funct
     });
     describe("Testing contracts that ERC721 Overrides Should not Allow Token Movement", function () {      
         let ProofOfIdentityContract;
-        let alice;
+        let alice; 
+        let other;
+        let signerAlice;
         beforeEach(async() => {
             //deploys contracts
             const ProofOfIdentity = await ethers.getContractFactory("ProofOfIdentity")
@@ -359,33 +361,31 @@ describe("Testing the initial values to validate expected contract state", funct
             const IPermissionsInterfaceDummyInstance = await IPermissionsInterface.deploy();
             ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address], { initializer: 'initialize' });
             //get addresses for this test
-            const [owners, alices] = await ethers.getSigners();
+            const [owners, alices, others] = await ethers.getSigners();
             alice = await alices.getAddress();
+            other = await others.getAddress();
+            //allows alice to be the signer 
+            secondAddressSigner = await ethers.getSigner(alice)
+            signerAlice = ProofOfIdentityContract.connect(secondAddressSigner);
             // tokenId 1 country code "1" , userType 2 ,level 3, expiry block 78886932657, tokenURI - tokenONE
             await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "tokenONE");
         }); 
         it("The contract: ERC721 Overrides should not Allow safeTransferFrom to move the token", async () => {
               await expectRevert(
-                ProofOfIdentityContract.safeTransferFrom(
+                signerAlice.safeTransferFrom(
                     alice,
                     other,
-                    1,
-                    {
-                        from: FROM
-                    }
+                    1
                 ),
                 "102"
             );
         });
         it("The contract: ERC721 Overrides should not Allow transferFrom to move the token", async () => {
               await expectRevert(
-                ProofOfIdentityContract.transferFrom(
+                signerAlice.transferFrom(
                     alice,
                     other,
-                    1,
-                    {
-                        from: FROM
-                    }
+                    1
                 ),
                 "102"
             );
@@ -423,7 +423,7 @@ describe("Testing the initial values to validate expected contract state", funct
             // TOKEN INFO: tokenId 2 country code "4" , userType 5 ,level 6, expiry block - 78886932789, tokenURI tokenONE
             await ProofOfIdentityContract.mintIdentity(other, "4", 5, 6, notExpiredTimeStamp, "tokenTWO");    
         }); 
-        it("After a token is expired the `getUserUserTypePreventExpiry`from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
+        it("After a token is expired the `getUserTypePreventExpiry`from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
             //time stamp was on mint so this should revert
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
             await delay(7000); 
@@ -432,7 +432,7 @@ describe("Testing the initial values to validate expected contract state", funct
                 VerifiableIdentityPreventsOnExpiry.getUserTypeNonExpiry(
                     alice
                 ),
-                "100"
+                "103"
             );
             
         });
@@ -494,7 +494,7 @@ describe("Testing the initial values to validate expected contract state", funct
             //deletes both the token and the blob eliminating the codes and 
             await ProofOfIdentityContract.suspendAccountDeleteTokenAndIdentityBlob(alice, 1);
             //should rever at the blob does not exist
-            expect(await ProofOfIdentityContract.getCountryCode(alice)).to.be.revertedWith("");
+            expect(await ProofOfIdentityContract.getUserAccountCountryCode(alice)).to.be.revertedWith("");
             //should revert token was burned
             await expectRevert(
                 ProofOfIdentityContract.ownerOf(
@@ -520,6 +520,7 @@ describe("Testing the initial values to validate expected contract state", funct
         let ProofOfIdentityContract;
         let alice;
         let lessThanCurrentBlockNumber;
+        let greaterThanCurrentBlockNumber;
         let other;
         beforeEach(async() => {
             const ProofOfIdentity = await ethers.getContractFactory("ProofOfIdentity")
@@ -540,6 +541,7 @@ describe("Testing the initial values to validate expected contract state", funct
             let currentBlockTimestamp = (await ethers.provider.getBlock(currentBlock)).timestamp; 
             //passed block 
             lessThanCurrentBlockNumber = currentBlockTimestamp - 50;
+            greaterThanCurrentBlockNumber = currentBlockTimestamp + 50;
         }); 
         it("Proof of identity contract `mintIdentity` should stop a wallet that has a token from getting another", async () => {
             await expectRevert(
@@ -562,19 +564,19 @@ describe("Testing the initial values to validate expected contract state", funct
                     2,
                     3,
                     lessThanCurrentBlockNumber,
+                    "token",
                 ),
                 `103`
             );
         });
-        it("Proof of identity contract `updateIdentity` should not allow am account that doesnt have a token to updated the identity blob struct", async () => {
+        it("Proof of identity contract `updateIdentity` should not allow an account that doesnt have a token to updated the identity blob struct", async () => {
             await expectRevert(
                 ProofOfIdentityContract.updateIdentity(
                     other,
                     1,
                     2,
                     3,
-                    69824892845665249068024568,
-                    "token",
+                    greaterThanCurrentBlockNumber,
                 ),
                 `101`
             );
@@ -619,7 +621,7 @@ describe("Testing the initial values to validate expected contract state", funct
             .withArgs(alice, 1, "VALID_REASON");
         });
         it("AccountSuspendedTokenMaintained should emit with the address, reason in suspendAccountMaintainTokenAndIdentityBlob", async () => {
-            await expect(ProofOfIdentityContract.suspendAccountMaintainTokenAndIdentityBlob())
+            await expect(ProofOfIdentityContract.suspendAccountMaintainTokenAndIdentityBlob(alice, "VALID_REASON"))
             .to.emit(ProofOfIdentityContract, "AccountSuspendedTokenMaintained")
             .withArgs(alice, "VALID_REASON");
         });

@@ -23,7 +23,7 @@ contract VerifiableIdentity is UserInformation {
     @param account address of the target user account
     */
 
-    function getUserAccountCountryCodeVerifiableIdentity(
+    function getUserCountryCode(
         address account
     ) public view returns (string memory userAccountCountryCode) {
         return (VERIFIABLE_IDENTITY.getUserAccountCountryCode(account));
