@@ -7,6 +7,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "./IPermissionsInterface.sol";
 import "./UserInformation.sol";
 import "./UserInformationPreventsOnExpiry.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 // @TODO "ADMINORG" changed to "HAVEN1" upon network redeployment
 // @TODO change natspec to /// natspec comments
@@ -23,8 +24,7 @@ import "./UserInformationPreventsOnExpiry.sol";
 contract ProofOfIdentity is
     UserInformation,
     UserInformationPreventsOnExpiry,
-    ERC721Upgradeable,
-    AccessControlUpgradeable
+    Initializable, ERC721Upgradeable, AccessControlUpgradeable
 {
     using Counters for Counters.Counter;
 
@@ -261,7 +261,7 @@ contract ProofOfIdentity is
         address from,
         address to,
         uint256 tokenId
-    ) public override(ERC721Upgradeable) {
+    ) public override (ERC721Upgradeable)  {
         revert(Errors.ID_NOT_TRANSFERABLE);
     }
 
@@ -277,7 +277,6 @@ contract ProofOfIdentity is
     ) public override(ERC721Upgradeable) {
         revert(Errors.ID_NOT_TRANSFERABLE);
     }
-
 
     /**
     @notice Override to ensure the same interfaces can support access control and ERC721 from openzepplin.
