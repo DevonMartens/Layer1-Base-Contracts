@@ -100,7 +100,7 @@ contract ProofOfIdentity is
     )
     external initializer
     {
-        __AccessControl_init();
+         __AccessControl_init_unchained();
         __ERC721_init("Proof of Identity", "H1-ID");
         _permissionsInterface = IPermissionsInterface(permissionsInterface);
         _grantRole(PROVER_ROLE, msg.sender);

@@ -23,6 +23,11 @@ contract Dummy is IPermissionsInterface {
         string roleId;
     }
 
+function updateAccountStatus(
+    string calldata reason,
+    address account,
+    uint256 number
+        ) public {}
 
 
 function assignAccountRole(

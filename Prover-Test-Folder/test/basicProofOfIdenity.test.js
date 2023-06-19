@@ -3,6 +3,7 @@
 // const VerifiableIdentity = artifacts.require("VerifiableIdentity");
 const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
+const { getImplementationAddress } = require('@openzeppelin/upgrades-core');
 
 
 const {
@@ -72,13 +73,13 @@ describe("Testing the initial values to validate expected contract state", funct
             expect(await ProofOfIdentityContract.getUserAccountExpiry(alice)).to.equal(78886932657)
         });
         it("The ProofOfIdentity contract's function mintIdentity should create multiple structs and mint multiple tokens", async () => {
-            await ProofOfIdentityContract.mintIdentity(owner, 1, 2, 3, 78886932625, "tokenURI");
+            await ProofOfIdentityContract.mintIdentity(other, "1", 2, 3, 78886932625, "tokenURI");
             //calls expiry in struct to ensure formation
             expect(await ProofOfIdentityContract.getUserAccountExpiry(alice)).to.equal(78886932657)
-            expect(await ProofOfIdentityContract.getUserAccountExpiry(owner)).to.equal(78886932625)
+            expect(await ProofOfIdentityContract.getUserAccountExpiry(other)).to.equal(78886932625)
             //call erc721 owner of to ensure tokens were placed
             expect(await ProofOfIdentityContract.ownerOf(1)).to.equal(alice)
-            expect(await ProofOfIdentityContract.getUserAccountExpiry(2)).to.equal(owner)
+            expect(await ProofOfIdentityContract.ownerOf(2)).to.equal(other)
         });
         it("The ProofOfIdentity contract's function mintIdentity should create a token with the custom input as it's URI", async () => {
             expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("tokenURI")
@@ -253,7 +254,7 @@ describe("Testing the initial values to validate expected contract state", funct
         it("The contract: function deleteSingleHolderToken should only allow a PROVER_ROLE address to call it", async () => {
             //calls function and expects revert
             await expectRevert(
-                PsignerAlice.suspendAccountMaintainTokenAndIdentityBlob(
+                signerAlice.suspendAccountMaintainTokenAndIdentityBlob(
                     alice,
                     "lying"
                 ),
@@ -282,8 +283,11 @@ describe("Testing the initial values to validate expected contract state", funct
             const ProofOfIdentity = await ethers.getContractFactory("ProofOfIdentity")
             const IPermissionsInterface = await ethers.getContractFactory("Dummy")
             const IPermissionsInterfaceDummyInstance = await IPermissionsInterface.deploy();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address], { initializer: 'initialize' });
-            //get addresses for this test
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address],
+                 { initializer: 'initialize' })
+                 .then((contract) => contract.deployed())
+            //const implAddress = await hre.upgrades.erc1967.getImplementationAddress(ProofOfIdentityContract.address)
+            const implAddress = await  getImplementationAddress(ProofOfIdentityContract.address)
             const [owners, alices, others] = await ethers.getSigners();
             owner = await owners.getAddress();
             alice = await alices.getAddress();
@@ -296,7 +300,7 @@ describe("Testing the initial values to validate expected contract state", funct
             // gets information for deployment
             const VerifiableIdentityFactoryInfo = await ethers.getContractFactory("VerifiableIdentity")
             // deploy verifiable identity with proof of identity added to it to consult
-            VerifiableIdentity = await VerifiableIdentityFactoryInfo.deploy(ProofOfIdentityContract.address);       
+            VerifiableIdentity = await VerifiableIdentityFactoryInfo.deploy(implAddress);       
         }); 
         it("The values for `country code` in a seperate verifiable identity contract should match the values for the original proof of identity", async () => {
             //check that the country code is the same in the original proof of identity
@@ -558,7 +562,6 @@ describe("Testing the initial values to validate expected contract state", funct
                     2,
                     3,
                     lessThanCurrentBlockNumber,
-                    "token",
                 ),
                 `103`
             );
@@ -607,7 +610,8 @@ describe("Testing the initial values to validate expected contract state", funct
             //getting FROM for accesscontrol errors
         }); 
         it("AccountSuspendedTokenBurned should emit with the address, tokenId, reason in suspendAccountDeleteTokenAndIdentityBlob", async () => {
-            await expect(ProofOfIdentityContract.suspendAccountDeleteTokenAndIdentityBlob(
+            await expect(
+                ProofOfIdentityContract.suspendAccountDeleteTokenAndIdentityBlob(
                 alice,
                 "VALID_REASON"
             ))

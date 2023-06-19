@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/DUMMYDONTDEPLOY.sol": {
-      "lastModificationDate": 1686991972227,
-      "contentHash": "5235b4f3e2ebe91462c8380b55be2510",
+      "lastModificationDate": 1687180156112,
+      "contentHash": "2ed1ee87772c36c66e0fbb3609d2da67",
       "sourceName": "contracts/DUMMYDONTDEPLOY.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -189,8 +189,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/ProofOfIdentity.sol": {
-      "lastModificationDate": 1686991972228,
-      "contentHash": "aa687312d9d637762bd2411f1e471231",
+      "lastModificationDate": 1687176650564,
+      "contentHash": "9c3dec2fe226d6c8179032ad46ee00d2",
       "sourceName": "contracts/ProofOfIdentity.sol",
       "solcConfig": {
         "version": "0.8.2",
