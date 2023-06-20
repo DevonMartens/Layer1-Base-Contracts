@@ -16,7 +16,7 @@ import "./Errors.sol";
 */
 
 interface IFeeOracle {
-   function consult() external returns (uint amountOut);
+   function consult() external view returns (uint amountOut);
 
    function refreshOracle() external returns (bool success);
 }
@@ -78,6 +78,10 @@ AccessControlUpgradeable {
         _grantRole(
             DISTRIBUTOR_ROLE,
             distributor)
+            ;
+             _revokeRole(
+            DEFAULT_ADMIN_ROLE,
+            msg.sender)
             ;
        if(_channels.length > 5 || _weights.length > 5){
            revert(Errors.CONTRACT_LIMIT_REACHED);
@@ -181,8 +185,9 @@ AccessControlUpgradeable {
 
        for (uint i = 0; i < channels.length; i++) {
            uint share = (amount * weights[i]) / CONTRACT_SHARES;
-           bool sent = payable(channels[i]).send(share);
+          (bool sent,) = channels[i].call{value: share}("");
            require(sent, Errors.TRANSFER_FAILED);
+
            emit FeesDistributed(block.timestamp, channels[i], share);
        }
        lastDistribution = block.timestamp;
@@ -251,6 +256,15 @@ AccessControlUpgradeable {
    }
 
    /**
+   @notice Function that allows ability to view the amount an address is supposed to be paid based on array position.
+   @param index the number in the array of channels/weights representing the index.
+   */
+
+   function amountPaidToUponNextDistribution(uint8 index)public view returns(uint256){
+       return weights[index] * address(this).balance / CONTRACT_SHARES;
+   }
+
+   /**
    @notice Allows ability to view a channel and its corresponding weight via index.
    @param index the number in the array of channels.
    */
@@ -281,7 +295,7 @@ AccessControlUpgradeable {
    @notice Function to consult oracle to get fee amount.
    */
 
-   function queryOracle() public returns (uint256 feeAmount) {
+   function queryOracle() public view returns (uint feeAmount) {
        return (IFeeOracle(oracle).consult());
    }
 

@@ -38,7 +38,7 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/ValidatorRewards.sol": {
-      "lastModificationDate": 1686945786294,
+      "lastModificationDate": 1687284272293,
       "contentHash": "760f1e1a631846bf70f2d835d34032b5",
       "sourceName": "contracts/ValidatorRewards.sol",
       "solcConfig": {
@@ -488,8 +488,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/FeeContract.sol": {
-      "lastModificationDate": 1687276591831,
-      "contentHash": "dc419af486ba5a237dbd7ea9023db314",
+      "lastModificationDate": 1687286350638,
+      "contentHash": "a1d76ba847b8a6c97bc87903e16f2a4f",
       "sourceName": "contracts/FeeContract.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -985,8 +985,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/DUMMYDONOTDEPLOY.sol": {
-      "lastModificationDate": 1687271840090,
-      "contentHash": "b74ea6fe7b6e5c02ee7553462a7bef5b",
+      "lastModificationDate": 1687284364354,
+      "contentHash": "e5157912cf6b3a8d7834008e13882518",
       "sourceName": "contracts/DUMMYDONOTDEPLOY.sol",
       "solcConfig": {
         "version": "0.8.2",

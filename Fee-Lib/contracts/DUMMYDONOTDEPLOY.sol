@@ -21,13 +21,20 @@ interface IFeeOracle {
    function refreshOracle() external returns (bool success);
 }
 
-contract FeeOracle is IFeeOracle {
+contract FeeOracle 
+//is IFeeOracle 
+{
 
-    function consult() external override returns(uint amountOut) {
-        return 8;
+    uint priceAverage = 1;
+
+   uint justKeepAdding;
+
+    function consult() external view returns(uint amountOut) {
+        return priceAverage;
     }
     
-    function refreshOracle() external override returns(bool success) {
+    function refreshOracle() external returns(bool success) {
+        justKeepAdding = justKeepAdding + 8;
         return true;
     }
 }
