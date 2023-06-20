@@ -176,7 +176,7 @@ AccessControlUpgradeable {
    */
   
    function collectFee() external payable {
-   if (block.timestamp > lastDistribution + epochLength || hasRole(DISTRIBUTOR_ROLE, msg.sender)) {
+   if (block.timestamp > lastDistribution + dayMark|| hasRole(DISTRIBUTOR_ROLE, msg.sender)) {
       uint rebateValue = queryOracle();
        (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}("");
        require(gasRebate, Errors.GAS_REBATE_FAILED);

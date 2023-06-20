@@ -5,7 +5,7 @@ const { time } = require('@nomicfoundation/hardhat-network-helpers');
 let fee;
 
 const {
-    expectRevert, BN
+    expectRevert
 } = require("@openzeppelin/test-helpers");
 const catchRevert = require("./exceptionsHelpers.js").catchRevert;
 
@@ -185,6 +185,7 @@ const ONE_ETH = ethers.utils.parseUnits("1","ether");
         let FeeContract;
         let random;
         let randomSig;
+        let randomAddressIsTheSigner;
         beforeEach(async() => {
             //addresses for using
             const [owners, alices, randoms] = await ethers.getSigners();
@@ -208,6 +209,9 @@ const ONE_ETH = ethers.utils.parseUnits("1","ether");
             const ValidatorArray = [ValidatorContract.address, ValidatorContract2.address, ValidatorContract3.address];
             // Fee contract
             FeeContract = await upgrades.deployProxy(FeeContractFactory, [OracleContract.address, ValidatorArray , weightArray, owner, owner], { initializer: 'initialize' });
+            randomSig = await ethers.getSigner(random)
+            secondAddressSigner = await ethers.getSigner(random)
+            randomAddressIsTheSigner = FeeContract.connect(secondAddressSigner);
         });
 
         it("Confirm Oracle is giving correct data to fee contract", async () => {
@@ -219,6 +223,28 @@ const ONE_ETH = ethers.utils.parseUnits("1","ether");
             await randomSig.sendTransaction({to:FeeContract.address, value: SIX_ETH});
             const ExpectedPayout = await FeeContract.amountPaidToUponNextDistribution(1);
             await time.increase(time.duration.days(1));
+            expect(ExpectedPayout).to.equal(TWO_ETH);
+            expect(() => FeeContract.collectFee())
+            .to.changeEtherBalance(ValidatorContract, ONE_ETH);
+        });
+        it("Test CollectFee Function is requiring 24 hours or a Distributor role", async () => {
+            await randomSig.sendTransaction({to:FeeContract.address, value: SIX_ETH});
+            const ExpectedPayout = await FeeContract.amountPaidToUponNextDistribution(1);
+            expect(ExpectedPayout).to.equal(TWO_ETH);
+            expectRevert(randomAddressIsTheSigner.collectFee(), "121")
+            await FeeContract.collectFee()
+        });
+        it("Test CollectFee Function is requiring 24 hours", async () => {
+            await randomSig.sendTransaction({to:FeeContract.address, value: SIX_ETH});
+            const ExpectedPayout = await FeeContract.amountPaidToUponNextDistribution(1);
+             await time.increase(time.duration.days(1));
+            expect(ExpectedPayout).to.equal(TWO_ETH);
+            await randomAddressIsTheSigner.collectFee()
+            //randomAddressIsTheSigner
+        });
+        it("Test ForceFee Function is sending eth to validators", async () => {
+            await randomSig.sendTransaction({to:FeeContract.address, value: SIX_ETH});
+            const ExpectedPayout = await FeeContract.amountPaidToUponNextDistribution(1);
             expect(ExpectedPayout).to.equal(TWO_ETH);
             expect(() => FeeContract.collectFee())
             .to.changeEtherBalance(ValidatorContract, ONE_ETH);
