@@ -124,10 +124,32 @@ const catchRevert = require("./exceptionsHelpers.js").catchRevert;
             //for wieght
             const weightOfChannel5 = await channel5ShouldHaveWeightOf6[1];
             expect(await weightOfChannel5).to.equal(6)
-            expect(await Fee.getTotalContractShares()).to.equal(16)
+            
 
         });
-        it("addChannel should allow new channels and wieghts to be added adjust the CONTRACT shares but not allow duplicates or more than 5", async () => {
+        it("addChannel should allow a new channel and wieght value the adjust the contract's total shares." , async () => {
+            await max5ArrayChannel.pop();
+            await max5ArrayWeight.pop();
+            const notAtMaxFiveFee = await upgrades.deployProxy(FeeContract, [alice, max5ArrayChannel, max5ArrayWeight, owner, owner], { initializer: 'initialize' });
+            //gets original share amount to add to to confirm adjustments
+            const originalShareAmount = await notAtMaxFiveFee.getTotalContractShares()
+            //add 5
+            const newExpectedShareAmount = originalShareAmount + 5
+            //add a channel 5th so this should be max
+            await notAtMaxFiveFee.addChannel(ValidatorContract5.address, 5)
+            //expect 5 to be added to old total
+            expect(await notAtMaxFiveFee.getTotalContractShares()).to.equal(newExpectedShareAmount)
+            //confirms array is has the values of our addition for position 4
+            const positionFour = await notAtMaxFiveFee.getChannelWeightByIndex(4);
+            const addressOfPositionFour = positionFour[0]
+            const wieghtsOfPositionFour = positionFour[1]
+            //address of position 4 should be Validator Contract 5
+            expect(addressOfPositionFour).to.equal(ValidatorContract5.address)
+            //wieghts of position 4 should be 5
+            expect(5).to.equal(wieghtsOfPositionFour)
+
+        });
+        it("addChannel should not allow duplicates." , async () => {
             await max5ArrayChannel.pop();
             await max5ArrayWeight.pop();
             const notAtMaxFiveFee = await upgrades.deployProxy(FeeContract, [alice, max5ArrayChannel, max5ArrayWeight, owner, owner], { initializer: 'initialize' });
@@ -139,8 +161,8 @@ const catchRevert = require("./exceptionsHelpers.js").catchRevert;
                 ),
                 "123"
             );
-            await notAtMaxFiveFee.addChannel(ValidatorContract5.address, 5);
-            await Fee.getChannelWeightByIndex(4);
+        });
+            it("addChannel should not allow more than 5 channels" , async () => {
             await expectRevert(
                 Fee.addChannel(
                     ValidatorContract5.address,
