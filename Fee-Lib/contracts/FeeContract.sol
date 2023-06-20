@@ -37,7 +37,7 @@ AccessControlUpgradeable {
    );
 
    // Used to divide an addresses shares by the total.
-   uint8 public CONTRACT_SHARES;
+   uint8 private CONTRACT_SHARES;
 
    // Address used to consult to find fee amounts.
    address public oracle;
@@ -259,6 +259,14 @@ AccessControlUpgradeable {
        address a = channels[index];
        uint8 b = weights[index];
        return (a, b);
+   }
+
+   /**
+   @notice View function to check the total number of shares that have been dispersed.
+   */
+
+   function getTotalContractShares() public view returns (uint8) {
+       return CONTRACT_SHARES;
    }
 
    /**

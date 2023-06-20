@@ -488,8 +488,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/FeeContract.sol": {
-      "lastModificationDate": 1687204706912,
-      "contentHash": "e5f40fc1dbedff40b6bd7c6421f87536",
+      "lastModificationDate": 1687272558091,
+      "contentHash": "d88190d6c610be5a7c6bd05fcf31e365",
       "sourceName": "contracts/FeeContract.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -982,6 +982,48 @@
       ],
       "artifacts": [
         "MathUpgradeable"
+      ]
+    },
+    "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/DUMMYDONOTDEPLOY.sol": {
+      "lastModificationDate": 1687271840090,
+      "contentHash": "b74ea6fe7b6e5c02ee7553462a7bef5b",
+      "sourceName": "contracts/DUMMYDONOTDEPLOY.sol",
+      "solcConfig": {
+        "version": "0.8.2",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+        "./FeeQuery.sol",
+        "./Errors.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "FeeOracle",
+        "IFeeOracle"
       ]
     }
   }
