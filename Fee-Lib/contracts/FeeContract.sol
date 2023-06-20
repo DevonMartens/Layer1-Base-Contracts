@@ -51,9 +51,6 @@ AccessControlUpgradeable {
    // Amount of time between each distribution.
    uint256 private lastDistribution;
 
-   // States at one day.
-   uint256 epochLength;
-
    //Role to control contract
    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
 
@@ -87,8 +84,8 @@ AccessControlUpgradeable {
            revert(Errors.CONTRACT_LIMIT_REACHED);
        }
        lastDistribution = block.timestamp;
-       epochLength = 1 days;
-       dayMark = 86400;
+       epochLength = 86400;
+       requiredReset = block.timestamp + 86400;
        oracle = _oracle;
        for (uint i = 0; i < _channels.length; i++) {
            CONTRACT_SHARES += _weights[i];
@@ -109,8 +106,12 @@ AccessControlUpgradeable {
    */
 
    function _resetFee() external {
+    if(block.timestamp > requiredReset){
       fee = queryOracle();
-      requiredReset = block.timestamp + dayMark;
+      requiredReset = block.timestamp + epochLength;
+    } else {
+      revert(Errors.HOLD_TIME_IS_24_HOURS);
+    }
    }
 
    /** 
@@ -176,7 +177,7 @@ AccessControlUpgradeable {
    */
   
    function collectFee() external payable {
-   if (block.timestamp > lastDistribution + dayMark|| hasRole(DISTRIBUTOR_ROLE, msg.sender)) {
+   if (block.timestamp > lastDistribution + epochLength|| hasRole(DISTRIBUTOR_ROLE, msg.sender)) {
       uint rebateValue = queryOracle();
        (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}("");
        require(gasRebate, Errors.GAS_REBATE_FAILED);
@@ -197,7 +198,25 @@ AccessControlUpgradeable {
       revert(Errors.HOLD_TIME_IS_24_HOURS);
     }
    }
-   
+
+   /** 
+   @notice Function triggered to force distribution of funds to channels.
+   */
+
+   function forceFee() external payable onlyRole(DISTRIBUTOR_ROLE) {
+       uint amount = address(this).balance;
+       for (uint i = 0; i < channels.length; i++) {
+           uint share = (amount * weights[i]) / CONTRACT_SHARES;
+           (bool success, ) = (channels[i]).call{value: share}(
+               abi.encodeWithSignature("recieveFees()")
+           );
+           require(success, Errors.TRANSFER_FAILED);
+           emit FeesDistributed(block.timestamp, channels[i], share);
+       }
+       _refreshOracle();
+       lastDistribution = block.timestamp;
+   }
+
    /**
    @notice Setter function to adjust oracle address.
    @param _newOracle the new oracle address.

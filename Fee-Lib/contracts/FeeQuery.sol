@@ -13,7 +13,7 @@ interface IFeeContract {
 contract FeeQuery {
   
    // This is used to measure the time frame in which we wait to consult the oracle.
-   uint256 public dayMark;
+   uint256 public epochLength;
    // This is the block timestamp that the fee will need to be reset.
    uint256 public requiredReset;
    // Storage for the application fee.

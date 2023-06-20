@@ -29,6 +29,12 @@ contract FeeOracle
 
    uint justKeepAdding;
 
+   //to check for changes caused by reset fee
+   
+   function setPriceAverage(uint newPriceAverage) external{
+    priceAverage = newPriceAverage;
+   }
+
     function consult() external view returns(uint amountOut) {
         return priceAverage;
     }

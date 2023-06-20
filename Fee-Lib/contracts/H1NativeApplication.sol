@@ -37,7 +37,7 @@ contract H1NativeApplication is FeeQuery {
        }
        FeeContract = _FeeContract;
        FeeQueryNative = FeeQuery(_FeeContract);
-       dayMark = 1 days;
+       epochLength = 86400;
    }
    
    /**
