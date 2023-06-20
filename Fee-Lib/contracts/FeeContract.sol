@@ -49,7 +49,7 @@ AccessControlUpgradeable {
    uint8[] weights;
 
    // Amount of time between each distribution.
-   uint256 public lastDistribution;
+   uint256 private lastDistribution;
 
    // States at one day.
    uint256 epochLength;
@@ -262,11 +262,19 @@ AccessControlUpgradeable {
    }
 
    /**
-   @notice View function to check the total number of shares that have been dispersed.
+   @notice View function to check the total number of shares that have been dispersed to addresses.
    */
 
    function getTotalContractShares() public view returns (uint8) {
        return CONTRACT_SHARES;
+   }
+
+   /**
+   @notice View function to check the block in which the last distribution occured
+   */
+
+   function getLastDistributionBlock() public view returns (uint256) {
+       return lastDistribution;
    }
 
    /**

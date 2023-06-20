@@ -25,7 +25,7 @@ const catchRevert = require("./exceptionsHelpers.js").catchRevert;
         let weight;
         beforeEach(async() => {
             //example weight 100% of bounty 1/1
-            weight = await [1,];
+            weight = [1,];
             const [owners, alices] = await ethers.getSigners();
             owner = await owners.getAddress();
             oracleFake = await alices.getAddress();
@@ -45,16 +45,14 @@ const catchRevert = require("./exceptionsHelpers.js").catchRevert;
         it("The FeeContract should have correct values for wieght and channel (view functions getWieght and getChannel also confirmed)", async () => {
             // const addressFromContract = await Fee.getChannels();
             // const wieghtFromContract = await Fee.getWieghts();
-            expect(await Fee.getChannels()).to.equal(ownerArray)
-            expect(await Fee.getWieghts()).to.equal(weight)
+            expect(await Fee.getChannels()).to.deep.equal(ownerArray)
+            expect(await Fee.getWieghts()).to.deep.equal(weight)
         });
         it("The contract: have correct values for oracle, total contract shares, and lastDistribution", async () => {
             //gets oracle from Fee contract and ensures it is equal to alice the original inpul
             expect(await Fee.oracle()).to.equal(oracleFake)
             //gets last distribution from contract and ensures its equal to deployment time
-            // expect(await Fee.lastDistribution()).to.equal(deployBlockTimeStamp);
-            //checks that total contract shares = 1 the total of the wieghts
-            // expect(await Fee.CONTRACT_SHARES).to.equal(1)
+            expect(await Fee.getLastDistributionBlock()).to.equal(deployBlockTimeStamp);
         });
     });
     describe("Fee Contract Test: Adding and adjusting wieghts and channels functions", function () {
