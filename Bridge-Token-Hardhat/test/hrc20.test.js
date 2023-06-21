@@ -19,7 +19,7 @@ const getLastEvent = async (eventName, instance) => {
     return events.pop().returnValues;
 };
 
-let hrc20, H
+let hrc20
 
 
 describe( "Testing the initial values to validate expected contract state", function () {

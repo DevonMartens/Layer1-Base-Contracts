@@ -362,17 +362,6 @@ describe("Testing the initial values to validate expected contract state", funct
             // tokenId 1 country code "1" , userType 2 ,level 3, expiry block 78886932657, tokenURI - tokenONE
             await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "tokenONE");
         }); 
-        // it("The contract: ERC721 Overrides should not Allow safeTransferFrom to move the token", async () => {
-        //     //   await expectRevert(
-        //     //     ProofOfIdentityContract.safeTransferFrom(
-        //     //         alice,
-        //     //         other,
-        //     //         1
-        //     //     ),
-        //     //     "102"
-        //     // );
-        //     await ProofOfIdentityContract.getCurrentTokenId();
-        // });
         it("The contract: ERC721 Overrides should not Allow transferFrom to move the token", async () => {
               await expectRevert(
                 ProofOfIdentityContract.transferFrom(
@@ -510,18 +499,18 @@ describe("Testing the initial values to validate expected contract state", funct
                 `ERC721: invalid token ID`
             );
         });
-        // it("The contract: function suspendAccountMaintainTokenAndIdentityBlob should reverse `mintIdentity` by burning the token.", async () => {
-        //     //deletes token
-        //     await ProofOfIdentityContract.suspendAccountMaintainTokenAndIdentityBlob(alice, "VALID_REASON");
-        //     //should revert no one owns token 1
-        //     await expectRevert(
-        //         ProofOfIdentityContract.ownerOf(
-        //             1
-        //         ),
-        //         `VM Exception while processing transaction: revert ERC721: invalid token ID`
-        //     );
+        it("The contract: function suspendAccountMaintainTokenAndIdentityBlob should reverse `mintIdentity` by burning the token.", async () => {
+            //deletes token
+            await ProofOfIdentityContract.suspendAccountMaintainTokenAndIdentityBlob(alice, "VALID_REASON");
+            //should revert no one owns token 1
+            await expectRevert(
+                ProofOfIdentityContract.ownerOf(
+                    1
+                ),
+                `VM Exception while processing transaction: revert ERC721: invalid token ID`
+            );
             
-        // });
+        });
     });
     describe("Testing custom errors to ensure functions revert as expected", function () {
         let ProofOfIdentityContract;

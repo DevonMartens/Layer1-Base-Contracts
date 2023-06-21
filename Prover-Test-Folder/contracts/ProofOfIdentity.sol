@@ -10,9 +10,6 @@ import "./Errors.sol";
 import "./UserInformationPreventsOnExpiry.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-// @TODO "ADMINORG" changed to "HAVEN1" upon network redeployment
-// @TODO change natspec to /// natspec comments
-
 /**
 * @title Proof of Identity Framework
 * @author Haven1 Development Team
@@ -25,7 +22,9 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 contract ProofOfIdentity is
     UserInformation,
     UserInformationPreventsOnExpiry,
-    Initializable, ERC721Upgradeable, AccessControlUpgradeable
+    Initializable, 
+    ERC721Upgradeable, 
+    AccessControlUpgradeable
 {
     using Counters for Counters.Counter;
 
@@ -97,15 +96,18 @@ contract ProofOfIdentity is
      */
 
     function initialize(
-        address permissionsInterface
+        address permissionsInterface,
+        address prover,
+        address admin
     )
     external initializer
     {
-         __AccessControl_init_unchained();
+         __AccessControl_init();
         __ERC721_init("Proof of Identity", "H1-ID");
         _permissionsInterface = IPermissionsInterface(permissionsInterface);
-        _grantRole(PROVER_ROLE, msg.sender);
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(PROVER_ROLE, prover);
+        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _tokenIdCounter.increment();
     }
 
@@ -144,7 +146,7 @@ contract ProofOfIdentity is
         _safeMint(account, tokenId);
         _tokenURI[tokenId] = tokenUri;
         _tokenOfHolder[account] = tokenId;
-        _permissionsInterface.assignAccountRole(account, "ADMINORG", "VTCALL");
+        _permissionsInterface.assignAccountRole(account, "HAVEN1"', "VTCALL");
         emit IdentityMinted(account, tokenId);
     }
 
@@ -205,7 +207,7 @@ contract ProofOfIdentity is
         string calldata reason
     ) external onlyRole(PROVER_ROLE) {
         _permissionsInterface.updateAccountStatus(
-            "ADMINORG",
+            "HAVEN1"',
             suspendAccount,
             1
         );
@@ -226,15 +228,16 @@ contract ProofOfIdentity is
         string calldata reason
     ) external onlyRole(PROVER_ROLE) {
         _permissionsInterface.updateAccountStatus(
-            "ADMINORG",
+            "HAVEN1"',
             suspendAddress,
             1
         );
+        _accountIsSuspended[suspendAccount] = true;
         emit AccountSuspendedTokenMaintained(suspendAddress, reason);
     }
 
-     /** 
-    @notice Allows a call to view the current tokenId to monitor overall distribution
+    /** 
+    @notice Allows a call to view the current tokenId to monitor overall distribution.
     */
 
     function getCurrentTokenId() public view returns(uint256){

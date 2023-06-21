@@ -9,9 +9,12 @@ import "./Errors.sol";
 @dev The primary function of this contract is to establish and return a users account level "identity blob" for use within the identity framework
 */
 abstract contract RoleVerification {
-    // mapping from account address to identity blob struct.
-
+    
+    // Mapping from account address to identity blob struct.
     mapping(address => IdentityBlob) public identityBlob;
+
+    // Maps account and is set to true if an account is suspended.
+    mapping(address => bool) public _accountIsSuspended;
 
     struct IdentityBlob {
         uint256 tokenId;
@@ -19,6 +22,16 @@ abstract contract RoleVerification {
         uint8 userType;
         uint8 level;
         uint256 expiry;
+    }
+
+
+    /** 
+    @notice Checks if an account has been suspended in the case that the token hasn't been burned and the identity blob has been mainted.
+    @param accountToCheckSuspensionStatus address that we check to determine if it has infact been suspended.
+    */
+
+    function getAccountSuspendedStatus(address accountToCheckSuspensionStatus) public view returns(bool){
+        return _accountIsSuspended[accountToCheckSuspensionStatus];
     }
 
     /**

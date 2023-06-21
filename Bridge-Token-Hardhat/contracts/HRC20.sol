@@ -4,9 +4,12 @@ pragma solidity ^0.8.2;
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
 import "./Errors.sol";
 
 contract HRC20 is 
+Initializable, 
 ERC20Upgradeable, 
 PausableUpgradeable, 
 AccessControlUpgradeable
@@ -73,7 +76,6 @@ AccessControlUpgradeable
         )
         external initializer  {
         __Pausable_init();
-        __AccessControl_init();
         __ERC20_init(name, symbol);
         isWhiteListContract = useWhiteList;
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
@@ -199,7 +201,7 @@ AccessControlUpgradeable
     @dev Only DISTRIBUTOR role can do this given in contructor or by calling grantRole(DISTRIBUTOR_ROLE, <ADDRESS>).
     */
 
-    function deposit(address to, uint256 amount) public whenNotPaused blackListBlocked(to) onlyRole(DISTRIBUTOR_ROLE) {
+    function deposit(address to, uint256 amount) external whenNotPaused blackListBlocked(to) onlyRole(DISTRIBUTOR_ROLE) {
       require(isWhiteListContract == false || _whiteListApproved[to] == true, Errors.WHITELIST_ERROR);
         _mint(to, amount);
     }
@@ -214,7 +216,7 @@ AccessControlUpgradeable
     @dev Only DISTRIBUTOR role can do this given in contructor or by calling grantRole(DISTRIBUTOR_ROLE, <ADDRESS>).
     */
 
-   function withdraw(address from, uint256 amount) public whenNotPaused blackListBlocked(from) onlyRole(DISTRIBUTOR_ROLE) {
+   function withdraw(address from, uint256 amount) external whenNotPaused blackListBlocked(from) onlyRole(DISTRIBUTOR_ROLE) {
        require(balanceOf(from) >= amount, Errors.INSUFFICIENT_BALANCE);
         _burn(from, amount);
     }
