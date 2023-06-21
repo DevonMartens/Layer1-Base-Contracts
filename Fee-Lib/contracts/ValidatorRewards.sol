@@ -49,15 +49,6 @@ Initializable
        uint256 indexed amount
    );
 
-   /**   
-   * @dev Event for when the contract receives a payment.
-   */
-   event PaymentRecieved(
-       address indexed sender,
-       address indexed origin,
-       uint256 indexed amount
-       );
-
    // Sum of all shares collectively held by addresses for division of H1.
    uint256 private _totalShares;
 
@@ -105,15 +96,8 @@ Initializable
 
    /**
     * @notice Function to receive tokens.
-    * @dev The Wrapped H1 received will be logged with {PaymentRecieved} events. Note that these events are not fully
-    * reliable: it's possible for a contract to receive Wrapped H1 without triggering this function. This only affects the
-    * reliability of the events, and not the actual splitting of Wrapped H1.
-    * To learn more about this see the Solidity documentation for
-    * https://solidity.readthedocs.io/en/latest/contracts.html#fallback-function[fallback
-    * functions].
     */
-   receive() external payable virtual {
-       emit PaymentRecieved(msg.sender, tx.origin, msg.value);
+   receive() external payable {
    }
 
 

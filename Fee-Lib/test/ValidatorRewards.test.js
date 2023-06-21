@@ -73,7 +73,7 @@ describe("H1 Management", function () {
             expect(await ValidatorContract.validators(0)).to.equal(owner)
             expect(await ValidatorContract.validators(1)).to.equal(random)       
         });
-    });
+});
     describe("Testing the view functions ", function () {
         let owner;
         let bob;
@@ -218,3 +218,38 @@ describe("H1 Management", function () {
             expect(await ValidatorContract.releasable(owner)).to.equal(ONE_ETH)
         });
     });
+    describe("Adjustments in Validators impact on dispursement of funds", function () {
+        let owner;
+        let ValidatorContract;
+        let randomSig;
+        let randomAddressIsTheSigner;
+        let bob;
+        let random;
+        let other;
+        beforeEach(async() => {
+            //example wieghts 100% of bounty 1/1
+             const wieghts = [1, 2, 3];
+            //address of validators in validator rewards
+            const [owners, randoms, bobs, others, sams] = await ethers.getSigners();
+            owner = await owners.getAddress();
+            random = await randoms.getAddress();
+            bob = await bobs.getAddress();
+            other = await others.getAddress();
+            //signiture for sending H!
+            randomSig = ethers.provider.getSigner(random);
+            const vadlidatorAddressArray = [owner, random, bob]
+            //this is the contract we are looking at Validator Rewards.
+            const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+            // ValidatorContract.address = await   s();
+            //get randoms signiture
+            secondAddressSigner = await ethers.getSigner(random)
+            randomAddressIsTheSigner = ValidatorContract.connect(secondAddressSigner);       
+        });
+        it("adjusting validator should adjust the releasable function", async () => {
+            await randomSig.sendTransaction({to: ValidatorContract.address, value: SIX_ETH})
+           await ValidatorContract.adjustValidatorAddress(0, other)   
+           expect(await ValidatorContract.releasable(other)).not.to.be.equal(await ValidatorContract.releasable(owner))
+        
+        }); 
+    }); 
