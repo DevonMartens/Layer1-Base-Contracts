@@ -46,7 +46,7 @@ contract H1NativeApplication is FeeQuery {
    */
 
    function callFee() public view returns (uint256) {
-       uint256 currentFee = FeeQuery.getFee();
+       uint256 currentFee = FeeQuery(FeeContract).getFee();
        return currentFee;
    }
 

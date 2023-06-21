@@ -106,7 +106,7 @@ AccessControlUpgradeable {
    */
 
    function resetFee() external {
-    if(block.timestamp > requiredReset){
+    if(block.timestamp > requiredReset || fee == 0){
       fee = queryOracle();
       requiredReset = block.timestamp + epochLength;
     } else {

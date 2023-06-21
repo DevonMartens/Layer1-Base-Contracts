@@ -488,8 +488,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/FeeContract.sol": {
-      "lastModificationDate": 1687337809041,
-      "contentHash": "df5abcc92258279e117b5b71da66b17e",
+      "lastModificationDate": 1687349557234,
+      "contentHash": "5556f6c0ef37ec4ddfb3662e367af9d3",
       "sourceName": "contracts/FeeContract.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -530,7 +530,7 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/FeeQuery.sol": {
-      "lastModificationDate": 1687336963309,
+      "lastModificationDate": 1687349488692,
       "contentHash": "9572ccb76a8d92416db8037d6257ef6b",
       "sourceName": "contracts/FeeQuery.sol",
       "solcConfig": {
@@ -567,8 +567,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/H1NativeApplication.sol": {
-      "lastModificationDate": 1687288559413,
-      "contentHash": "acfcf4e03a482c36ade30aa772bf2b92",
+      "lastModificationDate": 1687349266205,
+      "contentHash": "8c6935d2c621d9f14d754928c6a93b49",
       "sourceName": "contracts/H1NativeApplication.sol",
       "solcConfig": {
         "version": "0.8.2",
