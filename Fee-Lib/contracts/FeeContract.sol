@@ -105,7 +105,7 @@ AccessControlUpgradeable {
    @dev After that is complete it then sets the time that the oracle needs to be rechecked.
    */
 
-   function _resetFee() external {
+   function resetFee() external {
     if(block.timestamp > requiredReset){
       fee = queryOracle();
       requiredReset = block.timestamp + epochLength;
@@ -238,6 +238,14 @@ AccessControlUpgradeable {
        }
    }
    return true;
+   }
+
+   /**
+   @notice Function to view when the fee will need to be reset by.
+   */
+
+   function getNextResetTime()public view returns(uint256){
+       return requiredReset;
    }
 
    /**

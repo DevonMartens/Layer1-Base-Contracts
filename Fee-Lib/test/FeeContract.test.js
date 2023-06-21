@@ -253,11 +253,13 @@ const ONE_ETH = ethers.utils.parseUnits("1","ether");
 describe("Fee Contract General Getters and Setters", function () {
     let owner;
     let ValidatorContract;
-    let Fee;
+    let FeeContract;
     let deployBlockTimeStamp;
     let ownerArray;
     let oracleFake;
     let weight;
+    let FeeOracleContract;
+    let estimatedResetTime;
     beforeEach(async() => {
         //example weight 100% of bounty 1/1
         weight = [1,];
@@ -267,14 +269,49 @@ describe("Fee Contract General Getters and Setters", function () {
         //address of validators in validator rewards
         ownerArray = await [owner,]
         const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
-        const FeeContract = await ethers.getContractFactory("FeeContract")
+        const FeeContractFactory = await ethers.getContractFactory("FeeContract")
+        const FeeOracleFactory = await ethers.getContractFactory("FeeOracle");
+        FeeOracleContract = await FeeOracleFactory.deploy();
         ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [ownerArray, weight, owner, owner], { initializer: 'initialize' });
-        Fee = await upgrades.deployProxy(FeeContract, [oracleFake, ownerArray, weight, owner, owner], { initializer: 'initialize' });
-        deployBlockTimeStamp = await time.latest();;
+        FeeContract = await upgrades.deployProxy(FeeContractFactory, [FeeOracleContract.address, ownerArray, weight, owner, owner], { initializer: 'initialize' });
+        const timestamp = await time.latest();
+        estimatedResetTime = timestamp + 86400;
     });
 
-    it("The Reset Fee should change the last distribution annd ", async () => {
-        const H1NativeApplication = await ethers.getContractFactory("H1NativeApplication")
-        await H1NativeApplication.deploy(Fee.address)
+    it("The Reset Fee should revert if it has not been 24", async () => {
+        //checks that query oracle is equal to 1 the anticipated value
+        expect(await FeeContract.queryOracle()).to.equal(1);
+        //change the value
+        await FeeOracleContract.setPriceAverage(TWO_ETH);
+        //reset fee
+        await expectRevert(FeeContract.resetFee(),"121");
+        //checks updated value
+    });
+    it("The Reset Fee should change Fee Value", async () => {
+        //checks that query oracle is equal to 1 the anticipated value
+        expect(await FeeContract.queryOracle()).to.equal(1);
+        //change the value
+        await FeeOracleContract.setPriceAverage(TWO_ETH);
+        //wait 24 hours
+        await time.increase(time.duration.days(1));
+        //reset fee
+        await FeeContract.resetFee();
+        //checks updated value
+        expect(await FeeContract.queryOracle()).to.equal(TWO_ETH);
+    });
+    it("The Reset Fee should change the requiredReset", async () => {
+        const reset = await FeeContract.getNextResetTime();
+        // const testReset = reset.toString;
+        expect(reset.toString()).to.be.equal(estimatedResetTime.toString());
+        //wait 24 hours
+        await time.increase(time.duration.days(1));
+        //reset fee
+        await FeeContract.resetFee();
+        const newResetValue = await FeeContract.getNextResetTime();
+        //add 1 second for time
+        const newEstimatedResetTime = estimatedResetTime + 86401;
+        //close to could be a few seconds off to account for txns
+        expect(newResetValue.toString()).to.equal(newEstimatedResetTime.toString());
+        
     });
 });

@@ -25,7 +25,7 @@ contract FeeQuery {
     */
    function getFee() public view returns(uint256){
       if(requiredReset < block.timestamp){
-       revert("_resetFee()");
+       revert("resetFee()");
       }
       else {
           return fee;
