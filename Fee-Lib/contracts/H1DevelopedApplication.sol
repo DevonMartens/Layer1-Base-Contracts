@@ -9,11 +9,6 @@ pragma solidity ^0.8.2;
 /// @notice This contract has a modifer that ensures fees are sent to the developer of an application and the FeeContract.
 /// @dev The primary function of this contract is to be used as an import for developers building on Haven.
 
-// interface IFeeOracle {
-//     function consult() external returns (uint amountOut);
-
-//     function refreshOracle() external returns (bool success);
-// }
 
 contract H1DevelopedApplication {
     // Storage for fee contract address.

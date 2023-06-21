@@ -135,6 +135,9 @@ const ONE_ETH = ethers.utils.parseUnits("1","ether");
         it("Fee Contract adjustChannel should revert if you input 0", async () => {
             await expectRevert (Fee.adjustChannel(4, "0x0000000000000000000000000000000000000000", 6),"123")
         });
+        it("Fee Contract adjustChannel should revert if you input an index greater than 4", async () => {
+            await expectRevert (Fee.adjustChannel(7, ValidatorContract6.address, 6),"111")
+        });
         it("addChannel should allow a new channel and wieght value the adjust the contract's total shares." , async () => {
             await max5ArrayChannel.pop();
             await max5ArrayWeight.pop();
@@ -359,13 +362,20 @@ describe("Fee Contract General Getters and Setters", function () {
         expect(newResetValue.toString()).to.equal(newEstimatedResetTime.toString());
         
     });
-    it("setOracle should change the oracleAddress", async () => {
+    it("setOracle should change the oracle address", async () => {
         const firstOracle = await FeeContract.oracle();
         const OracleContractAddress = FeeOracleContract.address;
         expect(firstOracle.toString()).to.equal(OracleContractAddress.toString());
         await FeeContract.setOracle(alice)
         const reset = await FeeContract.oracle();
         expect(reset.toString()).to.equal(alice.toString());
+    });
+    it("setEpoch should change the epochLength", async () => {
+        const firstepochLength = await FeeContract.epochLength();
+        await FeeContract.setEpoch(1)
+        const reset = await FeeContract.epochLength();
+        expect(reset.toString()).to.equal("1");
+        expect(firstepochLength.toString()).not.to.equal(reset.toString());
     });
     it("isOriginalAddress should return false if the address is in the array", async () => {
         const knownAddress = await FeeContract.isOriginalAddress(alice);
