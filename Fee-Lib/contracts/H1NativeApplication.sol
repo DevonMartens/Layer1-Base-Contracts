@@ -11,7 +11,7 @@ pragma solidity ^0.8.2;
 contract H1NativeApplication is FeeQuery {  
   
    // Storage for fee contract address.
-   address FeeContract;
+   address public FeeContract;
    // Storage to access FeeQuery functions.
    FeeQuery public FeeQueryNative;
 

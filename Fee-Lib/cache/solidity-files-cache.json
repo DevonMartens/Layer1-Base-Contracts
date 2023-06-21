@@ -612,8 +612,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/H1NativeApplication.sol": {
-      "lastModificationDate": 1687349266205,
-      "contentHash": "8c6935d2c621d9f14d754928c6a93b49",
+      "lastModificationDate": 1687367652457,
+      "contentHash": "587de93f178a75943307d10e00d8b5ac",
       "sourceName": "contracts/H1NativeApplication.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -695,8 +695,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/H1DevelopedApplication.sol": {
-      "lastModificationDate": 1687354741094,
-      "contentHash": "d3d30f3335a770450fc81861c979ebaa",
+      "lastModificationDate": 1687364371257,
+      "contentHash": "42d326840fcf694b44df3234779e7fda",
       "sourceName": "contracts/H1DevelopedApplication.sol",
       "solcConfig": {
         "version": "0.8.2",

@@ -9,8 +9,6 @@ const catchRevert = require("./exceptionsHelpers.js").catchRevert;
 const ether = require("@openzeppelin/test-helpers/src/ether");
 
 
-require("./utils.js");
-
 const TEN_ETH =  ethers.utils.parseUnits("10","ether");
 const SEVEN_ETH =  ethers.utils.parseUnits("7","ether");
 const SIX_ETH =  ethers.utils.parseUnits("6","ether");

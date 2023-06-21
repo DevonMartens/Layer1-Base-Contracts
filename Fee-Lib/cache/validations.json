@@ -2,6 +2,1651 @@
   "version": "3.4",
   "log": [
     {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:9",
+        "version": {
+          "withMetadata": "753fceeb4bf269aa854548735e0b59f8d44df01b8eeb64592ec2b8fe8a2b1337",
+          "withoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f",
+          "linkedWithoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:FeeQuery": {
+        "src": "contracts/FeeQuery.sol:17",
+        "version": {
+          "withMetadata": "3cba5da385a6755419d820a762c98ca5c3ac33736dd4061c4552533aabac5ba7",
+          "withoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c",
+          "linkedWithoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getFee()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:IFeeContract": {
+        "src": "contracts/FeeQuery.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "queryOracle()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/H1NativeApplication.sol:H1NativeApplication": {
+        "src": "contracts/H1NativeApplication.sol:15",
+        "version": {
+          "withMetadata": "0516b39710cfd1b083055a35814786e7bf4d417205d42cb103a9ca18d9686e89",
+          "withoutMetadata": "f9e6304ed0ced4b7ba6d866252c7be49baf18b8643daecaaef81bb4e560aaead",
+          "linkedWithoutMetadata": "f9e6304ed0ced4b7ba6d866252c7be49baf18b8643daecaaef81bb4e560aaead"
+        },
+        "inherit": [
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [
+          "contracts/Errors.sol:Errors"
+        ],
+        "methods": [
+          "(address)",
+          "callFee()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "H1NativeApplication",
+            "src": "contracts/H1NativeApplication.sol:52"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:22"
+            },
+            {
+              "label": "FeeQueryNative",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(FeeQuery)271",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:24"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(FeeQuery)271": {
+              "label": "contract FeeQuery",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/SimpleStorageWithFee.sol:SimpleStorageWithFee": {
+        "src": "contracts/SimpleStorageWithFee.sol:11",
+        "version": {
+          "withMetadata": "d7041aeefcadfe01afb6adf089505025e72963524724831f9a5e814cd42e16b2",
+          "withoutMetadata": "072d746ea274189ca791bdb60760a1fad1795389af59cecabfbf008df31fccee",
+          "linkedWithoutMetadata": "072d746ea274189ca791bdb60760a1fad1795389af59cecabfbf008df31fccee"
+        },
+        "inherit": [
+          "contracts/H1NativeApplication.sol:H1NativeApplication",
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "set(uint256)",
+          "get()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimpleStorageWithFee",
+            "src": "contracts/SimpleStorageWithFee.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:22"
+            },
+            {
+              "label": "FeeQueryNative",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(FeeQuery)271",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:24"
+            },
+            {
+              "label": "storedData",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithFee",
+              "src": "contracts/SimpleStorageWithFee.sol:20"
+            },
+            {
+              "label": "h1Stored",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithFee",
+              "src": "contracts/SimpleStorageWithFee.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(FeeQuery)271": {
+              "label": "contract FeeQuery",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:9",
+        "version": {
+          "withMetadata": "753fceeb4bf269aa854548735e0b59f8d44df01b8eeb64592ec2b8fe8a2b1337",
+          "withoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f",
+          "linkedWithoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:FeeQuery": {
+        "src": "contracts/FeeQuery.sol:17",
+        "version": {
+          "withMetadata": "3cba5da385a6755419d820a762c98ca5c3ac33736dd4061c4552533aabac5ba7",
+          "withoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c",
+          "linkedWithoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getFee()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:IFeeContract": {
+        "src": "contracts/FeeQuery.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "queryOracle()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/H1NativeApplication.sol:H1NativeApplication": {
+        "src": "contracts/H1NativeApplication.sol:15",
+        "version": {
+          "withMetadata": "53d0d20ed2acce58df769393ec7e54afe93c69bac5a6aa511d9c312f56591476",
+          "withoutMetadata": "d19dba5626710e86825c600870b5c57a908e83d4c767c019609185fd096eb8c7",
+          "linkedWithoutMetadata": "d19dba5626710e86825c600870b5c57a908e83d4c767c019609185fd096eb8c7"
+        },
+        "inherit": [
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [
+          "contracts/Errors.sol:Errors"
+        ],
+        "methods": [
+          "(address)",
+          "callFee()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "H1NativeApplication",
+            "src": "contracts/H1NativeApplication.sol:52"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:22"
+            },
+            {
+              "label": "FeeQueryNative",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(FeeQuery)271",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:24"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(FeeQuery)271": {
+              "label": "contract FeeQuery",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/SimpleStorageWithFee.sol:SimpleStorageWithFee": {
+        "src": "contracts/SimpleStorageWithFee.sol:11",
+        "version": {
+          "withMetadata": "d217e6e3ff38e2ee998c1cd60b97bd69a27d02ca60632775633a05800da5def9",
+          "withoutMetadata": "d37e99db944866fd785d5dcb26d8c19e53e00fce921d7396ce30ba0c685ff1c5",
+          "linkedWithoutMetadata": "d37e99db944866fd785d5dcb26d8c19e53e00fce921d7396ce30ba0c685ff1c5"
+        },
+        "inherit": [
+          "contracts/H1NativeApplication.sol:H1NativeApplication",
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "set(uint256)",
+          "get()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimpleStorageWithFee",
+            "src": "contracts/SimpleStorageWithFee.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:22"
+            },
+            {
+              "label": "FeeQueryNative",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(FeeQuery)271",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:24"
+            },
+            {
+              "label": "storedData",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithFee",
+              "src": "contracts/SimpleStorageWithFee.sol:20"
+            },
+            {
+              "label": "h1Stored",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithFee",
+              "src": "contracts/SimpleStorageWithFee.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(FeeQuery)271": {
+              "label": "contract FeeQuery",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:9",
+        "version": {
+          "withMetadata": "753fceeb4bf269aa854548735e0b59f8d44df01b8eeb64592ec2b8fe8a2b1337",
+          "withoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f",
+          "linkedWithoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:FeeQuery": {
+        "src": "contracts/FeeQuery.sol:17",
+        "version": {
+          "withMetadata": "3cba5da385a6755419d820a762c98ca5c3ac33736dd4061c4552533aabac5ba7",
+          "withoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c",
+          "linkedWithoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getFee()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:IFeeContract": {
+        "src": "contracts/FeeQuery.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "queryOracle()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/H1NativeApplication.sol:H1NativeApplication": {
+        "src": "contracts/H1NativeApplication.sol:15",
+        "version": {
+          "withMetadata": "0516b39710cfd1b083055a35814786e7bf4d417205d42cb103a9ca18d9686e89",
+          "withoutMetadata": "f9e6304ed0ced4b7ba6d866252c7be49baf18b8643daecaaef81bb4e560aaead",
+          "linkedWithoutMetadata": "f9e6304ed0ced4b7ba6d866252c7be49baf18b8643daecaaef81bb4e560aaead"
+        },
+        "inherit": [
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [
+          "contracts/Errors.sol:Errors"
+        ],
+        "methods": [
+          "(address)",
+          "callFee()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "H1NativeApplication",
+            "src": "contracts/H1NativeApplication.sol:52"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:22"
+            },
+            {
+              "label": "FeeQueryNative",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(FeeQuery)271",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:24"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(FeeQuery)271": {
+              "label": "contract FeeQuery",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/SimpleStorageWithFee.sol:SimpleStorageWithFee": {
+        "src": "contracts/SimpleStorageWithFee.sol:11",
+        "version": {
+          "withMetadata": "d7041aeefcadfe01afb6adf089505025e72963524724831f9a5e814cd42e16b2",
+          "withoutMetadata": "072d746ea274189ca791bdb60760a1fad1795389af59cecabfbf008df31fccee",
+          "linkedWithoutMetadata": "072d746ea274189ca791bdb60760a1fad1795389af59cecabfbf008df31fccee"
+        },
+        "inherit": [
+          "contracts/H1NativeApplication.sol:H1NativeApplication",
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "set(uint256)",
+          "get()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimpleStorageWithFee",
+            "src": "contracts/SimpleStorageWithFee.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:22"
+            },
+            {
+              "label": "FeeQueryNative",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(FeeQuery)271",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:24"
+            },
+            {
+              "label": "storedData",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithFee",
+              "src": "contracts/SimpleStorageWithFee.sol:20"
+            },
+            {
+              "label": "h1Stored",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithFee",
+              "src": "contracts/SimpleStorageWithFee.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(FeeQuery)271": {
+              "label": "contract FeeQuery",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:9",
+        "version": {
+          "withMetadata": "753fceeb4bf269aa854548735e0b59f8d44df01b8eeb64592ec2b8fe8a2b1337",
+          "withoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f",
+          "linkedWithoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:FeeQuery": {
+        "src": "contracts/FeeQuery.sol:17",
+        "version": {
+          "withMetadata": "3cba5da385a6755419d820a762c98ca5c3ac33736dd4061c4552533aabac5ba7",
+          "withoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c",
+          "linkedWithoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getFee()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:IFeeContract": {
+        "src": "contracts/FeeQuery.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "queryOracle()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/H1NativeApplication.sol:H1NativeApplication": {
+        "src": "contracts/H1NativeApplication.sol:15",
+        "version": {
+          "withMetadata": "53d0d20ed2acce58df769393ec7e54afe93c69bac5a6aa511d9c312f56591476",
+          "withoutMetadata": "d19dba5626710e86825c600870b5c57a908e83d4c767c019609185fd096eb8c7",
+          "linkedWithoutMetadata": "d19dba5626710e86825c600870b5c57a908e83d4c767c019609185fd096eb8c7"
+        },
+        "inherit": [
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [
+          "contracts/Errors.sol:Errors"
+        ],
+        "methods": [
+          "(address)",
+          "callFee()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "H1NativeApplication",
+            "src": "contracts/H1NativeApplication.sol:52"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:22"
+            },
+            {
+              "label": "FeeQueryNative",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(FeeQuery)271",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:24"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(FeeQuery)271": {
+              "label": "contract FeeQuery",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/SimpleStorageWithFee.sol:SimpleStorageWithFee": {
+        "src": "contracts/SimpleStorageWithFee.sol:11",
+        "version": {
+          "withMetadata": "d217e6e3ff38e2ee998c1cd60b97bd69a27d02ca60632775633a05800da5def9",
+          "withoutMetadata": "d37e99db944866fd785d5dcb26d8c19e53e00fce921d7396ce30ba0c685ff1c5",
+          "linkedWithoutMetadata": "d37e99db944866fd785d5dcb26d8c19e53e00fce921d7396ce30ba0c685ff1c5"
+        },
+        "inherit": [
+          "contracts/H1NativeApplication.sol:H1NativeApplication",
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "set(uint256)",
+          "get()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimpleStorageWithFee",
+            "src": "contracts/SimpleStorageWithFee.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:22"
+            },
+            {
+              "label": "FeeQueryNative",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(FeeQuery)271",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:24"
+            },
+            {
+              "label": "storedData",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithFee",
+              "src": "contracts/SimpleStorageWithFee.sol:20"
+            },
+            {
+              "label": "h1Stored",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithFee",
+              "src": "contracts/SimpleStorageWithFee.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(FeeQuery)271": {
+              "label": "contract FeeQuery",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:9",
+        "version": {
+          "withMetadata": "753fceeb4bf269aa854548735e0b59f8d44df01b8eeb64592ec2b8fe8a2b1337",
+          "withoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f",
+          "linkedWithoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:FeeQuery": {
+        "src": "contracts/FeeQuery.sol:17",
+        "version": {
+          "withMetadata": "3cba5da385a6755419d820a762c98ca5c3ac33736dd4061c4552533aabac5ba7",
+          "withoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c",
+          "linkedWithoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getFee()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:IFeeContract": {
+        "src": "contracts/FeeQuery.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "queryOracle()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/H1NativeApplication.sol:H1NativeApplication": {
+        "src": "contracts/H1NativeApplication.sol:15",
+        "version": {
+          "withMetadata": "0516b39710cfd1b083055a35814786e7bf4d417205d42cb103a9ca18d9686e89",
+          "withoutMetadata": "f9e6304ed0ced4b7ba6d866252c7be49baf18b8643daecaaef81bb4e560aaead",
+          "linkedWithoutMetadata": "f9e6304ed0ced4b7ba6d866252c7be49baf18b8643daecaaef81bb4e560aaead"
+        },
+        "inherit": [
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [
+          "contracts/Errors.sol:Errors"
+        ],
+        "methods": [
+          "(address)",
+          "callFee()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "H1NativeApplication",
+            "src": "contracts/H1NativeApplication.sol:52"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:22"
+            },
+            {
+              "label": "FeeQueryNative",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(FeeQuery)271",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:24"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(FeeQuery)271": {
+              "label": "contract FeeQuery",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/SimpleStorageWithFee.sol:SimpleStorageWithFee": {
+        "src": "contracts/SimpleStorageWithFee.sol:11",
+        "version": {
+          "withMetadata": "d7041aeefcadfe01afb6adf089505025e72963524724831f9a5e814cd42e16b2",
+          "withoutMetadata": "072d746ea274189ca791bdb60760a1fad1795389af59cecabfbf008df31fccee",
+          "linkedWithoutMetadata": "072d746ea274189ca791bdb60760a1fad1795389af59cecabfbf008df31fccee"
+        },
+        "inherit": [
+          "contracts/H1NativeApplication.sol:H1NativeApplication",
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "set(uint256)",
+          "get()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimpleStorageWithFee",
+            "src": "contracts/SimpleStorageWithFee.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:22"
+            },
+            {
+              "label": "FeeQueryNative",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(FeeQuery)271",
+              "contract": "H1NativeApplication",
+              "src": "contracts/H1NativeApplication.sol:24"
+            },
+            {
+              "label": "storedData",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithFee",
+              "src": "contracts/SimpleStorageWithFee.sol:20"
+            },
+            {
+              "label": "h1Stored",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithFee",
+              "src": "contracts/SimpleStorageWithFee.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(FeeQuery)271": {
+              "label": "contract FeeQuery",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:9",
+        "version": {
+          "withMetadata": "753fceeb4bf269aa854548735e0b59f8d44df01b8eeb64592ec2b8fe8a2b1337",
+          "withoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f",
+          "linkedWithoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:FeeQuery": {
+        "src": "contracts/FeeQuery.sol:17",
+        "version": {
+          "withMetadata": "3cba5da385a6755419d820a762c98ca5c3ac33736dd4061c4552533aabac5ba7",
+          "withoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c",
+          "linkedWithoutMetadata": "c88732b866ad5219359951ae4242d7d9103a2cb0c0da933b141eee2eb9e4401c"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getFee()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:IFeeContract": {
+        "src": "contracts/FeeQuery.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "queryOracle()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/H1DevelopedApplication.sol:H1DevelopedApplication": {
+        "src": "contracts/H1DevelopedApplication.sol:17",
+        "version": {
+          "withMetadata": "91b8f6ef7b5e8eabe108682c90a354b8fa47af2e315b2aa1564e50dc709d0da1",
+          "withoutMetadata": "1f5c838a62b3a880b00f9dbc22bfb3a636e4d8f033c6cbe8aa3442f89c2fd746",
+          "linkedWithoutMetadata": "1f5c838a62b3a880b00f9dbc22bfb3a636e4d8f033c6cbe8aa3442f89c2fd746"
+        },
+        "inherit": [],
+        "libraries": [
+          "contracts/Errors.sol:Errors"
+        ],
+        "methods": [
+          "(address,address)",
+          "getDeveloperFee()",
+          "getHavenFee()",
+          "callFee()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "H1DevelopedApplication",
+            "src": "contracts/H1DevelopedApplication.sol:66"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:23"
+            },
+            {
+              "label": "feeAmount",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:25"
+            },
+            {
+              "label": "developerWallet",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:27"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/SimpleStorageWithDevAppFee.sol:SimpleStorageWithDevAppFee": {
+        "src": "contracts/SimpleStorageWithDevAppFee.sol:11",
+        "version": {
+          "withMetadata": "949cb229b50d0ce60a7a23cdb44f82a208178bd2956ee46034c10981b56c316c",
+          "withoutMetadata": "3d00514ce6e92233498313eef74603f2f3f07049d65d38bf2cf3ca90fce8ca8f",
+          "linkedWithoutMetadata": "3d00514ce6e92233498313eef74603f2f3f07049d65d38bf2cf3ca90fce8ca8f"
+        },
+        "inherit": [
+          "contracts/H1DevelopedApplication.sol:H1DevelopedApplication"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "set(uint256)",
+          "get()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimpleStorageWithDevAppFee",
+            "src": "contracts/SimpleStorageWithDevAppFee.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:23"
+            },
+            {
+              "label": "feeAmount",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:25"
+            },
+            {
+              "label": "developerWallet",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:27"
+            },
+            {
+              "label": "storedData",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithDevAppFee",
+              "src": "contracts/SimpleStorageWithDevAppFee.sol:20"
+            },
+            {
+              "label": "h1Stored",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithDevAppFee",
+              "src": "contracts/SimpleStorageWithDevAppFee.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
       "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:AccessControlUpgradeable": {
         "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:51",
         "inherit": [

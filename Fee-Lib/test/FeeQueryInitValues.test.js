@@ -2,13 +2,13 @@ const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
 const { time } = require('@nomicfoundation/hardhat-network-helpers');
 
-let fee;
+
 
 const {
     expectRevert
 } = require("@openzeppelin/test-helpers");
 const catchRevert = require("./exceptionsHelpers.js").catchRevert;
-//FeeOracle
+
 describe("FeeQuery Basic Expectations", function () {
     let FeeQueryContract;
     beforeEach(async() => {
