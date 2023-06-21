@@ -10,17 +10,15 @@ pragma solidity ^0.8.2;
 /// @dev The primary function of this contract is to be used as an import for developers building on Haven.
 
 
-contract H1DevelopedApplication {
+contract H1DevelopedApplication is FeeQuery{
     // Storage for fee contract address.
-    address FeeContract;
-    // Storage to access fee query functions of fee contract.
-    uint256 feeAmount;
+    address public FeeContract;
     // Address storage for developer wallet.
     address developerWallet;
 
     // Modifier to send fees to the fee contract and to the developer in contracts.
     modifier devApplicationFee() {
-        if (msg.value < feeAmount && feeAmount > 0) {
+        if (msg.value < callFee() && callFee() > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
         uint256 havenFee = getHavenFee();
