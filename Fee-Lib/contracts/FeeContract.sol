@@ -207,9 +207,7 @@ AccessControlUpgradeable {
        uint amount = address(this).balance;
        for (uint i = 0; i < channels.length; i++) {
            uint share = (amount * weights[i]) / CONTRACT_SHARES;
-           (bool success, ) = (channels[i]).call{value: share}(
-               abi.encodeWithSignature("recieveFees()")
-           );
+           (bool success, ) = channels[i].call{value: share}("");
            require(success, Errors.TRANSFER_FAILED);
            emit FeesDistributed(block.timestamp, channels[i], share);
        }

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: ISC
 
 import "./Errors.sol";
+import "./FeeQuery.sol";
 
 pragma solidity ^0.8.2;
 
@@ -8,24 +9,22 @@ pragma solidity ^0.8.2;
 /// @notice This contract has a modifer that ensures fees are sent to the developer of an application and the FeeContract.
 /// @dev The primary function of this contract is to be used as an import for developers building on Haven.
 
-interface IFeeOracle {
-    function consult() external returns (uint amountOut);
+// interface IFeeOracle {
+//     function consult() external returns (uint amountOut);
 
-    function refreshOracle() external returns (bool success);
-}
+//     function refreshOracle() external returns (bool success);
+// }
 
 contract H1DevelopedApplication {
     // Storage for fee contract address.
     address FeeContract;
     // Storage to access fee query functions of fee contract.
     uint256 feeAmount;
-    // Address storage for oracle
-    address oracle;
     // Address storage for developer wallet.
     address developerWallet;
 
     // Modifier to send fees to the fee contract and to the developer in contracts.
-    modifier applicationFee() {
+    modifier devApplicationFee() {
         if (msg.value < feeAmount && feeAmount > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
@@ -38,25 +37,22 @@ contract H1DevelopedApplication {
         _;
     }
 
-    /**
+   /**
    @notice Constructor to initialize contract deployment.
    @param _FeeContract address of fee contract to pay fees.
    @param walletToCollectFees the address to receive 10% of the fees..
-   @param havenOracle the default address for the oracle.
    @dev For the param walletToCollectFees the deployer of this wallet should consider a setter for this address in their dApp.
    */
 
     constructor(
         address _FeeContract,
-        address walletToCollectFees,
-        address havenOracle
+        address walletToCollectFees
     ) {
         if (_FeeContract == address(0)) {
             revert(Errors.INVALID_ADDRESS);
         }
         FeeContract = _FeeContract;
         developerWallet = payable(walletToCollectFees);
-        oracle = havenOracle;
     }
 
     /**
@@ -64,7 +60,8 @@ contract H1DevelopedApplication {
    @dev It is 90% of the contract balance.
    */
     function getDeveloperFee() public view returns (uint256 developerFee) {
-        developerFee = (feeAmount / 10) * 9;
+        uint256 currentFee = callFee();
+        developerFee = (currentFee / 10) * 9;
     }
 
     /**
@@ -73,11 +70,13 @@ contract H1DevelopedApplication {
    */
 
     function getHavenFee() public view returns (uint256 havenOneFee) {
-        havenOneFee = address(this).balance / 10;
+        uint256 currentFee = callFee();
+        havenOneFee = currentFee / 10;
     }
 
     //query fee function
-    function queryOracle() public returns (uint256 total) {
-        return (IFeeOracle(oracle).consult());
-    }
+     function callFee() public view returns (uint256) {
+       uint256 currentFee = FeeQuery(FeeContract).getFee();
+       return currentFee;
+   }
 }

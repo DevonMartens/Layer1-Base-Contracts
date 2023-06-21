@@ -21,13 +21,15 @@ interface IFeeOracle {
    function refreshOracle() external returns (bool success);
 }
 
-contract FeeOracle 
-//is IFeeOracle 
-{
+contract FeeOracle is FeeQuery {
 
     uint priceAverage = 1;
 
    uint justKeepAdding;
+
+   function setRequiredReset(uint newReset) external {
+       requiredReset = newReset;
+   }
 
    //to check for changes caused by reset fee
    
@@ -42,5 +44,9 @@ contract FeeOracle
     function refreshOracle() external returns(bool success) {
         justKeepAdding = justKeepAdding + 8;
         return true;
+    }
+
+    function viewJustKeepAdding() external view returns(uint){
+        return justKeepAdding;
     }
 }

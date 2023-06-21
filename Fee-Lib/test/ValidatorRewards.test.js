@@ -19,7 +19,7 @@ const THREE_ETH = ethers.utils.parseUnits("3","ether");
 const TWO_ETH = ethers.utils.parseUnits("2","ether");
 const ONE_ETH = ethers.utils.parseUnits("1","ether");
 
-describe("Token Management", function () {
+describe("H1 Management", function () {
         let owner;
         let ValidatorContract;
         let randomSig;
@@ -45,13 +45,13 @@ describe("Token Management", function () {
             secondAddressSigner = await ethers.getSigner(random)
             randomAddressIsTheSigner = ValidatorContract.connect(secondAddressSigner);       
         });
-        it("ValidatorRewards should recieve ether", async () => {
+        it("ValidatorRewards should recie H1", async () => {
             await randomSig.sendTransaction({
                 to: ValidatorContract.address,
                 value: ethers.utils.parseEther("1.0"), // Sends exactly 1.0 ether
             });          
         });
-        it("ValidatorRewards should distribute ether as intended - via releaseAll view function `released` also should track the distribution", async () => {
+        it("ValidatorRewards should distribute H1 as intended - via releaseAll view function `released` also should track the distribution", async () => {
             await randomSig.sendTransaction({to:ValidatorContract.address, value: TEN_ETH});
             //contract balance
             const contractBalance = await ethers.provider.getBalance(ValidatorContract.address);
@@ -60,7 +60,7 @@ describe("Token Management", function () {
             //get bobs info
             expect(await ValidatorContract.released(bob)).to.equal(FIVE_ETH)
         });
-        it("ValidatorRewards should distribute ether as intended - via release function for a single user", async () => {
+        it("ValidatorRewards should distribute H1 as intended - via release function for a single user", async () => {
             // send two eth to the contract
             await randomSig.sendTransaction({to:ValidatorContract.address, value: TWO_ETH});
             //check contract balance

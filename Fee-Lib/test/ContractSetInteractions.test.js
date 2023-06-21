@@ -64,7 +64,7 @@ require("./utils.js");
              
         });
 
-        it("NOT A TEST", async () => {
+        it("The oracle should be requesting the amount from simple storage", async () => {
             await FeeContract.resetFee();
            await expectRevert(SimpleStorageWithFeeDeployed.set(1), "125")
            await SimpleStorageWithFeeDeployed.set(1, {value: 1})
