@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/HRC20.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> HRC20.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>29/29</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.45% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>42/44</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>15/15</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>36/36</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">118×</span>
+<span class="cline-any cline-yes">112×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">96×</span>
+<span class="cline-any cline-yes">96×</span>
+<span class="cline-any cline-yes">96×</span>
+<span class="cline-any cline-yes">96×</span>
+<span class="cline-any cline-yes">96×</span>
+<span class="cline-any cline-yes">96×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.2;
+&nbsp;
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+&nbsp;
+import "./Errors.sol";
+&nbsp;
+contract HRC20 is 
+Initializable, 
+ERC20Upgradeable, 
+PausableUpgradeable, 
+AccessControlUpgradeable
+{
+&nbsp;
+    /**
+    * @dev Emitted when and address is blacklisted from sending/recieving tokens.
+    */
+    event AddressBlackListed(
+        address indexed blockedAddress, 
+        bool indexed blockStatus
+        );
+&nbsp;
+    /**
+    * @dev Emitted when and address is whitelisted to sending/recieving tokens.
+    */
+    event AddressWhiteListed(
+        address indexed permissionedAddress, 
+        bool indexed approvalStatus
+        );
+&nbsp;
+&nbsp;
+    event WhiteListSetToActive(
+        bool indexed isActive
+        );
+    
+    // Mapping will return false by default, if set to true address is blacklisted and can not withdraw/deposit/send/recieve tokens.
+    mapping(address =&gt; bool) public _blockedMembers;
+&nbsp;
+    // Modifer on fuctions to check if address is blocked.
+    modifier blackListBlocked(address requester) {
+      require(_blockedMembers[requester] == false, Errors.ADDRESS_BLOCKED);
+      _;
+   }
+&nbsp;
+    // Role created via access control that can  
+    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
+&nbsp;
+    // Role created via access control that can pause/unpause all withdraws/deposits.
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+&nbsp;
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+&nbsp;
+    /** 
+    @notice variables initalized when the contract deploys.
+    @param useWhiteList sets the storage `bool` `isWhiteListContract` if true no account that is not approved can have tokens minted to them.
+    @param admin can remove/add pauser &amp; distrubutor roles.
+    @param pauser can pause/unpause the contract
+    @param distrubutor set to true to allow an address to be whitelisted or false to remove privledges.
+    @dev The `PAUSER_ROLE and DISTRIBUTOR_ROLE can be given after deployment by calling `grantRole(role, address)`
+        Ex: `grantRole(DISTRIBUTOR_ROLE, 0x1d2B794563Bf90c6e53B56b215502b8aE4c42fF8)` 
+    */
+&nbsp;
+    function initialize(
+        string memory name, 
+        string memory symbol, 
+        address admin, 
+        address pauser, 
+        address distrubutor, 
+        bool useWhiteList
+        )
+        external <span class="missing-if-branch" title="else path not taken" >E</span>initializer  {
+        __Pausable_init();
+        __ERC20_init(name, symbol);
+        isWhiteListContract = useWhiteList;
+        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+        _grantRole(PAUSER_ROLE, pauser);
+        _grantRole(DISTRIBUTOR_ROLE, distrubutor);
+    }
+&nbsp;
+    /** 
+    @notice This function sets an address to be blacklisted or remove a blacklist.
+    @param blockedAddress address we want to block or unblock from sending/recieving/withdrawing/depositing tokens.
+    @param blockStatus set to true this blocks the address from using tokens, faulse unblocks it.
+    */
+&nbsp;
+   function setBlackListAddress(address blockedAddress, bool blockStatus) external onlyRole(DISTRIBUTOR_ROLE){
+       _blockedMembers[blockedAddress] = blockStatus;
+       emit AddressBlackListed(blockedAddress, blockStatus);
+   }
+&nbsp;
+    // If this variable is true address that are not approved cannot recieve tokens.
+    bool isWhiteListContract;
+&nbsp;
+    // Mapping will return false by default this is used to determine is an address is approved to mint tokens.
+    mapping(address =&gt; bool) public _whiteListApproved;
+&nbsp;
+    /**
+    @notice Function to an addresses to whitelist or remove it.
+    @param permissionedAddress an  address we want to allow to whitelist.
+    @param approvalStatus whether we want to approve or remove address from whitelist.
+    */
+&nbsp;
+    function setWhiteListAddress(address permissionedAddress, bool approvalStatus) external onlyRole(DISTRIBUTOR_ROLE){
+       _whiteListApproved[permissionedAddress] = approvalStatus;
+       emit AddressWhiteListed(permissionedAddress, approvalStatus);
+   }
+&nbsp;
+    /**
+    @notice Function to multiple addresseses t0 whitelist.
+    @param permissionedAddresses an array of addresses we want to allow to whitelist.
+    */
+&nbsp;
+   function setMultipleWhiteListAddresses(address[] calldata permissionedAddresses) external onlyRole(DISTRIBUTOR_ROLE){
+       for (uint i = 0; i &lt; permissionedAddresses.length; i++) {
+       _whiteListApproved[permissionedAddresses[i]] = true;
+       emit AddressWhiteListed(permissionedAddresses[i], true);
+       }
+   }
+&nbsp;
+    /** 
+    @notice Function to enforce or remove the requirement for a whitelist.
+    @param isActive if set to true enforces restrictions is false removes.
+    */
+     function setWhiteListActive(bool isActive) external onlyRole(DISTRIBUTOR_ROLE){
+       isWhiteListContract = isActive;
+       emit WhiteListSetToActive(isActive);
+   }
+&nbsp;
+    /** 
+    @notice Function to pause sending/depositing/withdrawing of tokens from contract.
+    @dev Only pauser role can do this given in contructor or by calling grantRole(PAUSER_ROLE, &lt;ADDRESS&gt;).
+    */
+&nbsp;
+    function pause() external onlyRole(PAUSER_ROLE) {
+        _pause();
+    }
+&nbsp;
+    /**
+    @notice Function to unpause (if paused) and allow sending/depositing/withdrawing of tokens from contract.
+    */
+&nbsp;
+    function unpause() external onlyRole(PAUSER_ROLE) {
+        _unpause();
+    }
+&nbsp;
+    /**
+    @notice This function checks an address to ensure it is a contract NOT a wallet.
+    @param _addr the address to be checked for if it is a contract or not.
+    @dev retruns true if the input is a contract.
+    @dev Used to override approvals and increase allowance.
+    */
+&nbsp;
+&nbsp;
+    function isContract(address _addr) public view returns (bool isItAContract){
+        uint32 size;
+        assembly {
+        size := extcodesize(_addr)
+        }
+        return (size &gt; 0);
+    }
+&nbsp;
+    /**
+    @notice Same as ERC-20's function but does not allow wallets to be approved only contracts.
+    @param spender is the address being approved to move another wallets tokens.
+    @param amount the number of tokens the  send on belhalf of the owner.
+    */
+&nbsp;
+    function approve(address spender, uint256 amount) public virtual override returns (bool) {
+      require(isContract(spender) == true, Errors.ONLY_APPROVES_CONTRACTS);
+        address owner = _msgSender();
+        _approve(owner, spender, amount);
+        return true;
+    }
+&nbsp;
+    /**
+    @notice Same as ERC-20's function but does not allow wallets to be approved only contracts.
+    @param spender is the address being approved to move another wallets tokens.
+    @param addedValue the number of tokens added to the original number that the spender is approved to send on belhalf of the owner.
+    */
+&nbsp;
+    function increaseAllowance(address spender, uint256 addedValue) public virtual override returns (bool) {
+        require(isContract(spender) == true, Errors.ONLY_APPROVES_CONTRACTS);
+        address owner = _msgSender();
+        _approve(owner, spender, allowance(owner, spender) + addedValue);
+        return true;
+    }
+&nbsp;
+    /**
+    @notice Function to deposit tokens for Haven1 via Yield App.
+    @param to address to recieve token.
+    @param amount number of tokens to be recieved.
+    @dev Function does not work when paused.
+    @dev If an address is blacklisted via `setBlackListAddress` it cannot recieve tokens.
+    @dev If isWhiteListContract is set to true addresses must be whitelisted via `setWhiteListAddress`.
+    @dev Only DISTRIBUTOR role can do this given in contructor or by calling grantRole(DISTRIBUTOR_ROLE, &lt;ADDRESS&gt;).
+    */
+&nbsp;
+    function deposit(address to, uint256 amount) external whenNotPaused blackListBlocked(to) onlyRole(DISTRIBUTOR_ROLE) {
+      require(isWhiteListContract == false || _whiteListApproved[to] == true, Errors.WHITELIST_ERROR);
+        _mint(to, amount);
+    }
+&nbsp;
+    /**
+    @notice  Function to withdraw tokens for Haven1 via Yield App.
+    @param from address to remove tokens from.
+    @param amount number of tokens to be withdrawn.
+    @dev Function does not work when paused.
+    @dev If an address is blacklisted via `setBlackListAddress` it cannot withdraw tokens.
+    @dev If  the amount is higher than the balance of the address an error reading "BALANCE_TOO_LOW" will be returned.
+    @dev Only DISTRIBUTOR role can do this given in contructor or by calling grantRole(DISTRIBUTOR_ROLE, &lt;ADDRESS&gt;).
+    */
+&nbsp;
+   function withdraw(address from, uint256 amount) external whenNotPaused blackListBlocked(from) onlyRole(DISTRIBUTOR_ROLE) {
+       require(balanceOf(from) &gt;= amount, Errors.INSUFFICIENT_BALANCE);
+        _burn(from, amount);
+    }
+&nbsp;
+    /**
+    @notice Function called when using ERC-20 standard transfering functions.
+    @param from address to remove tokens from.
+    @param to reciever of tokens.
+    @param amount number of tokens to be sent.
+    @dev Function does not work when paused.
+    @dev If an address is blacklisted via `setBlackListAddress` it cannot transfer/recieve tokens.
+    */
+&nbsp;
+    function _beforeTokenTransfer(address from, address to, uint256 amount)
+        internal
+        whenNotPaused
+        blackListBlocked(from)
+        <span class="missing-if-branch" title="else path not taken" >E</span>blackListBlocked(to)
+        override
+    {
+        super._beforeTokenTransfer(from, to, amount);
+    }
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jun 22 2023 10:06:03 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

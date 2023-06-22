@@ -396,4 +396,83 @@ describe( "Testing the initial values to validate expected contract state", func
   
 
    });
-//});
+   describe("Testing the deposit and withdraw functions",  function () {
+    let hrc20;
+    let H;
+    let owner;
+    let alice;
+    beforeEach(async() => {
+        const [owners, alices] = await ethers.getSigners();
+        owner = await owners.getAddress();
+        alice = await alices.getAddress();
+        hrc20 = await ethers.getContractFactory("HRC20")
+        H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, false], 
+        { initializer: 'initialize' })
+        await H.deposit(alice, 900);
+        
+});
+it("The contract: the deposit function should mint the correct amount of tokens to the designated wallet", async () => {
+expect(await H.balanceOf(alice)).to.equal(900)
+});
+it("The contract: the withdraw function should burn the correct amount of tokens from the designated wallet", async () => {
+await H.withdraw(alice, 900);
+expect(await H.balanceOf(alice)).to.equal(0)
+});
+it("The contract: the withdraw function should revert and give the error BALANCE_TOO_LOW if a request is made to withdraw more than the balance", async () => {
+;            await expectRevert(
+    H.withdraw(
+        alice,
+        1000,
+    ),
+    `109`
+);
+});
+it("The contract: function deposit function should not allow deposits if `isWhiteListContract` is true & address is not on whitelist ", async () => { 
+const HRC20HasWhiteListAliceIsNotOn =  await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, true], { initializer: 'initialize' });
+await expectRevert(
+    HRC20HasWhiteListAliceIsNotOn.deposit(
+        alice,
+        1000,
+    ),
+    "117"
+);
+});
+});
+describe("Testing approvals",  function () {
+    let hrc20;
+    let H;
+    let owner;
+    let alice;
+    let TestContractForApprovals;
+    beforeEach(async() => {
+        const [owners, alices] = await ethers.getSigners();
+        owner = await owners.getAddress();
+        alice = await alices.getAddress();
+        hrc20 = await ethers.getContractFactory("HRC20")
+        H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, false], 
+        { initializer: 'initialize' })
+
+        TestContractForApprovals = await upgrades.deployProxy(hrc20, ["NOT_A_PROBLEM", "CONTRACT", owner, owner, owner, false], 
+        { initializer: 'initialize' })
+
+        await H.deposit(owner, 900);
+        
+});
+it("A wallet that is not a contract should not be allowed to be approved by the function increaseAllowance", async () => {
+    await expectRevert(H.increaseAllowance(alice, 8), "116");
+    expect(await H.allowance(owner, alice)).to.equal(0)
+});
+it("A wallet that is not a contract  not be allowed to be approved by the function approve", async () => {
+    await expectRevert(H.approve(alice, 8), "116")
+    expect(await H.allowance(owner, alice)).to.equal(0)
+    });
+    it("A contract should not be allowed to be approved by the function increaseAllowance", async () => {
+        await H.increaseAllowance(TestContractForApprovals.address, 8)
+        expect(await H.allowance(owner, TestContractForApprovals.address)).to.equal(8)
+    });
+    it("A contract should not be allowed to be approved by the function approve", async () => {
+        await H.approve(TestContractForApprovals.address, 8)
+        expect(await H.allowance(owner, TestContractForApprovals.address)).to.equal(8)
+        });
+
+});
