@@ -87,6 +87,7 @@ Initializable
     {
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(DISTRIBUTOR_ROLE, distributor);
+        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
        for (uint256 i = 0; i < validatorsList.length; i++) {
             _validators.push(validatorsList[i]);
            _shares[validatorsList[i]] = shares_[i];
@@ -127,8 +128,8 @@ Initializable
        address _newValidatorRewardAddress
    ) external onlyRole(DISTRIBUTOR_ROLE) {
        require(
-           _validators[_index] != address(0),
-           Errors.INVALID_INDEX
+           _newValidatorRewardAddress != address(0),
+           Errors.INVALID_ADDRESS
        );
        address previousAddress = _validators[_index];
        uint256 sharesAdjusted = _shares[previousAddress];

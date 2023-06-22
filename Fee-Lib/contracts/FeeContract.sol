@@ -40,6 +40,8 @@ AccessControlUpgradeable {
    uint8 private CONTRACT_SHARES;
 
    // Address used to consult to find fee amounts.
+
+        //adjust and reset
    address public oracle;
 
    // Array for address used to consult to find fee amounts.

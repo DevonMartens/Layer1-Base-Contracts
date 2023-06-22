@@ -24,14 +24,16 @@ describe("H1 Management", function () {
         let randomAddressIsTheSigner;
         let bob;
         let random;
+        let other;
         beforeEach(async() => {
             //example wieghts 100% of bounty 1/1
              const wieghts = [1, 2, 3];
             //address of validators in validator rewards
-            const [owners, randoms, bobs] = await ethers.getSigners();
+            const [owners, randoms, bobs, others] = await ethers.getSigners();
             owner = await owners.getAddress();
             random = await randoms.getAddress();
             bob = await bobs.getAddress();
+            other = await others.getAddress();
             //signiture for sending H!
             randomSig = ethers.provider.getSigner(random);
             const vadlidatorAddressArray = [owner, random, bob]
@@ -69,6 +71,9 @@ describe("H1 Management", function () {
             // get bobs info afer release
             expect(await ValidatorContract.released(bob)).to.equal(ONE_ETH)
         });
+        it("ValidatorRewards release function should revert if the user has no shares", async () => {
+            await  expectRevert(randomAddressIsTheSigner.release(other), "126");
+        });
         it("ValidatorRewards validators function should return the validators address from the array index", async () => {
             expect(await ValidatorContract.validators(0)).to.equal(owner)
             expect(await ValidatorContract.validators(1)).to.equal(random)       
@@ -78,6 +83,7 @@ describe("H1 Management", function () {
         let owner;
         let bob;
         let random;
+        let other;
         let ValidatorContract;
         let randomAddressIsTheSigner;
         let randomSig;
@@ -85,10 +91,11 @@ describe("H1 Management", function () {
             //example wieghts 100% of bounty 1/1
              const wieghts = [1, 2, 3];
             //address of validators in validator rewards
-            const [owners, randoms, bobs] = await ethers.getSigners();
+            const [owners, randoms, bobs, others] = await ethers.getSigners();
             owner = await owners.getAddress();
             random = await randoms.getAddress();
             bob = await bobs.getAddress();
+            other = await others.getAddress();
             const vadlidatorAddressArray = [owner, bob, random]
             //this is the contract we are looking at Validator Rewards.
             const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
@@ -125,6 +132,10 @@ describe("H1 Management", function () {
             expect(await ValidatorContract.releasable(random)).to.equal(THREE_ETH)
             expect(await ValidatorContract.releasable(bob)).to.equal(TWO_ETH)
             expect(await ValidatorContract.releasable(owner)).to.equal(ONE_ETH)
+        });
+        it("the view isOriginalAddress should return false if the address is in the validators array", async () => {
+            expect(await ValidatorContract.isOriginalAddress(random)).to.equal(false)
+            expect(await ValidatorContract.isOriginalAddress(other)).to.equal(true)
         });
     });
     describe("Validator Management", function () {
@@ -199,7 +210,12 @@ describe("H1 Management", function () {
                 // //checks what other got - should be one eth
                 expect(await ValidatorContract.released(other)).to.equal(ONE_ETH)
         });
-        it("Add validator should change the dispersed payments and totalShares amounts and correctly pay all validators", async () => {
+        it("adjustValidatorAddress should adjust validator address that recieves payment", async () => {
+
+            await expectRevert(ValidatorContract.adjustValidatorAddress(1, "0x0000000000000000000000000000000000000000"),"123");
+
+    });
+        it("addValidator should change the dispersed payments and totalShares amounts and correctly pay all validators", async () => {
             await randomSig.sendTransaction({to:ValidatorContract.address,  value: SIX_ETH});
             //bobs ether owned
             expect(await ValidatorContract.releasable(bob)).to.equal(TWO_ETH)
@@ -217,7 +233,16 @@ describe("H1 Management", function () {
             // //owner owed
             expect(await ValidatorContract.releasable(owner)).to.equal(ONE_ETH)
         });
+        it("addValidator should revert if someone tries to add a 0 address", async () => {
+            await expectRevert(ValidatorContract.addValidator("0x0000000000000000000000000000000000000000", 1), "105")
+        });
+        it("addValidator should revert if someone tries to add a 0 shares", async () => {
+            await expectRevert(ValidatorContract.addValidator(other, 0), "128")
+        });
+        it("addValidator should revert if an address already has shares", async () => {
+            await expectRevert(ValidatorContract.addValidator(owner, 1), "129")
     });
+});
     describe("Adjustments in Validators impact on dispursement of funds", function () {
         let owner;
         let ValidatorContract;
@@ -251,5 +276,48 @@ describe("H1 Management", function () {
            await ValidatorContract.adjustValidatorAddress(0, other)   
            expect(await ValidatorContract.releasable(other)).not.to.be.equal(await ValidatorContract.releasable(owner))
         
+        }); 
+    }); 
+    describe("AccessControl In the contract", function () {
+        let owner;
+        let bob;
+        let random;
+        let other;
+        let ValidatorContract;
+        let randomSig;
+        let DISTRIBUTOR_ROLE;
+        let FROM;
+        beforeEach(async() => {
+            //example wieghts 100% of bounty 1/1
+             const wieghts = [1, 2, 3];
+            //address of validators in validator rewards
+            const [owners, randoms, bobs, others, sams] = await ethers.getSigners();
+            owner = await owners.getAddress();
+            random = await randoms.getAddress();
+            bob = await bobs.getAddress();
+            other = await others.getAddress();
+            //signiture for sending H!
+            randomSig = ethers.provider.getSigner(random);
+            const vadlidatorAddressArray = [owner, random, bob]
+            //this is the contract we are looking at Validator Rewards.
+            const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+            // for error message for rnadom
+            FROM = random.toLowerCase();
+            DISTRIBUTOR_ROLE = await ValidatorContract.DISTRIBUTOR_ROLE();
+
+        });
+        it("adjusting validator should only be called by DISTRIBUTOR_ROLE", async () => {
+            await expectRevert(ValidatorContract.connect(randomSig).adjustValidatorShares(owner, 2), `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`)
+        }); 
+        it("adjusting validator should adjust the shars of an address", async () => {
+            await ValidatorContract.adjustValidatorShares(owner, 2)
+            expect(await ValidatorContract.shares(owner)).to.equal(2)
+        }); 
+        it("adjustValidatorAddress validator should only be called by DISTRIBUTOR_ROLE", async () => {
+            await expectRevert(ValidatorContract.connect(randomSig).adjustValidatorAddress(0, random), `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`)
+        }); 
+        it("addValidator validator should only be called by DISTRIBUTOR_ROLE", async () => {
+            await expectRevert(ValidatorContract.connect(randomSig).addValidator(other, 75), `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`)
         }); 
     }); 

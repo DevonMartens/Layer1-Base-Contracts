@@ -391,3 +391,58 @@ describe("Fee Contract General Getters and Setters", function () {
     });
     //isOriginalAddress
 });
+describe("AccessControl", function () {
+    let owner;
+    let ValidatorContract;
+    let Fee;
+    let deployBlockTimeStamp;
+    let ownerArray;
+    let oracleFake;
+    let DISTRIBUTOR_ROLE;
+    let weight;
+    let randomSig;
+    let FROM;
+    let other;
+    beforeEach(async() => {
+        //example weight 100% of bounty 1/1
+        weight = [1,];
+        const [owners, alices, randoms, others] = await ethers.getSigners();
+        owner = await owners.getAddress();
+        oracleFake = await alices.getAddress();
+        other = await others.getAddress();
+        const random = await randoms.getAddress();
+        randomSig = ethers.provider.getSigner(random);
+        //address of validators in validator rewards
+        ownerArray = await [owner,]
+        FROM = random.toLowerCase();
+        const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
+        const FeeContract = await ethers.getContractFactory("FeeContract")
+        ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [ownerArray, weight, owner, owner], { initializer: 'initialize' });
+        Fee = await upgrades.deployProxy(FeeContract, [oracleFake, ownerArray, weight, owner, owner], { initializer: 'initialize' });
+        deployBlockTimeStamp = await time.latest();
+        DISTRIBUTOR_ROLE = await Fee.DISTRIBUTOR_ROLE();
+
+    });
+
+    it("DISTRIBUTOR_ROLE", async () => {
+        await expectRevert(Fee.connect(randomSig).adjustChannel(1, other, 75), `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`)
+    });
+    it("DISTRIBUTOR_ROLE", async () => {
+        await expectRevert(Fee.connect(randomSig).forceFee(), `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`)
+    });
+    it("DISTRIBUTOR_ROLE", async () => {
+        await expectRevert(Fee.connect(randomSig).setOracle(owner), `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`)
+    });
+    // it("The FeeContract should have correct values for wieght and channel (view functions getWieght and getChannel also confirmed)", async () => {
+    //     // const addressFromContract = await Fee.getChannels();
+    //     // const wieghtFromContract = await Fee.getWieghts();
+    //     expect(await Fee.getChannels()).to.deep.equal(ownerArray)
+    //     expect(await Fee.getWieghts()).to.deep.equal(weight)
+    // });
+    // it("The contract: have correct values for oracle, total contract shares, and lastDistribution", async () => {
+    //     //gets oracle from Fee contract and ensures it is equal to alice the original inpul
+    //     expect(await Fee.oracle()).to.equal(oracleFake)
+    //     //gets last distribution from contract and ensures its equal to deployment time
+    //     expect(await Fee.getLastDistributionBlock()).to.equal(deployBlockTimeStamp);
+    // });
+});
