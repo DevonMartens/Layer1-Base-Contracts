@@ -52,7 +52,7 @@ const ONE_ETH = ethers.utils.parseUnits("1","ether");
         });
         it("The contract: have correct values for oracle, total contract shares, and lastDistribution", async () => {
             //gets oracle from Fee contract and ensures it is equal to alice the original inpul
-            expect(await Fee.oracle()).to.equal(oracleFake)
+            expect(await Fee.getOracleAddress()).to.equal(oracleFake)
             //gets last distribution from contract and ensures its equal to deployment time
             expect(await Fee.getLastDistributionBlock()).to.equal(deployBlockTimeStamp);
         });
@@ -361,11 +361,11 @@ describe("Fee Contract General Getters and Setters", function () {
         
     });
     it("setOracle should change the oracle address", async () => {
-        const firstOracle = await FeeContract.oracle();
+        const firstOracle = await FeeContract.getOracleAddress();
         const OracleContractAddress = FeeOracleContract.address;
         expect(firstOracle.toString()).to.equal(OracleContractAddress.toString());
         await FeeContract.setOracle(alice)
-        const reset = await FeeContract.oracle();
+        const reset = await FeeContract.getOracleAddress();
         expect(reset.toString()).to.equal(alice.toString());
     });
     it("setEpoch should change the epochLength", async () => {
@@ -403,6 +403,7 @@ describe("AccessControl", function () {
     let randomSig;
     let FROM;
     let other;
+    let random;
     beforeEach(async() => {
         //example weight 100% of bounty 1/1
         weight = [1,];
@@ -410,7 +411,7 @@ describe("AccessControl", function () {
         owner = await owners.getAddress();
         oracleFake = await alices.getAddress();
         other = await others.getAddress();
-        const random = await randoms.getAddress();
+        random = await randoms.getAddress();
         randomSig = ethers.provider.getSigner(random);
         //address of validators in validator rewards
         ownerArray = await [owner,]
@@ -433,15 +434,37 @@ describe("AccessControl", function () {
     it("DISTRIBUTOR_ROLE", async () => {
         await expectRevert(Fee.connect(randomSig).setOracle(owner), `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`)
     });
-    // it("The FeeContract should have correct values for wieght and channel (view functions getWieght and getChannel also confirmed)", async () => {
-    //     // const addressFromContract = await Fee.getChannels();
-    //     // const wieghtFromContract = await Fee.getWieghts();
-    //     expect(await Fee.getChannels()).to.deep.equal(ownerArray)
-    //     expect(await Fee.getWieghts()).to.deep.equal(weight)
-    // });
+    it("forceFee should distribute funds regardless of sucess or failure upon an address", async () => {
+        const DummyContractFactory = await ethers.getContractFactory("FeeOracle")
+        const DummyContract = await DummyContractFactory.deploy()
+        const InputArray = [DummyContract.address, random, owner]
+        const NumberArray = [1, 2, 3, 4]
+        const FeeContract = await ethers.getContractFactory("FeeContract")
+        const FeeContractForTest = await upgrades.deployProxy(FeeContract, [DummyContract.address, InputArray, NumberArray, owner, owner], { initializer: 'initialize' });
+        await expectRevert(FeeContractForTest.forceFee(), "112")
+    });
+    it("Fee contract collectFee() should revert if there is an unsuccessful transfer made)", async () => {
+        const DummyContractFactory = await ethers.getContractFactory("FeeOracle")
+        const DummyContract = await DummyContractFactory.deploy()
+        const InputArray = [DummyContract.address, random, owner]
+        const NumberArray = [1, 2, 3, 4]
+        const FeeContract = await ethers.getContractFactory("FeeContract")
+        const FeeContractForTest = await upgrades.deployProxy(FeeContract, [DummyContract.address, InputArray, NumberArray, owner, owner], { initializer: 'initialize' });
+        await randomSig.sendTransaction({to:FeeContractForTest.address, value: SIX_ETH});
+        await expectRevert(FeeContractForTest.collectFee(), "112")
+    });
+    it("Fee contract collectFee() should revert if there are no funds to rebate gas)", async () => {
+        const DummyContractFactory = await ethers.getContractFactory("FeeOracle")
+        const DummyContract = await DummyContractFactory.deploy()
+        const InputArray = [DummyContract.address, random, owner]
+        const NumberArray = [1, 2, 3, 4]
+        const FeeContract = await ethers.getContractFactory("FeeContract")
+        const FeeContractForTest = await upgrades.deployProxy(FeeContract, [DummyContract.address, InputArray, NumberArray, owner, owner], { initializer: 'initialize' });
+        await expectRevert(FeeContractForTest.collectFee(), "122")
+    });
     // it("The contract: have correct values for oracle, total contract shares, and lastDistribution", async () => {
     //     //gets oracle from Fee contract and ensures it is equal to alice the original inpul
-    //     expect(await Fee.oracle()).to.equal(oracleFake)
+    //     expect(await Fee.getOracleAddress()).to.equal(oracleFake)
     //     //gets last distribution from contract and ensures its equal to deployment time
     //     expect(await Fee.getLastDistributionBlock()).to.equal(deployBlockTimeStamp);
     // });

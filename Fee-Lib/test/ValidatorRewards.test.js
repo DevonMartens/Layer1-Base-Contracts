@@ -287,9 +287,11 @@ describe("H1 Management", function () {
         let randomSig;
         let DISTRIBUTOR_ROLE;
         let FROM;
+        let wieghts;
+        let vadlidatorAddressArray;
         beforeEach(async() => {
             //example wieghts 100% of bounty 1/1
-             const wieghts = [1, 2, 3];
+            wieghts = [1, 2, 3];
             //address of validators in validator rewards
             const [owners, randoms, bobs, others, sams] = await ethers.getSigners();
             owner = await owners.getAddress();
@@ -298,7 +300,7 @@ describe("H1 Management", function () {
             other = await others.getAddress();
             //signiture for sending H!
             randomSig = ethers.provider.getSigner(random);
-            const vadlidatorAddressArray = [owner, random, bob]
+            vadlidatorAddressArray = [owner, random, bob]
             //this is the contract we are looking at Validator Rewards.
             const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
             ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
@@ -319,5 +321,16 @@ describe("H1 Management", function () {
         }); 
         it("addValidator validator should only be called by DISTRIBUTOR_ROLE", async () => {
             await expectRevert(ValidatorContract.connect(randomSig).addValidator(other, 75), `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`)
+        }); 
+        it("If an address is not the DEFAULT_ADMIN_ROLE it should not be able to adjust the DISTRIBUTOR_ROLE", async () => {
+            const DEFAULT_ADMIN_ROLE = await ValidatorContract.DEFAULT_ADMIN_ROLE();
+            await expectRevert(ValidatorContract.connect(randomSig).grantRole(DISTRIBUTOR_ROLE, bob), `AccessControl: account ${FROM} is missing role ${DEFAULT_ADMIN_ROLE}`)
+        }); 
+        it("If an address is not the DEFAULT_ADMIN_ROLE it should not be able to adjust the DISTRIBUTOR_ROLE", async () => {
+            const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
+            const ValidatorContractForTest = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, random, bob], { initializer: 'initialize' });
+            const DEFAULT_ADMIN_ROLE = await ValidatorContractForTest.DEFAULT_ADMIN_ROLE();
+            expect(await ValidatorContractForTest.connect(randomSig).hasRole(DEFAULT_ADMIN_ROLE, owner)).to.equal(false)
+            //, `AccessControl: account ${FROM} is missing role ${DEFAULT_ADMIN_ROLE}`)
         }); 
     }); 

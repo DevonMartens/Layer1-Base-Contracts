@@ -40,9 +40,7 @@ AccessControlUpgradeable {
    uint8 private CONTRACT_SHARES;
 
    // Address used to consult to find fee amounts.
-
-        //adjust and reset
-   address public oracle;
+   address private oracle;
 
    // Array for address used to consult to find fee amounts.
    address[] channels;
@@ -263,6 +261,15 @@ AccessControlUpgradeable {
    function getWieghts()public view returns(uint8[] memory){
        return weights;
    }
+
+   /**
+   @notice Function that allows ability to view oracle address.
+   */
+
+   function getOracleAddress()public view returns(address){
+       return oracle;
+   }
+
 
    /**
    @notice Function that allows ability to view the amount an address is supposed to be paid based on array position.

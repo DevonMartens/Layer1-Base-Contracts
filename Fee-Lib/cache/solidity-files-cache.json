@@ -41,8 +41,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/ValidatorRewards.sol": {
-      "lastModificationDate": 1687453286656,
-      "contentHash": "949073644b3016d4b275aed7931edb2b",
+      "lastModificationDate": 1687462244982,
+      "contentHash": "2e033ef86ec78f08d39897a4377aa163",
       "sourceName": "contracts/ValidatorRewards.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -527,8 +527,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/FeeContract.sol": {
-      "lastModificationDate": 1687455156388,
-      "contentHash": "303d72415afd7be2d2589d8c0f1f88c0",
+      "lastModificationDate": 1687460990528,
+      "contentHash": "e036e3bb58ee5f34bea052731654925c",
       "sourceName": "contracts/FeeContract.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -1147,41 +1147,6 @@
       "artifacts": [
         "SimpleStorageWithDevAppFee"
       ]
-    },
-    "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/FeeQueryDummyContract.sol": {
-      "lastModificationDate": 1687356479165,
-      "contentHash": "d41d8cd98f00b204e9800998ecf8427e",
-      "sourceName": "contracts/FeeQueryDummyContract.sol",
-      "solcConfig": {
-        "version": "0.8.2",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [],
-      "artifacts": []
     }
   }
 }
