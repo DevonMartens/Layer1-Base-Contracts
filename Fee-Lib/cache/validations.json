@@ -2,6 +2,1333 @@
   "version": "3.4",
   "log": [
     {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:9",
+        "version": {
+          "withMetadata": "753fceeb4bf269aa854548735e0b59f8d44df01b8eeb64592ec2b8fe8a2b1337",
+          "withoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f",
+          "linkedWithoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:FeeQuery": {
+        "src": "contracts/FeeQuery.sol:17",
+        "version": {
+          "withMetadata": "973c32cd987edbe494cd2544c7dac21d709ce00c6198275d53576953df27eadb",
+          "withoutMetadata": "16eb036f5227e2651eecf8e87da296402578ea611ffde1a69900e7bc1d355c25",
+          "linkedWithoutMetadata": "16eb036f5227e2651eecf8e87da296402578ea611ffde1a69900e7bc1d355c25"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getFee()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:IFeeContract": {
+        "src": "contracts/FeeQuery.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "queryOracle()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/H1DevelopedApplication.sol:H1DevelopedApplication": {
+        "src": "contracts/H1DevelopedApplication.sol:17",
+        "version": {
+          "withMetadata": "b1e8cb2692792e3b880d17c700aa74e45c78a85508c8b11f97e6651ee3d5276f",
+          "withoutMetadata": "6ca9913d899a5069dc448ba3c11f598f26d938afbd9cf75d58470987fe29db00",
+          "linkedWithoutMetadata": "6ca9913d899a5069dc448ba3c11f598f26d938afbd9cf75d58470987fe29db00"
+        },
+        "inherit": [
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [
+          "contracts/Errors.sol:Errors"
+        ],
+        "methods": [
+          "(address,address)",
+          "getDeveloperFee()",
+          "getHavenFee()",
+          "callFee()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "H1DevelopedApplication",
+            "src": "contracts/H1DevelopedApplication.sol:70"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:23"
+            },
+            {
+              "label": "developerWallet",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:25"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/SimpleStorageWithDevAppFee.sol:SimpleStorageWithDevAppFee": {
+        "src": "contracts/SimpleStorageWithDevAppFee.sol:11",
+        "version": {
+          "withMetadata": "0bccbcad65d2895e85e67ad73fd0fd97b30ab2de76e2609eb78a0f27057fba0c",
+          "withoutMetadata": "090f60770d4a109a54b38e1eb0e089cfd4f0445c597d87490cb66c8b6ae9e40b",
+          "linkedWithoutMetadata": "090f60770d4a109a54b38e1eb0e089cfd4f0445c597d87490cb66c8b6ae9e40b"
+        },
+        "inherit": [
+          "contracts/H1DevelopedApplication.sol:H1DevelopedApplication",
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "set(uint256)",
+          "get()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimpleStorageWithDevAppFee",
+            "src": "contracts/SimpleStorageWithDevAppFee.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:23"
+            },
+            {
+              "label": "developerWallet",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:25"
+            },
+            {
+              "label": "storedData",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithDevAppFee",
+              "src": "contracts/SimpleStorageWithDevAppFee.sol:20"
+            },
+            {
+              "label": "h1Stored",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithDevAppFee",
+              "src": "contracts/SimpleStorageWithDevAppFee.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:9",
+        "version": {
+          "withMetadata": "753fceeb4bf269aa854548735e0b59f8d44df01b8eeb64592ec2b8fe8a2b1337",
+          "withoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f",
+          "linkedWithoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:FeeQuery": {
+        "src": "contracts/FeeQuery.sol:17",
+        "version": {
+          "withMetadata": "973c32cd987edbe494cd2544c7dac21d709ce00c6198275d53576953df27eadb",
+          "withoutMetadata": "16eb036f5227e2651eecf8e87da296402578ea611ffde1a69900e7bc1d355c25",
+          "linkedWithoutMetadata": "16eb036f5227e2651eecf8e87da296402578ea611ffde1a69900e7bc1d355c25"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getFee()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:IFeeContract": {
+        "src": "contracts/FeeQuery.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "queryOracle()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/H1DevelopedApplication.sol:H1DevelopedApplication": {
+        "src": "contracts/H1DevelopedApplication.sol:17",
+        "version": {
+          "withMetadata": "9be21269532643499a1305d344913f817aa25a66bc3abb777146827c928927b4",
+          "withoutMetadata": "6ca9913d899a5069dc448ba3c11f598f26d938afbd9cf75d58470987fe29db00",
+          "linkedWithoutMetadata": "6ca9913d899a5069dc448ba3c11f598f26d938afbd9cf75d58470987fe29db00"
+        },
+        "inherit": [
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [
+          "contracts/Errors.sol:Errors"
+        ],
+        "methods": [
+          "(address,address)",
+          "getDeveloperFee()",
+          "getHavenFee()",
+          "callFee()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "H1DevelopedApplication",
+            "src": "contracts/H1DevelopedApplication.sol:64"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:23"
+            },
+            {
+              "label": "developerWallet",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:25"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/SimpleStorageWithDevAppFee.sol:SimpleStorageWithDevAppFee": {
+        "src": "contracts/SimpleStorageWithDevAppFee.sol:11",
+        "version": {
+          "withMetadata": "b6193da6a27eaed3f36d2037a7bea4e3295836ce6028d775b3a9417dcac1ca49",
+          "withoutMetadata": "8974f27239c8b6e305c077b43019b2dd3628960283b148d9cfc31804321e132f",
+          "linkedWithoutMetadata": "8974f27239c8b6e305c077b43019b2dd3628960283b148d9cfc31804321e132f"
+        },
+        "inherit": [
+          "contracts/H1DevelopedApplication.sol:H1DevelopedApplication",
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "set(uint256)",
+          "get()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimpleStorageWithDevAppFee",
+            "src": "contracts/SimpleStorageWithDevAppFee.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:23"
+            },
+            {
+              "label": "developerWallet",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:25"
+            },
+            {
+              "label": "storedData",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithDevAppFee",
+              "src": "contracts/SimpleStorageWithDevAppFee.sol:20"
+            },
+            {
+              "label": "h1Stored",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithDevAppFee",
+              "src": "contracts/SimpleStorageWithDevAppFee.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:9",
+        "version": {
+          "withMetadata": "753fceeb4bf269aa854548735e0b59f8d44df01b8eeb64592ec2b8fe8a2b1337",
+          "withoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f",
+          "linkedWithoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:FeeQuery": {
+        "src": "contracts/FeeQuery.sol:17",
+        "version": {
+          "withMetadata": "973c32cd987edbe494cd2544c7dac21d709ce00c6198275d53576953df27eadb",
+          "withoutMetadata": "16eb036f5227e2651eecf8e87da296402578ea611ffde1a69900e7bc1d355c25",
+          "linkedWithoutMetadata": "16eb036f5227e2651eecf8e87da296402578ea611ffde1a69900e7bc1d355c25"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getFee()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/FeeQuery.sol:IFeeContract": {
+        "src": "contracts/FeeQuery.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "queryOracle()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/H1DevelopedApplication.sol:H1DevelopedApplication": {
+        "src": "contracts/H1DevelopedApplication.sol:17",
+        "version": {
+          "withMetadata": "afa50cc7493e50992fa1a4a794c715b7b8a4c4ba1436684881609e362a5fe1b2",
+          "withoutMetadata": "6ca9913d899a5069dc448ba3c11f598f26d938afbd9cf75d58470987fe29db00",
+          "linkedWithoutMetadata": "6ca9913d899a5069dc448ba3c11f598f26d938afbd9cf75d58470987fe29db00"
+        },
+        "inherit": [
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [
+          "contracts/Errors.sol:Errors"
+        ],
+        "methods": [
+          "(address,address)",
+          "getDeveloperFee()",
+          "getHavenFee()",
+          "callFee()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "H1DevelopedApplication",
+            "src": "contracts/H1DevelopedApplication.sol:62"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:23"
+            },
+            {
+              "label": "developerWallet",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:25"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/SimpleStorageWithDevAppFee.sol:SimpleStorageWithDevAppFee": {
+        "src": "contracts/SimpleStorageWithDevAppFee.sol:11",
+        "version": {
+          "withMetadata": "a329456a5e6398b6d3c30243c5ac186d043c6578a7fc1e1baa5312d986ae03d6",
+          "withoutMetadata": "9a67bfb7b6fa977aa1908549fef10f210078982b1b5482b81293d28c85777838",
+          "linkedWithoutMetadata": "9a67bfb7b6fa977aa1908549fef10f210078982b1b5482b81293d28c85777838"
+        },
+        "inherit": [
+          "contracts/H1DevelopedApplication.sol:H1DevelopedApplication",
+          "contracts/FeeQuery.sol:FeeQuery"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "set(uint256)",
+          "get()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimpleStorageWithDevAppFee",
+            "src": "contracts/SimpleStorageWithDevAppFee.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "epochLength",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:24"
+            },
+            {
+              "label": "requiredReset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:26"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "FeeQuery",
+              "src": "contracts/FeeQuery.sol:28"
+            },
+            {
+              "label": "FeeContract",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:23"
+            },
+            {
+              "label": "developerWallet",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_address",
+              "contract": "H1DevelopedApplication",
+              "src": "contracts/H1DevelopedApplication.sol:25"
+            },
+            {
+              "label": "storedData",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithDevAppFee",
+              "src": "contracts/SimpleStorageWithDevAppFee.sol:20"
+            },
+            {
+              "label": "h1Stored",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "SimpleStorageWithDevAppFee",
+              "src": "contracts/SimpleStorageWithDevAppFee.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
+      "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable": {
+        "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:58",
+        "inherit": [],
+        "libraries": [
+          "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol:AddressUpgradeable"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_initialized",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint8",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+              "retypedFrom": "bool"
+            },
+            {
+              "label": "_initializing",
+              "offset": 1,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+            }
+          ],
+          "types": {
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_uint8": {
+              "label": "uint8",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol:AddressUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol:9",
+        "version": {
+          "withMetadata": "c22c5a1d9dbb74430f06e3138aeeaa381a1080d4fcb356b1ff0f1533d71a1f96",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "delegatecall",
+            "src": "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol:185"
+          },
+          {
+            "kind": "delegatecall",
+            "src": "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol:185"
+          }
+        ],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "@openzeppelin/contracts/access/AccessControl.sol:AccessControl": {
+        "src": "@openzeppelin/contracts/access/AccessControl.sol:50",
+        "inherit": [
+          "@openzeppelin/contracts/utils/introspection/ERC165.sol:ERC165",
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165",
+          "@openzeppelin/contracts/access/IAccessControl.sol:IAccessControl",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [
+          "@openzeppelin/contracts/utils/Strings.sol:Strings"
+        ],
+        "methods": [
+          "supportsInterface(bytes4)",
+          "hasRole(bytes32,address)",
+          "getRoleAdmin(bytes32)",
+          "grantRole(bytes32,address)",
+          "revokeRole(bytes32,address)",
+          "renounceRole(bytes32,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_roles",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_bytes32,t_struct(RoleData)518_storage)",
+              "contract": "AccessControl",
+              "src": "@openzeppelin/contracts/access/AccessControl.sol:56"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_bytes32,t_struct(RoleData)518_storage)": {
+              "label": "mapping(bytes32 => struct AccessControl.RoleData)",
+              "numberOfBytes": "32"
+            },
+            "t_struct(RoleData)518_storage": {
+              "label": "struct AccessControl.RoleData",
+              "members": [
+                {
+                  "label": "members",
+                  "type": "t_mapping(t_address,t_bool)",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "adminRole",
+                  "type": "t_bytes32",
+                  "offset": 0,
+                  "slot": "1"
+                }
+              ],
+              "numberOfBytes": "64"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "@openzeppelin/contracts/access/IAccessControl.sol:IAccessControl": {
+        "src": "@openzeppelin/contracts/access/IAccessControl.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "hasRole(bytes32,address)",
+          "getRoleAdmin(bytes32)",
+          "grantRole(bytes32,address)",
+          "revokeRole(bytes32,address)",
+          "renounceRole(bytes32,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "@openzeppelin/contracts/utils/Address.sol:Address": {
+        "src": "@openzeppelin/contracts/utils/Address.sol:9",
+        "version": {
+          "withMetadata": "f6a0995cb8b4e843b8a1072557d0cd40e176ba1ba274719a6fa340e209fe5743",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "delegatecall",
+            "src": "@openzeppelin/contracts/utils/Address.sol:185"
+          },
+          {
+            "kind": "delegatecall",
+            "src": "@openzeppelin/contracts/utils/Address.sol:185"
+          }
+        ],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "@openzeppelin/contracts/utils/Strings.sol:Strings": {
+        "src": "@openzeppelin/contracts/utils/Strings.sol:12",
+        "version": {
+          "withMetadata": "b0b38489736b8ca5d535e8cc9ab5b0f9a3a9f7e28be25432ba7c02a5b25f85bd",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [
+          "@openzeppelin/contracts/utils/math/Math.sol:Math",
+          "@openzeppelin/contracts/utils/math/SignedMath.sol:SignedMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "@openzeppelin/contracts/utils/introspection/ERC165.sol:ERC165": {
+        "src": "@openzeppelin/contracts/utils/introspection/ERC165.sol:22",
+        "inherit": [
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165"
+        ],
+        "libraries": [],
+        "methods": [
+          "supportsInterface(bytes4)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165": {
+        "src": "@openzeppelin/contracts/utils/introspection/IERC165.sol:15",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "supportsInterface(bytes4)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "@openzeppelin/contracts/utils/math/Math.sol:Math": {
+        "src": "@openzeppelin/contracts/utils/math/Math.sol:9",
+        "version": {
+          "withMetadata": "c158aee52c8e3743b89ae38ca2812bfd2154bc6f612991b1cb751920a2307901",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "@openzeppelin/contracts/utils/math/SignedMath.sol:SignedMath": {
+        "src": "@openzeppelin/contracts/utils/math/SignedMath.sol:9",
+        "version": {
+          "withMetadata": "38d03921601968dd5afd6158f0e5b76eb08ae62731a02e5ff7605e2b87fb87b4",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:9",
+        "version": {
+          "withMetadata": "753fceeb4bf269aa854548735e0b59f8d44df01b8eeb64592ec2b8fe8a2b1337",
+          "withoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f",
+          "linkedWithoutMetadata": "e6243144fb3c02a7c0be61fa07bc1f99bc7d29d456f74bac6fb547ecf4bc8d9f"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/ValidatorRewards.sol:ValidatorRewards": {
+        "src": "contracts/ValidatorRewards.sol:19",
+        "version": {
+          "withMetadata": "2d22b00cd5991d1f765ca176f2d8d7d3fffed7edf723cf42816da96dcc33672d",
+          "withoutMetadata": "2e65e47dcbc88cc92ff994cae8628960ec272414cb1f7f9874e2555eb82bda38",
+          "linkedWithoutMetadata": "2e65e47dcbc88cc92ff994cae8628960ec272414cb1f7f9874e2555eb82bda38"
+        },
+        "inherit": [
+          "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable",
+          "@openzeppelin/contracts/access/AccessControl.sol:AccessControl",
+          "@openzeppelin/contracts/utils/introspection/ERC165.sol:ERC165",
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165",
+          "@openzeppelin/contracts/access/IAccessControl.sol:IAccessControl",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [
+          "contracts/Errors.sol:Errors",
+          "@openzeppelin/contracts/utils/Address.sol:Address"
+        ],
+        "methods": [
+          "initialize(address[],uint256[],address,address)",
+          "()",
+          "adjustValidatorShares(address,uint256)",
+          "adjustValidatorAddress(uint256,address)",
+          "addValidator(address,uint256)",
+          "totalShares()",
+          "totalReleased()",
+          "shares(address)",
+          "released(address)",
+          "validators(uint256)",
+          "releasable(address)",
+          "release(address payable)",
+          "releaseAll()",
+          "isOriginalAddress(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_roles",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_bytes32,t_struct(RoleData)518_storage)",
+              "contract": "AccessControl",
+              "src": "@openzeppelin/contracts/access/AccessControl.sol:56"
+            },
+            {
+              "label": "_initialized",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint8",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+              "retypedFrom": "bool"
+            },
+            {
+              "label": "_initializing",
+              "offset": 1,
+              "slot": "1",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+            },
+            {
+              "label": "_totalShares",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "ValidatorRewards",
+              "src": "contracts/ValidatorRewards.sol:77"
+            },
+            {
+              "label": "_totalReleased",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "ValidatorRewards",
+              "src": "contracts/ValidatorRewards.sol:80"
+            },
+            {
+              "label": "_shares",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "ValidatorRewards",
+              "src": "contracts/ValidatorRewards.sol:84"
+            },
+            {
+              "label": "_released",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "ValidatorRewards",
+              "src": "contracts/ValidatorRewards.sol:87"
+            },
+            {
+              "label": "_validators",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_array(t_address)dyn_storage",
+              "contract": "ValidatorRewards",
+              "src": "contracts/ValidatorRewards.sol:90"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_address)dyn_storage": {
+              "label": "address[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_bytes32,t_struct(RoleData)518_storage)": {
+              "label": "mapping(bytes32 => struct AccessControl.RoleData)",
+              "numberOfBytes": "32"
+            },
+            "t_struct(RoleData)518_storage": {
+              "label": "struct AccessControl.RoleData",
+              "members": [
+                {
+                  "label": "members",
+                  "type": "t_mapping(t_address,t_bool)",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "adminRole",
+                  "type": "t_bytes32",
+                  "offset": 0,
+                  "slot": "1"
+                }
+              ],
+              "numberOfBytes": "64"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint8": {
+              "label": "uint8",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
       "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable": {
         "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:58",
         "inherit": [],

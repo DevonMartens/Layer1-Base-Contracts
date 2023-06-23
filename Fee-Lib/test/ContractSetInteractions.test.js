@@ -11,9 +11,12 @@ const ether = require("@openzeppelin/test-helpers/src/ether");
 
 
 ONE_H1 = ethers.utils.parseUnits("1","ether");
+NINE_H1 = ethers.utils.parseUnits("9","ether");
+TEN_H1 = ethers.utils.parseUnits("10","ether");
 
     describe("Contract Interactions", function () {
         let owner;
+        let ownerSigner;
         let OracleContract;
         let ValidatorContract;
         let ValidatorContract2;
@@ -28,6 +31,7 @@ ONE_H1 = ethers.utils.parseUnits("1","ether");
         let H1DevelopedApplication;
         let SimpleStorageWithDevAppFee;
         let H1DevelopedApplicationFactory;
+        let FeeContractSigner;
         beforeEach(async() => {
             //addresses for using
             const [owners, alices, randoms] = await ethers.getSigners();
@@ -35,6 +39,7 @@ ONE_H1 = ethers.utils.parseUnits("1","ether");
             alice = await alices.getAddress();
             random = await randoms.getAddress();
             randomSig = ethers.provider.getSigner(random);
+            ownerSigner = ethers.provider.getSigner(owner);
             //get contract factories
             const ValidatorRewardsFactory = await ethers.getContractFactory("ValidatorRewards")
             const FeeContractFactory = await ethers.getContractFactory("FeeContract")
@@ -55,7 +60,7 @@ ONE_H1 = ethers.utils.parseUnits("1","ether");
             const ValidatorArray = [ValidatorContract.address, ValidatorContract2.address, ValidatorContract3.address];
             // Fee contract
             FeeContract = await upgrades.deployProxy(FeeContractFactory, [OracleContract.address, ValidatorArray , weightArray, owner, owner], { initializer: 'initialize' });
-            randomSig = await ethers.getSigner(random)
+            FeeContractSigner = ethers.provider.getSigner(FeeContract.address)
             secondAddressSigner = await ethers.getSigner(random)
             randomAddressIsTheSigner = FeeContract.connect(secondAddressSigner);
              //H1NativeApplication contains modifer to import into all contracts for recieving funds
@@ -110,7 +115,7 @@ ONE_H1 = ethers.utils.parseUnits("1","ether");
              await expectRevert(SimpleStorageWithDevAppFee.set(1), "125")
              await SimpleStorageWithDevAppFee.set(1, {value: 1})
           });
-          it("H1DevelopedApplication devpplicationFee() should not allow a value less than the price", async () => {
+          it("H1DevelopedApplication devapplicationFee() should not allow a value less than the price", async () => {
              await OracleContract.setPriceAverage(ONE_H1)
              await FeeContract.resetFee();
              await expectRevert(SimpleStorageWithDevAppFee.set(1), "125")
@@ -143,5 +148,19 @@ ONE_H1 = ethers.utils.parseUnits("1","ether");
             await SimpleStorageWithFeeDeployed.set(1, {value: 1})
             expect(await SimpleStorageWithFeeDeployed.get()).to.equal(1)
          });
+      
+         it("H1DevelopedApplication devApplicationFee() disperse ether to the dev wallet provided", async () => {
+            await OracleContract.setPriceAverage(TEN_H1)
+
+            await FeeContract.resetFee();
+            // const FeeContractAddress =  await FeeContract.getAddress();
+            // await SimpleStorageWithDevAppFee.set(1, {value: 1})
+            const NINE_H1_STRING = NINE_H1.toString();
+            const ONE_H1_STRING = ONE_H1.toString();
+         await expect(
+            SimpleStorageWithDevAppFee.connect(randomSig).set(1, {value: TEN_H1})
+          ).to.changeEtherBalances([ownerSigner, FeeContractSigner], [NINE_H1_STRING, ONE_H1_STRING])
+        });
+      
 		
     });
