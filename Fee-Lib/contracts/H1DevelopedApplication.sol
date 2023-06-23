@@ -21,11 +21,9 @@ contract H1DevelopedApplication is FeeQuery{
         if (msg.value < callFee() && callFee() > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
-        uint256 havenFee = getHavenFee();git
-        (bool success,) = FeeContract.call{value: havenFee}("");
+        (bool success,) = FeeContract.call{value: getHavenFee()}("");
            require(success, Errors.TRANSFER_FAILED);
-        uint256 devFee = getDeveloperFee();
-        bool sent = payable(developerWallet).send(devFee);
+        bool sent = payable(developerWallet).send(getDeveloperFee());
         _;
     }
 

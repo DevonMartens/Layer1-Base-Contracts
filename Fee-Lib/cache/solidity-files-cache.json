@@ -41,8 +41,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/ValidatorRewards.sol": {
-      "lastModificationDate": 1687499283167,
-      "contentHash": "dafc3fee6402831240b7b643aeacdc90",
+      "lastModificationDate": 1687510142373,
+      "contentHash": "949073644b3016d4b275aed7931edb2b",
       "sourceName": "contracts/ValidatorRewards.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -612,8 +612,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/H1NativeApplication.sol": {
-      "lastModificationDate": 1687367652457,
-      "contentHash": "587de93f178a75943307d10e00d8b5ac",
+      "lastModificationDate": 1687511588473,
+      "contentHash": "d69c33f175872e06e463c28af8553f51",
       "sourceName": "contracts/H1NativeApplication.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -654,8 +654,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/SimpleStorageWithFee.sol": {
-      "lastModificationDate": 1686913087391,
-      "contentHash": "671305471098bc44c8cf8c5ace3f09f3",
+      "lastModificationDate": 1687511638620,
+      "contentHash": "035d597a9e6e2ffa02b91347ea857053",
       "sourceName": "contracts/SimpleStorageWithFee.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -695,8 +695,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/H1DevelopedApplication.sol": {
-      "lastModificationDate": 1687503224947,
-      "contentHash": "bbd3bc5af35772f63cbda7c2c541d913",
+      "lastModificationDate": 1687510023720,
+      "contentHash": "0acea52db2dbf794e608e0aab5975e2e",
       "sourceName": "contracts/H1DevelopedApplication.sol",
       "solcConfig": {
         "version": "0.8.2",

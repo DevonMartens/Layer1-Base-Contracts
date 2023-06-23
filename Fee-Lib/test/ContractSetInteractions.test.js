@@ -151,16 +151,51 @@ TEN_H1 = ethers.utils.parseUnits("10","ether");
       
          it("H1DevelopedApplication devApplicationFee() disperse ether to the dev wallet provided", async () => {
             await OracleContract.setPriceAverage(TEN_H1)
-
             await FeeContract.resetFee();
-            // const FeeContractAddress =  await FeeContract.getAddress();
-            // await SimpleStorageWithDevAppFee.set(1, {value: 1})
             const NINE_H1_STRING = NINE_H1.toString();
             const ONE_H1_STRING = ONE_H1.toString();
          await expect(
             SimpleStorageWithDevAppFee.connect(randomSig).set(1, {value: TEN_H1})
           ).to.changeEtherBalances([ownerSigner, FeeContractSigner], [NINE_H1_STRING, ONE_H1_STRING])
         });
-      
+        it("H1NativeApplication applicationFee() disperse ether to the Fee Contract", async () => {
+         await OracleContract.setPriceAverage(TEN_H1)
+
+         await FeeContract.resetFee();
+        
+         const TEN_H1_STRING = TEN_H1.toString();
+      await expect(
+         SimpleStorageWithFeeDeployed.connect(randomSig).set(1, {value: TEN_H1})
+       ).to.changeEtherBalance(FeeContractSigner, TEN_H1_STRING)
+     });
+//       it("H1NativeApplication applicationFee() should throw an error if the FeeContract Can't recieve funds", async () => {
+//          const OracleFactoryForTest = await ethers.getContractFactory('FeeOracle');
+//       //deploy Oracle
+//          const OracleContractForTest = await OracleFactoryForTest.deploy();
+//          const SimpleStorageWithFeeFactoryForTest = await ethers.getContractFactory("SimpleStorageWithFee");
+
+//          const SimpleStorageWithFeeInvalidFeeContract = await SimpleStorageWithFeeFactoryForTest.deploy(FeeContract.address);
+//          await OracleContractForTest.setPriceAverage(TEN_H1)
+//          await FeeContract.resetFee();
+
+//         await SimpleStorageWithFeeInvalidFeeContract.setFeeContract(OracleContractForTest.address)
+
+//          const TEN_H1_STRING = TEN_H1.toString();
+//       await expect(
+//          SimpleStorageWithFeeInvalidFeeContract.connect(randomSig).set(1, {value: TEN_H1})
+//        ).to.changeEtherBalance(FeeContractSigner, TEN_H1_STRING)
+//      });
+     it("H1DevelopedApplication devApplicationFee() should throw an error if the FeeContract Can't recieve funds", async () => {
+      const SimpleStorageWithDevAppFeeFactoryForTest = await ethers.getContractFactory("SimpleStorageWithDevAppFee");
+      const SimpleStorageWithDevAppFeeInvalidFeeContract = await SimpleStorageWithDevAppFeeFactoryForTest.deploy(FeeContract.address, owner)
+      await OracleContract.setPriceAverage(TEN_H1)
+
+      await FeeContract.resetFee();
+     
+      const TEN_H1_STRING = TEN_H1.toString();
+   await expect(
+      SimpleStorageWithDevAppFeeInvalidFeeContract.connect(randomSig).set(1, {value: TEN_H1})
+    ).to.changeEtherBalance(FeeContractSigner, TEN_H1_STRING)
+  });
 		
     });

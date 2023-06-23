@@ -19,4 +19,5 @@ contract SimpleStorageWithFee is H1NativeApplication {
     function get() public view returns (uint retVal) {
         return storedData;
     }
+
 }

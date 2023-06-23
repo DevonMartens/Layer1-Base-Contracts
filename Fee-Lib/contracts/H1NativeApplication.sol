@@ -20,9 +20,7 @@ contract H1NativeApplication is FeeQuery {
        if(msg.value < callFee() && callFee() > 0) {
            revert(Errors.INSUFFICIENT_FUNDS);
        }
-       (bool success, ) = FeeContract.call{value: fee}(
-           abi.encodeWithSignature("receive()")
-       );
+     (bool success,) = FeeContract.call{value: callFee()}("");
         _;    
    }
   
@@ -46,8 +44,7 @@ contract H1NativeApplication is FeeQuery {
    */
 
    function callFee() public view returns (uint256) {
-       uint256 currentFee = FeeQuery(FeeContract).getFee();
-       return currentFee;
+       return FeeQuery(FeeContract).getFee();
    }
 
 }

@@ -87,7 +87,6 @@ Initializable
     {
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(DISTRIBUTOR_ROLE, distributor);
-
         _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
        for (uint256 i = 0; i < validatorsList.length; i++) {
             _validators.push(validatorsList[i]);
