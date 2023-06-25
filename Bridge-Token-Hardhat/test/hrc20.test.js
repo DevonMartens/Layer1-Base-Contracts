@@ -29,7 +29,7 @@ describe( "Testing the initial values to validate expected contract state", func
             const [owners] = await ethers.getSigners();
             const owner = await owners.getAddress();
             const hrc20 = await ethers.getContractFactory("HRC20")
-            H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, false], 
+            H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, false], 
             { initializer: 'initialize' })
             
         });
@@ -53,7 +53,7 @@ describe( "Testing the initial values to validate expected contract state", func
                     owner = await owners.getAddress();
                     alice = await alices.getAddress();
                     hrc20 = await ethers.getContractFactory("HRC20")
-                    H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, false], 
+                    H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, false], 
                     { initializer: 'initialize' })
                     await H.deposit(alice, 900);
                     
@@ -75,7 +75,7 @@ describe( "Testing the initial values to validate expected contract state", func
             );
         });
         it("The contract: function deposit function should not allow deposits if `isWhiteListContract` is true & address is not on whitelist ", async () => { 
-            const HRC20HasWhiteListAliceIsNotOn =  await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, true], { initializer: 'initialize' });
+            const HRC20HasWhiteListAliceIsNotOn =  await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, true], { initializer: 'initialize' });
             await expectRevert(
                 HRC20HasWhiteListAliceIsNotOn.deposit(
                     alice,
@@ -94,7 +94,7 @@ describe( "Testing the initial values to validate expected contract state", func
             owner = await owners.getAddress();
             alice = await alices.getAddress();
             hrc20 = await ethers.getContractFactory("HRC20")
-            H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, false], 
+            H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, false], 
             { initializer: 'initialize' })
             await H.deposit(alice, 900);
              //confirms alice has balance
@@ -150,7 +150,7 @@ describe( "Testing the initial values to validate expected contract state", func
             random = await randoms.getAddress();
             bob = await bobs.getAddress();
             hrc20 = await ethers.getContractFactory("HRC20")
-            HRCWithWhiteList = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, true], 
+            HRCWithWhiteList = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, true], 
             { initializer: 'initialize' })
         });
         it("If use whitelist is set to true than no address that isnt whitelisted should be able to deposit  ", async () => {          
@@ -238,7 +238,7 @@ describe( "Testing the initial values to validate expected contract state", func
             random = await randoms.getAddress();
             bob = await bobs.getAddress();
             hrc20 = await ethers.getContractFactory("HRC20")
-            H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, false], 
+            H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, false], 
             { initializer: 'initialize' })
             await H.deposit(alice, 900);
             expect(await H.balanceOf(alice)).to.equal(900)
@@ -319,7 +319,7 @@ describe( "Testing the initial values to validate expected contract state", func
             random = await randoms.getAddress();
             bob = await bobs.getAddress();
             hrc20 = await ethers.getContractFactory("HRC20")
-            H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, false], 
+            H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, false], 
             { initializer: 'initialize' })
             //getting alice ability to sign
             secondAddressSigner = await ethers.getSigner(alice)
@@ -406,7 +406,7 @@ describe( "Testing the initial values to validate expected contract state", func
         owner = await owners.getAddress();
         alice = await alices.getAddress();
         hrc20 = await ethers.getContractFactory("HRC20")
-        H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, false], 
+        H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, false], 
         { initializer: 'initialize' })
         await H.deposit(alice, 900);
         
@@ -428,7 +428,7 @@ it("The contract: the withdraw function should revert and give the error BALANCE
 );
 });
 it("The contract: function deposit function should not allow deposits if `isWhiteListContract` is true & address is not on whitelist ", async () => { 
-const HRC20HasWhiteListAliceIsNotOn =  await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, true], { initializer: 'initialize' });
+const HRC20HasWhiteListAliceIsNotOn =  await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, true], { initializer: 'initialize' });
 await expectRevert(
     HRC20HasWhiteListAliceIsNotOn.deposit(
         alice,
@@ -449,10 +449,10 @@ describe("Testing approvals",  function () {
         owner = await owners.getAddress();
         alice = await alices.getAddress();
         hrc20 = await ethers.getContractFactory("HRC20")
-        H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, false], 
+        H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, false], 
         { initializer: 'initialize' })
 
-        TestContractForApprovals = await upgrades.deployProxy(hrc20, ["NOT_A_PROBLEM", "CONTRACT", owner, owner, owner, false], 
+        TestContractForApprovals = await upgrades.deployProxy(hrc20, ["NOT_A_PROBLEM", "CONTRACT", owner, owner, owner, owner, false], 
         { initializer: 'initialize' })
 
         await H.deposit(owner, 900);

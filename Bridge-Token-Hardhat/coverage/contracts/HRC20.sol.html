@@ -22,22 +22,22 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>29/29</span>
+        <span class='fraction'>31/31</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">95.45% </span>
+        <span class="strong">91.3% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>42/44</span>
+        <span class='fraction'>42/46</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">93.75% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>15/15</span>
+        <span class='fraction'>15/16</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>36/36</span>
+        <span class='fraction'>38/38</span>
       </div>
     </div>
   </div>
@@ -284,11 +284,20 @@
 239
 240
 241
-242</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -339,6 +348,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -361,6 +373,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">96×</span>
+<span class="cline-any cline-yes">96×</span>
 <span class="cline-any cline-yes">96×</span>
 <span class="cline-any cline-yes">96×</span>
 <span class="cline-any cline-yes">96×</span>
@@ -523,24 +538,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">34×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 &nbsp;
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 &nbsp;
 import "./Errors.sol";
 &nbsp;
-contract HRC20 is 
-Initializable, 
-ERC20Upgradeable, 
-PausableUpgradeable, 
-AccessControlUpgradeable
-{
+contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable {
 &nbsp;
     /**
     * @dev Emitted when and address is blacklisted from sending/recieving tokens.
@@ -578,6 +600,9 @@ AccessControlUpgradeable
     // Role created via access control that can pause/unpause all withdraws/deposits.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 &nbsp;
+    // Role for the address that can upgrade contracts
+    bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+&nbsp;
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -599,10 +624,13 @@ AccessControlUpgradeable
         address admin, 
         address pauser, 
         address distrubutor, 
+        address upgrader,
         bool useWhiteList
         )
         external <span class="missing-if-branch" title="else path not taken" >E</span>initializer  {
         __Pausable_init();
+        __AccessControl_init();
+        __UUPSUpgradeable_init();
         __ERC20_init(name, symbol);
         isWhiteListContract = useWhiteList;
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
@@ -749,6 +777,17 @@ AccessControlUpgradeable
     }
 &nbsp;
     /**
+    @notice  Function to upgrade contracts.
+    @param newImplementation new implementation address.
+    */
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function _authorizeUpgrade(address newImplementation)</span>
+        internal
+        onlyRole(UPGRADER_ROLE)
+        override
+    {}
+&nbsp;
+    /**
     @notice Function called when using ERC-20 standard transfering functions.
     @param from address to remove tokens from.
     @param to reciever of tokens.
@@ -772,7 +811,7 @@ AccessControlUpgradeable
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Jun 25 2023 08:19:56 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Jun 25 2023 09:23:20 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>
