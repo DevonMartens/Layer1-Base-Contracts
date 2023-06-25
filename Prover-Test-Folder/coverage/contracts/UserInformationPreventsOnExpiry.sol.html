@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/9</span>
+        <span class='fraction'>9/9</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/6</span>
+        <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/3</span>
+        <span class='fraction'>3/3</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/9</span>
+        <span class='fraction'>9/9</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -125,25 +125,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -155,10 +140,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
@@ -181,13 +181,13 @@ abstract contract UserInformationPreventsOnExpiry is RoleVerification {
     @param account address of the target user account
     */
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getUserAccountCountryCodePreventOnExpiry(</span>
+    function getUserAccountCountryCodePreventOnExpiry(
         address account
     ) public view returns (string memory userAccountCountryCode) {
-<span class="cstat-no" title="statement not covered" >        if (block.timestamp &gt;= identityBlob[account].expiry) {</span>
-<span class="cstat-no" title="statement not covered" >            revert(Errors.ID_INVALID_EXPIRED)</span>;
+        if (block.timestamp &gt;= identityBlob[account].expiry) {
+            revert(Errors.ID_INVALID_EXPIRED);
         }
-<span class="cstat-no" title="statement not covered" >        return (identityBlob[account].countryCode);</span>
+        return (identityBlob[account].countryCode);
     }
 &nbsp;
     /**
@@ -196,13 +196,13 @@ abstract contract UserInformationPreventsOnExpiry is RoleVerification {
     @param account address of the target user account
     */
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getUserAccountTypePreventOnExpiry(</span>
+    function getUserAccountTypePreventOnExpiry(
         address account
     ) public view returns (uint8) {
-<span class="cstat-no" title="statement not covered" >        if (block.timestamp &gt;= identityBlob[account].expiry) {</span>
-<span class="cstat-no" title="statement not covered" >            revert(Errors.ID_INVALID_EXPIRED)</span>;
+        if (block.timestamp &gt;= identityBlob[account].expiry) {
+            revert(Errors.ID_INVALID_EXPIRED);
         }
-<span class="cstat-no" title="statement not covered" >        return (identityBlob[account].userType);</span>
+        return (identityBlob[account].userType);
     }
 &nbsp;
     /**
@@ -211,13 +211,13 @@ abstract contract UserInformationPreventsOnExpiry is RoleVerification {
     @param account address of the target user account
     */
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getUserAccountLevelPreventOnExpiry(</span>
+    function getUserAccountLevelPreventOnExpiry(
         address account
     ) public view returns (uint8) {
-<span class="cstat-no" title="statement not covered" >        if (block.timestamp &gt;= identityBlob[account].expiry) {</span>
-<span class="cstat-no" title="statement not covered" >            revert(Errors.ID_INVALID_EXPIRED)</span>;
+        if (block.timestamp &gt;= identityBlob[account].expiry) {
+            revert(Errors.ID_INVALID_EXPIRED);
         }
-<span class="cstat-no" title="statement not covered" >        return (identityBlob[account].level);</span>
+        return (identityBlob[account].level);
     }
 }
 &nbsp;</pre></td></tr>
@@ -226,7 +226,7 @@ abstract contract UserInformationPreventsOnExpiry is RoleVerification {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jun 19 2023 15:31:00 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Jun 25 2023 08:55:57 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

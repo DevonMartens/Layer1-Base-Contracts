@@ -105,9 +105,9 @@ contract ProofOfIdentity is
          __AccessControl_init();
         __ERC721_init("Proof of Identity", "H1-ID");
         _permissionsInterface = IPermissionsInterface(permissionsInterface);
+        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(PROVER_ROLE, prover);
-        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _tokenIdCounter.increment();
     }
 
