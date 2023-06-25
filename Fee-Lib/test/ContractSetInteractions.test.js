@@ -54,12 +54,12 @@ TEN_H1 = ethers.utils.parseUnits("10","ether");
             const addressArray = [alice, owner, random,] 
             const weightArray = [1,2, 3]
             //validator contracts printed out
-            ValidatorContract = await upgrades.deployProxy(ValidatorRewardsFactory, [addressArray, weightArray, owner, owner], { initializer: 'initialize' });
-            ValidatorContract2 = await upgrades.deployProxy(ValidatorRewardsFactory, [addressArray, weightArray, owner, owner], { initializer: 'initialize' });
-            ValidatorContract3 = await upgrades.deployProxy(ValidatorRewardsFactory, [addressArray, weightArray, owner, owner], { initializer: 'initialize' });
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewardsFactory, [addressArray, weightArray, owner, owner, owner], { initializer: 'initialize' });
+            ValidatorContract2 = await upgrades.deployProxy(ValidatorRewardsFactory, [addressArray, weightArray, owner, owner, owner], { initializer: 'initialize' });
+            ValidatorContract3 = await upgrades.deployProxy(ValidatorRewardsFactory, [addressArray, weightArray, owner, owner, owner], { initializer: 'initialize' });
             const ValidatorArray = [ValidatorContract.address, ValidatorContract2.address, ValidatorContract3.address];
             // Fee contract
-            FeeContract = await upgrades.deployProxy(FeeContractFactory, [OracleContract.address, ValidatorArray , weightArray, owner, owner], { initializer: 'initialize' });
+            FeeContract = await upgrades.deployProxy(FeeContractFactory, [OracleContract.address, ValidatorArray , weightArray, owner, owner, owner], { initializer: 'initialize' });
             FeeContractSigner = ethers.provider.getSigner(FeeContract.address)
             secondAddressSigner = await ethers.getSigner(random)
             randomAddressIsTheSigner = FeeContract.connect(secondAddressSigner);

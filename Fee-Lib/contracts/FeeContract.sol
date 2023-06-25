@@ -6,6 +6,9 @@ pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./FeeQuery.sol";
 import "./Errors.sol";
 
@@ -24,7 +27,8 @@ interface IFeeOracle {
 contract FeeContract is 
 FeeQuery, 
 Initializable,
-AccessControlUpgradeable {
+AccessControlUpgradeable,
+UUPSUpgradeable {
 
 
    /** 
@@ -54,6 +58,9 @@ AccessControlUpgradeable {
    //Role to control contract
    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
 
+   // Role to upgrade contract
+   bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+
    /**
    @notice The initialize is initiating variables during deployment.
    @param _oracle is the address for the oracle that is consulted to determine fees.
@@ -65,9 +72,18 @@ AccessControlUpgradeable {
    @dev There cannot be more than five channels.
    */
 
-   function initialize(address _oracle, address[] memory _channels, uint8[] memory _weights, address admin, address distributor) external initializer {
+   function initialize(address _oracle, address[] memory _channels, uint8[] memory _weights, address upgrader, address admin, address distributor) external initializer {
        
        __AccessControl_init();
+       __UUPSUpgradeable_init();
+       _revokeRole(
+            DEFAULT_ADMIN_ROLE,
+            msg.sender)
+            ;
+        _grantRole(
+            UPGRADER_ROLE,
+            upgrader)
+            ;
         _grantRole(
             DEFAULT_ADMIN_ROLE, 
             admin)
@@ -75,10 +91,6 @@ AccessControlUpgradeable {
         _grantRole(
             DISTRIBUTOR_ROLE,
             distributor)
-            ;
-             _revokeRole(
-            DEFAULT_ADMIN_ROLE,
-            msg.sender)
             ;
        if(_channels.length > 5 || _weights.length > 5){
            revert(Errors.CONTRACT_LIMIT_REACHED);
@@ -322,4 +334,15 @@ AccessControlUpgradeable {
    function _refreshOracle() internal returns (bool success) {
        return (IFeeOracle(oracle).refreshOracle());
    }
+
+   /**
+   @notice Function to upgrade contract override to protect.
+   @param newImplementation new implementation address.
+   */
+
+   function _authorizeUpgrade(address newImplementation)
+        internal
+        onlyRole(UPGRADER_ROLE)
+        override
+    {}
 }

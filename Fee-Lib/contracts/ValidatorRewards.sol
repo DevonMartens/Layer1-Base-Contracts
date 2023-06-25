@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+
 import "./Errors.sol";
 
 /// @title ValidatorRewards
@@ -14,7 +16,8 @@ import "./Errors.sol";
 
 contract ValidatorRewards is 
 AccessControl,
-Initializable
+Initializable,
+UUPSUpgradeable
 {
 
    /**
@@ -68,6 +71,9 @@ Initializable
    // Role to control contract distribution.
    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
 
+   // Role to upgrade contract
+   bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+
    /**
    @notice contract deploys with a list of validator addresses and their total shares.
    @param validatorsList an array of validators to accept fees.
@@ -81,12 +87,14 @@ Initializable
     address[] memory validatorsList,
     uint256[] memory shares_, 
     address admin, 
-    address distributor) 
+    address distributor,
+    address upgrader) 
     external 
     initializer
     {
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(DISTRIBUTOR_ROLE, distributor);
+        _grantRole(UPGRADER_ROLE, upgrader);
         _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
        for (uint256 i = 0; i < validatorsList.length; i++) {
             _validators.push(validatorsList[i]);
@@ -260,6 +268,17 @@ Initializable
    }
        return true;
        }
+
+    /**
+   @notice Function to upgrade contract override to protect.
+   @param newImplementation new implementation address.
+   */
+
+   function _authorizeUpgrade(address newImplementation)
+        internal
+        onlyRole(UPGRADER_ROLE)
+        override
+    {}
 
    /**
    @notice internal logic for computing the pending payment of an `account` given the token historical balances and already released amounts.

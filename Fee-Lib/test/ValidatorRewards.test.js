@@ -39,7 +39,7 @@ describe("H1 Management", function () {
             const vadlidatorAddressArray = [owner, random, bob]
             //this is the contract we are looking at Validator Rewards.
             const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
-            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner, owner], { initializer: 'initialize' });
             // ValidatorContract.address = await   s();
             //get randoms signiture
             secondAddressSigner = await ethers.getSigner(random)
@@ -99,7 +99,7 @@ describe("H1 Management", function () {
             const vadlidatorAddressArray = [owner, bob, random]
             //this is the contract we are looking at Validator Rewards.
             const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
-            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner, owner], { initializer: 'initialize' });
             randomSig = ethers.provider.getSigner(random);
             //get randoms signiture for contract txns
             randomSig = await ethers.getSigner(random)
@@ -158,7 +158,7 @@ describe("H1 Management", function () {
             const vadlidatorAddressArray = [owner, bob, random]
             //this is the contract we are looking at Validator Rewards.
             const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
-            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner, owner], { initializer: 'initialize' });
             randomSig = ethers.provider.getSigner(random);
             //get randoms signiture
             secondAddressSigner = await ethers.getSigner(random)
@@ -265,7 +265,7 @@ describe("H1 Management", function () {
             const vadlidatorAddressArray = [owner, random, bob]
             //this is the contract we are looking at Validator Rewards.
             const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
-            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner, owner], { initializer: 'initialize' });
             // ValidatorContract.address = await   s();
             //get randoms signiture
             secondAddressSigner = await ethers.getSigner(random)
@@ -303,7 +303,7 @@ describe("H1 Management", function () {
             vadlidatorAddressArray = [owner, random, bob]
             //this is the contract we are looking at Validator Rewards.
             const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
-            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner], { initializer: 'initialize' });
+            ValidatorContract = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, owner, owner, owner], { initializer: 'initialize' });
             // for error message for rnadom
             FROM = random.toLowerCase();
             DISTRIBUTOR_ROLE = await ValidatorContract.DISTRIBUTOR_ROLE();
@@ -328,7 +328,7 @@ describe("H1 Management", function () {
         }); 
         it("If an address is not the DEFAULT_ADMIN_ROLE it should not be able to adjust the DISTRIBUTOR_ROLE", async () => {
             const ValidatorRewards = await ethers.getContractFactory("ValidatorRewards")
-            const ValidatorContractForTest = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, random, bob], { initializer: 'initialize' });
+            const ValidatorContractForTest = await upgrades.deployProxy(ValidatorRewards, [vadlidatorAddressArray, wieghts, random, bob, owner], { initializer: 'initialize' });
             const DEFAULT_ADMIN_ROLE = await ValidatorContractForTest.DEFAULT_ADMIN_ROLE();
             expect(await ValidatorContractForTest.connect(randomSig).hasRole(DEFAULT_ADMIN_ROLE, owner)).to.equal(false)
             //, `AccessControl: account ${FROM} is missing role ${DEFAULT_ADMIN_ROLE}`)
