@@ -3,7 +3,7 @@ require("@nomiclabs/hardhat-ethers");
 require("@openzeppelin/hardhat-upgrades");
 require("@nomiclabs/hardhat-etherscan");
 require("hardhat-gas-reporter");
-// require("@nomicfoundation/hardhat-toolbox");
+require("@nomiclabs/hardhat-solhint");
 
 
 /** @type import('hardhat/config').HardhatUserConfig */

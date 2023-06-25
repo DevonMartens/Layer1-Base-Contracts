@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-
 pragma solidity ^0.8.2;
 
 import "./FeeQuery.sol";
@@ -13,37 +12,36 @@ import "./Errors.sol";
 */
 
 interface IFeeOracle {
-   function consult() external returns (uint amountOut);
+    function consult() external returns (uint amountOut);
 
-   function refreshOracle() external returns (bool success);
+    function refreshOracle() external returns (bool success);
 }
 
 contract FeeOracle is FeeQuery {
-
     uint priceAverage = 1;
 
-   uint justKeepAdding;
+    uint justKeepAdding;
 
-   function setRequiredReset(uint newReset) external {
-       requiredReset = newReset;
-   }
+    function setRequiredReset(uint newReset) external {
+        requiredReset = newReset;
+    }
 
-   //to check for changes caused by reset fee
-   
-   function setPriceAverage(uint newPriceAverage) external{
-    priceAverage = newPriceAverage;
-   }
+    //to check for changes caused by reset fee
 
-    function consult() external view returns(uint amountOut) {
+    function setPriceAverage(uint newPriceAverage) external {
+        priceAverage = newPriceAverage;
+    }
+
+    function consult() external view returns (uint amountOut) {
         return priceAverage;
     }
-    
-    function refreshOracle() external returns(bool success) {
+
+    function refreshOracle() external returns (bool success) {
         justKeepAdding = justKeepAdding + 8;
         return true;
     }
 
-    function viewJustKeepAdding() external view returns(uint){
+    function viewJustKeepAdding() external view returns (uint) {
         return justKeepAdding;
     }
 }

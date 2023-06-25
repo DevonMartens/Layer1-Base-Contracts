@@ -4,6 +4,7 @@ require("@openzeppelin/hardhat-upgrades");
 require("@nomiclabs/hardhat-etherscan");
 require("hardhat-gas-reporter");
 require('solidity-coverage');
+require("@nomiclabs/hardhat-solhint");
 
 
 /** @type import('hardhat/config').HardhatUserConfig */

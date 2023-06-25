@@ -8,8 +8,6 @@ const {
 const catchRevert = require("./exceptionsHelpers.js").catchRevert;
 
 
-require("./utils");
-
 
 const getLastEvent = async (eventName, instance) => {
     const events = await instance.getPastEvents(eventName, {
@@ -29,7 +27,7 @@ describe( "Testing the initial values to validate expected contract state", func
             const [owners] = await ethers.getSigners();
             const owner = await owners.getAddress();
             const hrc20 = await ethers.getContractFactory("HRC20")
-            H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, owner, false], 
+            H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner, owner, false], 
             { initializer: 'initialize' })
             
         });

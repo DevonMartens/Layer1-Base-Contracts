@@ -4,10 +4,11 @@ pragma solidity ^0.8.0;
 import "./RoleVerification.sol";
 
 /** 
-@title UserInformation
-@author Haven1 Development Team
-@notice This contract is imported by VerifiableIdentity.sol and allows developers to access and utilise Haven1s Proof Of Identity Framework data
-@dev UserInformation is accessible by importing VerifiableIdentity.sol to your contract
+* @title UserInformation
+* @author Haven1 Development Team
+* @notice This contract is imported by VerifiableIdentity.sol 
+* and allows developers to access and utilise Haven1s Proof Of Identity Framework data
+* @dev UserInformation is accessible by importing VerifiableIdentity.sol to your contract
 */
 
 abstract contract UserInformation is RoleVerification {

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/Errors.sol": {
-      "lastModificationDate": 1686913087388,
-      "contentHash": "510bf9ddbbdbef861eb25585084a4982",
+      "lastModificationDate": 1687726896634,
+      "contentHash": "78530d1c5c9316b7588f148d57f50bab",
       "sourceName": "contracts/Errors.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -38,8 +38,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/ValidatorRewards.sol": {
-      "lastModificationDate": 1687700913441,
-      "contentHash": "f18d8c1550429827a267e33c43c73703",
+      "lastModificationDate": 1687727290997,
+      "contentHash": "0fd9c0795686aaab75aae95317b379d6",
       "sourceName": "contracts/ValidatorRewards.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -68,7 +68,7 @@
       "imports": [
         "@openzeppelin/contracts/utils/Address.sol",
         "@openzeppelin/contracts/utils/Context.sol",
-        "@openzeppelin/contracts/access/AccessControl.sol",
+        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
         "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
         "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
         "./Errors.sol"
@@ -155,8 +155,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/FeeContract.sol": {
-      "lastModificationDate": 1687700909765,
-      "contentHash": "d33eaed79b9be235cee6a43c782fd500",
+      "lastModificationDate": 1687727261619,
+      "contentHash": "dc7b14c95127bb7c3259b7c09d7ce538",
       "sourceName": "contracts/FeeContract.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -186,7 +186,6 @@
         "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
         "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
         "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
         "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
         "./FeeQuery.sol",
         "./Errors.sol"
@@ -200,8 +199,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/FeeQuery.sol": {
-      "lastModificationDate": 1687357514611,
-      "contentHash": "9572ccb76a8d92416db8037d6257ef6b",
+      "lastModificationDate": 1687726896736,
+      "contentHash": "b822720fac16c9597a06d9cf1a6779fe",
       "sourceName": "contracts/FeeQuery.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -237,8 +236,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/H1NativeApplication.sol": {
-      "lastModificationDate": 1687511588473,
-      "contentHash": "d69c33f175872e06e463c28af8553f51",
+      "lastModificationDate": 1687726896753,
+      "contentHash": "9273d00044e496d25655138e0c9813ad",
       "sourceName": "contracts/H1NativeApplication.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -276,8 +275,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/SimpleStorageWithFee.sol": {
-      "lastModificationDate": 1687511638620,
-      "contentHash": "035d597a9e6e2ffa02b91347ea857053",
+      "lastModificationDate": 1687726896758,
+      "contentHash": "9b50103333f74d4b10a41b3fd3ee1119",
       "sourceName": "contracts/SimpleStorageWithFee.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -314,8 +313,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/H1DevelopedApplication.sol": {
-      "lastModificationDate": 1687510023720,
-      "contentHash": "0acea52db2dbf794e608e0aab5975e2e",
+      "lastModificationDate": 1687726896747,
+      "contentHash": "12113276945fff29f7d7043170aebe4a",
       "sourceName": "contracts/H1DevelopedApplication.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -655,8 +654,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/DUMMYDONOTDEPLOY.sol": {
-      "lastModificationDate": 1687700078992,
-      "contentHash": "32d853312619fee0daccbcc68156e3e8",
+      "lastModificationDate": 1687726896624,
+      "contentHash": "dd1d519759b37d77f3f148a6b750105d",
       "sourceName": "contracts/DUMMYDONOTDEPLOY.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -695,8 +694,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/SimpleStorageWithDevAppFee.sol": {
-      "lastModificationDate": 1687520177706,
-      "contentHash": "b9811da853cc5eb89e787d167d8c1b29",
+      "lastModificationDate": 1687726896756,
+      "contentHash": "296b1a35a5b93f34af38ae99665c9e27",
       "sourceName": "contracts/SimpleStorageWithDevAppFee.sol",
       "solcConfig": {
         "version": "0.8.2",

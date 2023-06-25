@@ -4,12 +4,13 @@ pragma solidity ^0.8.0;
 import "./UserInformationPreventsOnExpiry.sol";
 
 /**  
-@title UserInformationPreventsOnExpiry
-@author Haven1 Development Team
-@notice This contract allows developers to access and utilise Haven1s Proof Of Identity Framework data
-@dev Haven1s Proof Of Identity Framework data becomes available via the imported functions below
-The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor
-UserInformationPreventsOnExpiry provides protected functions to ensure a users Account contains in date identity documents
+* @title UserInformationPreventsOnExpiry
+* @author Haven1 Development Team
+* @notice This contract allows developers to access and utilise Haven1s Proof Of Identity Framework data
+* @dev Haven1s Proof Of Identity Framework data becomes available via the imported functions below
+* The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor
+* UserInformationPreventsOnExpiry provides protected functions to ensure a users 
+* Account contains in date identity documents
 */
 
 contract VerifiableIdentityPreventsOnExpiry is UserInformationPreventsOnExpiry {

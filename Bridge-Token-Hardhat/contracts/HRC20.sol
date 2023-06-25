@@ -9,39 +9,41 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 import "./Errors.sol";
 
-contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable {
-
+contract HRC20 is
+    Initializable,
+    ERC20Upgradeable,
+    PausableUpgradeable,
+    AccessControlUpgradeable,
+    UUPSUpgradeable
+{
     /**
-    * @dev Emitted when and address is blacklisted from sending/recieving tokens.
-    */
+     * @dev Emitted when and address is blacklisted from sending/recieving tokens.
+     */
     event AddressBlackListed(
-        address indexed blockedAddress, 
+        address indexed blockedAddress,
         bool indexed blockStatus
-        );
+    );
 
     /**
-    * @dev Emitted when and address is whitelisted to sending/recieving tokens.
-    */
+     * @dev Emitted when and address is whitelisted to sending/recieving tokens.
+     */
     event AddressWhiteListed(
-        address indexed permissionedAddress, 
+        address indexed permissionedAddress,
         bool indexed approvalStatus
-        );
+    );
 
+    event WhiteListSetToActive(bool indexed isActive);
 
-    event WhiteListSetToActive(
-        bool indexed isActive
-        );
-    
-    // Mapping will return false by default, if set to true address is blacklisted and can not withdraw/deposit/send/recieve tokens.
+    // Mapping will return false by default, if set to true address cant withdraw/deposit/send/recieve tokens.
     mapping(address => bool) public _blockedMembers;
 
     // Modifer on fuctions to check if address is blocked.
     modifier blackListBlocked(address requester) {
-      require(_blockedMembers[requester] == false, Errors.ADDRESS_BLOCKED);
-      _;
-   }
+        require(_blockedMembers[requester] == false, Errors.ADDRESS_BLOCKED);
+        _;
+    }
 
-    // Role created via access control that can  
+    // Role created via access control that can
     bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
 
     // Role created via access control that can pause/unpause all withdraws/deposits.
@@ -66,15 +68,14 @@ contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessCo
     */
 
     function initialize(
-        string memory name, 
-        string memory symbol, 
-        address admin, 
-        address pauser, 
-        address distrubutor, 
+        string memory name,
+        string memory symbol,
+        address admin,
+        address pauser,
+        address distrubutor,
         address upgrader,
         bool useWhiteList
-        )
-        external initializer  {
+    ) external initializer {
         __Pausable_init();
         __AccessControl_init();
         __UUPSUpgradeable_init();
@@ -91,10 +92,13 @@ contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessCo
     @param blockStatus set to true this blocks the address from using tokens, faulse unblocks it.
     */
 
-   function setBlackListAddress(address blockedAddress, bool blockStatus) external onlyRole(DISTRIBUTOR_ROLE){
-       _blockedMembers[blockedAddress] = blockStatus;
-       emit AddressBlackListed(blockedAddress, blockStatus);
-   }
+    function setBlackListAddress(
+        address blockedAddress,
+        bool blockStatus
+    ) external onlyRole(DISTRIBUTOR_ROLE) {
+        _blockedMembers[blockedAddress] = blockStatus;
+        emit AddressBlackListed(blockedAddress, blockStatus);
+    }
 
     // If this variable is true address that are not approved cannot recieve tokens.
     bool isWhiteListContract;
@@ -108,31 +112,38 @@ contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessCo
     @param approvalStatus whether we want to approve or remove address from whitelist.
     */
 
-    function setWhiteListAddress(address permissionedAddress, bool approvalStatus) external onlyRole(DISTRIBUTOR_ROLE){
-       _whiteListApproved[permissionedAddress] = approvalStatus;
-       emit AddressWhiteListed(permissionedAddress, approvalStatus);
-   }
+    function setWhiteListAddress(
+        address permissionedAddress,
+        bool approvalStatus
+    ) external onlyRole(DISTRIBUTOR_ROLE) {
+        _whiteListApproved[permissionedAddress] = approvalStatus;
+        emit AddressWhiteListed(permissionedAddress, approvalStatus);
+    }
 
     /**
     @notice Function to multiple addresseses t0 whitelist.
     @param permissionedAddresses an array of addresses we want to allow to whitelist.
     */
 
-   function setMultipleWhiteListAddresses(address[] calldata permissionedAddresses) external onlyRole(DISTRIBUTOR_ROLE){
-       for (uint i = 0; i < permissionedAddresses.length; i++) {
-       _whiteListApproved[permissionedAddresses[i]] = true;
-       emit AddressWhiteListed(permissionedAddresses[i], true);
-       }
-   }
+    function setMultipleWhiteListAddresses(
+        address[] calldata permissionedAddresses
+    ) external onlyRole(DISTRIBUTOR_ROLE) {
+        for (uint i = 0; i < permissionedAddresses.length; i++) {
+            _whiteListApproved[permissionedAddresses[i]] = true;
+            emit AddressWhiteListed(permissionedAddresses[i], true);
+        }
+    }
 
     /** 
     @notice Function to enforce or remove the requirement for a whitelist.
     @param isActive if set to true enforces restrictions is false removes.
     */
-     function setWhiteListActive(bool isActive) external onlyRole(DISTRIBUTOR_ROLE){
-       isWhiteListContract = isActive;
-       emit WhiteListSetToActive(isActive);
-   }
+    function setWhiteListActive(
+        bool isActive
+    ) external onlyRole(DISTRIBUTOR_ROLE) {
+        isWhiteListContract = isActive;
+        emit WhiteListSetToActive(isActive);
+    }
 
     /** 
     @notice Function to pause sending/depositing/withdrawing of tokens from contract.
@@ -158,11 +169,12 @@ contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessCo
     @dev Used to override approvals and increase allowance.
     */
 
-
-    function isContract(address _addr) public view returns (bool isItAContract){
+    function isContract(
+        address _addr
+    ) public view returns (bool isItAContract) {
         uint32 size;
         assembly {
-        size := extcodesize(_addr)
+            size := extcodesize(_addr)
         }
         return (size > 0);
     }
@@ -173,8 +185,11 @@ contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessCo
     @param amount the number of tokens the  send on belhalf of the owner.
     */
 
-    function approve(address spender, uint256 amount) public virtual override returns (bool) {
-      require(isContract(spender) == true, Errors.ONLY_APPROVES_CONTRACTS);
+    function approve(
+        address spender,
+        uint256 amount
+    ) public virtual override returns (bool) {
+        require(isContract(spender) == true, Errors.ONLY_APPROVES_CONTRACTS);
         address owner = _msgSender();
         _approve(owner, spender, amount);
         return true;
@@ -186,7 +201,10 @@ contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessCo
     @param addedValue the number of tokens added to the original number that the spender is approved to send on belhalf of the owner.
     */
 
-    function increaseAllowance(address spender, uint256 addedValue) public virtual override returns (bool) {
+    function increaseAllowance(
+        address spender,
+        uint256 addedValue
+    ) public virtual override returns (bool) {
         require(isContract(spender) == true, Errors.ONLY_APPROVES_CONTRACTS);
         address owner = _msgSender();
         _approve(owner, spender, allowance(owner, spender) + addedValue);
@@ -203,8 +221,14 @@ contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessCo
     @dev Only DISTRIBUTOR role can do this given in contructor or by calling grantRole(DISTRIBUTOR_ROLE, <ADDRESS>).
     */
 
-    function deposit(address to, uint256 amount) external whenNotPaused blackListBlocked(to) onlyRole(DISTRIBUTOR_ROLE) {
-      require(isWhiteListContract == false || _whiteListApproved[to] == true, Errors.WHITELIST_ERROR);
+    function deposit(
+        address to,
+        uint256 amount
+    ) external whenNotPaused blackListBlocked(to) onlyRole(DISTRIBUTOR_ROLE) {
+        require(
+            isWhiteListContract == false || _whiteListApproved[to] == true,
+            Errors.WHITELIST_ERROR
+        );
         _mint(to, amount);
     }
 
@@ -218,21 +242,22 @@ contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessCo
     @dev Only DISTRIBUTOR role can do this given in contructor or by calling grantRole(DISTRIBUTOR_ROLE, <ADDRESS>).
     */
 
-   function withdraw(address from, uint256 amount) external whenNotPaused blackListBlocked(from) onlyRole(DISTRIBUTOR_ROLE) {
-       require(balanceOf(from) >= amount, Errors.INSUFFICIENT_BALANCE);
+    function withdraw(
+        address from,
+        uint256 amount
+    ) external whenNotPaused blackListBlocked(from) onlyRole(DISTRIBUTOR_ROLE) {
+        require(balanceOf(from) >= amount, Errors.INSUFFICIENT_BALANCE);
         _burn(from, amount);
     }
 
     /**
-    @notice  Function to upgrade contracts.
+    @notice Function to upgrade contract override to protect.
     @param newImplementation new implementation address.
     */
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        onlyRole(UPGRADER_ROLE)
-        override
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyRole(UPGRADER_ROLE) {}
 
     /**
     @notice Function called when using ERC-20 standard transfering functions.
@@ -243,12 +268,16 @@ contract HRC20 is Initializable, ERC20Upgradeable, PausableUpgradeable, AccessCo
     @dev If an address is blacklisted via `setBlackListAddress` it cannot transfer/recieve tokens.
     */
 
-    function _beforeTokenTransfer(address from, address to, uint256 amount)
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 amount
+    )
         internal
+        override
         whenNotPaused
         blackListBlocked(from)
         blackListBlocked(to)
-        override
     {
         super._beforeTokenTransfer(from, to, amount);
     }

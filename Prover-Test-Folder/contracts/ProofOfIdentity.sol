@@ -14,10 +14,14 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 /**
 * @title Proof of Identity Framework
 * @author Haven1 Development Team
-* @notice This contract is responsible for the registering and updating of users on Haven1, storing de-identified data for utilisation across the network
-* @dev Nominated prover role(s) are responsible for authorising and minting identity NFTs and storing information with registration calldata
-* the contract interacts with the Quroum framework via the network level permissions interface to approve accounts to transact on the network
-* the contract imports the OpenZeppelin ERC721 standard, overriding transfer functions to prevent the Identity NFTs being transferred between accounts
+* @notice This contract is responsible for the registering and updating of 
+* users on Haven1, storing de-identified data for utilisation across the network
+* @dev Nominated prover role(s) are responsible for authorising and minting 
+* identity NFTs and storing information with registration calldata
+* the contract interacts with the Quroum framework via the network level 
+* permissions interface to approve accounts to transact on the network
+* the contract imports the OpenZeppelin ERC721 standard, overriding transfer 
+* functions to prevent the Identity NFTs being transferred between accounts
 */
 
 contract ProofOfIdentity is
@@ -33,7 +37,8 @@ contract ProofOfIdentity is
     Counters.Counter private _tokenIdCounter;
 
     /** 
-    * @dev The event is triggered during the `suspendAccountDeleteTokenAndIdentityBlob` it includes the account, tokenId, and reason for suspension.
+    * @dev The event is triggered during the `suspendAccountDeleteTokenAndIdentityBlob` 
+    * it includes the account, tokenId, and reason for suspension.
     */
     event AccountSuspendedTokenBurned(
         address indexed account,
@@ -53,7 +58,8 @@ contract ProofOfIdentity is
     );
 
     /** 
-    * @dev The event is triggered during the mintIdentity it includes the address the token is minted to and the tokenId.
+    * @dev The event is triggered during the mintIdentity 
+    * it includes the address the token is minted to and the tokenId.
     */
     event IdentityMinted(
         address indexed account, 
@@ -61,7 +67,8 @@ contract ProofOfIdentity is
         );
 
     /** 
-    * @dev The event is triggered during the updateIdentity when an identity is updated it includes the address the token is minted to and the tokenId.
+    * @dev The event is triggered during the updateIdentity when an identity is updated 
+    * it includes the address the token is minted to and the tokenId.
     */
     event IdentityUpdated(
         address indexed account, 
@@ -136,13 +143,19 @@ contract ProofOfIdentity is
     }
 
     /**
-    @notice mintIdentity function is only callable by Prover node, once an identity has been minted it is not transferable
-    @dev once identity is minted, the contract will call the permissions interface contract, adding role access via the 'assignAccountRole' function
-    @param account address of the target user
-    @param countryCode is the users region identifier as defined by ISO3 standards @ https://wits.worldbank.org/wits/wits/witshelp/content/codes/country_codes.htm
-    @param userType is passed to assigned an account type - retail (0) or instituton (1), by not using an enum we allow for additional classes in the future
-    @param expiry is passed to assign an expiry time for the documents provided by the Prover node, ensuring user documentation is in date if an application chooses to implement
-    @param level is passed to assign a KYC level to the user account, by combining the region code and KYC level we allow for specific regional restrictions to be implemented by developers
+    * @notice mintIdentity function is only callable by Prover node, 
+    * once an identity has been minted it is not transferable
+    * @dev once identity is minted, the contract will call the permissions interface contract, 
+    * adding role access via the 'assignAccountRole' function
+    * @param account address of the target user
+    * @param countryCode is the users region identifier as defined by ISO3 standards 
+    * @ https://wits.worldbank.org/wits/wits/witshelp/content/codes/country_codes.htm
+    * @param userType is passed to assigned an account type - 
+    * retail (0) or instituton (1), by not using an enum we allow for additional classes in the future
+    * @param expiry is passed to assign an expiry time for the documents provided by the Prover node, 
+    * ensuring user documentation is in date if an application chooses to implement
+    * @param level is passed to assign a KYC level to the user account, by combining 
+    * the region code and KYC level we allow for specific regional restrictions to be implemented by developers
     */
 
     function mintIdentity(
@@ -175,13 +188,19 @@ contract ProofOfIdentity is
     }
 
     /**
-    @notice updateIdentity function is only callable by Prover node, the intention is to update an identity for changing user details over time
-    @dev the function requires an ID to have been issued to the account, if the account does not have an ID it will revert
-    @param account address of the target user
-    @param countryCode is the users region identifier as defined by ISO3 standards @ https://wits.worldbank.org/wits/wits/witshelp/content/codes/country_codes.htm
-    @param userType is passed to assigned an account type - retail (0) or instituton (1), by not using an enum we allow for additional classes in the future
-    @param expiry is passed to assign an expiry time for the documents provided by the Prover node, ensuring user documentation is in date if an application chooses to implement
-    @param level is passed to assign a KYC level to the user account, by combining the region code and KYC level we allow for specific regional restrictions to be implemented by developers
+    * @notice updateIdentity function is only callable by Prover node, 
+    * the intention is to update an identity for changing user details over time
+    * @dev the function requires an ID to have been issued to the account, 
+    * if the account does not have an ID it will revert
+    * @param account address of the target user
+    * @param countryCode is the users region identifier as defined by 
+    * ISO3 standards @ https://wits.worldbank.org/wits/wits/witshelp/content/codes/country_codes.htm
+    * @param userType is passed to assigned an account type - retail (0) or instituton (1), 
+    * by not using an enum we allow for additional classes in the future
+    * @param expiry is passed to assign an expiry time for the documents provided by the Prover node, 
+    * ensuring user documentation is in date if an application chooses to implement
+    * @param level is passed to assign a KYC level to the user account, by combining the region code and KYC 
+    * level we allow for specific regional restrictions to be implemented by developers
     */
 
     function updateIdentity(
@@ -221,9 +240,11 @@ contract ProofOfIdentity is
     }
 
     /** 
-    @notice This function reverses `mintIdentity` function by removing the identity blob struct and burning the token, suspending the account via the permissions interface
-    @param suspendAccount the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping
-    @param reason the reason the address is being suspended
+    * @notice This function reverses `mintIdentity` function by removing the identity blob 
+    * struct and burning the token, suspending the account via the permissions interface
+    * @param suspendAccount the address to suspend via the 
+    * permissions interface, tokenID is assigned by the _tokenOfHolder mapping
+    * @param reason the reason the address is being suspended
     */
 
     function suspendAccountDeleteTokenAndIdentityBlob(
@@ -242,9 +263,11 @@ contract ProofOfIdentity is
     }
 
     /** 
-    @notice This function suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account
-    @param suspendAddress the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping
-    @param reason the reason the address is being suspended
+    * @notice This function suspends the account via the permissions 
+    * interface and maintains the tokenID and identity blog struct for the targets account
+    * @param suspendAddress the address to suspend via the permissions interface, 
+    * tokenID is assigned by the _tokenOfHolder mapping
+    * @param reason the reason the address is being suspended
     */
 
     function suspendAccountMaintainTokenAndIdentityBlob(

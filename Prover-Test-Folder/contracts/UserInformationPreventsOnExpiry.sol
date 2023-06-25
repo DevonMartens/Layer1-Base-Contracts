@@ -5,10 +5,11 @@ import "./RoleVerification.sol";
 import "./Errors.sol";
 
 /**
-@title UserInformationPreventsOnExpiry
-@author Haven1 Development Team
-@notice This contract allows developers to utilise Haven1s Proof Of Identity Framework to enforce in date identity documents for access to functions
-@dev UserInformationPreventsOnExpiry is accessible by importing VerifiableIdentityPreventsOnExpiry.sol to your contract
+* @title UserInformationPreventsOnExpiry
+* @author Haven1 Development Team
+* @notice This contract allows developers to utilise Haven1s Proof Of Identity Framework 
+* to enforce in date identity documents for access to functions
+* @dev UserInformationPreventsOnExpiry is accessible by importing VerifiableIdentityPreventsOnExpiry.sol to a contract
 */
 
 abstract contract UserInformationPreventsOnExpiry is RoleVerification {

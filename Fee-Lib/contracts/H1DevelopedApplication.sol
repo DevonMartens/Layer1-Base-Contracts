@@ -5,12 +5,14 @@ import "./FeeQuery.sol";
 
 pragma solidity ^0.8.2;
 
-/// @title H1DevelopedApplication
-/// @notice This contract has a modifer that ensures fees are sent to the developer of an application and the FeeContract.
-/// @dev The primary function of this contract is to be used as an import for developers building on Haven.
+/**
+* @title H1DevelopedApplication
+* @notice This contract has a modifer that ensures fees 
+* are sent to the developer of an application and the FeeContract.
+* @dev The primary function of this contract is to be used as an import for developers building on Haven.
+*/
 
-
-contract H1DevelopedApplication is FeeQuery{
+contract H1DevelopedApplication is FeeQuery {
     // Storage for fee contract address.
     address public FeeContract;
     // Address storage for developer wallet.
@@ -21,23 +23,21 @@ contract H1DevelopedApplication is FeeQuery{
         if (msg.value < callFee() && callFee() > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
-        (bool success,) = FeeContract.call{value: getHavenFee()}("");
-           require(success, Errors.TRANSFER_FAILED);
+        (bool success, ) = FeeContract.call{value: getHavenFee()}("");
+        require(success, Errors.TRANSFER_FAILED);
         bool sent = payable(developerWallet).send(getDeveloperFee());
         _;
     }
 
-   /**
-   @notice Constructor to initialize contract deployment.
-   @param _FeeContract address of fee contract to pay fees.
-   @param walletToCollectFees the address to receive 10% of the fees..
-   @dev For the param walletToCollectFees the deployer of this wallet should consider a setter for this address in their dApp.
+    /**
+   * @notice Constructor to initialize contract deployment.
+   * @param _FeeContract address of fee contract to pay fees.
+   * @param walletToCollectFees the address to receive 10% of the fees..
+   * @dev For the param walletToCollectFees the deployer 
+   * of this wallet should consider a setter for this address in their dApp.
    */
 
-    constructor(
-        address _FeeContract,
-        address walletToCollectFees
-    ) {
+    constructor(address _FeeContract, address walletToCollectFees) {
         if (_FeeContract == address(0)) {
             revert(Errors.INVALID_ADDRESS);
         }
@@ -65,8 +65,8 @@ contract H1DevelopedApplication is FeeQuery{
     }
 
     //query fee function
-     function callFee() public view returns (uint256) {
-       uint256 currentFee = FeeQuery(FeeContract).getFee();
-       return currentFee;
-   }
+    function callFee() public view returns (uint256) {
+        uint256 currentFee = FeeQuery(FeeContract).getFee();
+        return currentFee;
+    }
 }

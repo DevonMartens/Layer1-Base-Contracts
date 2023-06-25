@@ -8,10 +8,12 @@ contract SimpleStorageWithDevAppFee is H1DevelopedApplication {
     uint public storedData;
     uint public h1Stored;
 
-    constructor(address _feeContract, address devWallet) H1DevelopedApplication(_feeContract, devWallet) {
-    }
+    constructor(
+        address _feeContract,
+        address devWallet
+    ) H1DevelopedApplication(_feeContract, devWallet) {}
 
-    function set(uint x) public payable devApplicationFee() {
+    function set(uint x) public payable devApplicationFee {
         storedData = x;
     }
 

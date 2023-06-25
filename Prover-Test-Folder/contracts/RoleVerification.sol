@@ -4,9 +4,10 @@ pragma solidity ^0.8.0;
 import "./Errors.sol";
 
 /** 
-@title RoleVerification
-@notice This contract outlines the base layer of Haven1s provable identity framework
-@dev The primary function of this contract is to establish and return a users account level "identity blob" for use within the identity framework
+* @title RoleVerification
+* @notice This contract outlines the base layer of Haven1s provable identity framework
+* @dev The primary function of this contract is to establish and return a users account level 
+* "identity blob" for use within the identity framework
 */
 abstract contract RoleVerification {
     
