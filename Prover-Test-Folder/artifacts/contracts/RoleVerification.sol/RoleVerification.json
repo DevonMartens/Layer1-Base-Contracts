@@ -6,57 +6,6 @@
     {
       "inputs": [
         {
-          "internalType": "bytes8",
-          "name": "c__b8c9e965",
-          "type": "bytes8"
-        }
-      ],
-      "name": "c_b8c9e965",
-      "outputs": [],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes8",
-          "name": "c__b8c9e965",
-          "type": "bytes8"
-        }
-      ],
-      "name": "c_falseb8c9e965",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes8",
-          "name": "c__b8c9e965",
-          "type": "bytes8"
-        }
-      ],
-      "name": "c_trueb8c9e965",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "address",
           "name": "account",
           "type": "address"
