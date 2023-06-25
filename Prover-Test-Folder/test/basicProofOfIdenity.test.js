@@ -49,7 +49,7 @@ describe("Testing the initial values to validate expected contract state", funct
              owner = await owners.getAddress();
              alice = await alices.getAddress();
              other = await others.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner], { initializer: 'initialize' });
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' });
             //mints tokenid 1 to alice
             // country code "1" , userType 2 ,level 3, expiry block, tokenURI
             await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "tokenURI");
@@ -97,7 +97,7 @@ describe("Testing the initial values to validate expected contract state", funct
             const owner = await owners.getAddress()
             alice = await alices.getAddress();
             other = await others.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner], { initializer: 'initialize' });
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' });
             //mints tokenid 1 to alice
             // country code "1" , userType 2 ,level 3, expiry block, tokenURI
             await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "tokenURI");
@@ -172,7 +172,7 @@ describe("Testing the initial values to validate expected contract state", funct
             owner = await owners.getAddress();
             alice = await alices.getAddress();
             other = await others.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner], { initializer: 'initialize' });
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' });
             //mints tokenid 1 to alice
             // country code "1" , userType 2 ,level 3, expiry block, tokenURI
             await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "token");
@@ -287,7 +287,7 @@ describe("Testing the initial values to validate expected contract state", funct
             owner = await owners.getAddress();
             alice = await alices.getAddress();
             other = await others.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner], { initializer: 'initialize' });
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' });
             //mints tokenid 1 to alice token 2 to other to test
             // tokenId 1 country code "1" , userType 2 ,level 3, expiry block 78886932657, tokenURI - tokenONE
             await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "tokenONE");
@@ -358,7 +358,7 @@ describe("Testing the initial values to validate expected contract state", funct
             owner = await owners.getAddress();
             alice = await alices.getAddress();
             other = await others.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner], { initializer: 'initialize' })
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' })
             //allows alice to be the signer 
             const secondAddressSigner = await ethers.getSigner(alice)
             signerAlice = ProofOfIdentityContract.connect(secondAddressSigner);
@@ -392,7 +392,7 @@ describe("Testing the initial values to validate expected contract state", funct
             owner = await owners.getAddress();
             alice = await alices.getAddress();
             other = await others.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner,], { initializer: 'initialize' });
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' });
             // gets information for deployment
             const VerifiableIdentityPreventsOnExpiryFactoryInfo = await ethers.getContractFactory("VerifiableIdentityPreventsOnExpiry")
             // deploy verifiable identity with proof of identity added to it to consult
@@ -482,7 +482,7 @@ describe("Testing the initial values to validate expected contract state", funct
             const [owners, alices] = await ethers.getSigners();
             const owner = await owners.getAddress();
             alice = await alices.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner], { initializer: 'initialize' });
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' });
             //mints tokenid 1 to alice
             // country code "1" , userType 2 ,level 3, expiry block, tokenURI
             await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "token");
@@ -519,7 +519,7 @@ describe("Testing the initial values to validate expected contract state", funct
             const owner = await owners.getAddress();
             alice = await alices.getAddress();
             other = await others.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner], { initializer: 'initialize' });
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' });
             //mints tokenid 1 to alice
             // country code "1" , userType 2 ,level 3, expiry block, tokenURI
             await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "token");
@@ -594,7 +594,7 @@ describe("Testing the initial values to validate expected contract state", funct
             owner = await owners.getAddress();
             alice = await alices.getAddress();
             other = await others.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner], { initializer: 'initialize' });
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' });
             //mints tokenid 1 to alice
             // country code "1" , userType 2 ,level 3, expiry block, tokenURI
             await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "token");
@@ -645,7 +645,7 @@ describe("Testing the initial values to validate expected contract state", funct
                 owner = await owners.getAddress();
                 alice = await alices.getAddress();
                 other = await others.getAddress();
-                ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner], { initializer: 'initialize' })
+                ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' })
                 //allows alice to be the signer 
                 const secondAddressSigner = await ethers.getSigner(alice)
                 signerAlice = ProofOfIdentityContract.connect(secondAddressSigner);

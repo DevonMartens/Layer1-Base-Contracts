@@ -9,6 +9,7 @@ import "./UserInformation.sol";
 import "./Errors.sol";
 import "./UserInformationPreventsOnExpiry.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 /**
 * @title Proof of Identity Framework
@@ -24,7 +25,8 @@ contract ProofOfIdentity is
     UserInformationPreventsOnExpiry,
     Initializable, 
     ERC721Upgradeable, 
-    AccessControlUpgradeable
+    AccessControlUpgradeable,
+    UUPSUpgradeable
 {
     using Counters for Counters.Counter;
 
@@ -88,6 +90,9 @@ contract ProofOfIdentity is
     // Storage for prover role.
     bytes32 public constant PROVER_ROLE = keccak256("PROVER_ROLE");
 
+    // Role to upgrade contract
+   bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+
     /**
     @notice initalizer function run on deployment. 
     @dev increments tokenId so we start at 1.
@@ -98,12 +103,30 @@ contract ProofOfIdentity is
     function initialize(
         address permissionsInterface,
         address admin,
-        address prover
+        address prover,
+        address upgrader
     )
     external initializer
     {
+        _revokeRole(
+            DEFAULT_ADMIN_ROLE,
+            msg.sender)
+            ;
+        _grantRole(
+            UPGRADER_ROLE,
+            upgrader)
+            ;
+        _grantRole(
+            DEFAULT_ADMIN_ROLE, 
+            admin)
+            ;
+        _grantRole(
+            PROVER_ROLE,
+            prover)
+            ;
          __AccessControl_init();
         __ERC721_init("Proof of Identity", "H1-ID");
+        __UUPSUpgradeable_init();
         _permissionsInterface = IPermissionsInterface(permissionsInterface);
         _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
@@ -280,6 +303,17 @@ contract ProofOfIdentity is
     ) public override {
         revert(Errors.ID_NOT_TRANSFERABLE);
     }
+
+    /**
+   @notice Function to upgrade contract override to protect.
+   @param newImplementation new implementation address.
+   */
+
+   function _authorizeUpgrade(address newImplementation)
+        internal
+        onlyRole(UPGRADER_ROLE)
+        override
+    {}
 
     /**
     @notice Override to ensure the same interfaces can support access control and ERC721 from openzepplin.
