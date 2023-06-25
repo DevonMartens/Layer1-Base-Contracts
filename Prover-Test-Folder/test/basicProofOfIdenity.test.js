@@ -22,7 +22,7 @@ describe("Testing the initial values to validate expected contract state", funct
             const [owners, alices] = await ethers.getSigners();
             const owner = await owners.getAddress();
             const alice = await alices.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, alice], { initializer: 'initialize' });
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, alice, owner], { initializer: 'initialize' });
         });
 
         it("The contract: have correct values for name & symbol", async () => {
@@ -287,7 +287,8 @@ describe("Testing the initial values to validate expected contract state", funct
             owner = await owners.getAddress();
             alice = await alices.getAddress();
             other = await others.getAddress();
-            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, owner, owner, owner], { initializer: 'initialize' });
+            ProofOfIdentityContract = await upgrades.deployProxy(ProofOfIdentity, [IPermissionsInterfaceDummyInstance.address, 
+            owner, owner, owner,], { initializer: 'initialize' });
             //mints tokenid 1 to alice token 2 to other to test
             // tokenId 1 country code "1" , userType 2 ,level 3, expiry block 78886932657, tokenURI - tokenONE
             await ProofOfIdentityContract.mintIdentity(alice, "1", 2, 3, 78886932657, "tokenONE");

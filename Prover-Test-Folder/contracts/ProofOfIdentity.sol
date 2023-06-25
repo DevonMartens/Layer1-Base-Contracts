@@ -131,6 +131,7 @@ contract ProofOfIdentity is
         _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(PROVER_ROLE, prover);
+        _grantRole(UPGRADER_ROLE,  upgrader);
         _tokenIdCounter.increment();
     }
 
