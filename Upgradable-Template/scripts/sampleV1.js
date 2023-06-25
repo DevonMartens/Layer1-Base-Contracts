@@ -6,7 +6,7 @@ async function main() {
 
   //Param initalize function param 42
   const sample = await upgrades.deployProxy(Sample, [42], {
-    initializer: "initialize",
+    initializer: "initialize", kind: 'uups'
   });
 
   await sample.deployed();

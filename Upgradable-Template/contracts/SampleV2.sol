@@ -5,11 +5,20 @@ pragma solidity ^0.8.2;
 // import "hardhat/console.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-contract SampleV2 is Initializable{
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+
+
+contract SampleV2 
+is Initializable, UUPSUpgradeable
+{
     uint public value;
     
     function inc(uint _value) external{
             value = _value;
     }
+     function _authorizeUpgrade(address newImplementation)
+        internal
+        override
+    {}
 
 }
