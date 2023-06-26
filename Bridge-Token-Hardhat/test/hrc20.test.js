@@ -2,15 +2,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
-const catchRevert = require("./exceptionsHelpers.js").catchRevert;
 
-const getLastEvent = async (eventName, instance) => {
-  const events = await instance.getPastEvents(eventName, {
-    fromBlock: 0,
-    toBlock: "latest",
-  });
-  return events.pop().returnValues;
-};
 
 let hrc20;
 
@@ -22,8 +14,8 @@ describe("Testing the initial values to validate expected contract state", funct
     const hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, false],
-      { initializer: "initialize" }
+      ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
+      { initializer: "initialize", kind: 'uups' }
     );
   });
   it("The contract: have correct values for name & symbol", async () => {

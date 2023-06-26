@@ -84,6 +84,7 @@ contract HRC20 is
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(PAUSER_ROLE, pauser);
         _grantRole(DISTRIBUTOR_ROLE, distrubutor);
+        _grantRole(UPGRADER_ROLE, upgrader);
     }
 
     /** 
