@@ -5,6 +5,7 @@ require("@nomiclabs/hardhat-etherscan");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
 require("@nomiclabs/hardhat-solhint");
+require('solidity-docgen');
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -14,6 +15,7 @@ module.exports = {
       enabled: true,
       runs: 200,
     },
+    docgen: {},
   },
   // networks: {
   //   ropsten: {
