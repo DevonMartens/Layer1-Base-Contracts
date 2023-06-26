@@ -605,6 +605,12 @@ describe("AccessControl", function () {
       `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
     );
   });
+  it("DISTRIBUTOR_ROLE should be the only one to adjust channels", async () => {
+    await expectRevert(
+      Fee.connect(randomSig).addChannel(other, 75),
+      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+    );
+  });
   it("roles should be set upon deployment", async () => {
     expect(await Fee.hasRole(DISTRIBUTOR_ROLE, owner)).to.equal(true);
     expect(await Fee.hasRole(UPGRADER_ROLE, owner)).to.equal(true);
