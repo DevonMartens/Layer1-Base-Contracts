@@ -3,10 +3,8 @@ const { ethers, upgrades } = require("hardhat");
 const { time } = require("@nomicfoundation/hardhat-network-helpers");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
-const catchRevert = require("./exceptionsHelpers.js").catchRevert;
 
 const SIX_ETH = ethers.utils.parseUnits("6", "ether");
-const THREE_ETH = ethers.utils.parseUnits("3", "ether");
 const TWO_ETH = ethers.utils.parseUnits("2", "ether");
 const ONE_ETH = ethers.utils.parseUnits("1", "ether");
 
@@ -35,12 +33,12 @@ describe("Testing the initial values to validate expected contract state", funct
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [ownerArray, weight, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     Fee = await upgrades.deployProxy(
       FeeContract,
       [oracleFake, ownerArray, weight, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     deployBlockTimeStamp = await time.latest();
   });
@@ -98,32 +96,32 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     ValidatorContract2 = await upgrades.deployProxy(
       ValidatorRewards,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     ValidatorContract3 = await upgrades.deployProxy(
       ValidatorRewards,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     ValidatorContract4 = await upgrades.deployProxy(
       ValidatorRewards,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     ValidatorContract5 = await upgrades.deployProxy(
       ValidatorRewards,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     ValidatorContract6 = await upgrades.deployProxy(
       ValidatorRewards,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //channel
     max5ArrayChannel = [
@@ -138,7 +136,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     Fee = await upgrades.deployProxy(
       FeeContract,
       [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
   });
 
@@ -173,7 +171,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     await upgrades.deployProxy(
       FeeContract,
       [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
   });
   it("Fee Contract adjustChannel should change the correct wieght and channel", async () => {
@@ -208,7 +206,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     const notAtMaxFiveFee = await upgrades.deployProxy(
       FeeContract,
       [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //gets original share amount to add to to confirm adjustments
     const originalShareAmount = await notAtMaxFiveFee.getTotalContractShares();
@@ -235,7 +233,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     const notAtMaxFiveFee = await upgrades.deployProxy(
       FeeContract,
       [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //add a channel 5th so this should be max
     await expectRevert(
@@ -279,17 +277,17 @@ describe("Initail tests that require oracle feedback", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewardsFactory,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     ValidatorContract2 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     ValidatorContract3 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     const ValidatorArray = [
       ValidatorContract.address,
@@ -307,7 +305,7 @@ describe("Initail tests that require oracle feedback", function () {
         owner,
         owner,
       ],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     randomSig = await ethers.getSigner(random);
     secondAddressSigner = await ethers.getSigner(random);
@@ -459,12 +457,12 @@ describe("Fee Contract General Getters and Setters", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [addressArray, weight, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
       [FeeOracleContract.address, addressArray, weight, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     const timestamp = await time.latest();
     estimatedResetTime = timestamp + 86400;
@@ -570,12 +568,12 @@ describe("AccessControl", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [ownerArray, weight, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     Fee = await upgrades.deployProxy(
       FeeContract,
       [oracleFake, ownerArray, weight, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     deployBlockTimeStamp = await time.latest();
     DISTRIBUTOR_ROLE = await Fee.DISTRIBUTOR_ROLE();
@@ -608,7 +606,7 @@ describe("AccessControl", function () {
     const FeeContractForTest = await upgrades.deployProxy(
       FeeContract,
       [DummyContract.address, InputArray, NumberArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     await expectRevert(FeeContractForTest.forceFee(), "112");
   });
@@ -621,7 +619,7 @@ describe("AccessControl", function () {
     const FeeContractForTest = await upgrades.deployProxy(
       FeeContract,
       [DummyContract.address, InputArray, NumberArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     await randomSig.sendTransaction({
       to: FeeContractForTest.address,
@@ -638,7 +636,7 @@ describe("AccessControl", function () {
     const FeeContractForTest = await upgrades.deployProxy(
       FeeContract,
       [DummyContract.address, InputArray, NumberArray, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     await expectRevert(FeeContractForTest.collectFee(), "122");
   });

@@ -2,8 +2,7 @@ const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
-const catchRevert = require("./exceptionsHelpers.js").catchRevert;
-const ether = require("@openzeppelin/test-helpers/src/ether");
+
 
 const TEN_ETH = ethers.utils.parseUnits("10", "ether");
 const SEVEN_ETH = ethers.utils.parseUnits("7", "ether");
@@ -40,7 +39,7 @@ describe("H1 Management", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     // ValidatorContract.address = await   s();
     //get randoms signiture
@@ -116,7 +115,7 @@ describe("Testing the view functions ", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     randomSig = ethers.provider.getSigner(random);
     //get randoms signiture for contract txns
@@ -185,7 +184,7 @@ describe("Validator Management", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     randomSig = ethers.provider.getSigner(random);
     //get randoms signiture
@@ -310,7 +309,7 @@ describe("Adjustments in Validators impact on dispursement of funds", function (
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     // ValidatorContract.address = await   s();
     //get randoms signiture
@@ -358,7 +357,7 @@ describe("AccessControl In the contract", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     // for error message for rnadom
     FROM = random.toLowerCase();
@@ -400,7 +399,7 @@ describe("AccessControl In the contract", function () {
     const ValidatorContractForTest = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, random, bob, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     const DEFAULT_ADMIN_ROLE =
       await ValidatorContractForTest.DEFAULT_ADMIN_ROLE();
