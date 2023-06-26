@@ -61,6 +61,10 @@ describe("Testing the initial values to validate expected contract state", funct
     //gets last distribution from contract and ensures its equal to deployment time
     expect(await Fee.getLastDistributionBlock()).to.equal(deployBlockTimeStamp);
   });
+  it("initalize should only be called upon deployment", async () => {
+    await expectRevert(Fee.initialize(owner, ownerArray, weight, oracleFake, oracleFake, oracleFake), 
+    "Initializable: contract is already initialized")
+  });
 });
 describe("Fee Contract Test: Adding and adjusting wieghts and channels functions", function () {
   let owner;
@@ -549,6 +553,10 @@ describe("AccessControl", function () {
   let FROM;
   let other;
   let random;
+  let FromOwner;
+  let UPGRADER_ROLE;
+  let FeeContractFactory;
+  let DEFAULT_ADMIN_ROLE;
   beforeEach(async () => {
     //example weight 100% of bounty 1/1
     weight = [1];
@@ -561,22 +569,25 @@ describe("AccessControl", function () {
     //address of validators in validator rewards
     ownerArray = await [owner];
     FROM = random.toLowerCase();
+    FromOwner = owner.toLowerCase();
     const ValidatorRewards = await ethers.getContractFactory(
       "ValidatorRewards"
     );
-    const FeeContract = await ethers.getContractFactory("FeeContract");
+    FeeContractFactory = await ethers.getContractFactory("FeeContract");
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [ownerArray, weight, owner, owner, owner],
       { initializer: "initialize", kind: 'uups' }
     );
     Fee = await upgrades.deployProxy(
-      FeeContract,
+      FeeContractFactory,
       [oracleFake, ownerArray, weight, owner, owner, owner],
       { initializer: "initialize", kind: 'uups' }
     );
     deployBlockTimeStamp = await time.latest();
     DISTRIBUTOR_ROLE = await Fee.DISTRIBUTOR_ROLE();
+    UPGRADER_ROLE = await Fee.UPGRADER_ROLE();
+    DEFAULT_ADMIN_ROLE = await Fee.DEFAULT_ADMIN_ROLE();
   });
 
   it("DISTRIBUTOR_ROLE should be the only one to adjust channels", async () => {
@@ -584,6 +595,22 @@ describe("AccessControl", function () {
       Fee.connect(randomSig).adjustChannel(1, other, 75),
       `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
     );
+  });
+  it("roles should be set upon deployment", async () => {
+    expect(await Fee.hasRole(DISTRIBUTOR_ROLE, owner)).to.equal(true);
+    expect(await Fee.hasRole(UPGRADER_ROLE, owner)).to.equal(true);
+    expect(await Fee.hasRole(DEFAULT_ADMIN_ROLE, owner)).to.equal(true);
+    expect(await Fee.hasRole(DISTRIBUTOR_ROLE, oracleFake)).to.equal(false);
+    expect(await Fee.hasRole(UPGRADER_ROLE, oracleFake)).to.equal(false);
+    expect(await Fee.hasRole(DEFAULT_ADMIN_ROLE, oracleFake)).to.equal(false);
+  });
+  it("roles should be set upon deployment", async () => {
+    await Fee.grantRole(DISTRIBUTOR_ROLE, oracleFake);
+    await Fee.grantRole(UPGRADER_ROLE, oracleFake);
+    await Fee.grantRole(DEFAULT_ADMIN_ROLE, oracleFake);
+    expect(await Fee.hasRole(DISTRIBUTOR_ROLE, oracleFake)).to.equal(true);
+    expect(await Fee.hasRole(UPGRADER_ROLE, oracleFake)).to.equal(true);
+    expect(await Fee.hasRole(DEFAULT_ADMIN_ROLE, oracleFake)).to.equal(true);
   });
   it("DISTRIBUTOR_ROLE should be the only one who can force fees", async () => {
     await expectRevert(
@@ -597,6 +624,78 @@ describe("AccessControl", function () {
       `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
     );
   });
+  it("upgrades should only be allowed to be called by UPGRADER_ROLE", async function () {
+    const FeeContractHasADifferentUpgrader = await upgrades.deployProxy(
+      FeeContractFactory,
+      [oracleFake, ownerArray, weight, owner, owner, alice],
+      { initializer: "initialize", kind: 'uups' }
+    );
+    await expectRevert(
+      upgrades.upgradeProxy(FeeContractHasADifferentUpgrader.address, FeeContractFactory, {
+        kind: "uups",
+      }),
+      `AccessControl: account ${FromOwner} is missing role ${UPGRADER_ROLE}`
+    );
+    await upgrades.upgradeProxy(Fee.address, FeeContractFactory, {
+      kind: "uups",
+    });
+  });
+  it("upgrades should only be allowed to be called by UPGRADER_ROLE", async function () {
+    const FeeContractHasADifferentUpgrader = await upgrades.deployProxy(
+      FeeContractFactory,
+      [oracleFake, ownerArray, weight, owner, owner, alice],
+      { initializer: "initialize", kind: 'uups' }
+    );
+    await expectRevert(
+      upgrades.upgradeProxy(FeeContractHasADifferentUpgrader.address, FeeContractFactory, {
+        kind: "uups",
+      }),
+      `AccessControl: account ${FromOwner} is missing role ${UPGRADER_ROLE}`
+    );
+    await upgrades.upgradeProxy(Fee.address, FeeContractFactory, {
+      kind: "uups",
+    });
+  });
+  describe("Force and collect fee functions", function () {
+    let owner;
+    let ValidatorContract;
+    let Fee;
+    let deployBlockTimeStamp;
+    let ownerArray;
+    let oracleFake;
+    let weight;
+    let randomSig;
+    let FROM;
+    let other;
+    let random;
+    beforeEach(async () => {
+      //example weight 100% of bounty 1/1
+      weight = [1];
+      const [owners, alices, randoms, others] = await ethers.getSigners();
+      owner = await owners.getAddress();
+      oracleFake = await alices.getAddress();
+      other = await others.getAddress();
+      random = await randoms.getAddress();
+      randomSig = ethers.provider.getSigner(random);
+      //address of validators in validator rewards
+      ownerArray = await [owner];
+      FROM = random.toLowerCase();
+      const ValidatorRewards = await ethers.getContractFactory(
+        "ValidatorRewards"
+      );
+      FeeContractFactory = await ethers.getContractFactory("FeeContract");
+      ValidatorContract = await upgrades.deployProxy(
+        ValidatorRewards,
+        [ownerArray, weight, owner, owner, owner],
+        { initializer: "initialize", kind: 'uups' }
+      );
+      Fee = await upgrades.deployProxy(
+        FeeContractFactory,
+        [oracleFake, ownerArray, weight, owner, owner, owner],
+        { initializer: "initialize", kind: 'uups' }
+      );
+      deployBlockTimeStamp = await time.latest();
+    });
   it("forceFee should distribute funds regardless of sucess or failure upon an address", async () => {
     const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
     const DummyContract = await DummyContractFactory.deploy();
@@ -646,4 +745,5 @@ describe("AccessControl", function () {
   //     //gets last distribution from contract and ensures its equal to deployment time
   //     expect(await Fee.getLastDistributionBlock()).to.equal(deployBlockTimeStamp);
   // });
+});
 });

@@ -73,16 +73,16 @@ contract FeeContract is
         address _oracle,
         address[] memory _channels,
         uint8[] memory _weights,
-        address upgrader,
         address admin,
-        address distributor
+        address distributor,
+        address upgrader
     ) external initializer {
         __AccessControl_init();
         __UUPSUpgradeable_init();
         _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(UPGRADER_ROLE, upgrader);
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(DISTRIBUTOR_ROLE, distributor);
+        _grantRole(UPGRADER_ROLE, upgrader);
         if (_channels.length > 5 || _weights.length > 5) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
