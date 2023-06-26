@@ -3,11 +3,11 @@
 pragma solidity ^0.8.2;
 
 /**
-* @title FeeQuery
-* @notice This contract consists of imports 
-*  to ensure that the functions and variables can be read accross contracts to get correct fees.
-*  @dev The primary function of this contract is to ensure that the fee amount can be read in each contract.
-*/
+ * @title FeeQuery
+ * @notice This contract consists of imports
+ *  to ensure that the functions and variables can be read accross contracts to get correct fees.
+ *  @dev The primary function of this contract is to ensure that the fee amount can be read in each contract.
+ */
 
 interface IFeeContract {
     function queryOracle() external view returns (uint);

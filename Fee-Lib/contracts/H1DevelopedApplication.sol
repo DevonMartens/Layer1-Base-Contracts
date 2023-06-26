@@ -6,11 +6,11 @@ import "./FeeQuery.sol";
 pragma solidity ^0.8.2;
 
 /**
-* @title H1DevelopedApplication
-* @notice This contract has a modifer that ensures fees 
-* are sent to the developer of an application and the FeeContract.
-* @dev The primary function of this contract is to be used as an import for developers building on Haven.
-*/
+ * @title H1DevelopedApplication
+ * @notice This contract has a modifer that ensures fees
+ * are sent to the developer of an application and the FeeContract.
+ * @dev The primary function of this contract is to be used as an import for developers building on Haven.
+ */
 
 contract H1DevelopedApplication is FeeQuery {
     // Storage for fee contract address.
@@ -30,12 +30,12 @@ contract H1DevelopedApplication is FeeQuery {
     }
 
     /**
-   * @notice Constructor to initialize contract deployment.
-   * @param _FeeContract address of fee contract to pay fees.
-   * @param walletToCollectFees the address to receive 10% of the fees..
-   * @dev For the param walletToCollectFees the deployer 
-   * of this wallet should consider a setter for this address in their dApp.
-   */
+     * @notice Constructor to initialize contract deployment.
+     * @param _FeeContract address of fee contract to pay fees.
+     * @param walletToCollectFees the address to receive 10% of the fees..
+     * @dev For the param walletToCollectFees the deployer
+     * of this wallet should consider a setter for this address in their dApp.
+     */
 
     constructor(address _FeeContract, address walletToCollectFees) {
         if (_FeeContract == address(0)) {

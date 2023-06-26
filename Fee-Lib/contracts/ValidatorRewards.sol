@@ -14,7 +14,11 @@ import "./Errors.sol";
 /// @notice This contract ensures fees are sent the validator addresses.
 /// @dev The primary function of this contract is disperse funds from Haven applications.
 
-contract ValidatorRewards is Initializable, AccessControlUpgradeable, UUPSUpgradeable {
+contract ValidatorRewards is
+    Initializable,
+    AccessControlUpgradeable,
+    UUPSUpgradeable
+{
     /**
      * @dev Event for when a new Validator is added. Includes their address and total shares.
      */
@@ -200,10 +204,10 @@ contract ValidatorRewards is Initializable, AccessControlUpgradeable, UUPSUpgrad
     }
 
     /**
-   * @notice Triggers a transfer to `account` of the amount of Wrapped H1 they are owed, 
-   * according to their percentage of the total shares and their previous withdrawals.
-   * @param account the account to check the amount of total received and released amount.
-   */
+     * @notice Triggers a transfer to `account` of the amount of Wrapped H1 they are owed,
+     * according to their percentage of the total shares and their previous withdrawals.
+     * @param account the account to check the amount of total received and released amount.
+     */
 
     function release(address payable account) public {
         require(_shares[account] > 0, Errors.ACCOUNT_HAS_NO_SHARES);
@@ -219,7 +223,7 @@ contract ValidatorRewards is Initializable, AccessControlUpgradeable, UUPSUpgrad
     }
 
     /**
-     * @dev Triggers a transfer to all validators of the amount of 
+     * @dev Triggers a transfer to all validators of the amount of
      * Wrapped H1 they are owed, according to their percentage of the total shares and their previous withdrawals.
      */
 
@@ -261,12 +265,12 @@ contract ValidatorRewards is Initializable, AccessControlUpgradeable, UUPSUpgrad
     ) internal override onlyRole(UPGRADER_ROLE) {}
 
     /**
-   * @notice internal logic for computing the pending payment of an `account` 
-   * given the token historical balances and already released amounts.
-   * @param account the account to check the amount of total received and released amount.
-   * @param totalReceived the account to check the amount of total received and released amount.
-   * @param alreadyReleased the account to check the amount of total received and released amount.
-   */
+     * @notice internal logic for computing the pending payment of an `account`
+     * given the token historical balances and already released amounts.
+     * @param account the account to check the amount of total received and released amount.
+     * @param totalReceived the account to check the amount of total received and released amount.
+     * @param alreadyReleased the account to check the amount of total received and released amount.
+     */
 
     function _pendingPayment(
         address account,

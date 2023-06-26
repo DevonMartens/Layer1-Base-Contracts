@@ -117,12 +117,12 @@ contract FeeContract is
         }
     }
 
-    /** 
-   * @dev Logic to add new channel with weight.
-   * @notice We allow 5 contracts per Fee Contract to ensure distribution can 
-   * be managed we also don't allow duplicate addresses or zero addresses.
-   * @notice The total weight is tracked by `CONTRACT_SHARES` which we use to send correct amounts to each channel.
-   */
+    /**
+     * @dev Logic to add new channel with weight.
+     * @notice We allow 5 contracts per Fee Contract to ensure distribution can
+     * be managed we also don't allow duplicate addresses or zero addresses.
+     * @notice The total weight is tracked by `CONTRACT_SHARES` which we use to send correct amounts to each channel.
+     */
     function addChannel(
         address _newChannelAddress,
         uint8 _weight
@@ -142,14 +142,14 @@ contract FeeContract is
     }
 
     /**
-   * @notice  Logic to adjust a channel and its weight.
-   * @param _index the index of the validator in the validators array.
-   * @param _newChannelAddress the address of the validator replacing the old one.
-   * @param _newWeight the amount of total shares the new address will receive.
-   * @dev the index to avoid a work around to the 5 channel limit and for 0 address.
-   * @dev The total weight is tracked by `CONTRACT_SHARES` 
-   * which we adjust here by subtracting the old number and adding the new.
-   */
+     * @notice  Logic to adjust a channel and its weight.
+     * @param _index the index of the validator in the validators array.
+     * @param _newChannelAddress the address of the validator replacing the old one.
+     * @param _newWeight the amount of total shares the new address will receive.
+     * @dev the index to avoid a work around to the 5 channel limit and for 0 address.
+     * @dev The total weight is tracked by `CONTRACT_SHARES`
+     * which we adjust here by subtracting the old number and adding the new.
+     */
 
     function adjustChannel(
         uint8 _index,
