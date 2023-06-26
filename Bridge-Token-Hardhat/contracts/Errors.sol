@@ -11,16 +11,16 @@ library Errors {
     string public constant INVALID_TOKEN_ID = "106";
     string public constant TOKEN_ID_ALREADY_EXISTS = "107";
     string public constant SOULBOUND_TOKEN = "108";
-    string public constant INSUFFICIENT_BALANCE  = "109";
-    string public constant INSUFFICIENT_TOKEN_BALANCE  = "110";
-    string public constant INCORRECT_INDEX  = "111"; 
-    string public constant TRANSFER_FAILED  = "112";
+    string public constant INSUFFICIENT_BALANCE = "109";
+    string public constant INSUFFICIENT_TOKEN_BALANCE = "110";
+    string public constant INCORRECT_INDEX = "111";
+    string public constant TRANSFER_FAILED = "112";
     string public constant H1_UNEQUAL_TO_DEPOSIT = "113";
-    string public constant NO_AMOUNT_TO_CLAIM  = "114";
-   string public constant ADDRESS_BLOCKED = "115";
-   string public constant ONLY_APPROVES_CONTRACTS = "116";
-   string public constant WHITELIST_ERROR = "117";
-   string public constant GAS_REBATE_ERROR = "118"; 
-   string public constant DISTRIBUTION_ERROR = "119";
-   string public constant RESET_FEE = "120";
+    string public constant NO_AMOUNT_TO_CLAIM = "114";
+    string public constant ADDRESS_BLOCKED = "115";
+    string public constant ONLY_APPROVES_CONTRACTS = "116";
+    string public constant WHITELIST_ERROR = "117";
+    string public constant GAS_REBATE_ERROR = "118";
+    string public constant DISTRIBUTION_ERROR = "119";
+    string public constant RESET_FEE = "120";
 }

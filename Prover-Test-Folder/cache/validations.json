@@ -177,9 +177,7 @@
         "src": "@openzeppelin/contracts-upgradeable/interfaces/draft-IERC1822Upgradeable.sol:10",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "proxiableUUID()"
-        ],
+        "methods": ["proxiableUUID()"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -271,9 +269,7 @@
         "src": "@openzeppelin/contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol:9",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "implementation()"
-        ],
+        "methods": ["implementation()"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -586,9 +582,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -633,11 +627,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -787,9 +777,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -847,9 +835,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -1393,9 +1379,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -1480,12 +1464,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -1744,9 +1724,7 @@
         "src": "@openzeppelin/contracts-upgradeable/interfaces/draft-IERC1822Upgradeable.sol:10",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "proxiableUUID()"
-        ],
+        "methods": ["proxiableUUID()"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -1838,9 +1816,7 @@
         "src": "@openzeppelin/contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol:9",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "implementation()"
-        ],
+        "methods": ["implementation()"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -2153,9 +2129,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -2200,11 +2174,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -2354,9 +2324,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -2414,9 +2382,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -2469,9 +2435,7 @@
       },
       "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
         "src": "@openzeppelin/contracts/access/Ownable.sol:20",
-        "inherit": [
-          "@openzeppelin/contracts/utils/Context.sol:Context"
-        ],
+        "inherit": ["@openzeppelin/contracts/utils/Context.sol:Context"],
         "libraries": [],
         "methods": [
           "owner()",
@@ -2550,9 +2514,7 @@
           "withoutMetadata": "f252dbbe0048a724d7359a1397c724bede61b9b50ad13247f8849704233d6a5f",
           "linkedWithoutMetadata": "f252dbbe0048a724d7359a1397c724bede61b9b50ad13247f8849704233d6a5f"
         },
-        "inherit": [
-          "contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"
-        ],
+        "inherit": ["contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"],
         "libraries": [],
         "methods": [
           "()",
@@ -2613,9 +2575,7 @@
         "src": "contracts/DUMMYDONTDEPLOY.sol:4",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "assignAccountRole(address,string,string)"
-        ],
+        "methods": ["assignAccountRole(address,string,string)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -3099,9 +3059,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -3186,12 +3144,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -3829,9 +3783,7 @@
         "src": "@openzeppelin/contracts-upgradeable/interfaces/draft-IERC1822Upgradeable.sol:10",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "proxiableUUID()"
-        ],
+        "methods": ["proxiableUUID()"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -3923,9 +3875,7 @@
         "src": "@openzeppelin/contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol:9",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "implementation()"
-        ],
+        "methods": ["implementation()"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -4238,9 +4188,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -4285,11 +4233,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -4439,9 +4383,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -4499,9 +4441,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -4554,9 +4494,7 @@
       },
       "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
         "src": "@openzeppelin/contracts/access/Ownable.sol:20",
-        "inherit": [
-          "@openzeppelin/contracts/utils/Context.sol:Context"
-        ],
+        "inherit": ["@openzeppelin/contracts/utils/Context.sol:Context"],
         "libraries": [],
         "methods": [
           "owner()",
@@ -4635,9 +4573,7 @@
           "withoutMetadata": "62c4b16de57f95991434b41442af0dd1f01bd7c3ba532c8ca0b1975662675388",
           "linkedWithoutMetadata": "62c4b16de57f95991434b41442af0dd1f01bd7c3ba532c8ca0b1975662675388"
         },
-        "inherit": [
-          "contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"
-        ],
+        "inherit": ["contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"],
         "libraries": [],
         "methods": [
           "()",
@@ -4698,9 +4634,7 @@
         "src": "contracts/DUMMYDONTDEPLOY.sol:4",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "assignAccountRole(address,string,string)"
-        ],
+        "methods": ["assignAccountRole(address,string,string)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -5184,9 +5118,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -5271,12 +5203,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -6122,9 +6050,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -6169,11 +6095,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -6303,9 +6225,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -6363,9 +6283,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -6418,9 +6336,7 @@
       },
       "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
         "src": "@openzeppelin/contracts/access/Ownable.sol:20",
-        "inherit": [
-          "@openzeppelin/contracts/utils/Context.sol:Context"
-        ],
+        "inherit": ["@openzeppelin/contracts/utils/Context.sol:Context"],
         "libraries": [],
         "methods": [
           "owner()",
@@ -6499,9 +6415,7 @@
           "withoutMetadata": "2f84e7d46386a72c71c30c469a52d5fbf88ede7ffb4a963cc0d0628355a861ff",
           "linkedWithoutMetadata": "2f84e7d46386a72c71c30c469a52d5fbf88ede7ffb4a963cc0d0628355a861ff"
         },
-        "inherit": [
-          "contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"
-        ],
+        "inherit": ["contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"],
         "libraries": [],
         "methods": [
           "()",
@@ -6568,9 +6482,7 @@
         "src": "contracts/DUMMYDONTDEPLOY.sol:8",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "assignAccountRole(address,string,string)"
-        ],
+        "methods": ["assignAccountRole(address,string,string)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -7034,9 +6946,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:17",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -7121,12 +7031,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:18",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -7972,9 +7878,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -8019,11 +7923,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -8153,9 +8053,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -8213,9 +8111,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -8739,9 +8635,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -8826,12 +8720,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -9298,9 +9188,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -9345,11 +9233,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -9479,9 +9363,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -9539,9 +9421,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -10065,9 +9945,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -10152,12 +10030,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -10624,9 +10498,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -10671,11 +10543,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -10805,9 +10673,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -10865,9 +10731,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -10920,9 +10784,7 @@
       },
       "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
         "src": "@openzeppelin/contracts/access/Ownable.sol:20",
-        "inherit": [
-          "@openzeppelin/contracts/utils/Context.sol:Context"
-        ],
+        "inherit": ["@openzeppelin/contracts/utils/Context.sol:Context"],
         "libraries": [],
         "methods": [
           "owner()",
@@ -11001,9 +10863,7 @@
           "withoutMetadata": "62c4b16de57f95991434b41442af0dd1f01bd7c3ba532c8ca0b1975662675388",
           "linkedWithoutMetadata": "62c4b16de57f95991434b41442af0dd1f01bd7c3ba532c8ca0b1975662675388"
         },
-        "inherit": [
-          "contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"
-        ],
+        "inherit": ["contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"],
         "libraries": [],
         "methods": [
           "()",
@@ -11064,9 +10924,7 @@
         "src": "contracts/DUMMYDONTDEPLOY.sol:4",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "assignAccountRole(address,string,string)"
-        ],
+        "methods": ["assignAccountRole(address,string,string)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -11530,9 +11388,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -11617,12 +11473,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -12468,9 +12320,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -12515,11 +12365,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -12649,9 +12495,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -12709,9 +12553,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -12764,9 +12606,7 @@
       },
       "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
         "src": "@openzeppelin/contracts/access/Ownable.sol:20",
-        "inherit": [
-          "@openzeppelin/contracts/utils/Context.sol:Context"
-        ],
+        "inherit": ["@openzeppelin/contracts/utils/Context.sol:Context"],
         "libraries": [],
         "methods": [
           "owner()",
@@ -12845,9 +12685,7 @@
           "withoutMetadata": "b7738dfd404a23e267ecf9f112991496921c9225c7835a63ce09df77cfcd3110",
           "linkedWithoutMetadata": "b7738dfd404a23e267ecf9f112991496921c9225c7835a63ce09df77cfcd3110"
         },
-        "inherit": [
-          "contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"
-        ],
+        "inherit": ["contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"],
         "libraries": [],
         "methods": [
           "c_f980dcac(bytes8)",
@@ -12917,9 +12755,7 @@
         "src": "contracts/DUMMYDONTDEPLOY.sol:4",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "assignAccountRole(address,string,string)"
-        ],
+        "methods": ["assignAccountRole(address,string,string)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -13393,9 +13229,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "c_6f26603d(bytes8)",
@@ -13483,12 +13317,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "c_39e378f6(bytes8)",
           "c_true39e378f6(bytes8)",
@@ -14346,9 +14176,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -14393,11 +14221,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -14527,9 +14351,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -14587,9 +14409,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -15113,9 +14933,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -15200,12 +15018,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -15672,9 +15486,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -15719,11 +15531,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -15853,9 +15661,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -15913,9 +15719,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -16439,9 +16243,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -16526,12 +16328,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -16998,9 +16796,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -17045,11 +16841,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -17179,9 +16971,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -17239,9 +17029,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -17765,9 +17553,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -17852,12 +17638,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -18324,9 +18106,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -18371,11 +18151,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -18505,9 +18281,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -18565,9 +18339,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -19091,9 +18863,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -19178,12 +18948,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -19650,9 +19416,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -19697,11 +19461,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -19831,9 +19591,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -19891,9 +19649,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -20417,9 +20173,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -20504,12 +20258,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -20976,9 +20726,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -21023,11 +20771,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -21157,9 +20901,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -21217,9 +20959,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -21743,9 +21483,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -21830,12 +21568,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -22302,9 +22036,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -22349,11 +22081,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -22483,9 +22211,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -22543,9 +22269,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -23069,9 +22793,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -23156,12 +22878,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -23628,9 +23346,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -23675,11 +23391,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -23809,9 +23521,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -23869,9 +23579,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -24395,9 +24103,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -24482,12 +24188,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -24954,9 +24656,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -25001,11 +24701,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -25135,9 +24831,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -25195,9 +24889,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -25721,9 +25413,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -25808,12 +25498,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:14",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -26394,9 +26080,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -26441,11 +26125,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -26575,9 +26255,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -26635,9 +26313,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -27161,9 +26837,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -27248,12 +26922,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -27720,9 +27390,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -27767,11 +27435,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -27901,9 +27565,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -27961,9 +27623,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -28487,9 +28147,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -28574,12 +28232,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -29046,9 +28700,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -29093,11 +28745,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -29227,9 +28875,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -29287,9 +28933,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -29813,9 +29457,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -29900,12 +29542,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -30372,9 +30010,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -30419,11 +30055,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -30553,9 +30185,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -30613,9 +30243,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -31139,9 +30767,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -31226,12 +30852,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -31698,9 +31320,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -31745,11 +31365,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -31879,9 +31495,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -31939,9 +31553,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -32463,9 +32075,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -32550,12 +32160,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -33022,9 +32628,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -33069,11 +32673,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -33203,9 +32803,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -33263,9 +32861,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -33789,9 +33385,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -33876,12 +33470,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -34348,9 +33938,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -34395,11 +33983,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -34529,9 +34113,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -34589,9 +34171,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -34646,10 +34226,7 @@
         "src": "@openzeppelin/contracts/proxy/Proxy.sol:16",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "()",
-          "()"
-        ],
+        "methods": ["()", "()"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -35133,9 +34710,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -35220,12 +34795,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -35692,9 +35263,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -35739,11 +35308,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -35873,9 +35438,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -35933,9 +35496,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -36459,9 +36020,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -36546,12 +36105,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -37018,9 +36573,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -37065,11 +36618,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -37199,9 +36748,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -37259,9 +36806,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -37785,9 +37330,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -37872,12 +37415,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -38458,9 +37997,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -38505,11 +38042,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -38639,9 +38172,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -38699,9 +38230,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -39225,9 +38754,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -39312,12 +38839,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -39898,9 +39421,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -39945,11 +39466,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -40079,9 +39596,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -40139,9 +39654,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -40665,9 +40178,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -40752,12 +40263,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -41224,9 +40731,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -41271,11 +40776,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -41405,9 +40906,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -41465,9 +40964,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -41991,9 +41488,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -42078,12 +41573,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -42550,9 +42041,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -42597,11 +42086,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -42731,9 +42216,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -42791,9 +42274,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -43317,9 +42798,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -43404,12 +42883,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -43876,9 +43351,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -43923,11 +43396,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -44057,9 +43526,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -44117,9 +43584,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -44643,9 +44108,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -44730,12 +44193,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -44821,9 +44280,7 @@
     {
       "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
         "src": "@openzeppelin/contracts/access/Ownable.sol:20",
-        "inherit": [
-          "@openzeppelin/contracts/utils/Context.sol:Context"
-        ],
+        "inherit": ["@openzeppelin/contracts/utils/Context.sol:Context"],
         "libraries": [],
         "methods": [
           "owner()",
@@ -44981,9 +44438,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -45335,9 +44790,7 @@
     {
       "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
         "src": "@openzeppelin/contracts/access/Ownable.sol:20",
-        "inherit": [
-          "@openzeppelin/contracts/utils/Context.sol:Context"
-        ],
+        "inherit": ["@openzeppelin/contracts/utils/Context.sol:Context"],
         "libraries": [],
         "methods": [
           "owner()",
@@ -45495,9 +44948,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -45853,9 +45304,7 @@
           "withoutMetadata": "62c4b16de57f95991434b41442af0dd1f01bd7c3ba532c8ca0b1975662675388",
           "linkedWithoutMetadata": "62c4b16de57f95991434b41442af0dd1f01bd7c3ba532c8ca0b1975662675388"
         },
-        "inherit": [
-          "contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"
-        ],
+        "inherit": ["contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"],
         "libraries": [],
         "methods": [
           "()",
@@ -45916,9 +45365,7 @@
         "src": "contracts/DUMMYDONTDEPLOY.sol:4",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "assignAccountRole(address,string,string)"
-        ],
+        "methods": ["assignAccountRole(address,string,string)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -46314,9 +45761,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -46361,11 +45806,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -46495,9 +45936,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -46555,9 +45994,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -47081,9 +46518,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -47168,12 +46603,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
@@ -47640,9 +47071,7 @@
         "src": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol:11",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "onERC721Received(address,address,uint256,bytes)"
-        ],
+        "methods": ["onERC721Received(address,address,uint256,bytes)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -47687,11 +47116,7 @@
           "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:IERC165Upgradeable"
         ],
         "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "tokenURI(uint256)"
-        ],
+        "methods": ["name()", "symbol()", "tokenURI(uint256)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -47821,9 +47246,7 @@
           "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:Initializable"
         ],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -47881,9 +47304,7 @@
         "src": "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol:15",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "supportsInterface(bytes4)"
-        ],
+        "methods": ["supportsInterface(bytes4)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -47936,9 +47357,7 @@
       },
       "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
         "src": "@openzeppelin/contracts/access/Ownable.sol:20",
-        "inherit": [
-          "@openzeppelin/contracts/utils/Context.sol:Context"
-        ],
+        "inherit": ["@openzeppelin/contracts/utils/Context.sol:Context"],
         "libraries": [],
         "methods": [
           "owner()",
@@ -48017,14 +47436,9 @@
           "withoutMetadata": "ff11f74044b9945730f75879efdd433b317010500ad16dedb8b41ad7e7197a42",
           "linkedWithoutMetadata": "ff11f74044b9945730f75879efdd433b317010500ad16dedb8b41ad7e7197a42"
         },
-        "inherit": [
-          "contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"
-        ],
+        "inherit": ["contracts/DUMMYDONTDEPLOY.sol:IPermissionsInterface"],
         "libraries": [],
-        "methods": [
-          "()",
-          "assignAccountRole(address,string,string)"
-        ],
+        "methods": ["()", "assignAccountRole(address,string,string)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -48079,9 +47493,7 @@
         "src": "contracts/DUMMYDONTDEPLOY.sol:4",
         "inherit": [],
         "libraries": [],
-        "methods": [
-          "assignAccountRole(address,string,string)"
-        ],
+        "methods": ["assignAccountRole(address,string,string)"],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -48545,9 +47957,7 @@
       },
       "contracts/UserInformation.sol:UserInformation": {
         "src": "contracts/UserInformation.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
         "libraries": [],
         "methods": [
           "getUserAccountCountryCode(address)",
@@ -48632,12 +48042,8 @@
       },
       "contracts/UserInformationPreventsOnExpiry.sol:UserInformationPreventsOnExpiry": {
         "src": "contracts/UserInformationPreventsOnExpiry.sol:13",
-        "inherit": [
-          "contracts/RoleVerification.sol:RoleVerification"
-        ],
-        "libraries": [
-          "contracts/Errors.sol:Errors"
-        ],
+        "inherit": ["contracts/RoleVerification.sol:RoleVerification"],
+        "libraries": ["contracts/Errors.sol:Errors"],
         "methods": [
           "getUserAccountCountryCodePreventOnExpiry(address)",
           "getUserAccountTypePreventOnExpiry(address)",
