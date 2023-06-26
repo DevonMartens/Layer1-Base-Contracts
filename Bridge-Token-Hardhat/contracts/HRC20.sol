@@ -180,6 +180,14 @@ contract HRC20 is
         return (size > 0);
     }
 
+    //TEST NOT FINALIZE
+    function allowance(address owner, address spender) public view virtual override returns (uint256) {
+        require(_blockedMembers[owner] == false &&  _blockedMembers[spender]== false, Errors.ADDRESS_BLOCKED);
+        return super.allowance(owner, spender);
+    }
+
+    //END
+
     /**
     @notice Same as ERC-20's function but does not allow wallets to be approved only contracts.
     @param spender is the address being approved to move another wallets tokens.

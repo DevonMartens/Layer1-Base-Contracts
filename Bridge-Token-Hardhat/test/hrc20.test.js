@@ -3,7 +3,6 @@ const { ethers } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
-
 let hrc20;
 
 describe("Testing the initial values to validate expected contract state", function () {
@@ -15,7 +14,7 @@ describe("Testing the initial values to validate expected contract state", funct
     H = await upgrades.deployProxy(
       hrc20,
       ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
   });
   it("The contract: have correct values for name & symbol", async () => {
@@ -41,7 +40,7 @@ describe("Testing the deposit and withdraw functions", function () {
     H = await upgrades.deployProxy(
       hrc20,
       ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
   });
@@ -59,7 +58,7 @@ describe("Testing the deposit and withdraw functions", function () {
     const HRC20HasWhiteListAliceIsNotOn = await upgrades.deployProxy(
       hrc20,
       ["HAVEN1", "HRC20", owner, owner, owner, owner, true],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
       HRC20HasWhiteListAliceIsNotOn.deposit(alice, 1000),
@@ -79,7 +78,7 @@ describe("Testing the pause functionality", function () {
     H = await upgrades.deployProxy(
       hrc20,
       ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
     //confirms alice has balance
@@ -120,7 +119,7 @@ describe("Testing Whitelist Functionality", function () {
     HRCWithWhiteList = await upgrades.deployProxy(
       hrc20,
       ["HAVEN1", "HRC20", owner, owner, owner, owner, true],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: "uups" }
     );
   });
   it("If use whitelist is set to true than no address that isnt whitelisted should be able to deposit  ", async () => {
@@ -154,7 +153,7 @@ describe("Testing Whitelist Functionality", function () {
     expect(await HRCWithWhiteList.balanceOf(bob)).to.equal(0);
   });
 });
-describe("Testing Blacklist Functionality           ", () => {
+describe("Testing Blacklist Functionality", () => {
   let H;
   let owner;
   let alice;
@@ -169,7 +168,7 @@ describe("Testing Blacklist Functionality           ", () => {
     H = await upgrades.deployProxy(
       hrc20,
       ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
     expect(await H.balanceOf(alice)).to.equal(900);
@@ -203,8 +202,12 @@ describe("Testing Access Control Functionality", function () {
   let alice;
   let signerAlice;
   let FROM;
+  let FromOwner;
   let DISTRIBUTOR_ROLE;
   let PAUSER_ROLE;
+  let UPGRADER_ROLE;
+  let hrc20;
+  let secondAddressSigner;
   beforeEach(async () => {
     const [owners, alices, randoms, bobs] = await ethers.getSigners();
     owner = await owners.getAddress();
@@ -215,16 +218,18 @@ describe("Testing Access Control Functionality", function () {
     H = await upgrades.deployProxy(
       hrc20,
       ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: "uups" }
     );
     //getting alice ability to sign
     secondAddressSigner = await ethers.getSigner(alice);
     signerAlice = H.connect(secondAddressSigner);
     //getting FROM for accesscontrol errors
     FROM = alice.toLowerCase();
+    FromOwner = owner.toLowerCase();
     //getting access control role
     DISTRIBUTOR_ROLE = await H.DISTRIBUTOR_ROLE();
     PAUSER_ROLE = await H.PAUSER_ROLE();
+    UPGRADER_ROLE = await H.UPGRADER_ROLE();
   });
   it("The contract: minting/withdrawing/blacklisting/whitelsiting should only be allowed by the DISTRIBUTOR_ROLE     ", async () => {
     await H.deposit(alice, 900);
@@ -274,6 +279,26 @@ describe("Testing Access Control Functionality", function () {
     await H.grantRole(PAUSER_ROLE, alice);
     await signerAlice.pause();
   });
+  it("upgrades should only be allowed to be called by UPGRADER_ROLE", async function () {
+    const HRC20HasADifferentUpgrader = await upgrades.deployProxy(
+      hrc20,
+      ["HAVEN1", "HRC20", owner, owner, owner, alice, false],
+      { initializer: "initialize", kind: "uups" }
+    );
+    await expectRevert(
+      upgrades.upgradeProxy(HRC20HasADifferentUpgrader.address, hrc20, {
+        kind: "uups",
+      }),
+      `AccessControl: account ${FromOwner} is missing role ${UPGRADER_ROLE}`
+    );
+    // sample = await upgrades.deployProxy(Sample, ["HAVEN1", "HRC20", owner, owner, owner, owner, false],, {
+    //   initializer: "initialize", kind: 'uups'
+    // })
+    // const SampleV2 = await ethers.getContractFactory("SampleV2")
+    const HRC20V2 = await upgrades.upgradeProxy(H.address, hrc20, {
+      kind: "uups",
+    });
+  });
 });
 describe("Testing the deposit and withdraw functions", function () {
   let hrc20;
@@ -288,7 +313,7 @@ describe("Testing the deposit and withdraw functions", function () {
     H = await upgrades.deployProxy(
       hrc20,
       ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
   });
@@ -306,7 +331,7 @@ describe("Testing the deposit and withdraw functions", function () {
     const HRC20HasWhiteListAliceIsNotOn = await upgrades.deployProxy(
       hrc20,
       ["HAVEN1", "HRC20", owner, owner, owner, owner, true],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
       HRC20HasWhiteListAliceIsNotOn.deposit(alice, 1000),
@@ -328,13 +353,13 @@ describe("Testing approvals", function () {
     H = await upgrades.deployProxy(
       hrc20,
       ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: "uups" }
     );
 
     TestContractForApprovals = await upgrades.deployProxy(
       hrc20,
       ["NOT_A_PROBLEM", "CONTRACT", owner, owner, owner, owner, false],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: "uups" }
     );
 
     await H.deposit(owner, 900);
