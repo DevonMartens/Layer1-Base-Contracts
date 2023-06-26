@@ -81,6 +81,7 @@ contract HRC20 is
         __UUPSUpgradeable_init();
         __ERC20_init(name, symbol);
         isWhiteListContract = useWhiteList;
+        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(PAUSER_ROLE, pauser);
         _grantRole(DISTRIBUTOR_ROLE, distrubutor);

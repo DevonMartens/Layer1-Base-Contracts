@@ -7,9 +7,10 @@ let hrc20;
 
 describe("Testing the initial values to validate expected contract state", function () {
   let H;
+  let owner;
   beforeEach(async () => {
     const [owners] = await ethers.getSigners();
-    const owner = await owners.getAddress();
+    owner = await owners.getAddress();
     const hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
@@ -25,6 +26,14 @@ describe("Testing the initial values to validate expected contract state", funct
   });
   it("Upon deployment no NFTs should be minted so the inital value should be 0 totalSupply", async () => {
     expect(await H.totalSupply()).to.equal(0);
+  });
+  it("initalize should only be called upon deployment", async () => {
+    await expectRevert(
+     H.initialize(
+        "HAVEN1", "HRC20", owner, owner, owner, owner, false
+      ),
+      "Initializable: contract is already initialized"
+    );
   });
 });
 describe("Testing the deposit and withdraw functions", function () {
@@ -184,6 +193,10 @@ describe("Testing Blacklist Functionality", () => {
     const signerAlice = H.connect(secondAddressSigner);
     await expectRevert(signerAlice.transfer(owner, 225), "115");
   });
+  it("The contract: an address should not be allowed to recieve tokens if it been blacklisted ", async () => {
+    await H.deposit(owner, 900);
+    await expectRevert(H.transfer(alice, 225), "115");
+  });
   it("removing the blacklist should allow an address should be transfer/have tokens minted to it/withdraw tokens after it has been blacklisted     ", async () => {
     await expectRevert(H.deposit(alice, 900), "115");
     await expectRevert(H.withdraw(alice, 10), "115");
@@ -291,10 +304,6 @@ describe("Testing Access Control Functionality", function () {
       }),
       `AccessControl: account ${FromOwner} is missing role ${UPGRADER_ROLE}`
     );
-    // sample = await upgrades.deployProxy(Sample, ["HAVEN1", "HRC20", owner, owner, owner, owner, false],, {
-    //   initializer: "initialize", kind: 'uups'
-    // })
-    // const SampleV2 = await ethers.getContractFactory("SampleV2")
     const HRC20V2 = await upgrades.upgradeProxy(H.address, hrc20, {
       kind: "uups",
     });
