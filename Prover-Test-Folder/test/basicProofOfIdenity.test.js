@@ -4,7 +4,6 @@ const { time } = require("@nomicfoundation/hardhat-network-helpers");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
-const catchRevert = require("./exceptionsHelpers.js").catchRevert;
 
 describe("Testing the initial values to validate expected contract state", function () {
   let ProofOfIdentityContract;
@@ -19,7 +18,7 @@ describe("Testing the initial values to validate expected contract state", funct
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, alice, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
   });
 
@@ -49,7 +48,7 @@ describe("Testing the mintIdentity to validate expected contract state", functio
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //mints tokenid 1 to alice
     // country code "1" , userType 2 ,level 3, expiry block, tokenURI
@@ -126,7 +125,7 @@ describe("Testing updateIdentity to validate expected contract state", function 
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //mints tokenid 1 to alice
     // country code "1" , userType 2 ,level 3, expiry block, tokenURI
@@ -239,7 +238,7 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //mints tokenid 1 to alice
     // country code "1" , userType 2 ,level 3, expiry block, tokenURI
@@ -332,7 +331,7 @@ describe("Testing contracts that inhert OtherInformation and RoleVerification sh
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //mints tokenid 1 to alice token 2 to other to test
     // tokenId 1 country code "1" , userType 2 ,level 3, expiry block 78886932657, tokenURI - tokenONE
@@ -454,7 +453,7 @@ describe("Testing contracts that ERC721 Overrides Should not Allow Token Movemen
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //allows alice to be the signer
     const secondAddressSigner = await ethers.getSigner(alice);
@@ -496,7 +495,7 @@ describe("Testing the the Verifiable VerifiableIdentityPreventsOnExpiry output a
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     // gets information for deployment
     const VerifiableIdentityPreventsOnExpiryFactoryInfo =
@@ -646,7 +645,7 @@ describe("Testing the User Privilege and Network Removal Functions", function ()
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //mints tokenid 1 to alice
     // country code "1" , userType 2 ,level 3, expiry block, tokenURI
@@ -697,7 +696,7 @@ describe("Testing custom errors to ensure functions revert as expected", functio
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //mints tokenid 1 to alice
     // country code "1" , userType 2 ,level 3, expiry block, tokenURI
@@ -782,7 +781,7 @@ describe("Testing custom events to ensure they emit as expected", function () {
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //mints tokenid 1 to alice
     // country code "1" , userType 2 ,level 3, expiry block, tokenURI
@@ -861,7 +860,7 @@ describe("Testing contracts that ERC721 Overrides Should not Allow Token Movemen
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
       [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
-      { initializer: "initialize" }
+      { initializer: "initialize", kind: 'uups' }
     );
     //allows alice to be the signer
     const secondAddressSigner = await ethers.getSigner(alice);
