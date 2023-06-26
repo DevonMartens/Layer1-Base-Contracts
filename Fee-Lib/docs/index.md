@@ -310,13 +310,13 @@ function initialize(address _oracle, address[] _channels, uint8[] _weights, addr
 ```
 
 The initialize is initiating variables during deployment.
-   @param _oracle is the address for the oracle that is consulted to determine fees.
-   @param _channels array channels are the channels that receive payments.
-   @param _weights are the amount of shares each channel receive.
-   @param admin the address that can add or revoke address priveledges/
-   @param distributor address that manages functions.
-   @dev lastDistribution is the current timestamp fees distributed every 24 hours.
-   @dev There cannot be more than five channels.
+@param \_oracle is the address for the oracle that is consulted to determine fees.
+@param \_channels array channels are the channels that receive payments.
+@param \_weights are the amount of shares each channel receive.
+@param admin the address that can add or revoke address priveledges/
+@param distributor address that manages functions.
+@dev lastDistribution is the current timestamp fees distributed every 24 hours.
+@dev There cannot be more than five channels.
 
 ### receive
 
@@ -333,8 +333,8 @@ function resetFee() external
 ```
 
 This is the call to get the correct value for the fee across all native applications.
-   @dev This call queries the oracle to set a fee.
-   @dev After that is complete it then sets the time that the oracle needs to be rechecked.
+@dev This call queries the oracle to set a fee.
+@dev After that is complete it then sets the time that the oracle needs to be rechecked.
 
 ### addChannel
 
@@ -362,11 +362,11 @@ which we adjust here by subtracting the old number and adding the new._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _index | uint8 | the index of the validator in the validators array. |
-| _newChannelAddress | address | the address of the validator replacing the old one. |
-| _newWeight | uint8 | the amount of total shares the new address will receive. |
+| Name                | Type    | Description                                              |
+| ------------------- | ------- | -------------------------------------------------------- |
+| \_index             | uint8   | the index of the validator in the validators array.      |
+| \_newChannelAddress | address | the address of the validator replacing the old one.      |
+| \_newWeight         | uint8   | the amount of total shares the new address will receive. |
 
 ### setEpoch
 
@@ -375,7 +375,7 @@ function setEpoch(uint256 new_epochLength) external
 ```
 
 This is to adjust the length of time between payouts from the contract.
-   @param new_epochLength the length of time between payouts from the contract.
+@param new_epochLength the length of time between payouts from the contract.
 
 ### collectFee
 
@@ -384,9 +384,9 @@ function collectFee() external payable
 ```
 
 Function triggered by collectFee in other contracts to disburse payment to distribute funds to channels.
-   @dev Function can be called by a wallet every 24 hours, gas is rebated.
-   @dev The balance of the contract is distributed to channels and an event is triggered FeesDistributed.
-   @dev The function reverts should the function have been called less than 24 hours ago.
+@dev Function can be called by a wallet every 24 hours, gas is rebated.
+@dev The balance of the contract is distributed to channels and an event is triggered FeesDistributed.
+@dev The function reverts should the function have been called less than 24 hours ago.
 
 ### forceFee
 
@@ -403,7 +403,7 @@ function setOracle(address _newOracle) external
 ```
 
 Setter function to adjust oracle address.
-   @param _newOracle the new oracle address.
+@param \_newOracle the new oracle address.
 
 ### isOriginalAddress
 
@@ -412,7 +412,7 @@ function isOriginalAddress(address channel) public view returns (bool)
 ```
 
 This view function checks if the address is in the channels array.
-   @dev It is used in functions above to ensure no duplicate addresses are added to the channels.
+@dev It is used in functions above to ensure no duplicate addresses are added to the channels.
 
 ### getNextResetTime
 
@@ -453,7 +453,7 @@ function amountPaidToUponNextDistribution(uint8 index) public view returns (uint
 ```
 
 Function that allows ability to view the amount an address is supposed to be paid based on array position.
-   @param index the number in the array of channels/weights representing the index.
+@param index the number in the array of channels/weights representing the index.
 
 ### getChannelWeightByIndex
 
@@ -462,7 +462,7 @@ function getChannelWeightByIndex(uint8 index) public view returns (address, uint
 ```
 
 Allows ability to view a channel and its corresponding weight via index.
-   @param index the number in the array of channels.
+@param index the number in the array of channels.
 
 ### getTotalContractShares
 
@@ -488,7 +488,7 @@ function queryOracle() public view returns (uint256 feeAmount)
 
 Function to consult oracle to get fee amount.
 
-### _refreshOracle
+### \_refreshOracle
 
 ```solidity
 function _refreshOracle() internal returns (bool success)
@@ -496,20 +496,20 @@ function _refreshOracle() internal returns (bool success)
 
 Function to consult oracle to update.
 
-### _authorizeUpgrade
+### \_authorizeUpgrade
 
 ```solidity
 function _authorizeUpgrade(address newImplementation) internal
 ```
 
 Function to upgrade contract override to protect.
-   @param newImplementation new implementation address.
+@param newImplementation new implementation address.
 
 ## IFeeContract
 
 This contract consists of imports
- to ensure that the functions and variables can be read accross contracts to get correct fees.
- @dev The primary function of this contract is to ensure that the fee amount can be read in each contract.
+to ensure that the functions and variables can be read accross contracts to get correct fees.
+@dev The primary function of this contract is to ensure that the fee amount can be read in each contract.
 
 ### queryOracle
 
@@ -544,7 +544,7 @@ function getFee() public view returns (uint256)
 ```
 
 This is the function the modifier consults to view the fee from the fee contract.
-   @dev The required reset means the fee updates every 24 hours.
+@dev The required reset means the fee updates every 24 hours.
 
 ## H1DevelopedApplication
 
@@ -584,9 +584,9 @@ of this wallet should consider a setter for this address in their dApp._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _FeeContract | address | address of fee contract to pay fees. |
+| Name                | Type    | Description                              |
+| ------------------- | ------- | ---------------------------------------- |
+| \_FeeContract       | address | address of fee contract to pay fees.     |
 | walletToCollectFees | address | the address to receive 10% of the fees.. |
 
 ### getDeveloperFee
@@ -596,7 +596,7 @@ function getDeveloperFee() public view returns (uint256 developerFee)
 ```
 
 This is the view function to get the fee amount owed to the developer.
-   @dev It is 90% of the contract balance.
+@dev It is 90% of the contract balance.
 
 ### getHavenFee
 
@@ -605,7 +605,7 @@ function getHavenFee() public view returns (uint256 havenOneFee)
 ```
 
 This is the view function to get the fee amount owed to the FeeContract.
-   @dev It is 10% of the contract balance.
+@dev It is 10% of the contract balance.
 
 ### callFee
 
@@ -650,9 +650,9 @@ of this wallet should consider a setter for this address in their dApp._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _FeeContract | address | address of fee contract to pay fees. |
+| Name          | Type    | Description                          |
+| ------------- | ------- | ------------------------------------ |
+| \_FeeContract | address | address of fee contract to pay fees. |
 
 ### callFee
 
@@ -661,7 +661,7 @@ function callFee() public view returns (uint256)
 ```
 
 This is the view function to get the fee amount from the feeContract.
-   @dev It returns a uint256 that is used in the applicationFee modifier.
+@dev It returns a uint256 that is used in the applicationFee modifier.
 
 ## SimpleStorageWithDevAppFee
 
@@ -784,11 +784,11 @@ function initialize(address[] validatorsList, uint256[] shares_, address admin, 
 ```
 
 contract deploys with a list of validator addresses and their total shares.
-   @param validatorsList an array of validators to accept fees.
-   @param shares_ an array
-   @param admin the address that can grant and remove permissions.
-   @param distributor the address that calls restricted functions in the contract.
-   @dev the shares for each address are the amount over the total amount for all addresses.
+@param validatorsList an array of validators to accept fees.
+@param shares\_ an array
+@param admin the address that can grant and remove permissions.
+@param distributor the address that calls restricted functions in the contract.
+@dev the shares for each address are the amount over the total amount for all addresses.
 
 ### receive
 
@@ -805,8 +805,8 @@ function adjustValidatorShares(address account, uint256 shares_) external
 ```
 
 This function adjusts the total number of shares received by an address.
-   @param account the address that the share number should be adjusted for.
-   @param shares_ the new share number for the account.
+@param account the address that the share number should be adjusted for.
+@param shares\_ the new share number for the account.
 
 ### adjustValidatorAddress
 
@@ -815,8 +815,8 @@ function adjustValidatorAddress(uint256 _index, address _newValidatorRewardAddre
 ```
 
 Trades out one validator for another.
-   @param _index the index in the validator address in the array.
-   @param _newValidatorRewardAddress The number of shares owned by the payee.
+@param \_index the index in the validator address in the array.
+@param \_newValidatorRewardAddress The number of shares owned by the payee.
 
 ### addValidator
 
@@ -825,8 +825,8 @@ function addValidator(address account, uint256 shares_) external
 ```
 
 Add a new validator to the contract.
-   @param account The address of the payee to add.
-   @param shares_ The number of shares owned by the payee.
+@param account The address of the payee to add.
+@param shares\_ The number of shares owned by the payee.
 
 ### totalShares
 
@@ -851,7 +851,7 @@ function shares(address account) public view returns (uint256)
 ```
 
 Getter for the amount of shares held by an account.
-   @param account the account to check the share amount.
+@param account the account to check the share amount.
 
 ### released
 
@@ -860,7 +860,7 @@ function released(address account) public view returns (uint256)
 ```
 
 Getter for the amount of Wrapped H1 already released to a payee.
-   @param account is the account to check the share amount.
+@param account is the account to check the share amount.
 
 ### validators
 
@@ -869,7 +869,7 @@ function validators(uint256 index) public view returns (address)
 ```
 
 Getter for the address of the validator number position of the array of validators.
-   @param index the index in the array.
+@param index the index in the array.
 
 ### releasable
 
@@ -878,7 +878,7 @@ function releasable(address account) public view returns (uint256)
 ```
 
 Getter for the amount of validator's Wrapped H1 in contract.
-   @param account the account to check the amount of total received and released amount.
+@param account the account to check the amount of total received and released amount.
 
 ### release
 
@@ -891,8 +891,8 @@ according to their percentage of the total shares and their previous withdrawals
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name    | Type            | Description                                                            |
+| ------- | --------------- | ---------------------------------------------------------------------- |
 | account | address payable | the account to check the amount of total received and released amount. |
 
 ### releaseAll
@@ -911,15 +911,14 @@ function isOriginalAddress(address validator) public view returns (bool)
 ```
 
 This view function checks if the address is in the validatorList array.
-   @param validator the address for in the validatorsList.
-   @dev It is used in functions above to ensure no duplicate addresses are added to the validatorList.
+@param validator the address for in the validatorsList.
+@dev It is used in functions above to ensure no duplicate addresses are added to the validatorList.
 
-### _authorizeUpgrade
+### \_authorizeUpgrade
 
 ```solidity
 function _authorizeUpgrade(address newImplementation) internal
 ```
 
 Function to upgrade contract override to protect.
-   @param newImplementation new implementation address.
-
+@param newImplementation new implementation address.

@@ -3,7 +3,6 @@ const { ethers } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
-
 describe("FeeQuery Basic Expectations", function () {
   let FeeQueryContract;
   beforeEach(async () => {

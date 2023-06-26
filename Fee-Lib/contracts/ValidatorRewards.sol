@@ -79,10 +79,10 @@ contract ValidatorRewards is
         address distributor,
         address upgrader
     ) external initializer {
+        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(DISTRIBUTOR_ROLE, distributor);
         _grantRole(UPGRADER_ROLE, upgrader);
-        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
         __AccessControl_init();
         __UUPSUpgradeable_init();
         for (uint256 i = 0; i < validatorsList.length; i++) {

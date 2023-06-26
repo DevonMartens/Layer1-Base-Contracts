@@ -3,7 +3,6 @@ const { ethers, upgrades } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
-
 const TEN_ETH = ethers.utils.parseUnits("10", "ether");
 const SEVEN_ETH = ethers.utils.parseUnits("7", "ether");
 const SIX_ETH = ethers.utils.parseUnits("6", "ether");
@@ -39,7 +38,7 @@ describe("H1 Management", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, owner, owner, owner],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
     // ValidatorContract.address = await   s();
     //get randoms signiture
@@ -115,7 +114,7 @@ describe("Testing the view functions ", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, owner, owner, owner],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
     randomSig = ethers.provider.getSigner(random);
     //get randoms signiture for contract txns
@@ -184,7 +183,7 @@ describe("Validator Management", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, owner, owner, owner],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
     randomSig = ethers.provider.getSigner(random);
     //get randoms signiture
@@ -309,7 +308,7 @@ describe("Adjustments in Validators impact on dispursement of funds", function (
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, owner, owner, owner],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
     // ValidatorContract.address = await   s();
     //get randoms signiture
@@ -338,6 +337,9 @@ describe("AccessControl In the contract", function () {
   let FROM;
   let wieghts;
   let vadlidatorAddressArray;
+  let UPGRADER_ROLE;
+  let ValidatorRewards;
+  let FromOwner;
   beforeEach(async () => {
     //example wieghts 100% of bounty 1/1
     wieghts = [1, 2, 3];
@@ -351,17 +353,53 @@ describe("AccessControl In the contract", function () {
     randomSig = ethers.provider.getSigner(random);
     vadlidatorAddressArray = [owner, random, bob];
     //this is the contract we are looking at Validator Rewards.
-    const ValidatorRewards = await ethers.getContractFactory(
-      "ValidatorRewards"
-    );
+    ValidatorRewards = await ethers.getContractFactory("ValidatorRewards");
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, owner, owner, owner],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
-    // for error message for rnadom
+    // for error message for signers
     FROM = random.toLowerCase();
+    FromOwner = owner.toLowerCase();
     DISTRIBUTOR_ROLE = await ValidatorContract.DISTRIBUTOR_ROLE();
+    UPGRADER_ROLE = await ValidatorContract.UPGRADER_ROLE();
+  });
+  it("initalize should only be called upon deployment", async () => {
+    await expectRevert(
+      ValidatorContract.initialize(
+        vadlidatorAddressArray,
+        wieghts,
+        other,
+        other,
+        other
+      ),
+      "Initializable: contract is already initialized"
+    );
+  });
+  it("upgrades should only be allowed to be called by UPGRADER_ROLE", async function () {
+    const ValidatorContractHasADifferentUpgrader = await upgrades.deployProxy(
+      ValidatorRewards,
+      [vadlidatorAddressArray, wieghts, owner, owner, alice],
+      { initializer: "initialize", kind: "uups" }
+    );
+    await expectRevert(
+      upgrades.upgradeProxy(
+        ValidatorContractHasADifferentUpgrader.address,
+        ValidatorRewards,
+        {
+          kind: "uups",
+        }
+      ),
+      `AccessControl: account ${FromOwner} is missing role ${UPGRADER_ROLE}`
+    );
+    const ValidatorContractV2 = await upgrades.upgradeProxy(
+      ValidatorContract.address,
+      ValidatorRewards,
+      {
+        kind: "uups",
+      }
+    );
   });
   it("adjusting validator should only be called by DISTRIBUTOR_ROLE", async () => {
     await expectRevert(
@@ -399,7 +437,7 @@ describe("AccessControl In the contract", function () {
     const ValidatorContractForTest = await upgrades.deployProxy(
       ValidatorRewards,
       [vadlidatorAddressArray, wieghts, random, bob, owner],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
     const DEFAULT_ADMIN_ROLE =
       await ValidatorContractForTest.DEFAULT_ADMIN_ROLE();

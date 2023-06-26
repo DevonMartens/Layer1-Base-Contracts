@@ -2,7 +2,6 @@ const { ethers, upgrades } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
-
 describe("H1DevelopedApplication inital values standalone", function () {
   let owner;
   let OracleContract;
@@ -43,17 +42,17 @@ describe("H1DevelopedApplication inital values standalone", function () {
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewardsFactory,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract2 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract3 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
       [addressArray, weightArray, owner, owner, owner],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
     const ValidatorArray = [
       ValidatorContract.address,
@@ -71,7 +70,7 @@ describe("H1DevelopedApplication inital values standalone", function () {
         owner,
         owner,
       ],
-      { initializer: "initialize", kind: 'uups' }
+      { initializer: "initialize", kind: "uups" }
     );
     randomSig = await ethers.getSigner(random);
     secondAddressSigner = await ethers.getSigner(random);
