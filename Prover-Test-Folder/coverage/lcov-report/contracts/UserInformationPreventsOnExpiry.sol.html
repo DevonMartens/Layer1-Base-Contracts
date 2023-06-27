@@ -103,8 +103,8 @@
 58
 59
 60
-61</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+61
+62</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -142,10 +142,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -167,22 +169,21 @@
 pragma solidity ^0.8.0;
 &nbsp;
 import "./RoleVerification.sol";
-import "./Errors.sol";
 &nbsp;
 /**
-* @title UserInformationPreventsOnExpiry
-* @author Haven1 Development Team
-* @notice This contract allows developers to utilise Haven1s Proof Of Identity Framework 
-* to enforce in date identity documents for access to functions
-* @dev UserInformationPreventsOnExpiry is accessible by importing VerifiableIdentityPreventsOnExpiry.sol to a contract
-*/
+ * @title UserInformationPreventsOnExpiry
+ * @author Haven1 Development Team
+ * @notice This contract allows developers to utilise Haven1s Proof Of Identity Framework to enforce in date identity documents for access to functions.
+ * @dev UserInformationPreventsOnExpiry is accessible by importing VerifiableIdentityPreventsOnExpiry.sol.
+ */
 &nbsp;
 abstract contract UserInformationPreventsOnExpiry is RoleVerification {
     /**
-    @notice getUserAccountCountryCode function returns the country code from the users account
-    @dev function reverts in the event the target account has expired
-    @param account address of the target user account
-    */
+     * @notice getUserAccountCountryCode function returns the country code from the users account.
+     * @dev function reverts in the event the target account has expired.
+     * @param account address of the target user account.
+     * @return userAccountCountryCode provides the country code for the specified account passed in the event it has not expired.
+     */
 &nbsp;
     function getUserAccountCountryCodePreventOnExpiry(
         address account
@@ -194,25 +195,11 @@ abstract contract UserInformationPreventsOnExpiry is RoleVerification {
     }
 &nbsp;
     /**
-    @notice getUserAccountType function returns the account type from the users account
-    @dev function reverts in the event the target account has expired
-    @param account address of the target user account
-    */
-&nbsp;
-    function getUserAccountTypePreventOnExpiry(
-        address account
-    ) public view returns (uint8) {
-        if (block.timestamp &gt;= identityBlob[account].expiry) {
-            revert(Errors.ID_INVALID_EXPIRED);
-        }
-        return (identityBlob[account].userType);
-    }
-&nbsp;
-    /**
-    @notice getUserAccountLevel function returns the verification level from the users account
-    @dev function reverts in the event the target account has expired
-    @param account address of the target user account
-    */
+     * @notice `getUserAccountLevelPreventOnExpiry` function returns the verification level from the users account.
+     * @dev function reverts in the event the target account has expired.
+     * @param account address of the target user account.
+     * @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.
+     */
 &nbsp;
     function getUserAccountLevelPreventOnExpiry(
         address account
@@ -222,6 +209,22 @@ abstract contract UserInformationPreventsOnExpiry is RoleVerification {
         }
         return (identityBlob[account].level);
     }
+&nbsp;
+    /**
+     * @notice `getUserAccountTypePreventOnExpiry` function returns the account type from the users account.
+     * @dev function reverts in the event the target account has expired.
+     * @param account address of the target user account.
+     * @return userAccountType provides the account type for the specified account passed in the event it has not expired.
+     */
+&nbsp;
+    function getUserAccountTypePreventOnExpiry(
+        address account
+    ) public view returns (uint8) {
+        if (block.timestamp &gt;= identityBlob[account].expiry) {
+            revert(Errors.ID_INVALID_EXPIRED);
+        }
+        return (identityBlob[account].userType);
+    }
 }
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -229,7 +232,7 @@ abstract contract UserInformationPreventsOnExpiry is RoleVerification {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jun 26 2023 17:01:30 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 27 2023 04:21:56 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

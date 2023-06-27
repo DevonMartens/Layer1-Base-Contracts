@@ -9,7 +9,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -24,6 +24,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -39,7 +42,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -54,6 +57,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -69,7 +75,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -84,6 +90,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -99,7 +108,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -114,6 +123,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -129,7 +141,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -144,6 +156,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -159,7 +174,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -174,6 +189,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -199,7 +217,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -214,6 +232,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -229,7 +250,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -244,6 +265,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -259,7 +283,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -274,6 +298,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -295,7 +322,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -310,6 +337,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -334,7 +364,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -349,6 +379,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -367,7 +400,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -382,6 +415,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -397,7 +433,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -412,6 +448,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -427,7 +466,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -442,6 +481,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -460,7 +502,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -475,6 +517,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -490,7 +535,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -505,6 +550,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -520,7 +568,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -535,6 +583,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -550,7 +601,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -565,6 +616,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -580,7 +634,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -595,6 +649,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -610,7 +667,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -625,6 +682,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -640,7 +700,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -655,6 +715,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -670,7 +733,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -685,6 +748,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -700,7 +766,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -715,6 +781,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -796,7 +865,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -811,6 +880,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -826,7 +898,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -841,6 +913,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -860,7 +935,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -875,6 +950,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -890,7 +968,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -905,6 +983,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -927,7 +1008,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -942,6 +1023,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -957,7 +1041,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -972,6 +1056,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -987,7 +1074,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -1002,6 +1089,9 @@
               ],
               "": ["ast"]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },

@@ -343,15 +343,22 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
       }
     );
   });
-  it("The proof of identity contract's function mintIdentity should only allow a PROVER_ROLE address to call it", async () => {
+  //suspendAccountMaintainTokenAndIdentityBlob
+  it("The proof of identity contract's function suspendAccountMaintainTokenAndIdentityBlob should only allow a PROVER_ROLE address to call it", async () => {
     await expectRevert(
-      signerAlice.updateIdentity(other, 1, 2, 3, 78886932657, "token"),
+      signerAlice.suspendAccountMaintainTokenAndIdentityBlob(other, "hi"),
       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
     );
   });
   it("The proof of identity contract's function updateIdentity should only allow a PROVER_ROLE address to call it", async () => {
     await expectRevert(
       signerAlice.updateIdentity(other, 1, 2, 3, 78886932657, "hi"),
+      `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+    );
+  });
+  it("The proof of identity contract's function issueIdentity should only allow a PROVER_ROLE address to call it", async () => {
+    await expectRevert(
+      signerAlice.issueIdentity(other, 1, 2, 3, 78886932657, "hi"),
       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
     );
   });
