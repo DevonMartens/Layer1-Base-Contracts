@@ -21,15 +21,15 @@ describe("Testing the initial values to validate expected contract state", funct
     );
   });
 
-  it("The contract: have correct values for name & symbol", async () => {
+  it("The values for name & symbol should be the same as the ones passed in the constructor", async () => {
     expect(await ProofOfIdentityContract.name()).to.equal("Proof of Identity");
     expect(await ProofOfIdentityContract.symbol()).to.equal("H1-ID");
   });
-  it("The contract: should have 1 value for _tokenIdCounter", async () => {
+  it("The totalSupply should start at 0.", async () => {
     expect(await ProofOfIdentityContract.totalSupply()).to.equal(0);
   });
 });
-describe("Testing the mintIdentity to validate expected contract state", function () {
+describe("Testing the issueIdentity function", function () {
   let ProofOfIdentityContract;
   let owner;
   let alice;
@@ -60,30 +60,30 @@ describe("Testing the mintIdentity to validate expected contract state", functio
       "tokenURI"
     );
   });
-  it("The ProofOfIdentity contract's function mintIdentity should mint a token to the address it is requested to", async () => {
+  it("The ProofOfIdentity contract's function issueIdentity should mint a token to the address it is requested to", async () => {
     //checks that alice owns token one
     expect(await ProofOfIdentityContract.ownerOf(1)).to.equal(alice);
   });
-  it("The ProofOfIdentity contract's function mintIdentity should create an identity blob struct with correct values for country code", async () => {
+  it("The ProofOfIdentity contract's function issueIdentity should create an identity blob struct with correct values for country code", async () => {
     //checks that the country code is "1" as expected
     expect(
       await ProofOfIdentityContract.getUserAccountCountryCode(alice)
     ).to.equal("1");
   });
-  it("The ProofOfIdentity contract's function mintIdentity should create an identity blob struct with correct values for userType", async () => {
+  it("The ProofOfIdentity contract's function issueIdentity should create an identity blob struct with correct values for userType", async () => {
     expect(await ProofOfIdentityContract.getUserAccountType(alice)).to.equal(2);
   });
-  it("The ProofOfIdentity contract's function mintIdentity should create an identity blob struct with correct values for level", async () => {
+  it("The ProofOfIdentity contract's functionissueIdentity should create an identity blob struct with correct values for level", async () => {
     expect(await ProofOfIdentityContract.getUserAccountLevel(alice)).to.equal(
       3
     );
   });
-  it("The ProofOfIdentity contract's function mintIdentity should create an identity blob struct with correct values for expiry", async () => {
+  it("The ProofOfIdentity contract's function issueIdentity should create an identity blob struct with correct values for expiry", async () => {
     expect(await ProofOfIdentityContract.getUserAccountExpiry(alice)).to.equal(
       78886932657
     );
   });
-  it("The ProofOfIdentity contract's function mintIdentity should create multiple structs and mint multiple tokens", async () => {
+  it("The ProofOfIdentity contract's function issueIdentity should create multiple structs and mint multiple tokens", async () => {
     await ProofOfIdentityContract.issueIdentity(
       other,
       "1",
@@ -103,14 +103,14 @@ describe("Testing the mintIdentity to validate expected contract state", functio
     expect(await ProofOfIdentityContract.ownerOf(1)).to.equal(alice);
     expect(await ProofOfIdentityContract.ownerOf(2)).to.equal(other);
   });
-  it("The ProofOfIdentity contract's function mintIdentity should create a token with the custom input as it's URI", async () => {
+  it("The ProofOfIdentity contract's function issueIdentity should create a token with the custom input as it's URI", async () => {
     expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("tokenURI");
   });
-  it("The ProofOfIdentity contract's function mintIdentity should create a token with the custom input as it's URI", async () => {
+  it("The ProofOfIdentity contract's function issueIdentity should give an error 101 if the tokenId doesnt exist", async () => {
     await expectRevert(ProofOfIdentityContract.tokenURI(1444), "101");
   });
 });
-describe("Testing updateIdentity to validate expected contract state", function () {
+describe("Testing updateIdentity", function () {
   let ProofOfIdentityContract;
   let alice;
   let other;
@@ -140,7 +140,7 @@ describe("Testing updateIdentity to validate expected contract state", function 
       "tokenURI"
     );
   });
-  it("The contract: function updateIdentity should alter a previously created identity through mintIdentity by adjusting the identity blob struct values for country code", async () => {
+  it("updateIdentity should alter a previously created identity's country code", async () => {
     //confirms original country code
     expect(
       await ProofOfIdentityContract.getUserAccountCountryCode(alice)
@@ -159,7 +159,7 @@ describe("Testing updateIdentity to validate expected contract state", function 
       await ProofOfIdentityContract.getUserAccountCountryCode(alice)
     ).to.equal("4");
   });
-  it("The contract: function updateIdentity should alter a previously created identity through mintIdentity by adjusting identity blob struct values for userType", async () => {
+  it("updateIdentity should alter a previously created identity's account type", async () => {
     //checks original user type
     expect(await ProofOfIdentityContract.getUserAccountType(alice)).to.equal(2);
     //updates
@@ -174,7 +174,7 @@ describe("Testing updateIdentity to validate expected contract state", function 
     //gets new code
     expect(await ProofOfIdentityContract.getUserAccountType(alice)).to.equal(5);
   });
-  it("The contract: function updateIdentity should alter a previously created identity through mintIdentity by adjusting identity blob struct values for level", async () => {
+  it("updateIdentity should alter a previously created identity's account level", async () => {
     expect(await ProofOfIdentityContract.getUserAccountLevel(alice)).to.equal(
       3
     );
@@ -192,7 +192,7 @@ describe("Testing updateIdentity to validate expected contract state", function 
       6
     );
   });
-  it("The contract: function updateIdentity should alter a previously created identity through mintIdentity by adjusting identity blob struct values for expiry", async () => {
+  it("updateIdentity should alter a previously created identity's expiry date", async () => {
     expect(await ProofOfIdentityContract.getUserAccountExpiry(alice)).to.equal(
       78886932657
     );
@@ -210,7 +210,7 @@ describe("Testing updateIdentity to validate expected contract state", function 
       78886932658
     );
   });
-  it("The proof of identity contracts function updateIdentity should alter a previously created identity through mintIdentity by adjust multiple structs", async () => {
+  it("updateIdentity should alter a previously created identities enitre struct", async () => {
     await ProofOfIdentityContract.issueIdentity(
       other,
       1,
@@ -251,7 +251,7 @@ describe("Testing updateIdentity to validate expected contract state", function 
       78886932658
     );
   });
-  it("The proof of identity contracts function updateTokenURI should create a token with the custom input as it's URI and edit it if adjusted", async () => {
+  it("updateTokenURI should create a token with the custom input as it's URI and edit it if adjusted", async () => {
     //checks that the original tokenURI is tokenURI
     expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("tokenURI");
     //updates the tokenURI
@@ -531,7 +531,7 @@ describe("Testing contracts that inhert OtherInformation and RoleVerification sh
       await ProofOfIdentityContract.getUserAccountExpiry(other)
     );
   });
-  it("getUserAccountIdentityBlob", async () => {
+  it("getUserAccountIdentityBlob should return the proper values", async () => {
     const levelBlob = await ProofOfIdentityContract.getUserAccountIdentityBlob(
       alice
     );
@@ -801,7 +801,7 @@ describe("Testing the User Privilege and Network Removal Functions", function ()
       "token"
     );
   });
-  // it("The contract: function suspendAccountDeleteTokenAndIdentityBlob should reverse `mintIdentity` function by removing the `identity blob struct and burning the token.", async () => {
+  // it("The contract: function suspendAccountDeleteTokenAndIdentityBlob should reverse `issueIdentity` function by removing the `identity blob struct and burning the token.", async () => {
   //   //deletes both the token and the blob eliminating the codes and
   //   await ProofOfIdentityContract.suspendAccountDeleteTokenAndIdentityBlob(
   //     alice,
@@ -861,7 +861,7 @@ describe("Testing custom errors to ensure functions revert as expected", functio
     lessThanCurrentBlockNumber = currentBlockTimestamp - 50;
     greaterThanCurrentBlockNumber = currentBlockTimestamp + 50;
   });
-  it("Proof of identity contract `mintIdentity` should stop a wallet that has a token from getting another", async () => {
+  it("Proof of identity contract `issueIdentity` should stop a wallet that has a token from getting another", async () => {
     await expectRevert(
       ProofOfIdentityContract.issueIdentity(
         alice,
@@ -874,7 +874,7 @@ describe("Testing custom errors to ensure functions revert as expected", functio
       `100`
     );
   });
-  it("Proof of identity contract mintIdentity should not allow expired tokens to be minted", async () => {
+  it("Proof of identity contract issueIdentity should not allow expired tokens to be minted", async () => {
     await expectRevert(
       ProofOfIdentityContract.issueIdentity(
         other,
@@ -959,7 +959,7 @@ describe("Testing custom events to ensure they emit as expected", function () {
       .to.emit(ProofOfIdentityContract, "AccountSuspendedTokenMaintained")
       .withArgs(alice, "VALID_REASON");
   });
-  it("IdentityUpdated should emit in mintIdentity with an address and tokenId", async () => {
+  it("IdentityUpdated should emit in issueIdentity with an address and tokenId", async () => {
     await expect(
       ProofOfIdentityContract.issueIdentity(
         other,
