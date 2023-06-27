@@ -201,6 +201,19 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
       "123"
     );
   });
+  it("Fee Contract addChannel should revert if you input 0 address", async () => {
+    await max5ArrayChannel.pop();
+    await max5ArrayWeight.pop();
+    const notAtMaxFiveFee = await upgrades.deployProxy(
+      FeeContract,
+      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
+      { initializer: "initialize", kind: "uups" }
+    );
+    await expectRevert(
+      notAtMaxFiveFee.addChannel("0x0000000000000000000000000000000000000000", 6),
+      "123"
+    );
+  });
   it("Fee Contract adjustChannel should revert if you input 0", async () => {
     await expectRevert(
       Fee.adjustChannel(4, "0x0000000000000000000000000000000000000000", 6),
@@ -211,6 +224,16 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     await expectRevert(
       Fee.adjustChannel(7, ValidatorContract6.address, 6),
       "111"
+    );
+  });
+  it("Initalize will fail if you put 6+ weights or addresses", async () => {
+    await max5ArrayWeight.push(4);
+    
+    await expectRevert(upgrades.deployProxy(
+      FeeContract,
+      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
+      { initializer: "initialize", kind: "uups" }
+    ), "124"
     );
   });
   it("addChannel should allow a new channel and wieght value the adjust the contract's total shares.", async () => {
@@ -597,6 +620,13 @@ describe("AccessControl", function () {
     DISTRIBUTOR_ROLE = await Fee.DISTRIBUTOR_ROLE();
     UPGRADER_ROLE = await Fee.UPGRADER_ROLE();
     DEFAULT_ADMIN_ROLE = await Fee.DEFAULT_ADMIN_ROLE();
+  });
+  //setEpoch
+  it("DISTRIBUTOR_ROLE should be the only one to setEpoch", async () => {
+    await expectRevert(
+      Fee.connect(randomSig).setEpoch(1),
+      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+    );
   });
 
   it("DISTRIBUTOR_ROLE should be the only one to adjust channels", async () => {

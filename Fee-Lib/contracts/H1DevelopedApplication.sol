@@ -26,6 +26,7 @@ contract H1DevelopedApplication is FeeQuery {
         (bool success, ) = FeeContract.call{value: getHavenFee()}("");
         require(success, Errors.TRANSFER_FAILED);
         bool sent = payable(developerWallet).send(getDeveloperFee());
+        require(sent, Errors.TRANSFER_FAILED);
         _;
     }
 

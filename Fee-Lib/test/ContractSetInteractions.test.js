@@ -25,6 +25,9 @@ describe("Contract Interactions", function () {
   let SimpleStorageWithDevAppFee;
   let H1DevelopedApplicationFactory;
   let FeeContractSigner;
+  let SimpleStorageBadFeeContract;
+  let BadFeeContract;
+  let SimpleStorageBadDevWallet;
   beforeEach(async () => {
     //addresses for using
     const [owners, alices, randoms] = await ethers.getSigners();
@@ -39,6 +42,7 @@ describe("Contract Interactions", function () {
     );
     const FeeContractFactory = await ethers.getContractFactory("FeeContract");
     const OracleFactory = await ethers.getContractFactory("FeeOracle");
+    const BadFeeContractFactory = await ethers.getContractFactory("FeeContractHasNoRecieveFunctionForFailedTxns");
     H1NativeApplicationFactory = await ethers.getContractFactory(
       "H1NativeApplication"
     );
@@ -90,6 +94,19 @@ describe("Contract Interactions", function () {
       ],
       { initializer: "initialize", kind: "uups" }
     );
+    //bad fee contract
+    BadFeeContract = await upgrades.deployProxy(
+      BadFeeContractFactory,
+      [
+        OracleContract.address,
+        ValidatorArray,
+        weightArray,
+        owner,
+        owner,
+        owner,
+      ],
+      { initializer: "initialize", kind: "uups" }
+    );
     FeeContractSigner = ethers.provider.getSigner(FeeContract.address);
     secondAddressSigner = await ethers.getSigner(random);
     randomAddressIsTheSigner = FeeContract.connect(secondAddressSigner);
@@ -108,6 +125,14 @@ describe("Contract Interactions", function () {
     SimpleStorageWithDevAppFee = await SimpleStorageWithDevAppFeeFactory.deploy(
       FeeContract.address,
       owner
+    );
+    SimpleStorageBadFeeContract = await SimpleStorageWithDevAppFeeFactory.deploy(
+      BadFeeContract.address,
+      owner
+    );
+    SimpleStorageBadDevWallet = await SimpleStorageWithDevAppFeeFactory.deploy(
+      FeeContract.address,
+      BadFeeContract.address
     );
   });
 
@@ -238,6 +263,14 @@ describe("Contract Interactions", function () {
   it("SimpleStorageWithDevAppFee get function should get the variable stored data", async () => {
     await SimpleStorageWithDevAppFee.set(1);
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
+  });
+  it("H1NativeApplication should revert if transfer to fee lib fails", async () => {
+    await FeeContract.resetFee();
+    await expectRevert(SimpleStorageBadDevWallet.set(1, { value: 1 }), "112");
+  });
+  it("H1NativeApplication should revert if transfer to fee lib fails", async () => {
+    await BadFeeContract.resetFee();
+    await expectRevert(SimpleStorageBadFeeContract.set(1, { value: 1 }), "112");
   });
   //       it("H1NativeApplication applicationFee() should throw an error if the FeeContract Can't recieve funds", async () => {
   //          const OracleFactoryForTest = await ethers.getContractFactory('FeeOracle');

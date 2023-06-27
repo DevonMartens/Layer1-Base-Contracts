@@ -20,6 +20,7 @@ contract H1NativeApplication is FeeQuery {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
         (bool success, ) = FeeContract.call{value: callFee()}("");
+        require(success, Errors.TRANSFER_FAILED);
         _;
     }
 

@@ -14,6 +14,9 @@ describe("H1DevelopedApplication inital values standalone", function () {
   let randomAddressIsTheSigner;
   let H1NativeApplicationDeployed;
   let SimpleStorageWithFeeDeployed;
+  let SimpleStorageWithFeeFactory;
+  let SimpleStorageBadFeeContract;
+  let BadFeeContract;
   beforeEach(async () => {
     //addresses for using
     const [owners, alices, randoms] = await ethers.getSigners();
@@ -25,12 +28,13 @@ describe("H1DevelopedApplication inital values standalone", function () {
     const ValidatorRewardsFactory = await ethers.getContractFactory(
       "ValidatorRewards"
     );
+    const BadFeeContractFactory = await ethers.getContractFactory("FeeContractHasNoRecieveFunctionForFailedTxns");
     const FeeContractFactory = await ethers.getContractFactory("FeeContract");
     const OracleFactory = await ethers.getContractFactory("FeeOracle");
     const H1NativeApplicationFactory = await ethers.getContractFactory(
       "H1NativeApplication"
     );
-    const SimpleStorageWithFeeFactory = await ethers.getContractFactory(
+    SimpleStorageWithFeeFactory = await ethers.getContractFactory(
       "SimpleStorageWithFee"
     );
     //deploy Oracle
@@ -72,6 +76,18 @@ describe("H1DevelopedApplication inital values standalone", function () {
       ],
       { initializer: "initialize", kind: "uups" }
     );
+    BadFeeContract = await upgrades.deployProxy(
+      BadFeeContractFactory,
+      [
+        OracleContract.address,
+        ValidatorArray,
+        weightArray,
+        owner,
+        owner,
+        owner,
+      ],
+      { initializer: "initialize", kind: "uups" }
+    );
     randomSig = await ethers.getSigner(random);
     secondAddressSigner = await ethers.getSigner(random);
     randomAddressIsTheSigner = FeeContract.connect(secondAddressSigner);
@@ -86,11 +102,19 @@ describe("H1DevelopedApplication inital values standalone", function () {
     SimpleStorageWithFeeDeployed = await SimpleStorageWithFeeFactory.deploy(
       FeeContract.address
     );
+    SimpleStorageBadFeeContract = await SimpleStorageWithFeeFactory.deploy(
+      BadFeeContract.address
+    );
   });
   //20,21,23,26,50
-  it("H1NativeApplication should", async () => {
+  it("H1NativeApplication should revert with insuffiecent funds if not enough H1 is passed into a function", async () => {
     await FeeContract.resetFee();
     await expectRevert(SimpleStorageWithFeeDeployed.set(1), "125");
     await SimpleStorageWithFeeDeployed.set(1, { value: 1 });
+  });
+  //SimpleStorageWithFeeFactory
+  it("H1NativeApplication should revert if transfer to fee lib fails", async () => {
+    await BadFeeContract.resetFee();
+    await expectRevert(SimpleStorageBadFeeContract.set(1, { value: 1 }), "112");
   });
 });
