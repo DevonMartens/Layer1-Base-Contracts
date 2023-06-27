@@ -118,22 +118,6 @@ contract ProofOfIdentity is
     )
     external initializer
     {
-        _revokeRole(
-            DEFAULT_ADMIN_ROLE,
-            msg.sender)
-            ;
-        _grantRole(
-            UPGRADER_ROLE,
-            upgrader)
-            ;
-        _grantRole(
-            DEFAULT_ADMIN_ROLE, 
-            admin)
-            ;
-        _grantRole(
-            PROVER_ROLE,
-            prover)
-            ;
          __AccessControl_init();
         __ERC721_init("Proof of Identity", "H1-ID");
         __UUPSUpgradeable_init();
@@ -142,10 +126,8 @@ contract ProofOfIdentity is
         _grantRole(DEFAULT_ADMIN_ROLE, networkOperator);
         _grantRole(PROVER_ROLE, prover);
         _grantRole(UPGRADER_ROLE,  upgrader);
-        _disableInitializers();
     }
 
-    	
     /**	
      * @notice `issueIdentity` function is only callable by Prover role, once an identity has been minted it is not transferable.	
      * @dev once identity is minted, the contract will call the permissions interface contract, 
@@ -159,7 +141,7 @@ contract ProofOfIdentity is
      * ensuring user documentation is in date if an application chooses to implement.	
      * @param level is passed to assign a KYC level to the user account, by combining the region code and KYC 
      * level we allow for specific regional restrictions to be implemented by developers.	
-     * @param tokenURI is passed to provide a custom URI to the tokenId for future utilisation and expansion of proof of identity framework.	
+     * @param tokenUri is passed to provide a custom URI to the tokenId for future utilisation and expansion of proof of identity framework.	
      * @return tokenId the id of the token minted to the account.	
      */
     function issueIdentity(
@@ -168,8 +150,8 @@ contract ProofOfIdentity is
         uint8 userType,
         uint8 level,
         uint256 expiry,
-        string calldata tokenURI
-    ) external onlyRole(PROVER_ROLE) returns(uint256 tokenId) {
+        string calldata tokenUri
+    ) external onlyRole(PROVER_ROLE) returns(uint256) {
         require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
 
         require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
@@ -185,7 +167,7 @@ contract ProofOfIdentity is
         });
 
         _safeMint(account, tokenId);
-        _tokenURI[tokenId] = tokenURI;
+        _tokenURI[tokenId] = tokenUri;
         _tokenOfHolder[account] = tokenId;
         _permissionsInterface.assignAccountRole(account, "HAVEN1", "VTCALL");
         emit IdentityIssued(account, tokenId);
@@ -205,7 +187,7 @@ contract ProofOfIdentity is
      * ensuring user documentation is in date if an application chooses to implement.	
      * @param level is passed to assign a KYC level to the user account, by combining the region code and 
      * KYC level we allow for specific regional restrictions to be implemented by developers.	
-     * @param tokenURI is passed to provide a custom URI to the tokenId for future utilisation and 
+     * @param tokenUri is passed to provide a custom URI to the tokenId for future utilisation and 
      * expansion of proof of identity framework.	
      */	
 
@@ -216,7 +198,7 @@ contract ProofOfIdentity is
         uint8 userType,
         uint8 level,
         uint256 expiry,
-        string calldata tokenURI
+        string calldata tokenUri
     ) external onlyRole(PROVER_ROLE) {
         require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
 
@@ -228,89 +210,59 @@ contract ProofOfIdentity is
             level: level,
             expiry: expiry
         });
-        _tokenURI[tokenId] = tokenURI;
+        _tokenURI[tokenId] = tokenUri;
         emit IdentityUpdated(account, tokenId);
     }
 
      /**	
      * @notice `updateTokenURI` function is only callable by Prover role, 
-     * its purpose is to update the tokenURI of an account.	
-     * @param account the account of the tokenURI to update.	
-     * @param tokenURI the URI data to update for the token Id.	
+     * its purpose is to update the tokenUri of an account.	
+     * @param account the account of the tokenUri to update.	
+     * @param tokenUri the URI data to update for the token Id.	
      */
     function updateTokenURI(
         address account,
-        string calldata tokenURI
+        string calldata tokenUri
     ) external onlyRole(PROVER_ROLE) {
         uint256 tokenId = _tokenOfHolder[account];
         require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);
-        _tokenURI[tokenId] = tokenURI;
+        _tokenURI[tokenId] = tokenUri;
         emit TokenURIUpdated(account, tokenId, tokenUri);
     }
 
-    /**	
-     * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by Prover role, 
-     * it suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account.	
-     * @dev To unsuspend an account, a user must lodge a request with the operator, 
-     * the ability to unsuspend accounts is not provided in this contract and requires intervention to resolve.	
-     * @param suspendAddress the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping.	
-     * @param reason the reason the address is being suspended.	
+       /**
+     * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by Prover role, it suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account.
+     * @dev To unsuspend an account, a user must lodge a request with the operator, the ability to unsuspend accounts is not provided in this contract and requires intervention to resolve.
+     * @param suspendAddress the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping.
+     * @param reason the reason the address is being suspended.
      */
-
-    function suspendAccountDeleteTokenAndIdentityBlob(
-        address suspendAccount,
-        string calldata reason
-    ) external onlyRole(PROVER_ROLE) {
-        _permissionsInterface.updateAccountStatus(
-            "HAVEN1",
-            suspendAccount,
-            1
-        );
-        uint256 tokenId = _tokenOfHolder[suspendAccount];
-        _burn(tokenId);
-        delete identityBlob[suspendAccount];
-        emit AccountSuspendedTokenBurned(suspendAccount, tokenId, reason);
-    }
-
-    /** 
-    * @notice This function suspends the account via the permissions 
-    * interface and maintains the tokenID and identity blog struct for the targets account
-    * @param suspendAddress the address to suspend via the permissions interface, 
-    * tokenID is assigned by the _tokenOfHolder mapping
-    * @param reason the reason the address is being suspended
-    */
 
     function suspendAccountMaintainTokenAndIdentityBlob(
         address suspendAddress,
         string calldata reason
     ) external onlyRole(PROVER_ROLE) {
-        _permissionsInterface.updateAccountStatus(
-            "HAVEN1",
-            suspendAddress,
-            1
-        );
+        _permissionsInterface.updateAccountStatus("HAVEN1", suspendAddress, 1);
         emit AccountSuspendedTokenMaintained(suspendAddress, reason);
     }
-
     	
     /**	
      * @notice `totalSupply` function allows a call to view the count of issued tokens to monitor overall distribution.	
      * @return totalSupply provides total supply of tokenIds issued	
      */	
-    function totalSupply() public view returns (uint256 totalSupply) {	
+    function totalSupply() public view returns (uint256) {	
         return (_tokenIdCounter.current());	
     }
 
    	
-    /**	
+     /**	
      * @notice `tokenURI` function allows tokenURI to be viewed	
      * @dev Overrides OpenZeppelins implementation with custom return logic	
      * @param tokenId is passed to retrieve the mapped URI	
-     * @return tokenURI provides URI for specified tokenId passed	
+     * @return tokenUri provides URI for specified tokenId passed	
      */	
     function tokenURI(	
         uint256 tokenId	
-    ) public view virtual override returns (string memory tokenURI) {	
+    ) public view virtual override returns (string memory tokenUri) {	
         require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);	
         return _tokenURI[tokenId];	
     }	
@@ -329,8 +281,7 @@ contract ProofOfIdentity is
         revert(Errors.ID_NOT_TRANSFERABLE);
     }
 
-    /**	
-     * @inheritdoc IERC721Upgradeable	
+    /**		
      * @dev Overrides OpenZeppelin `transferFrom` implementation to prevent transferring of token	
      */
 
@@ -344,7 +295,6 @@ contract ProofOfIdentity is
 
   	
     /**	
-     * @inheritdoc IERC721Upgradeable	
      * @dev Overrides OpenZeppelin `safeTransferFrom` implementation to prevent transferring of token
      */
 
@@ -355,7 +305,6 @@ contract ProofOfIdentity is
     {}
 
    	/**      
-    * @inheritdoc ERC721Upgradeable	
     * @dev Overrides OpenZeppelin `supportsInterface` implementation to ensure the same interfaces can support access control and ERC721.	
     */
 
