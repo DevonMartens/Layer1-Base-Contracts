@@ -34,8 +34,6 @@ contract ProofOfIdentity is
 {
     using Counters for Counters.Counter;
 
-    Counters.Counter private _tokenIdCounter;
-
     /** 
     * @dev The event is triggered during the `suspendAccountDeleteTokenAndIdentityBlob` 
     * it includes the account, tokenId, and reason for suspension.
@@ -58,10 +56,10 @@ contract ProofOfIdentity is
     );
 
     /** 
-    * @dev The event is triggered during the mintIdentity 
-    * it includes the address the token is minted to and the tokenId.
+    * @dev The event is triggered when `updateIdentity` is called. 
+    * It emits the account that was updated and the tokenId.
     */
-    event IdentityMinted(
+    event IdentityIssued(
         address indexed account, 
         uint256 indexed tokenId
         );
@@ -75,41 +73,46 @@ contract ProofOfIdentity is
         uint256 indexed tokenId
         );
     
-    /** 
-    * @dev The event is triggered during the updateTokenURI function. 
-    * It includes the address the token is minted to, the tokenId and the new uri/
-    */
+  	
+    /**	
+     * @dev The event is triggered when `updateTokenURI` is called. 
+     * It emits the account the token is minted to, the tokenId and the new URI.	
+     */
     event TokenURIUpdated(
         address indexed account,
         uint256 indexed tokenId,
         string indexed newURI
     );
+    
+    // Tracks tokenIds
+    Counters.Counter private _tokenIdCounter;
 
-    // Storage so the contract can utilize the interface.
+    // Stores the Quourum Network permissions interface address.
     IPermissionsInterface private _permissionsInterface;
 
     // Mappings to Track Relations for Identity.
     mapping(address => uint256) private _tokenOfHolder;
-
-    // Maps tokenId to URI to allow custom settings.
+	
+    // Maps tokenId to custom URI.
     mapping(uint256 => string) private _tokenURI;
 
-    // Storage for prover role.
+     // Stores keccak256 hash of PROVER_ROLE for access control.
     bytes32 public constant PROVER_ROLE = keccak256("PROVER_ROLE");
 
-    // Role to upgrade contract
+    // Stores keccak256 hash of UPGRADER_ROLE for access control.ct
    bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
-    /**
-    @notice initalizer function run on deployment. 
-    @dev increments tokenId so we start at 1.
-    @dev sets deploying address to both a prover role and a admin.
-    @dev includes name and symbol to satisfy ERC721 contract requirments.
+     /**	
+     * @notice `initalize` function is ran at the time of deployment to support the upgradable proxy, 
+     * it defines the permissions interface and the default admin role for access control or "network operator"	
+     * @dev The function includes name and symbol to satisfy ERC721 contract requirements.	
+     * `_disableInitializers` called to prevent re-initialization as per OpenZeppelin recommendations.	
+     * @param permissionsInterface address of the Quorum permissions interface contract.	
+     * @param networkOperator address of the Network Operator Multisig, to be declared as default admin for access control.	
      */
-
     function initialize(
         address permissionsInterface,
-        address admin,
+        address networkOperator,
         address prover,
         address upgrader
     )
@@ -136,39 +139,41 @@ contract ProofOfIdentity is
         __UUPSUpgradeable_init();
         _permissionsInterface = IPermissionsInterface(permissionsInterface);
         _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+        _grantRole(DEFAULT_ADMIN_ROLE, networkOperator);
         _grantRole(PROVER_ROLE, prover);
         _grantRole(UPGRADER_ROLE,  upgrader);
-        _tokenIdCounter.increment();
+        _disableInitializers();
     }
 
-    /**
-    * @notice mintIdentity function is only callable by Prover node, 
-    * once an identity has been minted it is not transferable
-    * @dev once identity is minted, the contract will call the permissions interface contract, 
-    * adding role access via the 'assignAccountRole' function
-    * @param account address of the target user
-    * @param countryCode is the users region identifier as defined by ISO3 standards 
-    * @ https://wits.worldbank.org/wits/wits/witshelp/content/codes/country_codes.htm
-    * @param userType is passed to assigned an account type - 
-    * retail (0) or instituton (1), by not using an enum we allow for additional classes in the future
-    * @param expiry is passed to assign an expiry time for the documents provided by the Prover node, 
-    * ensuring user documentation is in date if an application chooses to implement
-    * @param level is passed to assign a KYC level to the user account, by combining 
-    * the region code and KYC level we allow for specific regional restrictions to be implemented by developers
-    */
-
+    	
+    /**	
+     * @notice `issueIdentity` function is only callable by Prover role, once an identity has been minted it is not transferable.	
+     * @dev once identity is minted, the contract will call the permissions interface contract, 
+     * adding role access via the `assignAccountRole` function.	
+     * @param account address of the target user.	
+     * @param countryCode is the users region identifier as defined by ISO3 standards - 
+     * Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.	
+     * @param userType is passed to assigned an account type - retail (0) or instituton (1), 
+     * by not using an enum we allow for additional classes in the future.	
+     * @param expiry is passed to assign an expiry time for the documents provided by the Prover role, 
+     * ensuring user documentation is in date if an application chooses to implement.	
+     * @param level is passed to assign a KYC level to the user account, by combining the region code and KYC 
+     * level we allow for specific regional restrictions to be implemented by developers.	
+     * @param tokenURI is passed to provide a custom URI to the tokenId for future utilisation and expansion of proof of identity framework.	
+     * @return tokenId the id of the token minted to the account.	
+     */
     function issueIdentity(
         address account,
         string calldata countryCode,
         uint8 userType,
         uint8 level,
         uint256 expiry,
-        string calldata tokenUri
-    ) public onlyRole(PROVER_ROLE) {
+        string calldata tokenURI
+    ) external onlyRole(PROVER_ROLE) returns(uint256 tokenId) {
         require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
 
         require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
+         _tokenIdCounter.increment();
         uint256 tokenId = _tokenIdCounter.current();
 
         identityBlob[account] = IdentityBlob({
@@ -179,36 +184,39 @@ contract ProofOfIdentity is
             expiry: expiry
         });
 
-        _tokenIdCounter.increment();
         _safeMint(account, tokenId);
-        _tokenURI[tokenId] = tokenUri;
+        _tokenURI[tokenId] = tokenURI;
         _tokenOfHolder[account] = tokenId;
         _permissionsInterface.assignAccountRole(account, "HAVEN1", "VTCALL");
-        emit IdentityMinted(account, tokenId);
+        emit IdentityIssued(account, tokenId);
+        return tokenId;
     }
 
-    /**
-    * @notice updateIdentity function is only callable by Prover node, 
-    * the intention is to update an identity for changing user details over time
-    * @dev the function requires an ID to have been issued to the account, 
-    * if the account does not have an ID it will revert
-    * @param account address of the target user
-    * @param countryCode is the users region identifier as defined by 
-    * ISO3 standards @ https://wits.worldbank.org/wits/wits/witshelp/content/codes/country_codes.htm
-    * @param userType is passed to assigned an account type - retail (0) or instituton (1), 
-    * by not using an enum we allow for additional classes in the future
-    * @param expiry is passed to assign an expiry time for the documents provided by the Prover node, 
-    * ensuring user documentation is in date if an application chooses to implement
-    * @param level is passed to assign a KYC level to the user account, by combining the region code and KYC 
-    * level we allow for specific regional restrictions to be implemented by developers
-    */
+    /**	
+     * @notice `updateIdentity` function is only callable by Prover role, 
+     * its purpose is to update an identity for changing user details over time.	
+     * @dev the function requires an ID to have been issued to the account, if the account does not have an ID it will revert.	
+     * @param account address of the target user.	
+     * @param countryCode is the users region identifier as defined by ISO3 standards - 
+     * Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.	
+     * @param userType is passed to assigned an account type - retail (0) or instituton (1), 
+     * by not using an enum we allow for additional classes in the future.	
+     * @param expiry is passed to assign an expiry time for the documents provided by the Prover role, 
+     * ensuring user documentation is in date if an application chooses to implement.	
+     * @param level is passed to assign a KYC level to the user account, by combining the region code and 
+     * KYC level we allow for specific regional restrictions to be implemented by developers.	
+     * @param tokenURI is passed to provide a custom URI to the tokenId for future utilisation and 
+     * expansion of proof of identity framework.	
+     */	
+
 
     function updateIdentity(
         address account,
         string calldata countryCode,
         uint8 userType,
         uint8 level,
-        uint256 expiry
+        uint256 expiry,
+        string calldata tokenURI
     ) external onlyRole(PROVER_ROLE) {
         require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
 
@@ -220,32 +228,34 @@ contract ProofOfIdentity is
             level: level,
             expiry: expiry
         });
+        _tokenURI[tokenId] = tokenURI;
         emit IdentityUpdated(account, tokenId);
     }
 
-    /** 
-    @notice This function adjusts the token URI of the user
-    @param account the account of the token URI to update
-    @param tokenUri the Uri data to update for the token ID
-    */
-
+     /**	
+     * @notice `updateTokenURI` function is only callable by Prover role, 
+     * its purpose is to update the tokenURI of an account.	
+     * @param account the account of the tokenURI to update.	
+     * @param tokenURI the URI data to update for the token Id.	
+     */
     function updateTokenURI(
         address account,
-        string calldata tokenUri
+        string calldata tokenURI
     ) external onlyRole(PROVER_ROLE) {
         uint256 tokenId = _tokenOfHolder[account];
         require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);
-        _tokenURI[tokenId] = tokenUri;
+        _tokenURI[tokenId] = tokenURI;
         emit TokenURIUpdated(account, tokenId, tokenUri);
     }
 
-    /** 
-    * @notice This function reverses `mintIdentity` function by removing the identity blob 
-    * struct and burning the token, suspending the account via the permissions interface
-    * @param suspendAccount the address to suspend via the 
-    * permissions interface, tokenID is assigned by the _tokenOfHolder mapping
-    * @param reason the reason the address is being suspended
-    */
+    /**	
+     * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by Prover role, 
+     * it suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account.	
+     * @dev To unsuspend an account, a user must lodge a request with the operator, 
+     * the ability to unsuspend accounts is not provided in this contract and requires intervention to resolve.	
+     * @param suspendAddress the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping.	
+     * @param reason the reason the address is being suspended.	
+     */
 
     function suspendAccountDeleteTokenAndIdentityBlob(
         address suspendAccount,
@@ -282,25 +292,29 @@ contract ProofOfIdentity is
         emit AccountSuspendedTokenMaintained(suspendAddress, reason);
     }
 
-    /** 
-    @notice Allows a call to view the current tokenId to monitor overall distribution.
-    */
-
-    function getCurrentTokenId() public view returns(uint256){
-        return _tokenIdCounter.current();
+    	
+    /**	
+     * @notice `totalSupply` function allows a call to view the count of issued tokens to monitor overall distribution.	
+     * @return totalSupply provides total supply of tokenIds issued	
+     */	
+    function totalSupply() public view returns (uint256 totalSupply) {	
+        return (_tokenIdCounter.current());	
     }
 
-    /** 
-    @notice Allows tokenURI to be viewed
-    @dev Overrides OpenZeppelins 
-    */
+   	
+    /**	
+     * @notice `tokenURI` function allows tokenURI to be viewed	
+     * @dev Overrides OpenZeppelins implementation with custom return logic	
+     * @param tokenId is passed to retrieve the mapped URI	
+     * @return tokenURI provides URI for specified tokenId passed	
+     */	
+    function tokenURI(	
+        uint256 tokenId	
+    ) public view virtual override returns (string memory tokenURI) {	
+        require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);	
+        return _tokenURI[tokenId];	
+    }	
 
-    function tokenURI(
-        uint256 tokenId
-    ) public view virtual override returns (string memory) {
-        require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);
-        return _tokenURI[tokenId];
-    }
 
     /**
      * @dev See {IERC721-transferFrom}.
@@ -315,9 +329,9 @@ contract ProofOfIdentity is
         revert(Errors.ID_NOT_TRANSFERABLE);
     }
 
-    /**
-     * @dev See {IERC721-safeTransferFrom}.
-     *      The function reverts to keep the token soulbound.
+    /**	
+     * @inheritdoc IERC721Upgradeable	
+     * @dev Overrides OpenZeppelin `transferFrom` implementation to prevent transferring of token	
      */
 
     function safeTransferFrom(
@@ -328,10 +342,11 @@ contract ProofOfIdentity is
         revert(Errors.ID_NOT_TRANSFERABLE);
     }
 
-    /**
-   @notice Function to upgrade contract override to protect.
-   @param newImplementation new implementation address.
-   */
+  	
+    /**	
+     * @inheritdoc IERC721Upgradeable	
+     * @dev Overrides OpenZeppelin `safeTransferFrom` implementation to prevent transferring of token
+     */
 
    function _authorizeUpgrade(address newImplementation)
         internal
@@ -339,8 +354,9 @@ contract ProofOfIdentity is
         override
     {}
 
-    /**
-    @notice Override to ensure the same interfaces can support access control and ERC721 from openzepplin.
+   	/**      
+    * @inheritdoc ERC721Upgradeable	
+    * @dev Overrides OpenZeppelin `supportsInterface` implementation to ensure the same interfaces can support access control and ERC721.	
     */
 
     function supportsInterface(
