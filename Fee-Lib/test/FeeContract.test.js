@@ -210,7 +210,10 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
       { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
-      notAtMaxFiveFee.addChannel("0x0000000000000000000000000000000000000000", 6),
+      notAtMaxFiveFee.addChannel(
+        "0x0000000000000000000000000000000000000000",
+        6
+      ),
       "123"
     );
   });
@@ -228,12 +231,14 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
   });
   it("Initalize will fail if you put 6+ weights or addresses", async () => {
     await max5ArrayWeight.push(4);
-    
-    await expectRevert(upgrades.deployProxy(
-      FeeContract,
-      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
-      { initializer: "initialize", kind: "uups" }
-    ), "124"
+
+    await expectRevert(
+      upgrades.deployProxy(
+        FeeContract,
+        [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
+        { initializer: "initialize", kind: "uups" }
+      ),
+      "124"
     );
   });
   it("addChannel should allow a new channel and wieght value the adjust the contract's total shares.", async () => {

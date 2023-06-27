@@ -28,7 +28,9 @@ describe("H1DevelopedApplication inital values standalone", function () {
     const ValidatorRewardsFactory = await ethers.getContractFactory(
       "ValidatorRewards"
     );
-    const BadFeeContractFactory = await ethers.getContractFactory("FeeContractHasNoRecieveFunctionForFailedTxns");
+    const BadFeeContractFactory = await ethers.getContractFactory(
+      "FeeContractHasNoRecieveFunctionForFailedTxns"
+    );
     const FeeContractFactory = await ethers.getContractFactory("FeeContract");
     const OracleFactory = await ethers.getContractFactory("FeeOracle");
     const H1NativeApplicationFactory = await ethers.getContractFactory(

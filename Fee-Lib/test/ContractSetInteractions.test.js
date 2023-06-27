@@ -42,7 +42,9 @@ describe("Contract Interactions", function () {
     );
     const FeeContractFactory = await ethers.getContractFactory("FeeContract");
     const OracleFactory = await ethers.getContractFactory("FeeOracle");
-    const BadFeeContractFactory = await ethers.getContractFactory("FeeContractHasNoRecieveFunctionForFailedTxns");
+    const BadFeeContractFactory = await ethers.getContractFactory(
+      "FeeContractHasNoRecieveFunctionForFailedTxns"
+    );
     H1NativeApplicationFactory = await ethers.getContractFactory(
       "H1NativeApplication"
     );
@@ -126,10 +128,11 @@ describe("Contract Interactions", function () {
       FeeContract.address,
       owner
     );
-    SimpleStorageBadFeeContract = await SimpleStorageWithDevAppFeeFactory.deploy(
-      BadFeeContract.address,
-      owner
-    );
+    SimpleStorageBadFeeContract =
+      await SimpleStorageWithDevAppFeeFactory.deploy(
+        BadFeeContract.address,
+        owner
+      );
     SimpleStorageBadDevWallet = await SimpleStorageWithDevAppFeeFactory.deploy(
       FeeContract.address,
       BadFeeContract.address
