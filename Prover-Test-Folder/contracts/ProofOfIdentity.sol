@@ -158,7 +158,7 @@ contract ProofOfIdentity is
     * the region code and KYC level we allow for specific regional restrictions to be implemented by developers
     */
 
-    function mintIdentity(
+    function issueIdentity(
         address account,
         string calldata countryCode,
         uint8 userType,

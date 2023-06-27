@@ -106,6 +106,9 @@ describe("Testing the mintIdentity to validate expected contract state", functio
   it("The ProofOfIdentity contract's function mintIdentity should create a token with the custom input as it's URI", async () => {
     expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("tokenURI");
   });
+  it("The ProofOfIdentity contract's function mintIdentity should create a token with the custom input as it's URI", async () => {
+    await expectRevert(ProofOfIdentityContract.tokenURI(1444), "101");
+  });
 });
 describe("Testing updateIdentity to validate expected contract state", function () {
   let ProofOfIdentityContract;
@@ -399,6 +402,7 @@ describe("Testing contracts that inhert OtherInformation and RoleVerification sh
     VerifiableIdentity = await VerifiableIdentityFactoryInfo.deploy(
       ProofOfIdentityContract.address
     );
+
   });
   it("The values for `country code` in a seperate verifiable identity contract should match the values for the original proof of identity", async () => {
     //check that the country code is the same in the original proof of identity
@@ -418,6 +422,11 @@ describe("Testing contracts that inhert OtherInformation and RoleVerification sh
     expect(await VerifiableIdentity.getUserCountryCode(other)).to.equal(
       await ProofOfIdentityContract.getUserAccountCountryCode(other)
     );
+  });
+  it("The identity blobs in the Proof Of IdentityContract and Verifiable Identity should be the same", async () => {
+    expect(
+      await ProofOfIdentityContract.getUserAccountIdentityBlob(alice)
+    ).to.deep.equal(await VerifiableIdentity.getUserIdentityData(alice));
   });
   it("The values for `user type` in a seperate verifiable identity contract should match the values for the original  proof of identity", async () => {
     //check that the user type is the same in the original proof of identity
@@ -470,9 +479,18 @@ describe("Testing contracts that inhert OtherInformation and RoleVerification sh
     expect(await VerifiableIdentity.getUserExpiry(alice)).to.equal(
       await ProofOfIdentityContract.getUserAccountExpiry(alice)
     );
-    expect(await await VerifiableIdentity.getUserExpiry(other)).to.equal(
+    expect(await VerifiableIdentity.getUserExpiry(other)).to.equal(
       await ProofOfIdentityContract.getUserAccountExpiry(other)
     );
+  });
+  it("getUserAccountIdentityBlob", async () => {
+      const levelBlob = await ProofOfIdentityContract.getUserAccountIdentityBlob(alice);
+      expect(levelBlob.level).to.equal(3)
+  });
+  it("The identity blobs in the Proof Of IdentityContract and Verifiable Identity Prevents on Expirey should be the same", async () => {
+    expect(
+      await ProofOfIdentityContract.getUserAccountIdentityBlob(alice)
+    ).to.deep.equal(await VerifiableIdentity.getUserIdentityData(alice));
   });
 });
 describe("Testing contracts that ERC721 Overrides Should not Allow Token Movement", function () {
@@ -573,6 +591,34 @@ describe("Testing the the Verifiable VerifiableIdentityPreventsOnExpiry output a
       "103"
     );
   });
+  //
+  it("Verifiable Identity Prevents on Expiry getUserExpiry should get the expiry or revert if expired", async () => {
+    const set = timestamp + 5;
+    await ProofOfIdentityContract.mintIdentity(
+      alice,
+      "1",
+      2,
+      3,
+      set,
+      "tokenONE"
+    );
+    expect(
+      await VerifiableIdentityPreventsOnExpiry.getUserExpiry(alice)).to.equal(set)
+  });
+    it("The identity blobs in the Proof Of IdentityContract and Verifiable Identity Prevents on Expirey should be the same", async () => {
+      const set = timestamp + 5;
+      await ProofOfIdentityContract.mintIdentity(
+        alice,
+        "1",
+        2,
+        3,
+        set,
+        "tokenONE"
+      );
+      expect(
+        await ProofOfIdentityContract.getUserAccountIdentityBlob(alice)
+      ).to.deep.equal(await VerifiableIdentityPreventsOnExpiry.getUserIdentityData(alice));
+    });
   it("After a token is expired the `getUserAccountLevelPreventOnExpiry` from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
     // current plus 5
     const set = timestamp + 5;
