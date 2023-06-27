@@ -45,7 +45,7 @@ describe("H1 Management", function () {
     secondAddressSigner = await ethers.getSigner(random);
     randomAddressIsTheSigner = ValidatorContract.connect(secondAddressSigner);
   });
-  it("ValidatorRewards should recie H1", async () => {
+  it("ValidatorRewards should recieve H1", async () => {
     await randomSig.sendTransaction({
       to: ValidatorContract.address,
       value: ethers.utils.parseEther("1.0"), // Sends exactly 1.0 ether

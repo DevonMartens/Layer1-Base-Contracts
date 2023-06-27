@@ -22,7 +22,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -31,12 +33,16 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["Errors"]
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "Errors"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/ValidatorRewards.sol": {
-      "lastModificationDate": 1687783385834,
-      "contentHash": "4e905bd4e77786dd661a2b2065fe33ac",
+      "lastModificationDate": 1687863155490,
+      "contentHash": "8338014b92831b6d004817d9b15d7963",
       "sourceName": "contracts/ValidatorRewards.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -55,7 +61,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -71,8 +79,12 @@
         "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
         "./Errors.sol"
       ],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["ValidatorRewards"]
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "ValidatorRewards"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
       "lastModificationDate": 1687698186575,
@@ -95,7 +107,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -103,9 +117,15 @@
           }
         }
       },
-      "imports": ["../../utils/AddressUpgradeable.sol"],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["Initializable"]
+      "imports": [
+        "../../utils/AddressUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "Initializable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": {
       "lastModificationDate": 1687698186413,
@@ -128,7 +148,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -137,8 +159,12 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.1"],
-      "artifacts": ["AddressUpgradeable"]
+      "versionPragmas": [
+        "^0.8.1"
+      ],
+      "artifacts": [
+        "AddressUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/FeeContract.sol": {
       "lastModificationDate": 1687782112089,
@@ -161,7 +187,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -177,8 +205,13 @@
         "./FeeQuery.sol",
         "./Errors.sol"
       ],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["FeeContract", "IFeeOracle"]
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "FeeContract",
+        "IFeeOracle"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/FeeQuery.sol": {
       "lastModificationDate": 1687769948198,
@@ -201,7 +234,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -210,8 +245,13 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["FeeQuery", "IFeeContract"]
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "FeeQuery",
+        "IFeeContract"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/H1NativeApplication.sol": {
       "lastModificationDate": 1687855000576,
@@ -234,7 +274,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -242,9 +284,16 @@
           }
         }
       },
-      "imports": ["./FeeQuery.sol", "./Errors.sol"],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["H1NativeApplication"]
+      "imports": [
+        "./FeeQuery.sol",
+        "./Errors.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "H1NativeApplication"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/SimpleStorageWithFee.sol": {
       "lastModificationDate": 1687726896758,
@@ -267,7 +316,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -275,9 +326,15 @@
           }
         }
       },
-      "imports": ["./H1NativeApplication.sol"],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["SimpleStorageWithFee"]
+      "imports": [
+        "./H1NativeApplication.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "SimpleStorageWithFee"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/H1DevelopedApplication.sol": {
       "lastModificationDate": 1687856325930,
@@ -300,7 +357,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -308,9 +367,16 @@
           }
         }
       },
-      "imports": ["./Errors.sol", "./FeeQuery.sol"],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["H1DevelopedApplication"]
+      "imports": [
+        "./Errors.sol",
+        "./FeeQuery.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "H1DevelopedApplication"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol": {
       "lastModificationDate": 1687698186485,
@@ -333,7 +399,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -345,8 +413,12 @@
         "./IERC165Upgradeable.sol",
         "../../proxy/utils/Initializable.sol"
       ],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["ERC165Upgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC165Upgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol": {
       "lastModificationDate": 1687698186550,
@@ -369,7 +441,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -378,8 +452,12 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["IERC165Upgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC165Upgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol": {
       "lastModificationDate": 1687698186410,
@@ -402,7 +480,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -417,8 +497,12 @@
         "../utils/introspection/ERC165Upgradeable.sol",
         "../proxy/utils/Initializable.sol"
       ],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["AccessControlUpgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AccessControlUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol": {
       "lastModificationDate": 1687698186534,
@@ -441,7 +525,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -450,8 +536,12 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["IAccessControlUpgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAccessControlUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
       "lastModificationDate": 1687698186425,
@@ -474,7 +564,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -482,9 +574,15 @@
           }
         }
       },
-      "imports": ["../proxy/utils/Initializable.sol"],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["ContextUpgradeable"]
+      "imports": [
+        "../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ContextUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol": {
       "lastModificationDate": 1687698186594,
@@ -507,7 +605,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -519,8 +619,12 @@
         "./math/MathUpgradeable.sol",
         "./math/SignedMathUpgradeable.sol"
       ],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["StringsUpgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "StringsUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/utils/math/SignedMathUpgradeable.sol": {
       "lastModificationDate": 1687698186593,
@@ -543,7 +647,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -552,8 +658,12 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["SignedMathUpgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SignedMathUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/utils/math/MathUpgradeable.sol": {
       "lastModificationDate": 1687698186580,
@@ -576,7 +686,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -585,8 +697,12 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["MathUpgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "MathUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/DUMMYDONOTDEPLOY.sol": {
       "lastModificationDate": 1687726896624,
@@ -609,7 +725,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -617,9 +735,17 @@
           }
         }
       },
-      "imports": ["./FeeQuery.sol", "./Errors.sol"],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["FeeOracle", "IFeeOracle"]
+      "imports": [
+        "./FeeQuery.sol",
+        "./Errors.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "FeeOracle",
+        "IFeeOracle"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/SimpleStorageWithDevAppFee.sol": {
       "lastModificationDate": 1687726896756,
@@ -642,7 +768,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -650,9 +778,15 @@
           }
         }
       },
-      "imports": ["./H1DevelopedApplication.sol"],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["SimpleStorageWithDevAppFee"]
+      "imports": [
+        "./H1DevelopedApplication.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "SimpleStorageWithDevAppFee"
+      ]
     },
     "/Users/devonmartens/node_modules/@openzeppelin/contracts/access/AccessControl.sol": {
       "lastModificationDate": 1679935802643,
@@ -675,7 +809,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           }
         }
@@ -686,8 +822,12 @@
         "../utils/Strings.sol",
         "../utils/introspection/ERC165.sol"
       ],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["AccessControl"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AccessControl"
+      ]
     },
     "/Users/devonmartens/node_modules/@openzeppelin/contracts/utils/Address.sol": {
       "lastModificationDate": 1679935802685,
@@ -710,7 +850,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -719,8 +861,12 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.1"],
-      "artifacts": ["Address"]
+      "versionPragmas": [
+        "^0.8.1"
+      ],
+      "artifacts": [
+        "Address"
+      ]
     },
     "/Users/devonmartens/node_modules/@openzeppelin/contracts/utils/Context.sol": {
       "lastModificationDate": 1679935802685,
@@ -743,7 +889,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -752,8 +900,12 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["Context"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Context"
+      ]
     },
     "/Users/devonmartens/node_modules/@openzeppelin/contracts/access/IAccessControl.sol": {
       "lastModificationDate": 1679935802643,
@@ -776,14 +928,20 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           }
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["IAccessControl"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAccessControl"
+      ]
     },
     "/Users/devonmartens/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
       "lastModificationDate": 1679935802686,
@@ -806,14 +964,20 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           }
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["Strings"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Strings"
+      ]
     },
     "/Users/devonmartens/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
       "lastModificationDate": 1679935802687,
@@ -836,14 +1000,22 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           }
         }
       },
-      "imports": ["./IERC165.sol"],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["ERC165"]
+      "imports": [
+        "./IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC165"
+      ]
     },
     "/Users/devonmartens/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
       "lastModificationDate": 1679935802687,
@@ -866,14 +1038,20 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           }
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["IERC165"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC165"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol": {
       "lastModificationDate": 1687698186597,
@@ -896,7 +1074,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -909,8 +1089,12 @@
         "../ERC1967/ERC1967UpgradeUpgradeable.sol",
         "./Initializable.sol"
       ],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["UUPSUpgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "UUPSUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/interfaces/draft-IERC1822Upgradeable.sol": {
       "lastModificationDate": 1687698186461,
@@ -933,7 +1117,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -942,8 +1128,12 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["IERC1822ProxiableUpgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC1822ProxiableUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol": {
       "lastModificationDate": 1687698186487,
@@ -966,7 +1156,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -982,8 +1174,12 @@
         "../../utils/StorageSlotUpgradeable.sol",
         "../utils/Initializable.sol"
       ],
-      "versionPragmas": ["^0.8.2"],
-      "artifacts": ["ERC1967UpgradeUpgradeable"]
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "ERC1967UpgradeUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/interfaces/IERC1967Upgradeable.sol": {
       "lastModificationDate": 1687698186552,
@@ -1006,7 +1202,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -1015,8 +1213,12 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["IERC1967Upgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC1967Upgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/utils/StorageSlotUpgradeable.sol": {
       "lastModificationDate": 1687698186593,
@@ -1039,7 +1241,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -1048,8 +1252,12 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["StorageSlotUpgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "StorageSlotUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/node_modules/@openzeppelin/contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol": {
       "lastModificationDate": 1687698186541,
@@ -1072,7 +1280,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -1081,12 +1291,16 @@
         }
       },
       "imports": [],
-      "versionPragmas": ["^0.8.0"],
-      "artifacts": ["IBeaconUpgradeable"]
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IBeaconUpgradeable"
+      ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Fee-Lib/contracts/DUMMY2DONOTDEPLOY.sol": {
-      "lastModificationDate": 1687855707771,
-      "contentHash": "a31c875e7443470dfb07795f2933347b",
+      "lastModificationDate": 1687856663038,
+      "contentHash": "d9f9134431b9374cb8c0670ae0bdca67",
       "sourceName": "contracts/DUMMY2DONOTDEPLOY.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -1105,7 +1319,9 @@
                 "metadata",
                 "storageLayout"
               ],
-              "": ["ast"]
+              "": [
+                "ast"
+              ]
             }
           },
           "metadata": {
@@ -1121,7 +1337,9 @@
         "./FeeQuery.sol",
         "./Errors.sol"
       ],
-      "versionPragmas": ["^0.8.2"],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
       "artifacts": [
         "FeeContractHasNoRecieveFunctionForFailedTxns",
         "IFeeOracle"

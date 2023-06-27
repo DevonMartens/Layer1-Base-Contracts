@@ -56,7 +56,7 @@ contract ValidatorRewards is
     mapping(address => uint256) private _released;
 
     // Array of all the addresses that receive H1.
-    address[] private _validators;
+    address[] private validatorsAddressArray;
 
     // Role to control contract distribution.
     bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
@@ -67,14 +67,14 @@ contract ValidatorRewards is
     /**
    @notice contract deploys with a list of validator addresses and their total shares.
    @param validatorsList an array of validators to accept fees.
-   @param shares_ an array
+   @param shares an array
    @param admin the address that can grant and remove permissions.
    @param distributor the address that calls restricted functions in the contract.
    @dev the shares for each address are the amount over the total amount for all addresses.
    */
     function initialize(
         address[] memory validatorsList,
-        uint256[] memory shares_,
+        uint256[] memory shares,
         address admin,
         address distributor,
         address upgrader
@@ -86,9 +86,9 @@ contract ValidatorRewards is
         __AccessControl_init();
         __UUPSUpgradeable_init();
         for (uint256 i = 0; i < validatorsList.length; i++) {
-            _validators.push(validatorsList[i]);
-            _shares[validatorsList[i]] = shares_[i];
-            _totalShares = _totalShares + shares_[i];
+            validatorsAddressArray.push(validatorsList[i]);
+            _shares[validatorsList[i]] = shares[i];
+            _totalShares = _totalShares + shares[i];
         }
     }
 
@@ -100,60 +100,60 @@ contract ValidatorRewards is
     /**
    @notice This function adjusts the total number of shares received by an address.
    @param account the address that the share number should be adjusted for.
-   @param shares_ the new share number for the account.
+   @param shares the new share number for the account.
    */
 
     function adjustValidatorShares(
         address account,
-        uint256 shares_
+        uint256 shares
     ) external onlyRole(DISTRIBUTOR_ROLE) {
         require(isOriginalAddress(account) == false, Errors.NO_DUPLICATES);
-        require(shares_ > 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED);
+        require(shares > 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED);
         _totalShares -= _shares[account];
-        _totalShares += shares_;
-        _shares[account] = shares_;
-        emit SharesAdjusted(account, shares_);
+        _totalShares += shares;
+        _shares[account] = shares;
+        emit SharesAdjusted(account, shares);
     }
 
     /**
    @notice Trades out one validator for another.
-   @param _index the index in the validator address in the array.
-   @param _newValidatorRewardAddress The number of shares owned by the payee.
+   @param index the index in the validator address in the array.
+   @param newValidatorRewardAddress The number of shares owned by the payee.
    */
 
     function adjustValidatorAddress(
-        uint256 _index,
-        address _newValidatorRewardAddress
+        uint256 index,
+        address newValidatorRewardAddress
     ) external onlyRole(DISTRIBUTOR_ROLE) {
         require(
-            _newValidatorRewardAddress != address(0),
+            newValidatorRewardAddress != address(0),
             Errors.INVALID_ADDRESS
         );
-        address previousAddress = _validators[_index];
+        address previousAddress = validatorsAddressArray[index];
         uint256 sharesAdjusted = _shares[previousAddress];
         _shares[previousAddress] = 0;
-        _shares[_newValidatorRewardAddress] = sharesAdjusted;
-        _validators[_index] = _newValidatorRewardAddress;
-        emit UpdatedValidator(previousAddress, _newValidatorRewardAddress);
+        _shares[newValidatorRewardAddress] = sharesAdjusted;
+        validatorsAddressArray[index] = newValidatorRewardAddress;
+        emit UpdatedValidator(previousAddress, newValidatorRewardAddress);
     }
 
     /**
    @notice Add a new validator to the contract.
    @param account The address of the payee to add.
-   @param shares_ The number of shares owned by the payee.
+   @param shares The number of shares owned by the payee.
    */
     function addValidator(
         address account,
-        uint256 shares_
+        uint256 shares
     ) external onlyRole(DISTRIBUTOR_ROLE) {
         require(account != address(0), Errors.ZERO_ADDRESS_NOT_VALID_ARGUMENT);
-        require(shares_ > 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED);
+        require(shares > 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED);
         require(_shares[account] == 0, Errors.ADDRESS_ALREADY_HAS_A_VALUE);
 
-        _validators.push(account);
-        _shares[account] = shares_;
-        _totalShares = _totalShares + shares_;
-        emit ValidatorAdded(account, shares_);
+        validatorsAddressArray.push(account);
+        _shares[account] = shares;
+        _totalShares = _totalShares + shares;
+        emit ValidatorAdded(account, shares);
     }
 
     /**
@@ -191,7 +191,7 @@ contract ValidatorRewards is
    @param index the index in the array.
    */
     function validators(uint256 index) public view returns (address) {
-        return _validators[index];
+        return validatorsAddressArray[index];
     }
 
     /**
@@ -228,15 +228,15 @@ contract ValidatorRewards is
      */
 
     function releaseAll() external {
-        for (uint i; i < _validators.length; i++) {
-            uint256 payment = releasable(_validators[i]);
+        for (uint i; i < validatorsAddressArray.length; i++) {
+            uint256 payment = releasable(validatorsAddressArray[i]);
             _totalReleased += payment;
             unchecked {
-                _released[_validators[i]] += payment;
+                _released[validatorsAddressArray[i]] += payment;
             }
-            address payable account = payable(address(_validators[i]));
+            address payable account = payable(address(validatorsAddressArray[i]));
             Address.sendValue(account, payment);
-            emit PaymentReleased(_validators[i], payment);
+            emit PaymentReleased(validatorsAddressArray[i], payment);
         }
     }
 
@@ -247,8 +247,8 @@ contract ValidatorRewards is
    */
 
     function isOriginalAddress(address validator) public view returns (bool) {
-        for (uint i = 0; i < _validators.length; i++) {
-            if (_validators[i] == validator) {
+        for (uint i = 0; i < validatorsAddressArray.length; i++) {
+            if (validatorsAddressArray[i] == validator) {
                 return false;
             }
         }
