@@ -146,7 +146,14 @@ describe("Testing updateIdentity to validate expected contract state", function 
       await ProofOfIdentityContract.getUserAccountCountryCode(alice)
     ).to.equal("1");
     //updates
-    await ProofOfIdentityContract.updateIdentity(alice, "4", 2, 3, 78886932657, "hi");
+    await ProofOfIdentityContract.updateIdentity(
+      alice,
+      "4",
+      2,
+      3,
+      78886932657,
+      "hi"
+    );
     //gets new code
     expect(
       await ProofOfIdentityContract.getUserAccountCountryCode(alice)
@@ -156,7 +163,14 @@ describe("Testing updateIdentity to validate expected contract state", function 
     //checks original user type
     expect(await ProofOfIdentityContract.getUserAccountType(alice)).to.equal(2);
     //updates
-    await ProofOfIdentityContract.updateIdentity(alice, 1, 5, 3, 78886932657, "hi");
+    await ProofOfIdentityContract.updateIdentity(
+      alice,
+      1,
+      5,
+      3,
+      78886932657,
+      "hi"
+    );
     //gets new code
     expect(await ProofOfIdentityContract.getUserAccountType(alice)).to.equal(5);
   });
@@ -165,7 +179,14 @@ describe("Testing updateIdentity to validate expected contract state", function 
       3
     );
     //updates account level to 6
-    await ProofOfIdentityContract.updateIdentity(alice, 1, 6, 6, 78886932657, "hi");
+    await ProofOfIdentityContract.updateIdentity(
+      alice,
+      1,
+      6,
+      6,
+      78886932657,
+      "hi"
+    );
     //gets new code
     expect(await ProofOfIdentityContract.getUserAccountLevel(alice)).to.equal(
       6
@@ -176,7 +197,14 @@ describe("Testing updateIdentity to validate expected contract state", function 
       78886932657
     );
     //updates  the expiry of the account
-    await ProofOfIdentityContract.updateIdentity(alice, 1, 2, 6, 78886932658, "hi");
+    await ProofOfIdentityContract.updateIdentity(
+      alice,
+      1,
+      2,
+      6,
+      78886932658,
+      "hi"
+    );
     //gets new expiry
     expect(await ProofOfIdentityContract.getUserAccountExpiry(alice)).to.equal(
       78886932658
@@ -199,8 +227,22 @@ describe("Testing updateIdentity to validate expected contract state", function 
       78886932657
     );
     //update other and alices expiry
-    await ProofOfIdentityContract.updateIdentity(alice, 1, 2, 6, 78886932658, "hi");
-    await ProofOfIdentityContract.updateIdentity(other, 1, 2, 6, 78886932658, "hi");
+    await ProofOfIdentityContract.updateIdentity(
+      alice,
+      1,
+      2,
+      6,
+      78886932658,
+      "hi"
+    );
+    await ProofOfIdentityContract.updateIdentity(
+      other,
+      1,
+      2,
+      6,
+      78886932658,
+      "hi"
+    );
     //calls expiry in struct to ensure formation was done as expected
     expect(await ProofOfIdentityContract.getUserAccountExpiry(alice)).to.equal(
       78886932658
@@ -333,26 +375,26 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
     //confirms original value
     expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("token");
   });
-//   it("The proof of identity contract's function suspendAccountDeleteTokenAndIdentityBlob should only allow a PROVER_ROLE address to call it", async () => {
-//     await expectRevert(
-//       signerAlice.suspendAccountDeleteTokenAndIdentityBlob(alice, 0),
-//       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
-//     );
-//   });
-//   it("The contract: function deleteSingleHolderToken should only allow a PROVER_ROLE address to call it", async () => {
-//     //calls function and expects revert
-//     await expectRevert(
-//       signerAlice.suspendAccountMaintainTokenAndIdentityBlob(alice, "lying"),
-//       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
-//     );
-//   });
-//   it("The contract: function suspendAccountDeleteTokenAndIdentityBlobshould only allow a PROVER_ROLE address to call it", async () => {
-//     //only owner has prover role so i anticpate this will reviwer
-//     await expectRevert(
-//       signerAlice.suspendAccountMaintainTokenAndIdentityBlob(alice, "lying"),
-//       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
-//     );
-//   });
+  //   it("The proof of identity contract's function suspendAccountDeleteTokenAndIdentityBlob should only allow a PROVER_ROLE address to call it", async () => {
+  //     await expectRevert(
+  //       signerAlice.suspendAccountDeleteTokenAndIdentityBlob(alice, 0),
+  //       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+  //     );
+  //   });
+  //   it("The contract: function deleteSingleHolderToken should only allow a PROVER_ROLE address to call it", async () => {
+  //     //calls function and expects revert
+  //     await expectRevert(
+  //       signerAlice.suspendAccountMaintainTokenAndIdentityBlob(alice, "lying"),
+  //       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+  //     );
+  //   });
+  //   it("The contract: function suspendAccountDeleteTokenAndIdentityBlobshould only allow a PROVER_ROLE address to call it", async () => {
+  //     //only owner has prover role so i anticpate this will reviwer
+  //     await expectRevert(
+  //       signerAlice.suspendAccountMaintainTokenAndIdentityBlob(alice, "lying"),
+  //       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+  //     );
+  //   });
 });
 
 describe("Testing contracts that inhert OtherInformation and RoleVerification should view correct values for a set struct of identityBlob", function () {
@@ -402,7 +444,6 @@ describe("Testing contracts that inhert OtherInformation and RoleVerification sh
     VerifiableIdentity = await VerifiableIdentityFactoryInfo.deploy(
       ProofOfIdentityContract.address
     );
-
   });
   it("The values for `country code` in a seperate verifiable identity contract should match the values for the original proof of identity", async () => {
     //check that the country code is the same in the original proof of identity
@@ -484,8 +525,10 @@ describe("Testing contracts that inhert OtherInformation and RoleVerification sh
     );
   });
   it("getUserAccountIdentityBlob", async () => {
-      const levelBlob = await ProofOfIdentityContract.getUserAccountIdentityBlob(alice);
-      expect(levelBlob.level).to.equal(3)
+    const levelBlob = await ProofOfIdentityContract.getUserAccountIdentityBlob(
+      alice
+    );
+    expect(levelBlob.level).to.equal(3);
   });
   it("The identity blobs in the Proof Of IdentityContract and Verifiable Identity Prevents on Expirey should be the same", async () => {
     expect(
@@ -603,22 +646,25 @@ describe("Testing the the Verifiable VerifiableIdentityPreventsOnExpiry output a
       "tokenONE"
     );
     expect(
-      await VerifiableIdentityPreventsOnExpiry.getUserExpiry(alice)).to.equal(set)
+      await VerifiableIdentityPreventsOnExpiry.getUserExpiry(alice)
+    ).to.equal(set);
   });
-    it("The identity blobs in the Proof Of IdentityContract and Verifiable Identity Prevents on Expirey should be the same", async () => {
-      const set = timestamp + 5;
-      await ProofOfIdentityContract.issueIdentity(
-        alice,
-        "1",
-        2,
-        3,
-        set,
-        "tokenONE"
-      );
-      expect(
-        await ProofOfIdentityContract.getUserAccountIdentityBlob(alice)
-      ).to.deep.equal(await VerifiableIdentityPreventsOnExpiry.getUserIdentityData(alice));
-    });
+  it("The identity blobs in the Proof Of IdentityContract and Verifiable Identity Prevents on Expirey should be the same", async () => {
+    const set = timestamp + 5;
+    await ProofOfIdentityContract.issueIdentity(
+      alice,
+      "1",
+      2,
+      3,
+      set,
+      "tokenONE"
+    );
+    expect(
+      await ProofOfIdentityContract.getUserAccountIdentityBlob(alice)
+    ).to.deep.equal(
+      await VerifiableIdentityPreventsOnExpiry.getUserIdentityData(alice)
+    );
+  });
   it("After a token is expired the `getUserAccountLevelPreventOnExpiry` from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
     // current plus 5
     const set = timestamp + 5;
@@ -841,7 +887,7 @@ describe("Testing custom errors to ensure functions revert as expected", functio
         1,
         2,
         3,
-        greaterThanCurrentBlockNumber, 
+        greaterThanCurrentBlockNumber,
         "hi"
       ),
       `101`
@@ -884,7 +930,7 @@ describe("Testing custom events to ensure they emit as expected", function () {
       78886932657,
       "token"
     );
-  }); 
+  });
   //commmented out for now
   // it("AccountSuspendedTokenBurned should emit with the address, tokenId, reason in suspendAccountDeleteTokenAndIdentityBlob", async () => {
   //   await expect(
@@ -922,7 +968,14 @@ describe("Testing custom events to ensure they emit as expected", function () {
   });
   it("IdentityUpdated should emit in updateIdentity with the accound and token ID", async () => {
     await expect(
-      ProofOfIdentityContract.updateIdentity(alice, "1", 2, 131, 78886932657, "hi")
+      ProofOfIdentityContract.updateIdentity(
+        alice,
+        "1",
+        2,
+        131,
+        78886932657,
+        "hi"
+      )
     )
       .to.emit(ProofOfIdentityContract, "IdentityUpdated")
       .withArgs(alice, 1);
