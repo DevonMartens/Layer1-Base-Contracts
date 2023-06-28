@@ -158,8 +158,8 @@ UUPSUpgradeable
     @notice This is meant to withdraw H1 sent to the contract.
     */
 
-    function withdrawUnwrapped() external onlyRole(OPERATOR_ROLE){
-        (bool success,) = msg.sender.call{value:address(this).balance}("");
+    function withdrawUnwrapped(address to) external onlyRole(OPERATOR_ROLE){
+        (bool success,) = to.call{value:address(this).balance}("");
         require(success, Errors.TRANSFER_FAILED);
     } 
 
@@ -168,8 +168,8 @@ UUPSUpgradeable
     @dev This is meant to withdraw escrowed H1 tokens that could be sent to the contract.
     */ 
 
-    function withdrawWrapped() external onlyRole(OPERATOR_ROLE){
-        _transfer(address(this), msg.sender, balanceOf(address(this)));
+    function withdrawWrapped(address to) external onlyRole(OPERATOR_ROLE){
+        _transfer(address(this), to, balanceOf(address(this)));
     } 
 
     /**

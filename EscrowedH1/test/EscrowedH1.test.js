@@ -156,7 +156,7 @@ describe("Withdraws/admin functions", function () {
     //await Vesting.withdrawUnwrapped();
     FIVE_H1_STRING = FIVE_H1.toString();
     const ownerCompare = await ethers.getSigner(owner);
-    await expect(() => Vesting.withdrawUnwrapped()).to.changeEtherBalance(
+    await expect(() => Vesting.withdrawUnwrapped(owner)).to.changeEtherBalance(
       ownerCompare,
       FIVE_H1_STRING
     );
@@ -167,7 +167,7 @@ describe("Withdraws/admin functions", function () {
     const initalBalance = await Vesting.balanceOf(Vesting.address)
     expect(initalBalance.toString()).to.equal("5");
     //withdraws to owner
-    await Vesting.withdrawWrapped();
+    await Vesting.withdrawWrapped(owner);
     const postBalanceOwner = await Vesting.balanceOf(owner);
     //final balance of owner should be 5
     expect(postBalanceOwner.toString()).to.equal("5");
@@ -183,19 +183,19 @@ describe("Withdraws/admin functions", function () {
 
     //withdraws to owner
     await expectRevert(
-      signerAlice.withdrawWrapped(),
+      signerAlice.withdrawWrapped(alice),
       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     //send eth to conttact for test
     await Vesting.mintEscrowedH1(owner, 5, { value: FIVE_H1 });
     await await expectRevert(
-      signerAlice.withdrawUnwrapped(),
+      signerAlice.withdrawUnwrapped(alice),
       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
   it("Only distributor role admin should be able to deposit unwrapped H1", async () => {
     await expectRevert(
-      signerAlice.withdrawWrapped(),
+      signerAlice.withdrawWrapped(owner),
       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
