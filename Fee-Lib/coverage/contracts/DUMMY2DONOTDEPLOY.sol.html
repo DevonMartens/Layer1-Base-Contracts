@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">20.69% </span>
+        <span class="strong">19.3% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>12/58</span>
+        <span class='fraction'>11/57</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">8.7% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>3/20</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">25.68% </span>
+        <span class="strong">24.66% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>19/74</span>
+        <span class='fraction'>18/73</span>
       </div>
     </div>
   </div>
@@ -386,12 +386,7 @@
 341
 342
 343
-344
-345
-346
-347
-348
-349</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+344</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -466,11 +461,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">66×</span>
 <span class="cline-any cline-yes">66×</span>
 <span class="cline-any cline-yes">66×</span>
 <span class="cline-any cline-yes">66×</span>
@@ -794,18 +784,15 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
     uint256 private lastDistribution;
 &nbsp;
     //Role to control contract
-    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 &nbsp;
-    // Role to upgrade contract
-    bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
-&nbsp;
-    /**
+/**
    @notice The initialize is initiating variables during deployment.
    @param _oracle is the address for the oracle that is consulted to determine fees.
    @param _channels array channels are the channels that receive payments.
    @param _weights are the amount of shares each channel receive.
-   @param admin the address that can add or revoke address priveledges/
-   @param distributor address that manages functions.
+   @param networkAdmin the address that can add or revoke address priveledges/
+   @param networkOperator operator address that manages functions.
    @dev lastDistribution is the current timestamp fees distributed every 24 hours.
    @dev There cannot be more than five channels.
    */
@@ -814,16 +801,14 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
         address _oracle,
         address[] memory _channels,
         uint8[] memory _weights,
-        address admin,
-        address distributor,
-        address upgrader
+        address networkAdmin,
+        address networkOperator
     ) external <span class="missing-if-branch" title="else path not taken" >E</span>initializer {
         __AccessControl_init();
         __UUPSUpgradeable_init();
         _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-        _grantRole(DISTRIBUTOR_ROLE, distributor);
-        _grantRole(UPGRADER_ROLE, upgrader);
+        _grantRole(DEFAULT_ADMIN_ROLE, networkAdmin);
+        _grantRole(OPERATOR_ROLE, networkOperator);
         <span class="missing-if-branch" title="if path not taken" >I</span>if (_channels.length &gt; 5 || _weights.length &gt; 5) {
 <span class="cstat-no" title="statement not covered" >            revert(Errors.CONTRACT_LIMIT_REACHED)</span>;
         }
@@ -862,7 +847,7 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
 <span class="fstat-no" title="function not covered" >    function addChannel(</span>
         address _newChannelAddress,
         uint8 _weight
-    ) external onlyRole(DISTRIBUTOR_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
 <span class="cstat-no" title="statement not covered" >        if (channels.length == 5) {</span>
 <span class="cstat-no" title="statement not covered" >            revert(Errors.CONTRACT_LIMIT_REACHED)</span>;
         }
@@ -891,7 +876,7 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
         uint8 _index,
         address _newChannelAddress,
         uint8 _newWeight
-    ) external onlyRole(DISTRIBUTOR_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
 <span class="cstat-no" title="statement not covered" >        if (</span>
             _newChannelAddress == address(0) ||
             isOriginalAddress(_newChannelAddress) == false
@@ -913,7 +898,7 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
    */
 <span class="fstat-no" title="function not covered" >    function setEpoch(</span>
         uint256 new_epochLength
-    ) external onlyRole(DISTRIBUTOR_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
         epochLength = new_epochLength;
     }
 &nbsp;
@@ -927,7 +912,7 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
 <span class="fstat-no" title="function not covered" >    function collectFee() external {</span>
 <span class="cstat-no" title="statement not covered" >        if (</span>
             block.timestamp &gt; lastDistribution + epochLength ||
-            hasRole(DISTRIBUTOR_ROLE, msg.sender)
+            hasRole(OPERATOR_ROLE, msg.sender)
         ) {
 <span class="cstat-no" title="statement not covered" >            uint rebateValue = queryOracle();</span>
 <span class="cstat-no" title="statement not covered" >            (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(</span>
@@ -955,7 +940,7 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
    @notice Function triggered to force distribution of funds to channels.
    */
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function forceFee() external payable onlyRole(DISTRIBUTOR_ROLE) {</span>
+<span class="fstat-no" title="function not covered" >    function forceFee() external payable onlyRole(OPERATOR_ROLE) {</span>
 <span class="cstat-no" title="statement not covered" >        uint amount = address(this).balance;</span>
 <span class="cstat-no" title="statement not covered" >        for (uint i = 0; i &lt; channels.length; i++) {</span>
 <span class="cstat-no" title="statement not covered" >            uint share = (amount * weights[i]) / CONTRACT_SHARES;</span>
@@ -972,7 +957,7 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
    @param _newOracle the new oracle address.
    */
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function setOracle(address _newOracle) external onlyRole(DISTRIBUTOR_ROLE) {</span>
+<span class="fstat-no" title="function not covered" >    function setOracle(address _newOracle) external onlyRole(OPERATOR_ROLE) {</span>
         oracle = _newOracle;
     }
 &nbsp;
@@ -1085,7 +1070,7 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function _authorizeUpgrade(</span>
         address newImplementation
-    ) internal override onlyRole(UPGRADER_ROLE) {}
+    ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 }
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -1093,7 +1078,7 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 27 2023 06:54:06 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jun 28 2023 06:20:26 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

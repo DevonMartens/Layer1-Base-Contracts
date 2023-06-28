@@ -10,7 +10,7 @@ const ONE_ETH = ethers.utils.parseUnits("1", "ether");
 
 //add 24 hour increase, claim rewards and getter for "lastDistribution"
 
-describe("Testing the initial values to validate expected contract state", function () {
+describe("Fee Contract: Testing the initial values to validate expected contract state", function () {
   let owner;
   let ValidatorContract;
   let Fee;
@@ -32,12 +32,12 @@ describe("Testing the initial values to validate expected contract state", funct
     const FeeContract = await ethers.getContractFactory("FeeContract");
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
-      [ownerArray, weight, owner, owner, owner],
+      [ownerArray, weight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     Fee = await upgrades.deployProxy(
       FeeContract,
-      [oracleFake, ownerArray, weight, owner, owner, owner],
+      [oracleFake, ownerArray, weight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     deployBlockTimeStamp = await time.latest();
@@ -68,14 +68,13 @@ describe("Testing the initial values to validate expected contract state", funct
         ownerArray,
         weight,
         oracleFake,
-        oracleFake,
         oracleFake
       ),
       "Initializable: contract is already initialized"
     );
   });
 });
-describe("Fee Contract Test: Adding and adjusting wieghts and channels functions", function () {
+describe("Fee Contract:  Test: Adding and adjusting wieghts and channels functions", function () {
   let owner;
   let ValidatorContract;
   let ValidatorContract2;
@@ -108,32 +107,32 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     //validator array that is too heavey
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract2 = await upgrades.deployProxy(
       ValidatorRewards,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract3 = await upgrades.deployProxy(
       ValidatorRewards,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract4 = await upgrades.deployProxy(
       ValidatorRewards,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract5 = await upgrades.deployProxy(
       ValidatorRewards,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract6 = await upgrades.deployProxy(
       ValidatorRewards,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //channel
@@ -148,7 +147,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     // ValidatorContract = await ValidatorRewards.deploy(ownerArray, weight, owner, owner)
     Fee = await upgrades.deployProxy(
       FeeContract,
-      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
+      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
   });
@@ -172,7 +171,6 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
           oversizedWieghtsArray,
           owner,
           owner,
-          owner,
         ],
         {
           initializer: "initialize",
@@ -183,7 +181,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
 
     await upgrades.deployProxy(
       FeeContract,
-      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
+      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
   });
@@ -206,7 +204,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     await max5ArrayWeight.pop();
     const notAtMaxFiveFee = await upgrades.deployProxy(
       FeeContract,
-      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
+      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
@@ -235,7 +233,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     await expectRevert(
       upgrades.deployProxy(
         FeeContract,
-        [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
+        [alice, max5ArrayChannel, max5ArrayWeight, owner, owner],
         { initializer: "initialize", kind: "uups" }
       ),
       "124"
@@ -246,7 +244,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     await max5ArrayWeight.pop();
     const notAtMaxFiveFee = await upgrades.deployProxy(
       FeeContract,
-      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
+      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //gets original share amount to add to to confirm adjustments
@@ -273,7 +271,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     await max5ArrayWeight.pop();
     const notAtMaxFiveFee = await upgrades.deployProxy(
       FeeContract,
-      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner, owner],
+      [alice, max5ArrayChannel, max5ArrayWeight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //add a channel 5th so this should be max
@@ -286,7 +284,7 @@ describe("Fee Contract Test: Adding and adjusting wieghts and channels functions
     await expectRevert(Fee.addChannel(ValidatorContract5.address, 6), "124");
   });
 });
-describe("Initail tests that require oracle feedback", function () {
+describe("Fee Contract: Initail tests that require oracle feedback", function () {
   let owner;
   let OracleContract;
   let ValidatorContract;
@@ -317,17 +315,17 @@ describe("Initail tests that require oracle feedback", function () {
     //validator contracts printed out
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract2 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract3 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     const ValidatorArray = [
@@ -342,7 +340,6 @@ describe("Initail tests that require oracle feedback", function () {
         OracleContract.address,
         ValidatorArray,
         weightArray,
-        owner,
         owner,
         owner,
       ],
@@ -468,7 +465,7 @@ describe("Initail tests that require oracle feedback", function () {
     );
   });
 });
-describe("Fee Contract General Getters and Setters", function () {
+describe("Fee Contract: General Getters and Setters", function () {
   let owner;
   let alice;
   let ValidatorContract;
@@ -497,12 +494,12 @@ describe("Fee Contract General Getters and Setters", function () {
     FeeOracleContract = await FeeOracleFactory.deploy();
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
-      [addressArray, weight, owner, owner, owner],
+      [addressArray, weight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
-      [FeeOracleContract.address, addressArray, weight, owner, owner, owner],
+      [FeeOracleContract.address, addressArray, weight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     const timestamp = await time.latest();
@@ -577,23 +574,22 @@ describe("Fee Contract General Getters and Setters", function () {
   });
   //isOriginalAddress
 });
-describe("AccessControl", function () {
+describe("Fee Contract: AccessControl", function () {
   let owner;
   let ValidatorContract;
   let Fee;
   let deployBlockTimeStamp;
   let ownerArray;
   let oracleFake;
-  let DISTRIBUTOR_ROLE;
+  let OPERATOR_ROLE;
   let weight;
   let randomSig;
   let FROM;
   let other;
   let random;
   let FromOwner;
-  let UPGRADER_ROLE;
-  let FeeContractFactory;
   let DEFAULT_ADMIN_ROLE;
+  let FeeContractFactory;
   beforeEach(async () => {
     //example weight 100% of bounty 1/1
     weight = [1];
@@ -613,71 +609,70 @@ describe("AccessControl", function () {
     FeeContractFactory = await ethers.getContractFactory("FeeContract");
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
-      [ownerArray, weight, owner, owner, owner],
+      [ownerArray, weight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     Fee = await upgrades.deployProxy(
       FeeContractFactory,
-      [oracleFake, ownerArray, weight, owner, owner, owner],
+      [oracleFake, ownerArray, weight, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     deployBlockTimeStamp = await time.latest();
-    DISTRIBUTOR_ROLE = await Fee.DISTRIBUTOR_ROLE();
-    UPGRADER_ROLE = await Fee.UPGRADER_ROLE();
+    OPERATOR_ROLE = await Fee.OPERATOR_ROLE();
     DEFAULT_ADMIN_ROLE = await Fee.DEFAULT_ADMIN_ROLE();
   });
   //setEpoch
-  it("DISTRIBUTOR_ROLE should be the only one to setEpoch", async () => {
+  it("OPERATOR_ROLE should be the only one to setEpoch", async () => {
     await expectRevert(
       Fee.connect(randomSig).setEpoch(1),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
 
-  it("DISTRIBUTOR_ROLE should be the only one to adjust channels", async () => {
+  it("OPERATOR_ROLE should be the only one to adjust channels", async () => {
     await expectRevert(
       Fee.connect(randomSig).adjustChannel(1, other, 75),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
-  it("DISTRIBUTOR_ROLE should be the only one to adjust channels", async () => {
+  it("OPERATOR_ROLE should be the only one to adjust channels", async () => {
     await expectRevert(
       Fee.connect(randomSig).addChannel(other, 75),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
   it("roles should be set upon deployment", async () => {
-    expect(await Fee.hasRole(DISTRIBUTOR_ROLE, owner)).to.equal(true);
-    expect(await Fee.hasRole(UPGRADER_ROLE, owner)).to.equal(true);
+    expect(await Fee.hasRole(OPERATOR_ROLE, owner)).to.equal(true);
     expect(await Fee.hasRole(DEFAULT_ADMIN_ROLE, owner)).to.equal(true);
-    expect(await Fee.hasRole(DISTRIBUTOR_ROLE, oracleFake)).to.equal(false);
-    expect(await Fee.hasRole(UPGRADER_ROLE, oracleFake)).to.equal(false);
+    expect(await Fee.hasRole(DEFAULT_ADMIN_ROLE, owner)).to.equal(true);
+    expect(await Fee.hasRole(OPERATOR_ROLE, oracleFake)).to.equal(false);
+    expect(await Fee.hasRole(DEFAULT_ADMIN_ROLE, oracleFake)).to.equal(false);
     expect(await Fee.hasRole(DEFAULT_ADMIN_ROLE, oracleFake)).to.equal(false);
   });
   it("roles should be set upon deployment", async () => {
-    await Fee.grantRole(DISTRIBUTOR_ROLE, oracleFake);
-    await Fee.grantRole(UPGRADER_ROLE, oracleFake);
+    await Fee.grantRole(OPERATOR_ROLE, oracleFake);
     await Fee.grantRole(DEFAULT_ADMIN_ROLE, oracleFake);
-    expect(await Fee.hasRole(DISTRIBUTOR_ROLE, oracleFake)).to.equal(true);
-    expect(await Fee.hasRole(UPGRADER_ROLE, oracleFake)).to.equal(true);
+    await Fee.grantRole(DEFAULT_ADMIN_ROLE, oracleFake);
+    expect(await Fee.hasRole(OPERATOR_ROLE, oracleFake)).to.equal(true);
+    expect(await Fee.hasRole(DEFAULT_ADMIN_ROLE, oracleFake)).to.equal(true);
     expect(await Fee.hasRole(DEFAULT_ADMIN_ROLE, oracleFake)).to.equal(true);
   });
-  it("DISTRIBUTOR_ROLE should be the only one who can force fees", async () => {
+  it("OPERATOR_ROLE should be the only one who can force fees", async () => {
     await expectRevert(
       Fee.connect(randomSig).forceFee(),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
-  it("DISTRIBUTOR_ROLE should be the only one who can setOracle address", async () => {
+  it("OPERATOR_ROLE should be the only one who can setOracle address", async () => {
     await expectRevert(
       Fee.connect(randomSig).setOracle(owner),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
-  it("upgrades should only be allowed to be called by UPGRADER_ROLE", async function () {
+  it("upgrades should only be allowed to be called by DEFAULT_ADMIN_ROLE", async function () {
     const FeeContractHasADifferentUpgrader = await upgrades.deployProxy(
       FeeContractFactory,
-      [oracleFake, ownerArray, weight, owner, owner, alice],
+      [oracleFake, ownerArray, weight, alice, alice],
       { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
@@ -688,16 +683,16 @@ describe("AccessControl", function () {
           kind: "uups",
         }
       ),
-      `AccessControl: account ${FromOwner} is missing role ${UPGRADER_ROLE}`
+      `AccessControl: account ${FromOwner} is missing role ${DEFAULT_ADMIN_ROLE}`
     );
     await upgrades.upgradeProxy(Fee.address, FeeContractFactory, {
       kind: "uups",
     });
   });
-  it("upgrades should only be allowed to be called by UPGRADER_ROLE", async function () {
+  it("upgrades should only be allowed to be called by DEFAULT_ADMIN_ROLE", async function () {
     const FeeContractHasADifferentUpgrader = await upgrades.deployProxy(
       FeeContractFactory,
-      [oracleFake, ownerArray, weight, owner, owner, alice],
+      [oracleFake, ownerArray, weight, alice, alice],
       { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
@@ -708,13 +703,13 @@ describe("AccessControl", function () {
           kind: "uups",
         }
       ),
-      `AccessControl: account ${FromOwner} is missing role ${UPGRADER_ROLE}`
+      `AccessControl: account ${FromOwner} is missing role ${DEFAULT_ADMIN_ROLE}`
     );
     await upgrades.upgradeProxy(Fee.address, FeeContractFactory, {
       kind: "uups",
     });
   });
-  describe("Force and collect fee functions", function () {
+  describe("Fee Contract: Force and collect fee functions", function () {
     let owner;
     let ValidatorContract;
     let Fee;
@@ -744,12 +739,12 @@ describe("AccessControl", function () {
       FeeContractFactory = await ethers.getContractFactory("FeeContract");
       ValidatorContract = await upgrades.deployProxy(
         ValidatorRewards,
-        [ownerArray, weight, owner, owner, owner],
+        [ownerArray, weight, owner, owner],
         { initializer: "initialize", kind: "uups" }
       );
       Fee = await upgrades.deployProxy(
         FeeContractFactory,
-        [oracleFake, ownerArray, weight, owner, owner, owner],
+        [oracleFake, ownerArray, weight, owner, owner],
         { initializer: "initialize", kind: "uups" }
       );
       deployBlockTimeStamp = await time.latest();
@@ -762,7 +757,7 @@ describe("AccessControl", function () {
       const FeeContract = await ethers.getContractFactory("FeeContract");
       const FeeContractForTest = await upgrades.deployProxy(
         FeeContract,
-        [DummyContract.address, InputArray, NumberArray, owner, owner, owner],
+        [DummyContract.address, InputArray, NumberArray, owner, owner],
         { initializer: "initialize", kind: "uups" }
       );
       await expectRevert(FeeContractForTest.forceFee(), "112");
@@ -775,7 +770,7 @@ describe("AccessControl", function () {
       const FeeContract = await ethers.getContractFactory("FeeContract");
       const FeeContractForTest = await upgrades.deployProxy(
         FeeContract,
-        [DummyContract.address, InputArray, NumberArray, owner, owner, owner],
+        [DummyContract.address, InputArray, NumberArray, owner, owner],
         { initializer: "initialize", kind: "uups" }
       );
       await randomSig.sendTransaction({
@@ -792,7 +787,7 @@ describe("AccessControl", function () {
       const FeeContract = await ethers.getContractFactory("FeeContract");
       const FeeContractForTest = await upgrades.deployProxy(
         FeeContract,
-        [DummyContract.address, InputArray, NumberArray, owner, owner, owner],
+        [DummyContract.address, InputArray, NumberArray, owner, owner],
         { initializer: "initialize", kind: "uups" }
       );
       await expectRevert(FeeContractForTest.collectFee(), "122");

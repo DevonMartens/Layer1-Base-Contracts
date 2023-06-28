@@ -47,17 +47,17 @@ describe("H1DevelopedApplication inital values standalone", function () {
     //validator contracts printed out
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner,],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract2 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner,],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract3 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner, owner],
+      [addressArray, weightArray, owner, owner,],
       { initializer: "initialize", kind: "uups" }
     );
     const ValidatorArray = [
@@ -74,7 +74,6 @@ describe("H1DevelopedApplication inital values standalone", function () {
         weightArray,
         owner,
         owner,
-        owner,
       ],
       { initializer: "initialize", kind: "uups" }
     );
@@ -84,7 +83,6 @@ describe("H1DevelopedApplication inital values standalone", function () {
         OracleContract.address,
         ValidatorArray,
         weightArray,
-        owner,
         owner,
         owner,
       ],

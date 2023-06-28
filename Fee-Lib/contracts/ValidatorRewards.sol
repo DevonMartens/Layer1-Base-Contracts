@@ -59,30 +59,26 @@ contract ValidatorRewards is
     address[] private validatorsAddressArray;
 
     // Role to control contract distribution.
-    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
-    // Role to upgrade contract
-    bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
     /**
    @notice contract deploys with a list of validator addresses and their total shares.
    @param validatorsList an array of validators to accept fees.
    @param shares an array
-   @param admin the address that can grant and remove permissions.
-   @param distributor the address that calls restricted functions in the contract.
+   @param networkAdmin the address that can grant and remove permissions.
+   @param networkOperator the address that calls restricted functions in the contract.
    @dev the shares for each address are the amount over the total amount for all addresses.
    */
     function initialize(
         address[] memory validatorsList,
         uint256[] memory shares,
-        address admin,
-        address distributor,
-        address upgrader
+        address networkAdmin,
+        address networkOperator
     ) external initializer {
         _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-        _grantRole(DISTRIBUTOR_ROLE, distributor);
-        _grantRole(UPGRADER_ROLE, upgrader);
+        _grantRole(DEFAULT_ADMIN_ROLE, networkAdmin);
+        _grantRole(OPERATOR_ROLE, networkOperator);
         __AccessControl_init();
         __UUPSUpgradeable_init();
         for (uint256 i = 0; i < validatorsList.length; i++) {
@@ -106,7 +102,7 @@ contract ValidatorRewards is
     function adjustValidatorShares(
         address account,
         uint256 shares
-    ) external onlyRole(DISTRIBUTOR_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
         require(isOriginalAddress(account) == false, Errors.NO_DUPLICATES);
         require(shares > 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED);
         _totalShares -= _shares[account];
@@ -124,7 +120,7 @@ contract ValidatorRewards is
     function adjustValidatorAddress(
         uint256 index,
         address newValidatorRewardAddress
-    ) external onlyRole(DISTRIBUTOR_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
         require(
             newValidatorRewardAddress != address(0),
             Errors.INVALID_ADDRESS
@@ -145,7 +141,7 @@ contract ValidatorRewards is
     function addValidator(
         address account,
         uint256 shares
-    ) external onlyRole(DISTRIBUTOR_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
         require(account != address(0), Errors.ZERO_ADDRESS_NOT_VALID_ARGUMENT);
         require(shares > 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED);
         require(_shares[account] == 0, Errors.ADDRESS_ALREADY_HAS_A_VALUE);
@@ -262,7 +258,7 @@ contract ValidatorRewards is
 
     function _authorizeUpgrade(
         address newImplementation
-    ) internal override onlyRole(UPGRADER_ROLE) {}
+    ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 
     /**
      * @notice internal logic for computing the pending payment of an `account`

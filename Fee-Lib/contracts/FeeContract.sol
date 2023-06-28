@@ -53,18 +53,15 @@ contract FeeContract is
     uint256 private lastDistribution;
 
     //Role to control contract
-    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
-    // Role to upgrade contract
-    bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
-
-    /**
+/**
    @notice The initialize is initiating variables during deployment.
    @param _oracle is the address for the oracle that is consulted to determine fees.
    @param _channels array channels are the channels that receive payments.
    @param _weights are the amount of shares each channel receive.
-   @param admin the address that can add or revoke address priveledges/
-   @param distributor address that manages functions.
+   @param networkAdmin the address that can add or revoke address priveledges/
+   @param networkOperator operator address that manages functions.
    @dev lastDistribution is the current timestamp fees distributed every 24 hours.
    @dev There cannot be more than five channels.
    */
@@ -73,16 +70,14 @@ contract FeeContract is
         address _oracle,
         address[] memory _channels,
         uint8[] memory _weights,
-        address admin,
-        address distributor,
-        address upgrader
+        address networkAdmin,
+        address networkOperator
     ) external initializer {
         __AccessControl_init();
         __UUPSUpgradeable_init();
         _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-        _grantRole(DISTRIBUTOR_ROLE, distributor);
-        _grantRole(UPGRADER_ROLE, upgrader);
+        _grantRole(DEFAULT_ADMIN_ROLE, networkAdmin);
+        _grantRole(OPERATOR_ROLE, networkOperator);
         if (_channels.length > 5 || _weights.length > 5) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
@@ -126,7 +121,7 @@ contract FeeContract is
     function addChannel(
         address _newChannelAddress,
         uint8 _weight
-    ) external onlyRole(DISTRIBUTOR_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
         if (channels.length == 5) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
@@ -155,7 +150,7 @@ contract FeeContract is
         uint8 _index,
         address _newChannelAddress,
         uint8 _newWeight
-    ) external onlyRole(DISTRIBUTOR_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
         if (
             _newChannelAddress == address(0) ||
             isOriginalAddress(_newChannelAddress) == false
@@ -177,7 +172,7 @@ contract FeeContract is
    */
     function setEpoch(
         uint256 new_epochLength
-    ) external onlyRole(DISTRIBUTOR_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
         epochLength = new_epochLength;
     }
 
@@ -191,7 +186,7 @@ contract FeeContract is
     function collectFee() external payable {
         if (
             block.timestamp > lastDistribution + epochLength ||
-            hasRole(DISTRIBUTOR_ROLE, msg.sender)
+            hasRole(OPERATOR_ROLE, msg.sender)
         ) {
             uint rebateValue = queryOracle();
             (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(
@@ -219,7 +214,7 @@ contract FeeContract is
    @notice Function triggered to force distribution of funds to channels.
    */
 
-    function forceFee() external payable onlyRole(DISTRIBUTOR_ROLE) {
+    function forceFee() external payable onlyRole(OPERATOR_ROLE) {
         uint amount = address(this).balance;
         for (uint i = 0; i < channels.length; i++) {
             uint share = (amount * weights[i]) / CONTRACT_SHARES;
@@ -236,7 +231,7 @@ contract FeeContract is
    @param _newOracle the new oracle address.
    */
 
-    function setOracle(address _newOracle) external onlyRole(DISTRIBUTOR_ROLE) {
+    function setOracle(address _newOracle) external onlyRole(OPERATOR_ROLE) {
         oracle = _newOracle;
     }
 
@@ -349,5 +344,5 @@ contract FeeContract is
 
     function _authorizeUpgrade(
         address newImplementation
-    ) internal override onlyRole(UPGRADER_ROLE) {}
+    ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 }
