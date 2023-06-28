@@ -16,7 +16,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 * @author Haven1 Development Team
 * @notice This contract is responsible for the registering and updating of 
 * users on Haven1, storing de-identified data for utilisation across the network
-* @dev Nominated prover role(s) are responsible for authorising and minting 
+* @dev Nominated operator role(s) are responsible for authorising and minting 
 * identity NFTs and storing information with registration calldata
 * the contract interacts with the Quroum framework via the network level 
 * permissions interface to approve accounts to transact on the network
@@ -96,11 +96,8 @@ contract ProofOfIdentity is
     // Maps tokenId to custom URI.
     mapping(uint256 => string) private _tokenURI;
 
-     // Stores keccak256 hash of PROVER_ROLE for access control.
-    bytes32 public constant PROVER_ROLE = keccak256("PROVER_ROLE");
-
-    // Stores keccak256 hash of UPGRADER_ROLE for access control.ct
-   bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+     // Stores keccak256 hash of OPERATOR_ROLE for access control.
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
      /**	
      * @notice `initalize` function is ran at the time of deployment to support the upgradable proxy, 
@@ -108,13 +105,13 @@ contract ProofOfIdentity is
      * @dev The function includes name and symbol to satisfy ERC721 contract requirements.	
      * `_disableInitializers` called to prevent re-initialization as per OpenZeppelin recommendations.	
      * @param permissionsInterface address of the Quorum permissions interface contract.	
-     * @param networkOperator address of the Network Operator Multisig, to be declared as default admin for access control.	
+     * @param networkAdmin address of the Network Operator Multisig, to be declared as default admin for access control.	
+     * @param networkOperator address that controls operations in the contract
      */
     function initialize(
         address permissionsInterface,
-        address networkOperator,
-        address prover,
-        address upgrader
+        address networkAdmin,
+        address networkOperator
     )
     external initializer
     {
@@ -123,13 +120,12 @@ contract ProofOfIdentity is
         __UUPSUpgradeable_init();
         _permissionsInterface = IPermissionsInterface(permissionsInterface);
         _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(DEFAULT_ADMIN_ROLE, networkOperator);
-        _grantRole(PROVER_ROLE, prover);
-        _grantRole(UPGRADER_ROLE,  upgrader);
+        _grantRole(DEFAULT_ADMIN_ROLE, networkAdmin);
+        _grantRole(OPERATOR_ROLE, networkOperator);
     }
 
     /**	
-     * @notice `issueIdentity` function is only callable by Prover role, once an identity has been minted it is not transferable.	
+     * @notice `issueIdentity` function is only callable by operator role, once an identity has been minted it is not transferable.	
      * @dev once identity is minted, the contract will call the permissions interface contract, 
      * adding role access via the `assignAccountRole` function.	
      * @param account address of the target user.	
@@ -137,7 +133,7 @@ contract ProofOfIdentity is
      * Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.	
      * @param userType is passed to assigned an account type - retail (0) or instituton (1), 
      * by not using an enum we allow for additional classes in the future.	
-     * @param expiry is passed to assign an expiry time for the documents provided by the Prover role, 
+     * @param expiry is passed to assign an expiry time for the documents provided by the operator role, 
      * ensuring user documentation is in date if an application chooses to implement.	
      * @param level is passed to assign a KYC level to the user account, by combining the region code and KYC 
      * level we allow for specific regional restrictions to be implemented by developers.	
@@ -151,7 +147,7 @@ contract ProofOfIdentity is
         uint8 level,
         uint256 expiry,
         string calldata tokenUri
-    ) external onlyRole(PROVER_ROLE) returns(uint256) {
+    ) external onlyRole(OPERATOR_ROLE) returns(uint256) {
         require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
 
         require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
@@ -175,7 +171,7 @@ contract ProofOfIdentity is
     }
 
     /**	
-     * @notice `updateIdentity` function is only callable by Prover role, 
+     * @notice `updateIdentity` function is only callable by operator role, 
      * its purpose is to update an identity for changing user details over time.	
      * @dev the function requires an ID to have been issued to the account, if the account does not have an ID it will revert.	
      * @param account address of the target user.	
@@ -183,7 +179,7 @@ contract ProofOfIdentity is
      * Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.	
      * @param userType is passed to assigned an account type - retail (0) or instituton (1), 
      * by not using an enum we allow for additional classes in the future.	
-     * @param expiry is passed to assign an expiry time for the documents provided by the Prover role, 
+     * @param expiry is passed to assign an expiry time for the documents provided by the operator role, 
      * ensuring user documentation is in date if an application chooses to implement.	
      * @param level is passed to assign a KYC level to the user account, by combining the region code and 
      * KYC level we allow for specific regional restrictions to be implemented by developers.	
@@ -199,7 +195,7 @@ contract ProofOfIdentity is
         uint8 level,
         uint256 expiry,
         string calldata tokenUri
-    ) external onlyRole(PROVER_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
         require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
 
         uint256 tokenId = identityBlob[account].tokenId;
@@ -215,7 +211,7 @@ contract ProofOfIdentity is
     }
 
      /**	
-     * @notice `updateTokenURI` function is only callable by Prover role, 
+     * @notice `updateTokenURI` function is only callable by operator role, 
      * its purpose is to update the tokenUri of an account.	
      * @param account the account of the tokenUri to update.	
      * @param tokenUri the URI data to update for the token Id.	
@@ -223,7 +219,7 @@ contract ProofOfIdentity is
     function updateTokenURI(
         address account,
         string calldata tokenUri
-    ) external onlyRole(PROVER_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
         uint256 tokenId = _tokenOfHolder[account];
         require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);
         _tokenURI[tokenId] = tokenUri;
@@ -231,7 +227,7 @@ contract ProofOfIdentity is
     }
 
        /**
-     * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by Prover role, it suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account.
+     * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by operator role, it suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account.
      * @dev To unsuspend an account, a user must lodge a request with the operator, the ability to unsuspend accounts is not provided in this contract and requires intervention to resolve.
      * @param suspendAddress the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping.
      * @param reason the reason the address is being suspended.
@@ -240,7 +236,7 @@ contract ProofOfIdentity is
     function suspendAccountMaintainTokenAndIdentityBlob(
         address suspendAddress,
         string calldata reason
-    ) external onlyRole(PROVER_ROLE) {
+    ) external onlyRole(OPERATOR_ROLE) {
         _permissionsInterface.updateAccountStatus("HAVEN1", suspendAddress, 1);
         emit AccountSuspendedTokenMaintained(suspendAddress, reason);
     }
@@ -277,11 +273,11 @@ contract ProofOfIdentity is
         address from,
         address to,
         uint256 tokenId
-    ) public override (ERC721Upgradeable)  {
+    ) public pure override (ERC721Upgradeable)  {
         revert(Errors.ID_NOT_TRANSFERABLE);
     }
 
-    /**		
+    /**	
      * @dev Overrides OpenZeppelin `transferFrom` implementation to prevent transferring of token	
      */
 
@@ -289,7 +285,7 @@ contract ProofOfIdentity is
         address from,
         address to,
         uint256 tokenId
-    ) public override {
+    ) public pure override {
         revert(Errors.ID_NOT_TRANSFERABLE);
     }
 
@@ -300,7 +296,7 @@ contract ProofOfIdentity is
 
    function _authorizeUpgrade(address newImplementation)
         internal
-        onlyRole(UPGRADER_ROLE)
+        onlyRole(DEFAULT_ADMIN_ROLE)
         override
     {}
 

@@ -61,42 +61,41 @@
   },
   "contracts/ProofOfIdentity.sol": {
     "l": {
+      "118": 156,
+      "119": 156,
+      "120": 156,
       "121": 156,
       "122": 156,
       "123": 156,
       "124": 156,
-      "125": 156,
-      "126": 156,
-      "127": 156,
-      "128": 156,
-      "155": 61,
-      "157": 60,
-      "158": 59,
-      "159": 59,
-      "161": 59,
+      "151": 61,
+      "153": 60,
+      "154": 59,
+      "155": 59,
+      "157": 59,
+      "165": 59,
+      "166": 59,
+      "167": 59,
+      "168": 59,
       "169": 59,
       "170": 59,
-      "171": 59,
-      "172": 59,
-      "173": 59,
-      "174": 59,
-      "203": 9,
-      "205": 8,
-      "206": 8,
-      "213": 8,
-      "214": 8,
-      "227": 3,
-      "228": 3,
-      "229": 2,
-      "230": 2,
-      "244": 1,
-      "245": 1,
-      "253": 2,
-      "266": 5,
-      "267": 4,
-      "281": 2,
-      "293": 1,
-      "314": 1
+      "199": 9,
+      "201": 8,
+      "202": 8,
+      "209": 8,
+      "210": 8,
+      "223": 3,
+      "224": 3,
+      "225": 2,
+      "226": 2,
+      "240": 1,
+      "241": 1,
+      "249": 2,
+      "262": 5,
+      "263": 4,
+      "277": 2,
+      "289": 1,
+      "310": 1
     },
     "path": "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/ProofOfIdentity.sol",
     "s": {
@@ -106,29 +105,28 @@
       "4": 156,
       "5": 156,
       "6": 156,
-      "7": 156,
-      "8": 61,
-      "9": 60,
+      "7": 61,
+      "8": 60,
+      "9": 59,
       "10": 59,
       "11": 59,
       "12": 59,
       "13": 59,
       "14": 59,
-      "15": 59,
-      "16": 9,
+      "15": 9,
+      "16": 8,
       "17": 8,
-      "18": 8,
+      "18": 3,
       "19": 3,
-      "20": 3,
-      "21": 2,
+      "20": 2,
+      "21": 1,
       "22": 1,
-      "23": 1,
-      "24": 2,
-      "25": 5,
-      "26": 4,
-      "27": 2,
-      "28": 1,
-      "29": 1
+      "23": 2,
+      "24": 5,
+      "25": 4,
+      "26": 2,
+      "27": 1,
+      "28": 1
     },
     "b": {
       "1": [156, 1],
@@ -159,363 +157,359 @@
     "fnMap": {
       "1": {
         "name": "initialize",
-        "line": 119,
+        "line": 116,
         "loc": {
-          "start": { "line": 113, "column": 4 },
-          "end": { "line": 129, "column": 4 }
+          "start": { "line": 111, "column": 4 },
+          "end": { "line": 125, "column": 4 }
         }
       },
       "2": {
         "name": "issueIdentity",
-        "line": 154,
+        "line": 150,
         "loc": {
-          "start": { "line": 147, "column": 4 },
-          "end": { "line": 175, "column": 4 }
+          "start": { "line": 143, "column": 4 },
+          "end": { "line": 171, "column": 4 }
         }
       },
       "3": {
         "name": "updateIdentity",
-        "line": 202,
+        "line": 198,
         "loc": {
-          "start": { "line": 195, "column": 4 },
-          "end": { "line": 215, "column": 4 }
+          "start": { "line": 191, "column": 4 },
+          "end": { "line": 211, "column": 4 }
         }
       },
       "4": {
         "name": "updateTokenURI",
-        "line": 226,
+        "line": 222,
         "loc": {
-          "start": { "line": 223, "column": 4 },
-          "end": { "line": 231, "column": 4 }
+          "start": { "line": 219, "column": 4 },
+          "end": { "line": 227, "column": 4 }
         }
       },
       "5": {
         "name": "suspendAccountMaintainTokenAndIdentityBlob",
-        "line": 243,
+        "line": 239,
         "loc": {
-          "start": { "line": 240, "column": 4 },
-          "end": { "line": 246, "column": 4 }
+          "start": { "line": 236, "column": 4 },
+          "end": { "line": 242, "column": 4 }
         }
       },
       "6": {
         "name": "totalSupply",
-        "line": 252,
+        "line": 248,
         "loc": {
-          "start": { "line": 252, "column": 4 },
-          "end": { "line": 254, "column": 4 }
+          "start": { "line": 248, "column": 4 },
+          "end": { "line": 250, "column": 4 }
         }
       },
       "7": {
         "name": "tokenURI",
-        "line": 263,
+        "line": 259,
         "loc": {
-          "start": { "line": 263, "column": 4 },
-          "end": { "line": 268, "column": 4 }
+          "start": { "line": 259, "column": 4 },
+          "end": { "line": 264, "column": 4 }
         }
       },
       "8": {
         "name": "transferFrom",
-        "line": 276,
+        "line": 272,
         "loc": {
-          "start": { "line": 276, "column": 4 },
-          "end": { "line": 282, "column": 4 }
+          "start": { "line": 272, "column": 4 },
+          "end": { "line": 278, "column": 4 }
         }
       },
       "9": {
         "name": "safeTransferFrom",
-        "line": 288,
+        "line": 284,
         "loc": {
-          "start": { "line": 288, "column": 4 },
-          "end": { "line": 294, "column": 4 }
+          "start": { "line": 284, "column": 4 },
+          "end": { "line": 290, "column": 4 }
         }
       },
       "10": {
         "name": "_authorizeUpgrade",
-        "line": 303,
+        "line": 299,
         "loc": {
-          "start": { "line": 301, "column": 3 },
-          "end": { "line": 305, "column": 5 }
+          "start": { "line": 297, "column": 3 },
+          "end": { "line": 301, "column": 5 }
         }
       },
       "11": {
         "name": "supportsInterface",
-        "line": 311,
+        "line": 307,
         "loc": {
-          "start": { "line": 311, "column": 4 },
-          "end": { "line": 315, "column": 4 }
+          "start": { "line": 307, "column": 4 },
+          "end": { "line": 311, "column": 4 }
         }
       }
     },
     "statementMap": {
       "1": {
-        "start": { "line": 121, "column": 9 },
-        "end": { "line": 121, "column": 30 }
+        "start": { "line": 118, "column": 9 },
+        "end": { "line": 118, "column": 30 }
       },
       "2": {
+        "start": { "line": 119, "column": 8 },
+        "end": { "line": 119, "column": 50 }
+      },
+      "3": {
+        "start": { "line": 120, "column": 8 },
+        "end": { "line": 120, "column": 31 }
+      },
+      "4": {
         "start": { "line": 122, "column": 8 },
         "end": { "line": 122, "column": 50 }
       },
-      "3": {
-        "start": { "line": 123, "column": 8 },
-        "end": { "line": 123, "column": 31 }
-      },
-      "4": {
-        "start": { "line": 125, "column": 8 },
-        "end": { "line": 125, "column": 50 }
-      },
       "5": {
-        "start": { "line": 126, "column": 8 },
-        "end": { "line": 126, "column": 54 }
+        "start": { "line": 123, "column": 8 },
+        "end": { "line": 123, "column": 51 }
       },
       "6": {
-        "start": { "line": 127, "column": 8 },
-        "end": { "line": 127, "column": 38 }
+        "start": { "line": 124, "column": 8 },
+        "end": { "line": 124, "column": 49 }
       },
       "7": {
-        "start": { "line": 128, "column": 8 },
-        "end": { "line": 128, "column": 43 }
+        "start": { "line": 151, "column": 8 },
+        "end": { "line": 151, "column": 67 }
       },
       "8": {
-        "start": { "line": 155, "column": 8 },
-        "end": { "line": 155, "column": 67 }
+        "start": { "line": 153, "column": 8 },
+        "end": { "line": 153, "column": 67 }
       },
       "9": {
-        "start": { "line": 157, "column": 8 },
-        "end": { "line": 157, "column": 67 }
+        "start": { "line": 154, "column": 9 },
+        "end": { "line": 154, "column": 35 }
       },
       "10": {
-        "start": { "line": 158, "column": 9 },
-        "end": { "line": 158, "column": 35 }
+        "start": { "line": 155, "column": 8 },
+        "end": { "line": 155, "column": 51 }
       },
       "11": {
-        "start": { "line": 159, "column": 8 },
-        "end": { "line": 159, "column": 51 }
+        "start": { "line": 165, "column": 8 },
+        "end": { "line": 165, "column": 34 }
       },
       "12": {
-        "start": { "line": 169, "column": 8 },
-        "end": { "line": 169, "column": 34 }
+        "start": { "line": 168, "column": 8 },
+        "end": { "line": 168, "column": 75 }
       },
       "13": {
-        "start": { "line": 172, "column": 8 },
-        "end": { "line": 172, "column": 75 }
+        "start": { "line": 169, "column": 8 },
+        "end": { "line": 169, "column": 45 }
       },
       "14": {
-        "start": { "line": 173, "column": 8 },
-        "end": { "line": 173, "column": 45 }
+        "start": { "line": 170, "column": 8 },
+        "end": { "line": 170, "column": 22 }
       },
       "15": {
-        "start": { "line": 174, "column": 8 },
-        "end": { "line": 174, "column": 22 }
+        "start": { "line": 199, "column": 8 },
+        "end": { "line": 199, "column": 65 }
       },
       "16": {
-        "start": { "line": 203, "column": 8 },
-        "end": { "line": 203, "column": 65 }
+        "start": { "line": 201, "column": 8 },
+        "end": { "line": 201, "column": 55 }
       },
       "17": {
-        "start": { "line": 205, "column": 8 },
-        "end": { "line": 205, "column": 55 }
+        "start": { "line": 210, "column": 8 },
+        "end": { "line": 210, "column": 46 }
       },
       "18": {
-        "start": { "line": 214, "column": 8 },
-        "end": { "line": 214, "column": 46 }
+        "start": { "line": 223, "column": 8 },
+        "end": { "line": 223, "column": 49 }
       },
       "19": {
-        "start": { "line": 227, "column": 8 },
-        "end": { "line": 227, "column": 49 }
+        "start": { "line": 224, "column": 8 },
+        "end": { "line": 224, "column": 58 }
       },
       "20": {
-        "start": { "line": 228, "column": 8 },
-        "end": { "line": 228, "column": 58 }
+        "start": { "line": 226, "column": 8 },
+        "end": { "line": 226, "column": 56 }
       },
       "21": {
-        "start": { "line": 230, "column": 8 },
-        "end": { "line": 230, "column": 56 }
+        "start": { "line": 240, "column": 8 },
+        "end": { "line": 240, "column": 77 }
       },
       "22": {
-        "start": { "line": 244, "column": 8 },
-        "end": { "line": 244, "column": 77 }
+        "start": { "line": 241, "column": 8 },
+        "end": { "line": 241, "column": 68 }
       },
       "23": {
-        "start": { "line": 245, "column": 8 },
-        "end": { "line": 245, "column": 68 }
+        "start": { "line": 249, "column": 8 },
+        "end": { "line": 249, "column": 42 }
       },
       "24": {
-        "start": { "line": 253, "column": 8 },
-        "end": { "line": 253, "column": 42 }
+        "start": { "line": 262, "column": 8 },
+        "end": { "line": 262, "column": 58 }
       },
       "25": {
-        "start": { "line": 266, "column": 8 },
-        "end": { "line": 266, "column": 58 }
+        "start": { "line": 263, "column": 8 },
+        "end": { "line": 263, "column": 33 }
       },
       "26": {
-        "start": { "line": 267, "column": 8 },
-        "end": { "line": 267, "column": 33 }
+        "start": { "line": 277, "column": 8 },
+        "end": { "line": 277, "column": 41 }
       },
       "27": {
-        "start": { "line": 281, "column": 8 },
-        "end": { "line": 281, "column": 41 }
+        "start": { "line": 289, "column": 8 },
+        "end": { "line": 289, "column": 41 }
       },
       "28": {
-        "start": { "line": 293, "column": 8 },
-        "end": { "line": 293, "column": 41 }
-      },
-      "29": {
-        "start": { "line": 314, "column": 8 },
-        "end": { "line": 314, "column": 51 }
+        "start": { "line": 310, "column": 8 },
+        "end": { "line": 310, "column": 51 }
       }
     },
     "branchMap": {
       "1": {
-        "line": 119,
+        "line": 116,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 119, "column": 13 },
-            "end": { "line": 119, "column": 13 }
+            "start": { "line": 116, "column": 13 },
+            "end": { "line": 116, "column": 13 }
           },
           {
-            "start": { "line": 119, "column": 13 },
-            "end": { "line": 119, "column": 13 }
+            "start": { "line": 116, "column": 13 },
+            "end": { "line": 116, "column": 13 }
           }
         ]
       },
       "2": {
-        "line": 154,
+        "line": 150,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 154, "column": 15 },
-            "end": { "line": 154, "column": 15 }
+            "start": { "line": 150, "column": 15 },
+            "end": { "line": 150, "column": 15 }
           },
           {
-            "start": { "line": 154, "column": 15 },
-            "end": { "line": 154, "column": 15 }
+            "start": { "line": 150, "column": 15 },
+            "end": { "line": 150, "column": 15 }
           }
         ]
       },
       "3": {
-        "line": 155,
+        "line": 151,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 155, "column": 8 },
-            "end": { "line": 155, "column": 8 }
+            "start": { "line": 151, "column": 8 },
+            "end": { "line": 151, "column": 8 }
           },
           {
-            "start": { "line": 155, "column": 8 },
-            "end": { "line": 155, "column": 8 }
+            "start": { "line": 151, "column": 8 },
+            "end": { "line": 151, "column": 8 }
           }
         ]
       },
       "4": {
-        "line": 157,
+        "line": 153,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 157, "column": 8 },
-            "end": { "line": 157, "column": 8 }
+            "start": { "line": 153, "column": 8 },
+            "end": { "line": 153, "column": 8 }
           },
           {
-            "start": { "line": 157, "column": 8 },
-            "end": { "line": 157, "column": 8 }
+            "start": { "line": 153, "column": 8 },
+            "end": { "line": 153, "column": 8 }
           }
         ]
       },
       "5": {
-        "line": 202,
+        "line": 198,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 202, "column": 15 },
-            "end": { "line": 202, "column": 15 }
+            "start": { "line": 198, "column": 15 },
+            "end": { "line": 198, "column": 15 }
           },
           {
-            "start": { "line": 202, "column": 15 },
-            "end": { "line": 202, "column": 15 }
+            "start": { "line": 198, "column": 15 },
+            "end": { "line": 198, "column": 15 }
           }
         ]
       },
       "6": {
-        "line": 203,
+        "line": 199,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 203, "column": 8 },
-            "end": { "line": 203, "column": 8 }
+            "start": { "line": 199, "column": 8 },
+            "end": { "line": 199, "column": 8 }
           },
           {
-            "start": { "line": 203, "column": 8 },
-            "end": { "line": 203, "column": 8 }
+            "start": { "line": 199, "column": 8 },
+            "end": { "line": 199, "column": 8 }
           }
         ]
       },
       "7": {
-        "line": 226,
+        "line": 222,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 226, "column": 15 },
-            "end": { "line": 226, "column": 15 }
+            "start": { "line": 222, "column": 15 },
+            "end": { "line": 222, "column": 15 }
           },
           {
-            "start": { "line": 226, "column": 15 },
-            "end": { "line": 226, "column": 15 }
+            "start": { "line": 222, "column": 15 },
+            "end": { "line": 222, "column": 15 }
           }
         ]
       },
       "8": {
-        "line": 228,
+        "line": 224,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 228, "column": 8 },
-            "end": { "line": 228, "column": 8 }
+            "start": { "line": 224, "column": 8 },
+            "end": { "line": 224, "column": 8 }
           },
           {
-            "start": { "line": 228, "column": 8 },
-            "end": { "line": 228, "column": 8 }
+            "start": { "line": 224, "column": 8 },
+            "end": { "line": 224, "column": 8 }
           }
         ]
       },
       "9": {
-        "line": 243,
+        "line": 239,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 243, "column": 15 },
-            "end": { "line": 243, "column": 15 }
+            "start": { "line": 239, "column": 15 },
+            "end": { "line": 239, "column": 15 }
           },
           {
-            "start": { "line": 243, "column": 15 },
-            "end": { "line": 243, "column": 15 }
+            "start": { "line": 239, "column": 15 },
+            "end": { "line": 239, "column": 15 }
           }
         ]
       },
       "10": {
-        "line": 266,
+        "line": 262,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 266, "column": 8 },
-            "end": { "line": 266, "column": 8 }
+            "start": { "line": 262, "column": 8 },
+            "end": { "line": 262, "column": 8 }
           },
           {
-            "start": { "line": 266, "column": 8 },
-            "end": { "line": 266, "column": 8 }
+            "start": { "line": 262, "column": 8 },
+            "end": { "line": 262, "column": 8 }
           }
         ]
       },
       "11": {
-        "line": 303,
+        "line": 299,
         "type": "if",
         "locations": [
           {
-            "start": { "line": 303, "column": 8 },
-            "end": { "line": 303, "column": 8 }
+            "start": { "line": 299, "column": 8 },
+            "end": { "line": 299, "column": 8 }
           },
           {
-            "start": { "line": 303, "column": 8 },
-            "end": { "line": 303, "column": 8 }
+            "start": { "line": 299, "column": 8 },
+            "end": { "line": 299, "column": 8 }
           }
         ]
       }

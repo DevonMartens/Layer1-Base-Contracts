@@ -16,7 +16,7 @@ describe("Testing the initial values to validate expected contract state", funct
     const alice = await alices.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, alice, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, alice],
       { initializer: "initialize", kind: "uups" }
     );
   });
@@ -46,7 +46,7 @@ describe("Testing the issueIdentity function", function () {
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -126,7 +126,7 @@ describe("Testing updateIdentity", function () {
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -265,11 +265,10 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
   let owner;
   let alice;
   let other;
-  let PROVER_ROLE;
+  let OPERATOR_ROLE;
   let FROM;
   let DEFAULT_ADMIN_ROLE;
   let signerAlice;
-  let UPGRADER_ROLE;
   let ProofOfIdentityFactory;
   let IPermissionsInterfaceDummyInstance;
   let FromOwner;
@@ -285,7 +284,7 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
     FromOwner = owner.toLowerCase();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentityFactory,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -301,9 +300,8 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
     //getting FROM for accesscontrol errors
     FROM = alice.toLowerCase();
     //getting access control role
-    PROVER_ROLE = await ProofOfIdentityContract.PROVER_ROLE();
+    OPERATOR_ROLE = await ProofOfIdentityContract.OPERATOR_ROLE();
     DEFAULT_ADMIN_ROLE = await ProofOfIdentityContract.DEFAULT_ADMIN_ROLE();
-    UPGRADER_ROLE = await ProofOfIdentityContract.UPGRADER_ROLE();
     //allows alice to be the signer
     secondAddressSigner = await ethers.getSigner(alice);
     signerAlice = ProofOfIdentityContract.connect(secondAddressSigner);
@@ -313,16 +311,15 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
       ProofOfIdentityContract.initialize(
         IPermissionsInterfaceDummyInstance.address,
         other,
-        other,
         other
       ),
       "Initializable: contract is already initialized"
     );
   });
-  it("upgrades should only be allowed to be called by UPGRADER_ROLE", async function () {
+  it("upgrades should only be allowed to be called by DEFAULT_ADMIN_ROLE", async function () {
     const ProofOfIdentityHasADifferentUpgrader = await upgrades.deployProxy(
       ProofOfIdentityFactory,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, alice],
+      [IPermissionsInterfaceDummyInstance.address, alice, alice],
       { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
@@ -333,7 +330,7 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
           kind: "uups",
         }
       ),
-      `AccessControl: account ${FromOwner} is missing role ${UPGRADER_ROLE}`
+      `AccessControl: account ${FromOwner} is missing role ${DEFAULT_ADMIN_ROLE}`
     );
     const ProofOfIdentityContractV2 = await upgrades.upgradeProxy(
       ProofOfIdentityContract.address,
@@ -344,62 +341,62 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
     );
   });
   //suspendAccountMaintainTokenAndIdentityBlob
-  it("The proof of identity contract's function suspendAccountMaintainTokenAndIdentityBlob should only allow a PROVER_ROLE address to call it", async () => {
+  it("The proof of identity contract's function suspendAccountMaintainTokenAndIdentityBlob should only allow a OPERATOR_ROLE address to call it", async () => {
     await expectRevert(
       signerAlice.suspendAccountMaintainTokenAndIdentityBlob(other, "hi"),
-      `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
-  it("The proof of identity contract's function updateIdentity should only allow a PROVER_ROLE address to call it", async () => {
+  it("The proof of identity contract's function updateIdentity should only allow a OPERATOR_ROLE address to call it", async () => {
     await expectRevert(
       signerAlice.updateIdentity(other, 1, 2, 3, 78886932657, "hi"),
-      `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
-  it("The proof of identity contract's function issueIdentity should only allow a PROVER_ROLE address to call it", async () => {
+  it("The proof of identity contract's function issueIdentity should only allow a OPERATOR_ROLE address to call it", async () => {
     await expectRevert(
       signerAlice.issueIdentity(other, 1, 2, 3, 78886932657, "hi"),
-      `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
-  it("The proof of identity contract should only allow allow networkOperator to grant PROVER_ROLE", async () => {
+  it("The proof of identity contract should only allow allow networkAdmin to grant OPERATOR_ROLE", async () => {
     await expectRevert(
-      signerAlice.grantRole(PROVER_ROLE, other),
+      signerAlice.grantRole(OPERATOR_ROLE, other),
       `AccessControl: account ${FROM} is missing role ${DEFAULT_ADMIN_ROLE}`
     );
   });
-  it("The proof of identity contract networkOperator should be able to issue PROVER_ROLES", async () => {
+  it("The proof of identity contract networkAdmin should be able to issue OPERATOR_ROLES", async () => {
     //ensures owner can grant alice a role
-    await ProofOfIdentityContract.grantRole(PROVER_ROLE, alice);
+    await ProofOfIdentityContract.grantRole(OPERATOR_ROLE, alice);
     //tests that alice can use her role
     await signerAlice.updateIdentity(alice, 1, 2, 3, 78886932657, "hi");
   });
-  it("The proof of identity contract's function updateTokenURI should only be allowed to be called by a PROVER_ROLE", async () => {
+  it("The proof of identity contract's function updateTokenURI should only be allowed to be called by a OPERATOR_ROLE", async () => {
     await expectRevert(
       signerAlice.updateTokenURI(alice, "Updated"),
-      `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     //confirms original value
     expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("token");
   });
-  //   it("The proof of identity contract's function suspendAccountDeleteTokenAndIdentityBlob should only allow a PROVER_ROLE address to call it", async () => {
+  //   it("The proof of identity contract's function suspendAccountDeleteTokenAndIdentityBlob should only allow a OPERATOR_ROLE address to call it", async () => {
   //     await expectRevert(
   //       signerAlice.suspendAccountDeleteTokenAndIdentityBlob(alice, 0),
-  //       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+  //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
   //     );
   //   });
-  //   it("The contract: function deleteSingleHolderToken should only allow a PROVER_ROLE address to call it", async () => {
+  //   it("The contract: function deleteSingleHolderToken should only allow a OPERATOR_ROLE address to call it", async () => {
   //     //calls function and expects revert
   //     await expectRevert(
   //       signerAlice.suspendAccountMaintainTokenAndIdentityBlob(alice, "lying"),
-  //       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+  //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
   //     );
   //   });
-  //   it("The contract: function suspendAccountDeleteTokenAndIdentityBlobshould only allow a PROVER_ROLE address to call it", async () => {
+  //   it("The contract: function suspendAccountDeleteTokenAndIdentityBlobshould only allow a OPERATOR_ROLE address to call it", async () => {
   //     //only owner has prover role so i anticpate this will reviwer
   //     await expectRevert(
   //       signerAlice.suspendAccountMaintainTokenAndIdentityBlob(alice, "lying"),
-  //       `AccessControl: account ${FROM} is missing role ${PROVER_ROLE}`
+  //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
   //     );
   //   });
 });
@@ -421,7 +418,7 @@ describe("Testing contracts that inhert OtherInformation and RoleVerification sh
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice token 2 to other to test
@@ -559,7 +556,7 @@ describe("Testing contracts that ERC721 Overrides Should not Allow Token Movemen
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //allows alice to be the signer
@@ -606,7 +603,7 @@ describe("Testing the the Verifiable VerifiableIdentityPreventsOnExpiry output a
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     // gets information for deployment
@@ -787,7 +784,7 @@ describe("Testing the User Privilege and Network Removal Functions", function ()
     alice = await alices.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -838,7 +835,7 @@ describe("Testing custom errors to ensure functions revert as expected", functio
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -924,7 +921,7 @@ describe("Testing custom events to ensure they emit as expected", function () {
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -1010,7 +1007,7 @@ describe("Testing contracts that ERC721 Overrides Should not Allow Token Movemen
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //allows alice to be the signer

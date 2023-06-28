@@ -9,7 +9,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -24,9 +24,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -42,7 +39,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -57,9 +54,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -75,7 +69,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -90,9 +84,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -108,7 +99,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -123,9 +114,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -141,7 +129,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -156,9 +144,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -167,14 +152,14 @@
       "artifacts": ["VerifiableIdentityPreventsOnExpiry"]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/ProofOfIdentity.sol": {
-      "lastModificationDate": 1687853051085,
-      "contentHash": "9109a5912c4abf13a3b923332e4f2487",
+      "lastModificationDate": 1687949508205,
+      "contentHash": "b7b497a4585462636811a3c7601f2eba",
       "sourceName": "contracts/ProofOfIdentity.sol",
       "solcConfig": {
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -189,9 +174,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -217,7 +199,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -232,9 +214,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -250,7 +229,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -265,9 +244,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -283,7 +259,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -298,9 +274,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -322,7 +295,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -337,9 +310,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -364,7 +334,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -379,9 +349,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -400,7 +367,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -415,9 +382,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -433,7 +397,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -448,9 +412,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -466,7 +427,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -481,9 +442,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -502,7 +460,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -517,9 +475,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -535,7 +490,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -550,9 +505,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -568,7 +520,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -583,9 +535,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -601,7 +550,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -616,9 +565,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -634,7 +580,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -649,9 +595,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -667,7 +610,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -682,9 +625,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -700,7 +640,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -715,9 +655,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -733,7 +670,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -748,9 +685,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -766,7 +700,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -781,9 +715,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -865,7 +796,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -880,9 +811,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -898,7 +826,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -913,9 +841,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -935,7 +860,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -950,9 +875,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -968,7 +890,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -983,9 +905,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1008,7 +927,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -1023,9 +942,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1041,7 +957,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -1056,9 +972,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1074,7 +987,7 @@
         "version": "0.8.2",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -1089,9 +1002,6 @@
               ],
               "": ["ast"]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
