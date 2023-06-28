@@ -14,7 +14,7 @@ describe("Testing the initial values to validate expected contract state", funct
     const hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
+      ["HAVEN1", "HRC20", owner, owner,  false],
       { initializer: "initialize", kind: "uups" }
     );
   });
@@ -30,7 +30,7 @@ describe("Testing the initial values to validate expected contract state", funct
   it("initalize should only be called upon deployment", async () => {
     await expectRevert(
      H.initialize(
-        "HAVEN1", "HRC20", owner, owner, owner, owner, false
+        "HAVEN1", "HRC20", owner, owner, false
       ),
       "Initializable: contract is already initialized"
     );
@@ -48,7 +48,7 @@ describe("Testing the deposit and withdraw functions", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
+      ["HAVEN1", "HRC20", owner, owner,  false],
       { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
@@ -66,7 +66,7 @@ describe("Testing the deposit and withdraw functions", function () {
   it("The contract: function deposit function should not allow deposits if `isWhiteListContract` is true & address is not on whitelist ", async () => {
     const HRC20HasWhiteListAliceIsNotOn = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, owner, true],
+      ["HAVEN1", "HRC20", owner, owner,  true],
       { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
@@ -86,7 +86,7 @@ describe("Testing the pause functionality", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
+      ["HAVEN1", "HRC20", owner, owner,  false],
       { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
@@ -127,7 +127,7 @@ describe("Testing Whitelist Functionality", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     HRCWithWhiteList = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, owner, true],
+      ["HAVEN1", "HRC20", owner, owner,  true],
       { initializer: "initialize", kind: "uups" }
     );
   });
@@ -176,7 +176,7 @@ describe("Testing Blacklist Functionality", () => {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
+      ["HAVEN1", "HRC20", owner, owner,  false],
       { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
@@ -216,9 +216,8 @@ describe("Testing Access Control Functionality", function () {
   let signerAlice;
   let FROM;
   let FromOwner;
-  let DISTRIBUTOR_ROLE;
-  let PAUSER_ROLE;
-  let UPGRADER_ROLE;
+  let OPERATOR_ROLE;
+  let DEFAULT_ADMIN_ROLE;
   let hrc20;
   let secondAddressSigner;
   beforeEach(async () => {
@@ -230,7 +229,7 @@ describe("Testing Access Control Functionality", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
+      ["HAVEN1", "HRC20", owner, owner,  false],
       { initializer: "initialize", kind: "uups" }
     );
     //getting alice ability to sign
@@ -240,69 +239,68 @@ describe("Testing Access Control Functionality", function () {
     FROM = alice.toLowerCase();
     FromOwner = owner.toLowerCase();
     //getting access control role
-    DISTRIBUTOR_ROLE = await H.DISTRIBUTOR_ROLE();
-    PAUSER_ROLE = await H.PAUSER_ROLE();
-    UPGRADER_ROLE = await H.UPGRADER_ROLE();
+    OPERATOR_ROLE = await H.OPERATOR_ROLE();
+    DEFAULT_ADMIN_ROLE = await H.DEFAULT_ADMIN_ROLE();
   });
-  it("The contract: minting/withdrawing/blacklisting/whitelsiting should only be allowed by the DISTRIBUTOR_ROLE     ", async () => {
+  it("The contract: minting/withdrawing/blacklisting/whitelsiting should only be allowed by the OPERATOR_ROLE     ", async () => {
     await H.deposit(alice, 900);
     await expectRevert(
       signerAlice.deposit(owner, 225),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     await expectRevert(
       signerAlice.setBlackListAddress(alice, true),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     await expectRevert(
       signerAlice.withdraw(alice, 225),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     await expectRevert(
       signerAlice.setWhiteListAddress(alice, true),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     const friends = [owner, random];
     await expectRevert(
       signerAlice.setMultipleWhiteListAddresses(friends),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     await expectRevert(
       signerAlice.setWhiteListActive(true),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
-  it("only the PAUSER_ROLE should be able to pause unpause   ", async () => {
+  it("only the OPERATOR_ROLE should be able to pause unpause   ", async () => {
     await expectRevert(
       signerAlice.pause(),
-      `AccessControl: account ${FROM} is missing role ${PAUSER_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     await H.pause();
     await expectRevert(
       signerAlice.unpause(),
-      `AccessControl: account ${FROM} is missing role ${PAUSER_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     await H.unpause();
   });
   it("The contract: only the admin role should be able to grant roles   ", async () => {
     await expectRevert(
       signerAlice.pause(),
-      `AccessControl: account ${FROM} is missing role ${PAUSER_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
-    await H.grantRole(PAUSER_ROLE, alice);
+    await H.grantRole(OPERATOR_ROLE, alice);
     await signerAlice.pause();
   });
-  it("upgrades should only be allowed to be called by UPGRADER_ROLE", async function () {
+  it("upgrades should only be allowed to be called by DEFAULT_ADMIN_ROLE", async function () {
     const HRC20HasADifferentUpgrader = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, alice, false],
+      ["HAVEN1", "HRC20", alice, alice, false],
       { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
       upgrades.upgradeProxy(HRC20HasADifferentUpgrader.address, hrc20, {
         kind: "uups",
       }),
-      `AccessControl: account ${FromOwner} is missing role ${UPGRADER_ROLE}`
+      `AccessControl: account ${FromOwner} is missing role ${DEFAULT_ADMIN_ROLE}`
     );
     const HRC20V2 = await upgrades.upgradeProxy(H.address, hrc20, {
       kind: "uups",
@@ -321,7 +319,7 @@ describe("Testing the deposit and withdraw functions", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
+      ["HAVEN1", "HRC20", owner, owner,  false],
       { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
@@ -339,7 +337,7 @@ describe("Testing the deposit and withdraw functions", function () {
   it("The contract: function deposit function should not allow deposits if `isWhiteListContract` is true & address is not on whitelist ", async () => {
     const HRC20HasWhiteListAliceIsNotOn = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, owner, true],
+      ["HAVEN1", "HRC20", owner, owner,  true],
       { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
@@ -361,13 +359,13 @@ describe("Testing approvals", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner, owner, owner, false],
+      ["HAVEN1", "HRC20", owner, owner,  false],
       { initializer: "initialize", kind: "uups" }
     );
 
     TestContractForApprovals = await upgrades.deployProxy(
       hrc20,
-      ["NOT_A_PROBLEM", "CONTRACT", owner, owner, owner, owner, false],
+      ["NOT_A_PROBLEM", "CONTRACT", owner, alice, false],
       { initializer: "initialize", kind: "uups" }
     );
 
