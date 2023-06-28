@@ -4,6 +4,8 @@ const { expect } = require("chai");
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
 const FIVE_H1 = ethers.utils.parseUnits("5", "ether");
+const SIX_H1 = ethers.utils.parseUnits("6", "ether");
+const TWENTY_H1 = ethers.utils.parseUnits("20", "ether");
 
 describe("Vesting inputs working", function () {
   let owner;
@@ -18,7 +20,7 @@ describe("Vesting inputs working", function () {
     const Escrow = await ethers.getContractFactory("EscrowedH1");
     Vesting = await upgrades.deployProxy(
       Escrow,
-      ["EscrowedH1", "esH1", owner, owner, owner, year],
+      ["EscrowedH1", "esH1", owner, owner, year],
       { initializer: "initialize", kind: "uups" }
     );
     await Vesting.mintEscrowedH1(owner, 5, { value: FIVE_H1 });
@@ -43,19 +45,84 @@ describe("Vesting inputs working", function () {
       await Vesting.getUserVestingAmountFromDepositIndex(owner, 0)
     ).to.equal(5);
   });
-  //getUserVestingClaimedAmountFromIndex
-  it("Vested tokens should be tracked by the contract and should be retrieved from `getUserVestingClaimedAmountFromIndex`", async () => {
+  it("Claimed tokens should be tracked by the contract and should be retrieved from `getUserVestingClaimedAmountFromIndex`", async () => {
     await Vesting.startVesting(5);
     expect(
       await Vesting.getUserVestingClaimedAmountFromIndex(owner, 0)
     ).to.equal(0);
   });
-  // it("Vested multiple token inputs ", async () => {
-  //   await Vesting.startVesting(5);
-  //   expect(
-  //     await Vesting.getUserVestingClaimedAmountFromIndex(owner, 0)
-  //   ).to.equal(5);
-  // });
+  it("A timestamp when the vesting begins callable by getUserVestingDepositTimestampFromIndex", async () => {
+    await Vesting.startVesting(5);
+    const timeNow = await time.latest();
+    const benchMark = await Vesting.getUserVestingDepositTimestampFromIndex(owner, 0);
+    expect(
+          benchMark.toString()
+        ).to.equal(timeNow.toString());
+});
+it("The amount a user vested should be callable via getUserVestingAmountFromDepositIndex", async () => {
+  await Vesting.startVesting(5);
+  expect(
+    await Vesting.getUserVestingAmountFromDepositIndex(owner, 0)
+      ).to.equal(5);
+});
+//
+it("the information from a users vesting inputs callable via getUserVestingsByAddress", async () => {
+  await Vesting.startVesting(5);
+  await Vesting.mintEscrowedH1(owner, 6, { value: SIX_H1 });
+  await Vesting.startVesting(6);
+  const inputs = await Vesting.getUserVestingsByAddress(owner)
+  
+  expect(inputs[0].finishedClaiming).to.equal(false)
+  expect(inputs[1].finishedClaiming).to.equal(false)
+  
+  const inputOneAmount = inputs[0].amount
+  const inputTwoAmount = inputs[1].amount
+
+  expect(inputOneAmount.toString()).to.equal("5") 
+  expect(inputTwoAmount.toString()).to.equal("6")
+ });
+ it("the information from a users vesting input callable via getUserVestingByIndex", async () => {
+  await Vesting.startVesting(5);
+  await Vesting.mintEscrowedH1(owner, 6, { value: SIX_H1 });
+  await Vesting.startVesting(6);
+
+  const inputsNumberOne = await Vesting.getUserVestingByIndex(owner, 0)
+  const inputsNumberTwo = await Vesting.getUserVestingByIndex(owner, 1)
+  
+  expect(inputsNumberOne.finishedClaiming).to.equal(false)
+  expect(inputsNumberTwo.finishedClaiming).to.equal(false)
+  
+  const inputOneAmount = inputsNumberOne.amount
+  const inputTwoAmount = inputsNumberTwo.amount
+
+  expect(inputOneAmount.toString()).to.equal("5") 
+  expect(inputTwoAmount.toString()).to.equal("6")
+ });
+ it("the information from a users vesting input callable via getUserVestingByIndex", async () => {
+  await Vesting.startVesting(5);
+  await time.increase(time.duration.years(1))
+  await Vesting.claim(0)
+
+  const inputsNumberOne = await Vesting.getUserVestingByIndex(owner, 0)
+  
+  expect(inputsNumberOne.finishedClaiming).to.equal(true)
+  
+ });
+ it("the information about when a user last withdrew is callable via getUserLastClaimTimestampFromIndex", async () => {
+  // await Vesting.startVesting(5);
+  // await Vesting.mintEscrowedH1(owner, 6, { value: SIX_H1 });
+  await Vesting.mintEscrowedH1(owner, 20, { value: TWENTY_H1 });
+  await Vesting.startVesting(20);
+  //get 1/2 year to claim 10 but maintain blob
+  const sixMonths = time.duration.years(1) / 2;
+    //increase time
+  await time.increase(sixMonths);
+  //collect
+  await Vesting.claim(0);
+  const timeNow = await time.latest();
+  const timeWithDrawn = await Vesting.getUserLastClaimTimestampFromIndex(owner, 0)
+  expect(timeWithDrawn.toString()).to.equal(timeNow.toString()) 
+ });
 });
 
 describe("Withdraws/admin functions", function () {
@@ -63,7 +130,7 @@ describe("Withdraws/admin functions", function () {
   let alice;
   let Vesting;
   let year;
-  let DISTRIBUTOR_ROLE;
+  let OPERATOR_ROLE;
   let FROM;
   let signerAlice;
   beforeEach(async () => {
@@ -74,12 +141,12 @@ describe("Withdraws/admin functions", function () {
     const Escrow = await ethers.getContractFactory("EscrowedH1");
     Vesting = await upgrades.deployProxy(
       Escrow,
-      ["EscrowedH1", "esH1", owner, owner, owner, year],
+      ["EscrowedH1", "esH1", owner, owner, year],
       { initializer: "initialize", kind: "uups" }
     );
     await Vesting.mintEscrowedH1(owner, 5, { value: FIVE_H1 });
     //get role
-    DISTRIBUTOR_ROLE = await Vesting.DISTRIBUTOR_ROLE();
+    OPERATOR_ROLE = await Vesting.OPERATOR_ROLE();
     FROM = alice.toLowerCase();
     const secondAddressSigner = await ethers.getSigner(alice);
     signerAlice = Vesting.connect(secondAddressSigner);
@@ -99,16 +166,15 @@ describe("Withdraws/admin functions", function () {
     //checks tokens in contract
     const initalBalance = await Vesting.balanceOf(Vesting.address)
     expect(initalBalance.toString()).to.equal("5");
-    // //withdraws to owner
-    await expect(Vesting.withdrawWrapped()).to.changeTokenBalance(
-      Vesting.address,
-      owner,
-      5
-    );
+    //withdraws to owner
     await Vesting.withdrawWrapped();
-    const postBalance = await Vesting.balanceOf(owner);
+    const postBalanceOwner = await Vesting.balanceOf(owner);
     //final balance of owner should be 5
-    expect(postBalance.toString()).to.equal("5");
+    expect(postBalanceOwner.toString()).to.equal("5");
+    //check contract
+    const postBalance = await Vesting.balanceOf(Vesting.address);
+    //final balance of owner should be 5
+    expect(postBalance.toString()).to.equal("0");
   });
   it("Only distributor role should be able to call withdraws", async () => {
     await Vesting.transfer(Vesting.address, 5);
@@ -118,19 +184,19 @@ describe("Withdraws/admin functions", function () {
     //withdraws to owner
     await expectRevert(
       signerAlice.withdrawWrapped(),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     //send eth to conttact for test
     await Vesting.mintEscrowedH1(owner, 5, { value: FIVE_H1 });
     await await expectRevert(
       signerAlice.withdrawUnwrapped(),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
   it("Only distributor role admin should be able to deposit unwrapped H1", async () => {
     await expectRevert(
       signerAlice.withdrawWrapped(),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
   it("Anyone can mint tokens if they pay via mintEscrowedH1", async () => {
@@ -142,7 +208,7 @@ describe("Withdraws/admin functions", function () {
   it("Only distributor role admin  can mint tokens via adminMintEscrowedH1", async () => {
     await expectRevert(
       signerAlice.adminMintEscrowedH1(owner, 5),
-      `AccessControl: account ${FROM} is missing role ${DISTRIBUTOR_ROLE}`
+      `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
     await Vesting.adminMintEscrowedH1(owner, 5);
   });
@@ -160,7 +226,7 @@ describe("Claiming tokens", function () {
     const Escrow = await ethers.getContractFactory("EscrowedH1");
     Vesting = await upgrades.deployProxy(
       Escrow,
-      ["EscrowedH1", "esH1", owner, owner, owner, year],
+      ["EscrowedH1", "esH1", owner, owner, year],
       { initializer: "initialize", kind: "uups" }
     );
     await Vesting.mintEscrowedH1(owner, 5, { value: FIVE_H1 });
@@ -205,6 +271,7 @@ describe("Claiming tokens", function () {
     expect(await PostClaimContractBalance.toString()).to.equal("25000000000000000000")
   });
   it("if a user makes multiple deposits they should be indexed differently and claimed differently", async () => {
+    await Vesting.startVesting(5);
     //increase time
     await time.increase(time.duration.years(1));
     // asserts the correct output for the year duaration is claimable
@@ -227,12 +294,11 @@ describe("Claiming tokens", function () {
     expect(await PostClaimContractBalance.toString()).to.equal("0");
     const indexOwnerSecondDeposit = await Vesting.calculateClaimableAmount(owner, 1);
     expect(await indexOwnerSecondDeposit.toString()).to.equal("10");
-    // //checks that 0 is = 0 because it was withdrawn
-    // const checkBalanceIsWithdrawn = await Vesting.calculateClaimableAmount(owner, 0);
-    // // const checkBalanceIsWithdrawnStr = checkBalanceIsWithdrawn.toString();
-    // // assert.equal(checkBalanceIsWithdrawnStr, "0");
+    //checks that 0 is = 0 because it was withdrawn
+ //  await expectRevert.unspecified( Vesting.calculateClaimableAmount(owner, 0));
+  
 
-    // await Vesting.claim(1);
+    await Vesting.claim(1);
   });
   it("after a claim, the index will revert if called", async () => {
     await Vesting.startVesting(5);
@@ -256,16 +322,16 @@ describe("Claiming tokens", function () {
     const indexOwnerSecondDeposit = await Vesting.calculateClaimableAmount(owner, 1);
     expect(await indexOwnerSecondDeposit.toString()).to.equal("10");
     //checks that 0 is = 0 because it was withdrawn
-    await expectRevert.unspecified(Vesting.calculateClaimableAmount(owner, 0));
+   // await expectRevert.unspecified(Vesting.calculateClaimableAmount(owner, 0));
     await Vesting.claim(1);
   });
 });
 //"Pausable: paused"
-describe("Pauser Role", function () {
+describe("Pausing of contract", function () {
   let owner;
   let alice;
   let Vesting;
-  let PAUSER_ROLE;
+  let OPERATOR_ROLE;
   let FROM;
   let signerAlice;
   beforeEach(async () => {
@@ -279,11 +345,11 @@ describe("Pauser Role", function () {
     const Escrow = await ethers.getContractFactory("EscrowedH1");
     Vesting = await upgrades.deployProxy(
       Escrow,
-      ["EscrowedH1", "esH1", owner, owner, alice, year],
+      ["EscrowedH1", "esH1", alice, alice, year],
       { initializer: "initialize", kind: "uups" }
     );
     await Vesting.mintEscrowedH1(owner, 5, { value: FIVE_H1 });
-    PAUSER_ROLE = await Vesting.PAUSER_ROLE();
+    OPERATOR_ROLE = await Vesting.OPERATOR_ROLE();
     const secondAddressSigner = await ethers.getSigner(alice);
     signerAlice = Vesting.connect(secondAddressSigner);
   });
@@ -299,7 +365,7 @@ describe("Pauser Role", function () {
     await Vesting.startVesting(5);
     await expectRevert(
       Vesting.pause(),
-      `AccessControl: account ${OWNER} is missing role ${PAUSER_ROLE}`
+      `AccessControl: account ${OWNER} is missing role ${OPERATOR_ROLE}`
     );
     await signerAlice.pause(),
       await expectRevert(

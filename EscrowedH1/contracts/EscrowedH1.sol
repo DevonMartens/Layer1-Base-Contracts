@@ -35,10 +35,8 @@ UUPSUpgradeable
     );
 
     // Distributor can mint and withdraw.
-    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
-    // Pauser can pause contract.
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     // Amount of time for tokens to vest.
     uint256 public vestingDuration;
@@ -57,19 +55,17 @@ UUPSUpgradeable
 
     /**
     @notice Theses variables initalized when contract deploys.
-    @param admin can remove/adddistrubutor roles.
-    @param distrubutor can mint tokens.
-    @param pauser pause contract.
-    @dev The  DISTRIBUTOR_ROLE can be given after deployment by calling `grantRole(role, address)`
-        Ex: `grantRole(DISTRIBUTOR_ROLE, 0x1d2B794563Bf90c6e53B56b215502b8aE4c42fF8)` 
+    @param networkAdmin can remove/adddistrubutor roles.
+    @param networkOperator can mint tokens and pause the contract.
+    @dev The  OPERATOR_ROLE can be given after deployment by calling `grantRole(role, address)`
+        Ex: `grantRole(OPERATOR_ROLE, 0x1d2B794563Bf90c6e53B56b215502b8aE4c42fF8)` 
     */
 
     function initialize(
         string memory name, 
-        string memory symbol, 
-        address admin, 
-        address distrubutor, 
-        address pauser, 
+        string memory symbol,
+        address networkAdmin,
+        address networkOperator,
         uint256 vestingTime
         ) 
         external initializer  {
@@ -78,30 +74,29 @@ UUPSUpgradeable
         __AccessControl_init();
         __ERC20_init(name, symbol);
         vestingDuration = vestingTime;
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-        _grantRole(DISTRIBUTOR_ROLE, distrubutor);
-        _grantRole(PAUSER_ROLE, pauser);
-        
+        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, networkAdmin);
+        _grantRole(OPERATOR_ROLE, networkOperator);      
     }
 
     /** 
     @notice Function to add H1 to the contract.
     */
 
-    receive() external payable onlyRole(DISTRIBUTOR_ROLE){}
+    receive() external payable onlyRole(OPERATOR_ROLE){}
 
     /**
     @notice Function to pause contract.
     */
 
-    function pause() external onlyRole(PAUSER_ROLE) {
+    function pause() external onlyRole(OPERATOR_ROLE) {
         _pause();
     }
 
     /**
     @notice Function to unpause contract.
     */
-    function unpause() external onlyRole(PAUSER_ROLE) {
+    function unpause() external onlyRole(OPERATOR_ROLE) {
         _unpause();
     }
 
@@ -143,16 +138,18 @@ UUPSUpgradeable
         uint256 returnAmount = calculateClaimableAmount(msg.sender, index);
         uint256 claimableAmount = returnAmount * 1 ether;
         require(claimableAmount > 0, Errors.INSUFFICIENT_TOKEN_BALANCE);
-        userVesting[msg.sender][index].totalClaimed += claimableAmount;
+        userVesting[msg.sender][index].totalClaimed += returnAmount;
+        //claimableAmount;
         userVesting[msg.sender][index].lastClaimTimestamp = block.timestamp;
 
         if (
-            userVesting[msg.sender][index].amount ==
+            //userVesting[msg.sender][index].amount
+            returnAmount ==
             userVesting[msg.sender][index].totalClaimed
         ) {
             userVesting[msg.sender][index].finishedClaiming = true;
 }
-        _removeCompletedIndex(msg.sender);
+        // _removeCompletedIndex(msg.sender);
         payable(msg.sender).transfer(claimableAmount);
         emit ClaimedH1(msg.sender, claimableAmount, index);
     }
@@ -161,7 +158,7 @@ UUPSUpgradeable
     @notice This is meant to withdraw H1 sent to the contract.
     */
 
-    function withdrawUnwrapped() external onlyRole(DISTRIBUTOR_ROLE){
+    function withdrawUnwrapped() external onlyRole(OPERATOR_ROLE){
         (bool success,) = msg.sender.call{value:address(this).balance}("");
         require(success, Errors.TRANSFER_FAILED);
     } 
@@ -171,7 +168,7 @@ UUPSUpgradeable
     @dev This is meant to withdraw escrowed H1 tokens that could be sent to the contract.
     */ 
 
-    function withdrawWrapped() external onlyRole(DISTRIBUTOR_ROLE){
+    function withdrawWrapped() external onlyRole(OPERATOR_ROLE){
         _transfer(address(this), msg.sender, balanceOf(address(this)));
     } 
 
@@ -200,7 +197,7 @@ UUPSUpgradeable
     function adminMintEscrowedH1(
         address recipient,
         uint256 amount
-    ) external whenNotPaused onlyRole(DISTRIBUTOR_ROLE){
+    ) external whenNotPaused onlyRole(OPERATOR_ROLE){
         _mint(recipient, amount);
     }
 
@@ -255,7 +252,7 @@ UUPSUpgradeable
     }
 
     /** 
-    @notice Gets the deposit timestamp from when a user started vesting.
+    @notice Gets the deposit timestamp from when a user last claimed.
     @param user the wallet that made the deposit.
     @param index the deposit number from the array of totals. Starts at 0.
     */
@@ -314,13 +311,13 @@ UUPSUpgradeable
     @param finalized the address that has claimed all vested tokens.
     @dev Automatically called after claimed function.
     */
-    function _removeCompletedIndex(address finalized) internal {
-      for (uint i = 0; i <  userVesting[finalized].length; i++) {
-        if (userVesting[msg.sender][i].finishedClaiming == true && userVesting[msg.sender][i].amount == 0) {
-          delete userVesting[finalized][i];
-        }
-      }
-    }
+    // function _removeCompletedIndex(address finalized) internal {
+    //   for (uint i = 0; i <  userVesting[finalized].length; i++) {
+    //     if (userVesting[msg.sender][i].finishedClaiming == true && userVesting[msg.sender][i].amount == 0) {
+    //       delete userVesting[finalized][i];
+    //     }
+    //   }
+    // }
 
     /**
    @notice Function to upgrade contract override to protect.
@@ -329,6 +326,6 @@ UUPSUpgradeable
 
     function _authorizeUpgrade(
         address newImplementation
-    ) internal override onlyRole(DISTRIBUTOR_ROLE) {}
+    ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 
 }
