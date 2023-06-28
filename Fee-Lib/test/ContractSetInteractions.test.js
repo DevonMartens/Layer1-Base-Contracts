@@ -65,17 +65,17 @@ describe("Contract Interactions", function () {
     //validator contracts printed out
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner,],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract2 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner,],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract3 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner,],
+      [addressArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     const ValidatorArray = [
@@ -86,25 +86,13 @@ describe("Contract Interactions", function () {
     // Fee contract
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
-      [
-        OracleContract.address,
-        ValidatorArray,
-        weightArray,
-        owner,
-        owner,
-      ],
+      [OracleContract.address, ValidatorArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     //bad fee contract
     BadFeeContract = await upgrades.deployProxy(
       BadFeeContractFactory,
-      [
-        OracleContract.address,
-        ValidatorArray,
-        weightArray,
-        owner,
-        owner,
-      ],
+      [OracleContract.address, ValidatorArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     FeeContractSigner = ethers.provider.getSigner(FeeContract.address);

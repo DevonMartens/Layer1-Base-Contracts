@@ -63,13 +63,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
   });
   it("initalize should only be called upon deployment", async () => {
     await expectRevert(
-      Fee.initialize(
-        owner,
-        ownerArray,
-        weight,
-        oracleFake,
-        oracleFake
-      ),
+      Fee.initialize(owner, ownerArray, weight, oracleFake, oracleFake),
       "Initializable: contract is already initialized"
     );
   });
@@ -165,13 +159,7 @@ describe("Fee Contract:  Test: Adding and adjusting wieghts and channels functio
     await expectRevert(
       upgrades.deployProxy(
         FeeContract,
-        [
-          owner,
-          oversizedAddressArray,
-          oversizedWieghtsArray,
-          owner,
-          owner,
-        ],
+        [owner, oversizedAddressArray, oversizedWieghtsArray, owner, owner],
         {
           initializer: "initialize",
         }
@@ -336,13 +324,7 @@ describe("Fee Contract: Initail tests that require oracle feedback", function ()
     // Fee contract
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
-      [
-        OracleContract.address,
-        ValidatorArray,
-        weightArray,
-        owner,
-        owner,
-      ],
+      [OracleContract.address, ValidatorArray, weightArray, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     randomSig = await ethers.getSigner(random);

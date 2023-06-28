@@ -55,7 +55,7 @@ contract FeeContract is
     //Role to control contract
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
-/**
+    /**
    @notice The initialize is initiating variables during deployment.
    @param _oracle is the address for the oracle that is consulted to determine fees.
    @param _channels array channels are the channels that receive payments.

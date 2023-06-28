@@ -61,7 +61,6 @@ contract ValidatorRewards is
     // Role to control contract distribution.
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
-
     /**
    @notice contract deploys with a list of validator addresses and their total shares.
    @param validatorsList an array of validators to accept fees.
@@ -230,7 +229,9 @@ contract ValidatorRewards is
             unchecked {
                 _released[validatorsAddressArray[i]] += payment;
             }
-            address payable account = payable(address(validatorsAddressArray[i]));
+            address payable account = payable(
+                address(validatorsAddressArray[i])
+            );
             Address.sendValue(account, payment);
             emit PaymentReleased(validatorsAddressArray[i], payment);
         }

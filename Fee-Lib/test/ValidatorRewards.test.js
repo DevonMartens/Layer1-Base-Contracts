@@ -37,7 +37,7 @@ describe("Validator Rewards: H1 Management", function () {
     );
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
-      [vadlidatorAddressArray, wieghts, owner, owner,],
+      [vadlidatorAddressArray, wieghts, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     // ValidatorContract.address = await   s();
@@ -113,7 +113,7 @@ describe("Validator Rewards: Testing the view functions ", function () {
     );
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
-      [vadlidatorAddressArray, wieghts, owner, owner,],
+      [vadlidatorAddressArray, wieghts, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     randomSig = ethers.provider.getSigner(random);
@@ -182,7 +182,7 @@ describe("Validator Rewards: Validator Management", function () {
     );
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
-      [vadlidatorAddressArray, wieghts, owner, owner,],
+      [vadlidatorAddressArray, wieghts, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     randomSig = ethers.provider.getSigner(random);
@@ -307,7 +307,7 @@ describe("Validator Rewards: Adjustments in Validators impact on dispursement of
     );
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
-      [vadlidatorAddressArray, wieghts, owner, owner,],
+      [vadlidatorAddressArray, wieghts, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     // ValidatorContract.address = await   s();
@@ -356,7 +356,7 @@ describe("Validator Rewards: AccessControl In the contract", function () {
     ValidatorRewards = await ethers.getContractFactory("ValidatorRewards");
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewards,
-      [vadlidatorAddressArray, wieghts, owner, owner,],
+      [vadlidatorAddressArray, wieghts, owner, owner],
       { initializer: "initialize", kind: "uups" }
     );
     // for error message for signers
