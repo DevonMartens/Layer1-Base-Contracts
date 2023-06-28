@@ -14,7 +14,7 @@ describe("Testing the initial values to validate expected contract state", funct
     const hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner,  false],
+      ["HAVEN1", "HRC20", owner, owner, false],
       { initializer: "initialize", kind: "uups" }
     );
   });
@@ -29,9 +29,7 @@ describe("Testing the initial values to validate expected contract state", funct
   });
   it("initalize should only be called upon deployment", async () => {
     await expectRevert(
-     H.initialize(
-        "HAVEN1", "HRC20", owner, owner, false
-      ),
+      H.initialize("HAVEN1", "HRC20", owner, owner, false),
       "Initializable: contract is already initialized"
     );
   });
@@ -48,7 +46,7 @@ describe("Testing the deposit and withdraw functions", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner,  false],
+      ["HAVEN1", "HRC20", owner, owner, false],
       { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
@@ -66,7 +64,7 @@ describe("Testing the deposit and withdraw functions", function () {
   it("The contract: function deposit function should not allow deposits if `isWhiteListContract` is true & address is not on whitelist ", async () => {
     const HRC20HasWhiteListAliceIsNotOn = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner,  true],
+      ["HAVEN1", "HRC20", owner, owner, true],
       { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
@@ -86,7 +84,7 @@ describe("Testing the pause functionality", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner,  false],
+      ["HAVEN1", "HRC20", owner, owner, false],
       { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
@@ -127,7 +125,7 @@ describe("Testing Whitelist Functionality", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     HRCWithWhiteList = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner,  true],
+      ["HAVEN1", "HRC20", owner, owner, true],
       { initializer: "initialize", kind: "uups" }
     );
   });
@@ -176,7 +174,7 @@ describe("Testing Blacklist Functionality", () => {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner,  false],
+      ["HAVEN1", "HRC20", owner, owner, false],
       { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
@@ -229,7 +227,7 @@ describe("Testing Access Control Functionality", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner,  false],
+      ["HAVEN1", "HRC20", owner, owner, false],
       { initializer: "initialize", kind: "uups" }
     );
     //getting alice ability to sign
@@ -319,7 +317,7 @@ describe("Testing the deposit and withdraw functions", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner,  false],
+      ["HAVEN1", "HRC20", owner, owner, false],
       { initializer: "initialize", kind: "uups" }
     );
     await H.deposit(alice, 900);
@@ -337,7 +335,7 @@ describe("Testing the deposit and withdraw functions", function () {
   it("The contract: function deposit function should not allow deposits if `isWhiteListContract` is true & address is not on whitelist ", async () => {
     const HRC20HasWhiteListAliceIsNotOn = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner,  true],
+      ["HAVEN1", "HRC20", owner, owner, true],
       { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(
@@ -359,7 +357,7 @@ describe("Testing approvals", function () {
     hrc20 = await ethers.getContractFactory("HRC20");
     H = await upgrades.deployProxy(
       hrc20,
-      ["HAVEN1", "HRC20", owner, owner,  false],
+      ["HAVEN1", "HRC20", owner, owner, false],
       { initializer: "initialize", kind: "uups" }
     );
 

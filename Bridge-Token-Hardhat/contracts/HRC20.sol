@@ -32,9 +32,7 @@ contract HRC20 is
         bool indexed approvalStatus
     );
 
-    event WhiteListSetToActive(
-        bool indexed isActive
-        );
+    event WhiteListSetToActive(bool indexed isActive);
 
     // Mapping will return false by default, if set to true address cant withdraw/deposit/send/recieve tokens.
     mapping(address => bool) public _blockedMembers;
