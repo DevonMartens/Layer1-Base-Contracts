@@ -20,6 +20,19 @@ contract BackedHRC20 is
     // Role created via access control that interacts with the contract
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
+    /** 
+    * @dev The event is triggered during the suspendAccountMaintainTokenAndIdentityBlob function. 
+    * It includes the tokenId and the reason. 
+    * This will include temporary susepensions/
+    */
+
+    event TokensBurnedFromAccount(
+        address indexed account,
+        uint256 indexed amount,
+        string indexed reason
+    );
+
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -155,8 +168,9 @@ contract BackedHRC20 is
     * The reason will be emitted in the event.
      */
 
-    function burnFrom(address target, uint256 amount) external onlyRole(OPERATOR_ROLE) {
+    function burnFrom(address target, uint256 amount, string calldata reason) external onlyRole(OPERATOR_ROLE) {
 	    _burn(target, amount);
+        emit TokensBurnedFromAccount(target, amount, reason);
     }
 
     /**
