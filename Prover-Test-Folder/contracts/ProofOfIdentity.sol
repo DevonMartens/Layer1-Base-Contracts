@@ -98,7 +98,7 @@ contract ProofOfIdentity is
 
      // Stores keccak256 hash of OPERATOR_ROLE for access control.
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
-
+    
      /**	
      * @notice `initalize` function is ran at the time of deployment to support the upgradable proxy, 
      * it defines the permissions interface and the default admin role for access control or "network operator"	
@@ -300,7 +300,7 @@ contract ProofOfIdentity is
         override
     {}
 
-   	/**      
+   	/**
     * @dev Overrides OpenZeppelin `supportsInterface` implementation to ensure the same interfaces can support access control and ERC721.	
     */
 
