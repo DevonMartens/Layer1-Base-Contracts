@@ -297,11 +297,11 @@ describe("Testing Access Control Functionality", function () {
   it("The contract: only the operator role should be able to call burnFrom ", async () => {
     await H.issueBackedToken(owner, 70)
     await expectRevert(
-      signerAlice.burnFrom(owner, 70),
+      signerAlice.burnFrom(owner, 70, "I_WANT_TO_BURN_IT_ALL_DOWN!"),
       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
     );
   });
-  it("The contract: only the operator role should be able to call burnFrom ", async () => {
+  it("The contract: only the operator role should be able to call issueBackedToken", async () => {
     await expectRevert(
       signerAlice.issueBackedToken(owner, 70),
       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
@@ -354,8 +354,8 @@ describe("Testing the deposit and withdraw functions", function () {
   it("The contract: the withdraw function should revert and give the error BALANCE_TOO_LOW if a request is made to withdraw more than the balance", async () => {
     await expectRevert(signerAlice.redeemBackedToken(alice), `110`);
   });
-  it("The contract: the deposit function should mint the correct amount of tokens to the designated wallet", async () => {
-    await H.burnFrom(alice, 900);
+  it("The contract: burnFrom function should remove tokens from a wallet", async () => {
+    await H.burnFrom(alice, 900, "YOU_STOLE_THAT");
     expect(await H.balanceOf(alice)).to.equal(0);
   });
   //function burnFrom(address target, uint256 amount) external onlyRole(OPERATOR_ROLE) {
