@@ -9,7 +9,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 import "./Errors.sol";
 
-contract HRC20 is
+contract BackedHRC20 is
     Initializable,
     ERC20Upgradeable,
     PausableUpgradeable,
@@ -27,7 +27,6 @@ contract HRC20 is
 
     /** 
     @notice variables initalized when the contract deploys.
-    @param useWhiteList sets the storage `bool` `isWhiteListContract` if true no account that is not approved can have tokens minted to them.
     @param havenFoundation can remove/add operator roles.
     @param networkOperator can pause/unpause the contract set to true to allow an address to be whitelisted or false to remove privledges.
     @dev The `OPERATOR_ROLE can be given after deployment by calling `grantRole(role, address)`
@@ -38,8 +37,7 @@ contract HRC20 is
         string memory name,
         string memory symbol,
         address havenFoundation,
-        address networkOperator,
-        bool useWhiteList
+        address networkOperator
     ) external initializer {
         __Pausable_init();
         __AccessControl_init();
@@ -50,9 +48,9 @@ contract HRC20 is
         _grantRole(OPERATOR_ROLE, networkOperator);
     }
 
-    /** 
+       /** 
     @notice Function to pause sending/depositing/withdrawing of tokens from contract.
-    @dev Only operator role can do this given in contructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
+    @dev Only operator role can do this given in constructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
     */
 
     function pause() external onlyRole(OPERATOR_ROLE) {
@@ -67,10 +65,10 @@ contract HRC20 is
         _unpause();
     }
 
-    /**
+     /**
     @notice This function checks an address to ensure it is a contract NOT a wallet.
     @param _addr the address to be checked for if it is a contract or not.
-    @dev retruns true if the input is a contract.
+    @dev returns true if the input is a contract.
     @dev Used to override approvals and increase allowance.
     */
 
@@ -86,8 +84,8 @@ contract HRC20 is
 
     /**
     @notice Same as ERC-20's function but does not allow wallets to be approved only contracts.
-    @param spender is the address being approved to move another wallets tokens.
-    @param amount the number of tokens the  send on belhalf of the owner.
+    @param spender is the address being approved to move other wallets tokens.
+    @param amount the number of tokens they send on behalf of the owner.
     */
 
     function approve(
@@ -103,7 +101,7 @@ contract HRC20 is
     /**
     @notice Same as ERC-20's function but does not allow wallets to be approved only contracts.
     @param spender is the address being approved to move another wallets tokens.
-    @param addedValue the number of tokens added to the original number that the spender is approved to send on belhalf of the owner.
+    @param addedValue the number of tokens added to the original number that the spender is approved to send on behalf of the owner.
     */
 
     function increaseAllowance(
@@ -134,11 +132,9 @@ contract HRC20 is
     }
 
     /**
-    @notice  Function to redeemBackedToken tokens for Haven1 via Yield App.
-    @param from address to remove tokens from.
-    @param amount number of tokens to be withdrawn.
+    @notice Function to redeem backed tokens for Haven1, managed  by the network operator
+    @param amount number of tokens to be redeemed.
     @dev Function does not work when paused.
-    @dev If an address is blacklisted via `setBlackListAddress` it cannot redeemBackedToken tokens.
     @dev If  the amount is higher than the balance of the address an error reading "BALANCE_TOO_LOW" will be returned.
     @dev Only OPERATOR role can do this given in contructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
     */
@@ -146,8 +142,21 @@ contract HRC20 is
     function redeemBackedToken(
         uint256 amount
     ) external whenNotPaused  {
-        require(balanceOf(msg.sender) >= amount, Errors.INSUFFICIENT_BALANCE);
+        require(balanceOf(msg.sender) >= amount, Errors.INSUFFICIENT_TOKEN_BALANCE);
         _burn(msg.sender, amount);
+    }
+
+    /**
+    * @notice This function will be used to provide additional onChain security on Haven1. 
+    * The Haven1 Foundation will call it in case of theft or lost keys.
+    * @param target the address that tokens will be burned from.
+    * @param amount the amount of tokens that will be burned.
+    * @dev TThe premise for this function to be called will be a support ticket submitted off chain. 
+    * The reason will be emitted in the event.
+     */
+
+    function burnFrom(address target, uint256 amount) external onlyRole(OPERATOR_ROLE) {
+	    _burn(target, amount);
     }
 
     /**
@@ -159,13 +168,12 @@ contract HRC20 is
         address newImplementation
     ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 
-    /**
-    @notice Function called when using ERC-20 standard transfering functions.
+     /**
+    @notice Function called when using ERC-20 standard transferring functions.
     @param from address to remove tokens from.
-    @param to reciever of tokens.
+    @param to receiver of tokens.
     @param amount number of tokens to be sent.
     @dev Function does not work when paused.
-    @dev If an address is blacklisted via `setBlackListAddress` it cannot transfer/recieve tokens.
     */
 
     function _beforeTokenTransfer(
