@@ -246,10 +246,7 @@
 201
 202
 203
-204
-205</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+204</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -301,13 +298,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">81×</span>
-<span class="cline-any cline-yes">81×</span>
-<span class="cline-any cline-yes">81×</span>
-<span class="cline-any cline-yes">81×</span>
-<span class="cline-any cline-yes">81×</span>
-<span class="cline-any cline-yes">81×</span>
-<span class="cline-any cline-yes">81×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-yes">75×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -316,7 +313,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -324,7 +321,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -390,9 +387,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -405,6 +400,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -418,6 +416,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -444,11 +446,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">31×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
@@ -469,22 +467,20 @@ contract BackedHRC20 is
     AccessControlUpgradeable,
     UUPSUpgradeable
 {
-&nbsp;
     // Role created via access control that interacts with the contract
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 &nbsp;
-    /** 
-    * @dev The event is triggered during the suspendAccountMaintainTokenAndIdentityBlob function. 
-    * It includes the tokenId and the reason. 
-    * This will include temporary susepensions/
-    */
+    /**
+     * @dev The event is triggered during the suspendAccountMaintainTokenAndIdentityBlob function.
+     * It includes the tokenId and the reason.
+     * This will include temporary susepensions/
+     */
 &nbsp;
     event TokensBurnedFromAccount(
         address indexed account,
         uint256 indexed amount,
         string indexed reason
     );
-&nbsp;
 &nbsp;
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -514,7 +510,7 @@ contract BackedHRC20 is
         _grantRole(OPERATOR_ROLE, networkOperator);
     }
 &nbsp;
-       /** 
+    /** 
     @notice Function to pause sending/depositing/withdrawing of tokens from contract.
     @dev Only operator role can do this given in constructor or by calling grantRole(OPERATOR_ROLE, &lt;ADDRESS&gt;).
     */
@@ -531,7 +527,7 @@ contract BackedHRC20 is
         _unpause();
     }
 &nbsp;
-     /**
+    /**
     @notice This function checks an address to ensure it is a contract NOT a wallet.
     @param _addr the address to be checked for if it is a contract or not.
     @dev returns true if the input is a contract.
@@ -605,24 +601,29 @@ contract BackedHRC20 is
     @dev Only OPERATOR role can do this given in contructor or by calling grantRole(OPERATOR_ROLE, &lt;ADDRESS&gt;).
     */
 &nbsp;
-    function redeemBackedToken(
-        uint256 amount
-    ) external whenNotPaused  {
-        require(balanceOf(msg.sender) &gt;= amount, Errors.INSUFFICIENT_TOKEN_BALANCE);
+    function redeemBackedToken(uint256 amount) external whenNotPaused {
+        require(
+            balanceOf(msg.sender) &gt;= amount,
+            Errors.INSUFFICIENT_TOKEN_BALANCE
+        );
         _burn(msg.sender, amount);
     }
 &nbsp;
     /**
-    * @notice This function will be used to provide additional onChain security on Haven1. 
-    * The Haven1 Foundation will call it in case of theft or lost keys.
-    * @param target the address that tokens will be burned from.
-    * @param amount the amount of tokens that will be burned.
-    * @dev TThe premise for this function to be called will be a support ticket submitted off chain. 
-    * The reason will be emitted in the event.
+     * @notice This function will be used to provide additional onChain security on Haven1.
+     * The Haven1 Foundation will call it in case of theft or lost keys.
+     * @param target the address that tokens will be burned from.
+     * @param amount the amount of tokens that will be burned.
+     * @dev TThe premise for this function to be called will be a support ticket submitted off chain.
+     * The reason will be emitted in the event.
      */
 &nbsp;
-    function burnFrom(address target, uint256 amount, string calldata reason) external onlyRole(OPERATOR_ROLE) {
-	    _burn(target, amount);
+    function burnFrom(
+        address target,
+        uint256 amount,
+        string calldata reason
+    ) external onlyRole(OPERATOR_ROLE) {
+        _burn(target, amount);
         emit TokensBurnedFromAccount(target, amount, reason);
     }
 &nbsp;
@@ -635,7 +636,7 @@ contract BackedHRC20 is
         address newImplementation
     ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 &nbsp;
-     /**
+    /**
     @notice Function called when using ERC-20 standard transferring functions.
     @param from address to remove tokens from.
     @param to receiver of tokens.
@@ -647,11 +648,7 @@ contract BackedHRC20 is
         address from,
         address to,
         uint256 amount
-    )
-        internal
-        override
-        whenNotPaused
-    {
+    ) internal override whenNotPaused {
         super._beforeTokenTransfer(from, to, amount);
     }
 }
@@ -661,7 +658,7 @@ contract BackedHRC20 is
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jun 29 2023 15:29:11 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Jun 30 2023 06:21:06 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

@@ -147,9 +147,9 @@ describe("Testing the initial values to validate expected contract state", funct
     await expectRevert(BackedHRC20Contract.increaseAllowance(Address2, 8), "116");
     expect(await BackedHRC20Contract.allowance(ContractDeployer, Address2)).to.equal(0);
   });
-  it("Backed HRC20: a contract should be allowed to be approved by ERC20 function approve", async () => {
-    await BackedHRC20Contract.approve(BackedHRC20Contract.address, 8);
-    expect(await BackedHRC20Contract.allowance(ContractDeployer, BackedHRC20Contract.address)).to.equal(8);
+  it("Backed HRC20: an address that is not a contract should NOT be allowed to be approved by ERC20 function approve", async () => {
+    await expectRevert(BackedHRC20Contract.approve(Address2, 8),"116");
+    expect(await BackedHRC20Contract.allowance(ContractDeployer, Address2)).to.equal(0);
   });
   it("Backed HRC20: A contract should not be allowed to be approved by the function increaseAllowance", async () => {
     const BackedHRC20ContractAlternateAdminAndOperators = await upgrades.deployProxy(
