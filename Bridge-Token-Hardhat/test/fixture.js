@@ -25,12 +25,12 @@ const { expectRevert } = require("@openzeppelin/test-helpers");
 //     const OPERATOR_ROLE = await BackedHRC20OwnerAdminOperator.OPERATOR_ROLE();
 //     const DEFAULT_ADMIN_ROLE = await BackedHRC20OwnerAdminOperator.DEFAULT_ADMIN_ROLE();
 //     return {
-//         BackedHRC20Factory, 
-//         BackedHRC20Contract, 
-//         ContractDeployer, 
-//         Address2, 
-//         Address3, 
-//         Address4, 
+//         BackedHRC20Factory,
+//         BackedHRC20Contract,
+//         ContractDeployer,
+//         Address2,
+//         Address3,
+//         Address4,
 //         Address2SignsBackedHRC20OwnerAdminOperator,
 //         ContractDeployerErrorMessageForAccessControl,
 //         Address2ErrorMessageForAccessControl,
@@ -62,12 +62,12 @@ const { expectRevert } = require("@openzeppelin/test-helpers");
 //     const OPERATOR_ROLE = await BackedHRC20Contract.OPERATOR_ROLE();
 //     const DEFAULT_ADMIN_ROLE = await BackedHRC20Contract.DEFAULT_ADMIN_ROLE();
 //     return {
-//         BackedHRC20Factory, 
-//         BackedHRC20Contract, 
-//         ContractDeployer, 
-//         Address2, 
-//         Address3, 
-//         Address4, 
+//         BackedHRC20Factory,
+//         BackedHRC20Contract,
+//         ContractDeployer,
+//         Address2,
+//         Address3,
+//         Address4,
 //         Address2SignsBackedHRC20,
 //         ContractDeployerErrorMessageForAccessControl,
 //         Address2ErrorMessageForAccessControl,
@@ -77,5 +77,3 @@ const { expectRevert } = require("@openzeppelin/test-helpers");
 //   }
 
 // module.exports = { DefineContract  }
-
-
