@@ -59,7 +59,7 @@ describe("Testing the initial values to validate expected contract state", funct
   it("Backed HRC20: the issueBackedToken function should mint the correct amount of tokens to the designated wallet assigned when the function is called", async () => {
     expect(await BackedHRC20Contract.balanceOf(ContractDeployer)).to.equal(900);
   });
-  it("Backed HRC20: the redeemBackedTokenfunction should burn the correct amount of tokens from the designated wallet", async () => {
+  it("Backed HRC20: the redeemBackedToken function should burn the correct amount of tokens from the designated wallet", async () => {
     await BackedHRC20Contract.redeemBackedToken(900);
     expect(await BackedHRC20Contract.balanceOf(ContractDeployer)).to.equal(0);
   });
@@ -69,14 +69,14 @@ describe("Testing the initial values to validate expected contract state", funct
       `110`
     );
   });
-  it("Backed HRC20: function pause function should stop all deposits from the issueBackedToken function", async () => {
+  it("Backed HRC20: the pause function should stop all deposits from the issueBackedToken function", async () => {
     await BackedHRC20Contract.pause();
     await expectRevert(
       BackedHRC20Contract.issueBackedToken(Address2, 900),
       "Pausable: paused"
     );
   });
-  it("Backed HRC20: function pause function should stop all users from calling redeemBackedToken", async () => {
+  it("Backed HRC20: the pause function should stop all users from calling redeemBackedToken", async () => {
     await BackedHRC20Contract.issueBackedToken(Address2, 900);
     //ensure withdraw works as expected
     await Address2SignsBackedHRC20.redeemBackedToken(450);
@@ -87,7 +87,7 @@ describe("Testing the initial values to validate expected contract state", funct
       "Pausable: paused"
     );
   });
-  it("Backed HRC20: function pause function should stop all transfers", async () => {
+  it("Backed HRC20: the pause function should stop all transfers", async () => {
     await BackedHRC20Contract.pause();
     await expectRevert(
       BackedHRC20Contract.transfer(ContractDeployer, 450),
@@ -164,7 +164,7 @@ describe("Testing the initial values to validate expected contract state", funct
     await Address2SignsBackedHRC20.redeemBackedToken(900);
     expect(await BackedHRC20Contract.balanceOf(Address2)).to.equal(0);
   });
-  it("Backed HRC20: the redeemBackedTokenfunction should revert and give the error INSUFFICIENT_BALANCE if a request is made to withdraw more than the balance", async () => {
+  it("Backed HRC20: the redeemBackedToken function should revert and give the error INSUFFICIENT_BALANCE if a request is made to withdraw more than the balance", async () => {
     await expectRevert(
       Address2SignsBackedHRC20.redeemBackedToken(Address2),
       `110`
