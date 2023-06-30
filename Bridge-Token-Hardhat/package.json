@@ -19,6 +19,7 @@
     "@openzeppelin/upgrades-core": "^1.27.1",
     "coverage": "^0.4.1",
     "eth-gas-reporter": "^0.2.25",
+    "ethereum-waffle": "^4.0.10",
     "hardhat-gas-reporter": "^1.0.9",
     "i": "^0.3.7",
     "npm": "^9.7.2",

@@ -16,22 +16,20 @@ contract BackedHRC20 is
     AccessControlUpgradeable,
     UUPSUpgradeable
 {
-
     // Role created via access control that interacts with the contract
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
-    /** 
-    * @dev The event is triggered during the suspendAccountMaintainTokenAndIdentityBlob function. 
-    * It includes the tokenId and the reason. 
-    * This will include temporary susepensions/
-    */
+    /**
+     * @dev The event is triggered during the suspendAccountMaintainTokenAndIdentityBlob function.
+     * It includes the tokenId and the reason.
+     * This will include temporary susepensions/
+     */
 
     event TokensBurnedFromAccount(
         address indexed account,
         uint256 indexed amount,
         string indexed reason
     );
-
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -61,7 +59,7 @@ contract BackedHRC20 is
         _grantRole(OPERATOR_ROLE, networkOperator);
     }
 
-       /** 
+    /** 
     @notice Function to pause sending/depositing/withdrawing of tokens from contract.
     @dev Only operator role can do this given in constructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
     */
@@ -78,7 +76,7 @@ contract BackedHRC20 is
         _unpause();
     }
 
-     /**
+    /**
     @notice This function checks an address to ensure it is a contract NOT a wallet.
     @param _addr the address to be checked for if it is a contract or not.
     @dev returns true if the input is a contract.
@@ -152,24 +150,29 @@ contract BackedHRC20 is
     @dev Only OPERATOR role can do this given in contructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
     */
 
-    function redeemBackedToken(
-        uint256 amount
-    ) external whenNotPaused  {
-        require(balanceOf(msg.sender) >= amount, Errors.INSUFFICIENT_TOKEN_BALANCE);
+    function redeemBackedToken(uint256 amount) external whenNotPaused {
+        require(
+            balanceOf(msg.sender) >= amount,
+            Errors.INSUFFICIENT_TOKEN_BALANCE
+        );
         _burn(msg.sender, amount);
     }
 
     /**
-    * @notice This function will be used to provide additional onChain security on Haven1. 
-    * The Haven1 Foundation will call it in case of theft or lost keys.
-    * @param target the address that tokens will be burned from.
-    * @param amount the amount of tokens that will be burned.
-    * @dev TThe premise for this function to be called will be a support ticket submitted off chain. 
-    * The reason will be emitted in the event.
+     * @notice This function will be used to provide additional onChain security on Haven1.
+     * The Haven1 Foundation will call it in case of theft or lost keys.
+     * @param target the address that tokens will be burned from.
+     * @param amount the amount of tokens that will be burned.
+     * @dev TThe premise for this function to be called will be a support ticket submitted off chain.
+     * The reason will be emitted in the event.
      */
 
-    function burnFrom(address target, uint256 amount, string calldata reason) external onlyRole(OPERATOR_ROLE) {
-	    _burn(target, amount);
+    function burnFrom(
+        address target,
+        uint256 amount,
+        string calldata reason
+    ) external onlyRole(OPERATOR_ROLE) {
+        _burn(target, amount);
         emit TokensBurnedFromAccount(target, amount, reason);
     }
 
@@ -182,7 +185,7 @@ contract BackedHRC20 is
         address newImplementation
     ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 
-     /**
+    /**
     @notice Function called when using ERC-20 standard transferring functions.
     @param from address to remove tokens from.
     @param to receiver of tokens.
@@ -194,11 +197,7 @@ contract BackedHRC20 is
         address from,
         address to,
         uint256 amount
-    )
-        internal
-        override
-        whenNotPaused
-    {
+    ) internal override whenNotPaused {
         super._beforeTokenTransfer(from, to, amount);
     }
 }

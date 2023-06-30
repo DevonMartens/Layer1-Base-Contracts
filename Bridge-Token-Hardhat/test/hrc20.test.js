@@ -1,36 +1,63 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const {loadFixture} = require("ethereum-waffle");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
-
-let hrc20;
 
 
 describe("Testing the initial values to validate expected contract state", function () {
   let H;
-  let owner;
+  let ContractDeployer;
+  let BackedHRC20Factory;
   beforeEach(async () => {
-    const [owners] = await ethers.getSigners();
-    owner = await owners.getAddress();
-    const hrc20 = await ethers.getContractFactory("BackedHRC20");
-    H = await upgrades.deployProxy(
-      hrc20,
-      ["HAVEN1", "HRC20", owner, owner],
-      { initializer: "initialize", kind: "uups" }
-    );
+  const [owners, alices, randoms, bobs] = await ethers.getSigners();
+  ContractDeployer = await owners.getAddress();
+  Address2 = await alices.getAddress();
+  Address3 = await randoms.getAddress();
+  Address4 = await bobs.getAddress();
+  BackedHRC20Factory = await ethers.getContractFactory("BackedHRC20");
+  BackedHRC20OwnerAdminOperator = await upgrades.deployProxy(
+//         BackedHRC20Factory,
+//       ["HAVEN1", "HRC20", owner, owner],
+//       { initializer: "initialize", kind: "uups" }
+//     )
+//     //getting alice ability to sign
+//     const secondAddressSigner = await ethers.getSigner(Address2);
+//     const Address2SignsBackedHRC20OwnerAdminOperator = BackedHRC20OwnerAdminOperator.connect(secondAddressSigner);
+//     //getting FROM for accesscontrol errors
+//     const Address2ErrorMessageForAccessControl= Address2.toLowerCase();
+//     const ContractDeployerErrorMessageForAccessControl = ContractDeployer.toLowerCase();
+//       //getting access control role
+//     const OPERATOR_ROLE = await BackedHRC20OwnerAdminOperator.OPERATOR_ROLE();
+//     const DEFAULT_ADMIN_ROLE = await BackedHRC20OwnerAdminOperator.DEFAULT_ADMIN_ROLE();
+//     return {
+//         BackedHRC20Factory, 
+//         BackedHRC20Contract, 
+//         ContractDeployer, 
+//         Address2, 
+//         Address3, 
+//         Address4, 
+//         Address2SignsBackedHRC20OwnerAdminOperator,
+//         ContractDeployerErrorMessageForAccessControl,
+//         Address2ErrorMessageForAccessControl,
+//         OPERATOR_ROLE,
+//         DEFAULT_ADMIN_ROLE
+//     };
+// })
   });
+ 
   it("The contract: have correct values for name & symbol", async () => {
     //confirm they are eqaul to the value set in the constructor
-    expect(await H.name()).to.equal("HAVEN1");
+    expect(await BackedHRC20Contract.name()).to.equal("HAVEN1");
     //confirm they are eqaul to the value set in the constructor
-    expect(await H.symbol()).to.equal("HRC20");
+    expect(await DBackedHRC20Contract.symbol()).to.equal("HRC20");
   });
   it("Upon deployment no NFTs should be minted so the inital value should be 0 totalSupply", async () => {
-    expect(await H.totalSupply()).to.equal(0);
+    expect(await BackedHRC20Contract.totalSupply()).to.equal(0);
   });
   it("initalize should only be called upon deployment", async () => {
     await expectRevert(
-      H.initialize("HAVEN1", "HRC20", owner, owner),
+      BackedHRC20Contract.initialize("HAVEN1", "HRC20", owner, owner),
       "Initializable: contract is already initialized"
     );
   });
@@ -45,22 +72,21 @@ describe("Testing the deposit and withdraw functions", function () {
     owner = await owners.getAddress();
     alice = await alices.getAddress();
     hrc20 = await ethers.getContractFactory("BackedHRC20");
-    H = await upgrades.deployProxy(
-      hrc20,
-      ["HAVEN1", "HRC20", owner, owner],
-      { initializer: "initialize", kind: "uups" }
-    );
-    await H.issueBackedToken(owner, 900);
+    H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner], {
+      initializer: "initialize",
+      kind: "uups",
+    });
+    await BackedHRC20Contract.issueBackedToken(owner, 900);
   });
   it("The contract: the deposit function should mint the correct amount of tokens to the designated wallet", async () => {
-    expect(await H.balanceOf(owner)).to.equal(900);
+    expect(await BackedHRC20Contract.balanceOf(owner)).to.equal(900);
   });
   it("The contract: the withdraw function should burn the correct amount of tokens from the designated wallet", async () => {
-    await H.redeemBackedToken(900);
-    expect(await H.balanceOf(owner)).to.equal(0);
+    await BackedHRC20Contract.redeemBackedToken(900);
+    expect(await BackedHRC20Contract.balanceOf(owner)).to.equal(0);
   });
   it("The contract: the withdraw function should revert and give the error INSUFFICENT_BALANCE if a request is made to withdraw more than the balance", async () => {
-    await expectRevert(H.redeemBackedToken(owner), `110`);
+    await expectRevert(BackedHRC20Contract.redeemBackedToken(owner), `110`);
   });
   // it("The contract: function deposit function should not allow deposits if `isWhiteListContract` is true & address is not on whitelist ", async () => {
   //   const HRC20HasWhiteListAliceIsNotOn = await upgrades.deployProxy(
@@ -84,134 +110,36 @@ describe("Testing the pause functionality", function () {
     owner = await owners.getAddress();
     alice = await alices.getAddress();
     hrc20 = await ethers.getContractFactory("BackedHRC20");
-    H = await upgrades.deployProxy(
-      hrc20,
-      ["HAVEN1", "HRC20", owner, owner],
-      { initializer: "initialize", kind: "uups" }
-    );
+    H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner], {
+      initializer: "initialize",
+      kind: "uups",
+    });
     //alice signer information
     const secondAddressSigner = await ethers.getSigner(alice);
-    signerAlice = H.connect(secondAddressSigner);
-    await H.issueBackedToken(alice, 900);
+    signerAlice = BackedHRC20Contract.connect(secondAddressSigner);
+    await BackedHRC20Contract.issueBackedToken(alice, 900);
     //confirms alice has balance
-    expect(await H.balanceOf(alice)).to.equal(900);
+    expect(await BackedHRC20Contract.balanceOf(alice)).to.equal(900);
     //now pause the contract
-    await H.pause();
+    await BackedHRC20Contract.pause();
   });
   it("The contract: function pause function should stop all deposits", async () => {
     //try to withdraw
-    await expectRevert(H.issueBackedToken(alice, 900), "Pausable: paused");
+    await expectRevert(BackedHRC20Contract.issueBackedToken(alice, 900), "Pausable: paused");
   });
   it("The contract: function pause function should stop all withdraws", async () => {
     //unpauses since paused in before each
-    await H.unpause();
-    //ensure withdraw works as expected 
+    await BackedHRC20Contract.unpause();
+    //ensure withdraw works as expected
     await signerAlice.redeemBackedToken(450);
     //now pause the contract
-    await H.pause();
+    await BackedHRC20Contract.pause();
     await expectRevert(signerAlice.redeemBackedToken(450), "Pausable: paused");
   });
   it("The contract: function pause function should stop all sends", async () => {
-    await expectRevert(H.transfer(owner, 450), "Pausable: paused");
+    await expectRevert(BackedHRC20Contract.transfer(owner, 450), "Pausable: paused");
   });
 });
-// describe("Testing Whitelist Functionality", function () {
-//   let HRCWithWhiteList;
-//   let owner;
-//   let alice;
-//   let random;
-//   let bob;
-//   beforeEach(async () => {
-//     const [owners, alices, randoms, bobs] = await ethers.getSigners();
-//     owner = await owners.getAddress();
-//     alice = await alices.getAddress();
-//     random = await randoms.getAddress();
-//     bob = await bobs.getAddress();
-//     hrc20 = await ethers.getContractFactory("BackedHRC20");
-//     HRCWithWhiteList = await upgrades.deployProxy(
-//       hrc20,
-//       ["HAVEN1", "HRC20", owner, owner, true],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//   });
-//   it("If use whitelist is set to true than no address that isnt whitelisted should be able to deposit  ", async () => {
-//     await expectRevert(HRCWithWhiteList.deposit(alice, 900), "117");
-//   });
-//   it("If an address only whitelisted addresses via `setWhiteListAddres` it should be able to deposit tokens  ", async () => {
-//     await HRCWithWhiteList.setWhiteListAddress(alice, true);
-//     await HRCWithWhiteList.deposit(alice, 900);
-//   });
-//   it("If addresses are whitelisted addresses via `setMultipleWhiteListAddresses` they should be able to deposit tokens  ", async () => {
-//     await expectRevert(HRCWithWhiteList.deposit(random, 900), "117");
-//     await expectRevert(HRCWithWhiteList.deposit(owner, 900), "117");
-//     const friends = [owner, random];
-//     await HRCWithWhiteList.setMultipleWhiteListAddresses(friends);
-//     await HRCWithWhiteList.deposit(owner, 900);
-//     await HRCWithWhiteList.deposit(random, 900);
-//   });
-//   it("If using a contract using whitelist is set to false but toggled by `setWhiteListActive` impacting user abilities", async () => {
-//     await HRCWithWhiteList.setWhiteListActive(true);
-//     await expectRevert(HRCWithWhiteList.deposit(alice, 900), "117");
-//     await HRCWithWhiteList.setWhiteListAddress(alice, true);
-//     await HRCWithWhiteList.deposit(alice, 900);
-//     await expectRevert(HRCWithWhiteList.deposit(random, 900), "117");
-//     await expectRevert(HRCWithWhiteList.deposit(owner, 900), "117");
-//     const friends = [owner, random];
-//     await HRCWithWhiteList.setMultipleWhiteListAddresses(friends);
-//     await HRCWithWhiteList.deposit(owner, 900);
-//     await HRCWithWhiteList.deposit(random, 900);
-//     await HRCWithWhiteList.setWhiteListActive(true);
-//     await expectRevert(HRCWithWhiteList.deposit(bob, 900), "117");
-//     expect(await HRCWithWhiteList.balanceOf(bob)).to.equal(0);
-//   });
-// });
-// describe("Testing Blacklist Functionality", () => {
-//   let H;
-//   let owner;
-//   let alice;
-//   // let bob
-//   beforeEach(async () => {
-//     const [owners, randoms, alices, bobs] = await ethers.getSigners();
-//     owner = await owners.getAddress();
-//     alice = await alices.getAddress();
-//     random = await randoms.getAddress();
-//     bob = await bobs.getAddress();
-//     hrc20 = await ethers.getContractFactory("BackedHRC20");
-//     H = await upgrades.deployProxy(
-//       hrc20,
-//       ["HAVEN1", "HRC20", owner, owner],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     await H.issueBackedToken(alice, 900);
-//     expect(await H.balanceOf(alice)).to.equal(900);
-//     await H.redeemBackedToken(alice, 450);
-//     await H.connect(alices).transfer(owner, 225);
-//     await H.setBlackListAddress(alice, true);
-//   });
-
-//   it("The contract: an address should be allowed to transfer/have tokens minted to it/withdraw tokens unless it has been blacklisted ", async () => {
-//     await expectRevert(H.issueBackedToken(alice, 900), "115");
-//     await expectRevert(H.redeemBackedToken(alice, 10), "115");
-//     const secondAddressSigner = await ethers.getSigner(alice);
-//     const signerAlice = H.connect(secondAddressSigner);
-//     await expectRevert(signerAlice.transfer(owner, 225), "115");
-//   });
-//   it("The contract: an address should not be allowed to recieve tokens if it been blacklisted ", async () => {
-//     await H.issueBackedToken(owner, 900);
-//     await expectRevert(H.transfer(alice, 225), "115");
-//   });
-//   it("removing the blacklist should allow an address should be transfer/have tokens minted to it/withdraw tokens after it has been blacklisted     ", async () => {
-//     await expectRevert(H.issueBackedToken(alice, 900), "115");
-//     await expectRevert(H.redeemBackedToken(alice, 10), "115");
-//     const secondAddressSigner = await ethers.getSigner(alice);
-//     const signerAlice = H.connect(secondAddressSigner);
-//     await expectRevert(signerAlice.transfer(owner, 225), "115");
-//     await H.setBlackListAddress(alice, false);
-//     await H.issueBackedToken(alice, 900);
-//     await H.redeemBackedToken(alice, 450);
-//     await signerAlice.transfer(owner, 225);
-//   });
-// });
 describe("Testing Access Control Functionality", function () {
   let H;
   let owner;
@@ -230,11 +158,10 @@ describe("Testing Access Control Functionality", function () {
     random = await randoms.getAddress();
     bob = await bobs.getAddress();
     hrc20 = await ethers.getContractFactory("BackedHRC20");
-    H = await upgrades.deployProxy(
-      hrc20,
-      ["HAVEN1", "HRC20", owner, owner],
-      { initializer: "initialize", kind: "uups" }
-    );
+    H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner], {
+      initializer: "initialize",
+      kind: "uups",
+    });
     //getting alice ability to sign
     secondAddressSigner = await ethers.getSigner(alice);
     signerAlice = H.connect(secondAddressSigner);
@@ -251,18 +178,18 @@ describe("Testing Access Control Functionality", function () {
   //     signerAlice.issueBackedToken(owner, 225),
   //     `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
   //   );
-    // await expectRevert(
-    //   signerAlice.setBlackListAddress(alice, true),
-    //   `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-    // );
-    // await expectRevert(
-    //   signerAlice.withdraw(225),
-    //   `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-    // );
-    // await expectRevert(
-    //   signerAlice.setWhiteListAddress(alice, true),
-    //   `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-    // );
+  // await expectRevert(
+  //   signerAlice.setBlackListAddress(alice, true),
+  //   `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
+  // );
+  // await expectRevert(
+  //   signerAlice.withdraw(225),
+  //   `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
+  // );
+  // await expectRevert(
+  //   signerAlice.setWhiteListAddress(alice, true),
+  //   `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
+  // );
   //   const friends = [owner, random];
   //   await expectRevert(
   //     signerAlice.setMultipleWhiteListAddresses(friends),
@@ -295,7 +222,7 @@ describe("Testing Access Control Functionality", function () {
   });
   //hi
   it("The contract: only the operator role should be able to call burnFrom ", async () => {
-    await H.issueBackedToken(owner, 70)
+    await H.issueBackedToken(owner, 70);
     await expectRevert(
       signerAlice.burnFrom(owner, 70, "I_WANT_TO_BURN_IT_ALL_DOWN!"),
       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
@@ -335,11 +262,10 @@ describe("Testing the deposit and withdraw functions", function () {
     owner = await owners.getAddress();
     alice = await alices.getAddress();
     hrc20 = await ethers.getContractFactory("BackedHRC20");
-    H = await upgrades.deployProxy(
-      hrc20,
-      ["HAVEN1", "HRC20", owner, owner],
-      { initializer: "initialize", kind: "uups" }
-    );
+    H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner], {
+      initializer: "initialize",
+      kind: "uups",
+    });
     await H.issueBackedToken(alice, 900);
     secondAddressSigner = await ethers.getSigner(alice);
     signerAlice = H.connect(secondAddressSigner);
@@ -359,7 +285,7 @@ describe("Testing the deposit and withdraw functions", function () {
     expect(await H.balanceOf(alice)).to.equal(0);
   });
   //function burnFrom(address target, uint256 amount) external onlyRole(OPERATOR_ROLE) {
-   // _burn(target, amount);
+  // _burn(target, amount);
   //}
 });
 //   it("The contract: function deposit function should not allow deposits if `isWhiteListContract` is true & address is not on whitelist ", async () => {
@@ -385,11 +311,10 @@ describe("Testing approvals", function () {
     owner = await owners.getAddress();
     alice = await alices.getAddress();
     hrc20 = await ethers.getContractFactory("BackedHRC20");
-    H = await upgrades.deployProxy(
-      hrc20,
-      ["HAVEN1", "HRC20", owner, owner],
-      { initializer: "initialize", kind: "uups" }
-    );
+    H = await upgrades.deployProxy(hrc20, ["HAVEN1", "HRC20", owner, owner], {
+      initializer: "initialize",
+      kind: "uups",
+    });
 
     TestContractForApprovals = await upgrades.deployProxy(
       hrc20,
