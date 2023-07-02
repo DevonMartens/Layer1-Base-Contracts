@@ -11,12 +11,12 @@ describe("Testing the initial values to validate expected contract state", funct
     const IPermissionsInterface = await ethers.getContractFactory("Dummy");
     const IPermissionsInterfaceDummyInstance =
       await IPermissionsInterface.deploy();
-    const [owners, alices] = await ethers.getSigners();
-    const owner = await owners.getAddress();
+    const [ContractDeployers, alices] = await ethers.getSigners();
+    const ContractDeployer = await ContractDeployers.getAddress();
     const alice = await alices.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, alice],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, alice],
       { initializer: "initialize", kind: "uups" }
     );
   });
@@ -31,7 +31,7 @@ describe("Testing the initial values to validate expected contract state", funct
 });
 describe("Testing the issueIdentity function", function () {
   let ProofOfIdentityContract;
-  let owner;
+  let ContractDeployer;
   let alice;
   let other;
   beforeEach(async () => {
@@ -40,13 +40,13 @@ describe("Testing the issueIdentity function", function () {
     const IPermissionsInterfaceDummyInstance =
       await IPermissionsInterface.deploy();
     //get addresses for this test
-    const [owners, alices, others] = await ethers.getSigners();
-    owner = await owners.getAddress();
+    const [ContractDeployers, alices, others] = await ethers.getSigners();
+    ContractDeployer = await ContractDeployers.getAddress();
     alice = await alices.getAddress();
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -120,13 +120,13 @@ describe("Testing updateIdentity", function () {
     const IPermissionsInterfaceDummyInstance =
       await IPermissionsInterface.deploy();
     //get addresses for this test
-    const [owners, alices, others] = await ethers.getSigners();
-    const owner = await owners.getAddress();
+    const [ContractDeployers, alices, others] = await ethers.getSigners();
+    const ContractDeployer = await ContractDeployers.getAddress();
     alice = await alices.getAddress();
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -262,7 +262,7 @@ describe("Testing updateIdentity", function () {
 });
 describe("Testing Function Permissions to ensure Access Control works as expected", function () {
   let ProofOfIdentityContract;
-  let owner;
+  let ContractDeployer;
   let alice;
   let other;
   let OPERATOR_ROLE;
@@ -271,20 +271,20 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
   let signerAlice;
   let ProofOfIdentityFactory;
   let IPermissionsInterfaceDummyInstance;
-  let FromOwner;
+  let FromContractDeployer;
   beforeEach(async () => {
     ProofOfIdentityFactory = await ethers.getContractFactory("ProofOfIdentity");
     const IPermissionsInterface = await ethers.getContractFactory("Dummy");
     IPermissionsInterfaceDummyInstance = await IPermissionsInterface.deploy();
     //get addresses for this test
-    const [owners, alices, others] = await ethers.getSigners();
-    owner = await owners.getAddress();
+    const [ContractDeployers, alices, others] = await ethers.getSigners();
+    ContractDeployer = await ContractDeployers.getAddress();
     alice = await alices.getAddress();
     other = await others.getAddress();
-    FromOwner = owner.toLowerCase();
+    FromContractDeployer = ContractDeployer.toLowerCase();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentityFactory,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -330,7 +330,7 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
           kind: "uups",
         }
       ),
-      `AccessControl: account ${FromOwner} is missing role ${DEFAULT_ADMIN_ROLE}`
+      `AccessControl: account ${FromContractDeployer} is missing role ${DEFAULT_ADMIN_ROLE}`
     );
     const ProofOfIdentityContractV2 = await upgrades.upgradeProxy(
       ProofOfIdentityContract.address,
@@ -366,7 +366,7 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
     );
   });
   it("The proof of identity contract networkAdmin should be able to issue OPERATOR_ROLES", async () => {
-    //ensures owner can grant alice a role
+    //ensures ContractDeployer can grant alice a role
     await ProofOfIdentityContract.grantRole(OPERATOR_ROLE, alice);
     //tests that alice can use her role
     await signerAlice.updateIdentity(alice, 1, 2, 3, 78886932657, "hi");
@@ -386,12 +386,12 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
     { initializer: "initialize", kind: "uups" }
     );
     await expectRevert(ProofOfIdentityContractAddress2AsAdmin.grantRole(OPERATOR_ROLE, alice), 
-    `AccessControl: account ${FromOwner} is missing role ${DEFAULT_ADMIN_ROLE}`);
+    `AccessControl: account ${FromContractDeployer} is missing role ${DEFAULT_ADMIN_ROLE}`);
 });
 });
 describe("Testing contracts that inhert OtherInformation and RoleVerification should view correct values for a set struct of identityBlob", function () {
   let ProofOfIdentityContract;
-  let owner;
+  let ContractDeployer;
   let alice;
   let other;
   let VerifiableIdentity;
@@ -400,13 +400,13 @@ describe("Testing contracts that inhert OtherInformation and RoleVerification sh
     const IPermissionsInterface = await ethers.getContractFactory("Dummy");
     const IPermissionsInterfaceDummyInstance =
       await IPermissionsInterface.deploy();
-    const [owners, alices, others] = await ethers.getSigners();
-    owner = await owners.getAddress();
+    const [ContractDeployers, alices, others] = await ethers.getSigners();
+    ContractDeployer = await ContractDeployers.getAddress();
     alice = await alices.getAddress();
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice token 2 to other to test
@@ -538,13 +538,13 @@ describe("Testing contracts that ERC721 Overrides Should not Allow Token Movemen
     const IPermissionsInterface = await ethers.getContractFactory("Dummy");
     const IPermissionsInterfaceDummyInstance =
       await IPermissionsInterface.deploy();
-    const [owners, alices, others] = await ethers.getSigners();
-    owner = await owners.getAddress();
+    const [ContractDeployers, alices, others] = await ethers.getSigners();
+    ContractDeployer = await ContractDeployers.getAddress();
     alice = await alices.getAddress();
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     //allows alice to be the signer
@@ -574,7 +574,7 @@ describe("Testing contracts that ERC721 Overrides Should not Allow Token Movemen
 });
 describe("Testing the the Verifiable VerifiableIdentityPreventsOnExpiry output and reverts are as expected", function () {
   let ProofOfIdentityContract;
-  let owner;
+  let ContractDeployer;
   let alice;
   let other;
   let VerifiableIdentityPreventsOnExpiry;
@@ -585,13 +585,13 @@ describe("Testing the the Verifiable VerifiableIdentityPreventsOnExpiry output a
     const IPermissionsInterfaceDummyInstance =
       await IPermissionsInterface.deploy();
     //get addresses for this test
-    const [owners, alices, others] = await ethers.getSigners();
-    owner = await owners.getAddress();
+    const [ContractDeployers, alices, others] = await ethers.getSigners();
+    ContractDeployer = await ContractDeployers.getAddress();
     alice = await alices.getAddress();
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     // gets information for deployment
@@ -767,12 +767,12 @@ describe("Testing the User Privilege and Network Removal Functions", function ()
     const IPermissionsInterfaceDummyInstance =
       await IPermissionsInterface.deploy();
     //get addresses for this test
-    const [owners, alices] = await ethers.getSigners();
-    const owner = await owners.getAddress();
+    const [ContractDeployers, alices] = await ethers.getSigners();
+    const ContractDeployer = await ContractDeployers.getAddress();
     alice = await alices.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -800,7 +800,7 @@ describe("Testing the User Privilege and Network Removal Functions", function ()
   //   );
   //   //should revert token was burned
   //   await expectRevert(
-  //     ProofOfIdentityContract.ownerOf(0),
+  //     ProofOfIdentityContract.ContractDeployerOf(0),
   //     `ERC721: invalid token ID`
   //   );
   // });
@@ -817,13 +817,13 @@ describe("Testing custom errors to ensure functions revert as expected", functio
     const IPermissionsInterfaceDummyInstance =
       await IPermissionsInterface.deploy();
     //get addresses for this test
-    const [owners, alices, others] = await ethers.getSigners();
-    const owner = await owners.getAddress();
+    const [ContractDeployers, alices, others] = await ethers.getSigners();
+    const ContractDeployer = await ContractDeployers.getAddress();
     alice = await alices.getAddress();
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -894,7 +894,7 @@ describe("Testing custom errors to ensure functions revert as expected", functio
 });
 describe("Testing custom events to ensure they emit as expected", function () {
   let ProofOfIdentityContract;
-  let owner;
+  let ContractDeployer;
   let alice;
   let other;
   beforeEach(async () => {
@@ -903,13 +903,13 @@ describe("Testing custom events to ensure they emit as expected", function () {
     const IPermissionsInterfaceDummyInstance =
       await IPermissionsInterface.deploy();
     //get addresses for this test
-    const [owners, alices, others] = await ethers.getSigners();
-    owner = await owners.getAddress();
+    const [ContractDeployers, alices, others] = await ethers.getSigners();
+    ContractDeployer = await ContractDeployers.getAddress();
     alice = await alices.getAddress();
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     //mints tokenid 1 to alice
@@ -923,17 +923,6 @@ describe("Testing custom events to ensure they emit as expected", function () {
       "token"
     );
   });
-  //commmented out for now
-  // it("AccountSuspendedTokenBurned should emit with the address, tokenId, reason in suspendAccountDeleteTokenAndIdentityBlob", async () => {
-  //   await expect(
-  //     ProofOfIdentityContract.suspendAccountDeleteTokenAndIdentityBlob(
-  //       alice,
-  //       "VALID_REASON"
-  //     )
-  //   )
-  //     .to.emit(ProofOfIdentityContract, "AccountSuspendedTokenBurned")
-  //     .withArgs(alice, 1, "VALID_REASON");
-  // });
   it("AccountSuspendedTokenMaintained should emit with the address, reason in suspendAccountMaintainTokenAndIdentityBlob", async () => {
     await expect(
       ProofOfIdentityContract.suspendAccountMaintainTokenAndIdentityBlob(
@@ -989,13 +978,13 @@ describe("Testing contracts that ERC721 Overrides Should not Allow Token Movemen
     const IPermissionsInterface = await ethers.getContractFactory("Dummy");
     const IPermissionsInterfaceDummyInstance =
       await IPermissionsInterface.deploy();
-    const [owners, alices, others] = await ethers.getSigners();
-    owner = await owners.getAddress();
+    const [ContractDeployers, alices, others] = await ethers.getSigners();
+    ContractDeployer = await ContractDeployers.getAddress();
     alice = await alices.getAddress();
     other = await others.getAddress();
     ProofOfIdentityContract = await upgrades.deployProxy(
       ProofOfIdentity,
-      [IPermissionsInterfaceDummyInstance.address, owner, owner],
+      [IPermissionsInterfaceDummyInstance.address, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     //allows alice to be the signer

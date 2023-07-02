@@ -3,7 +3,7 @@ const { ethers } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
-describe("Testing the initial values to validate expected contract state", function () {
+describe ("BackedHRC20 Haven1 Token Contract", async () => {  
   let ContractDeployer;
   let Address2;
   let BackedHRC20Factory;
@@ -34,6 +34,11 @@ describe("Testing the initial values to validate expected contract state", funct
     OPERATOR_ROLE = await BackedHRC20Contract.OPERATOR_ROLE();
     DEFAULT_ADMIN_ROLE = await BackedHRC20Contract.DEFAULT_ADMIN_ROLE();
     await BackedHRC20Contract.issueBackedToken(ContractDeployer, 900);
+  });
+describe("Testing the initial values to validate expected contract state", function () {
+  
+  beforeEach(async () => {
+ 
   });
   it("Backed HRC20: name & symbol variables should match constructor input for the ERC20 token", async () => {
     //confirm they are eqaul to the value set in the constructor
@@ -226,4 +231,5 @@ describe("Testing the initial values to validate expected contract state", funct
       )
     ).to.equal(8);
   });
+});
 });
