@@ -65,18 +65,17 @@ contract ValidatorRewards is
    @notice contract deploys with a list of validator addresses and their total shares.
    @param validatorsList an array of validators to accept fees.
    @param shares an array
-   @param networkAdmin the address that can grant and remove permissions.
+   @param havenFoundation the address that can grant and remove permissions.
    @param networkOperator the address that calls restricted functions in the contract.
    @dev the shares for each address are the amount over the total amount for all addresses.
    */
     function initialize(
         address[] memory validatorsList,
         uint256[] memory shares,
-        address networkAdmin,
+        address havenFoundation,
         address networkOperator
     ) external initializer {
-        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(DEFAULT_ADMIN_ROLE, networkAdmin);
+        _grantRole(DEFAULT_ADMIN_ROLE, havenFoundation);
         _grantRole(OPERATOR_ROLE, networkOperator);
         __AccessControl_init();
         __UUPSUpgradeable_init();

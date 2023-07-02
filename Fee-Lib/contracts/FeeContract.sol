@@ -60,7 +60,7 @@ contract FeeContract is
    @param _oracle is the address for the oracle that is consulted to determine fees.
    @param _channels array channels are the channels that receive payments.
    @param _weights are the amount of shares each channel receive.
-   @param networkAdmin the address that can add or revoke address priveledges/
+   @param havenFoundation the address that can add or revoke address priveledges/
    @param networkOperator operator address that manages functions.
    @dev lastDistribution is the current timestamp fees distributed every 24 hours.
    @dev There cannot be more than five channels.
@@ -70,13 +70,12 @@ contract FeeContract is
         address _oracle,
         address[] memory _channels,
         uint8[] memory _weights,
-        address networkAdmin,
+        address havenFoundation,
         address networkOperator
     ) external initializer {
         __AccessControl_init();
         __UUPSUpgradeable_init();
-        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(DEFAULT_ADMIN_ROLE, networkAdmin);
+        _grantRole(DEFAULT_ADMIN_ROLE, havenFoundation);
         _grantRole(OPERATOR_ROLE, networkOperator);
         if (_channels.length > 5 || _weights.length > 5) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
