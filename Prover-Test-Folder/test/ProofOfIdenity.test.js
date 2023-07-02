@@ -379,28 +379,16 @@ describe("Testing Function Permissions to ensure Access Control works as expecte
     //confirms original value
     expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("token");
   });
-  //   it("The proof of identity contract's function suspendAccountDeleteTokenAndIdentityBlob should only allow a OPERATOR_ROLE address to call it", async () => {
-  //     await expectRevert(
-  //       signerAlice.suspendAccountDeleteTokenAndIdentityBlob(alice, 0),
-  //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-  //     );
-  //   });
-  //   it("The contract: function deleteSingleHolderToken should only allow a OPERATOR_ROLE address to call it", async () => {
-  //     //calls function and expects revert
-  //     await expectRevert(
-  //       signerAlice.suspendAccountMaintainTokenAndIdentityBlob(alice, "lying"),
-  //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-  //     );
-  //   });
-  //   it("The contract: function suspendAccountDeleteTokenAndIdentityBlobshould only allow a OPERATOR_ROLE address to call it", async () => {
-  //     //only owner has prover role so i anticpate this will reviwer
-  //     await expectRevert(
-  //       signerAlice.suspendAccountMaintainTokenAndIdentityBlob(alice, "lying"),
-  //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-  //     );
-  //   });
+  it("Proof of Identity Contract: The contract deployer by default should not have the DEFAULT_ADMIN_ROLE", async () => {
+    const ProofOfIdentityContractAddress2AsAdmin = await upgrades.deployProxy(
+      ProofOfIdentityFactory,
+      [IPermissionsInterfaceDummyInstance.address, alice, alice],
+    { initializer: "initialize", kind: "uups" }
+    );
+    await expectRevert(ProofOfIdentityContractAddress2AsAdmin.grantRole(OPERATOR_ROLE, alice), 
+    `AccessControl: account ${FromOwner} is missing role ${DEFAULT_ADMIN_ROLE}`);
 });
-
+});
 describe("Testing contracts that inhert OtherInformation and RoleVerification should view correct values for a set struct of identityBlob", function () {
   let ProofOfIdentityContract;
   let owner;

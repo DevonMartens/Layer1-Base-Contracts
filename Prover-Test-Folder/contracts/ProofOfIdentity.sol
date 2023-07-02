@@ -103,7 +103,7 @@ contract ProofOfIdentity is
     constructor() {
         _disableInitializers();
     }
-    
+
      /**	
      * @notice `initalize` function is ran at the time of deployment to support the upgradable proxy, 
      * it defines the permissions interface and the default admin role for access control or "network operator"	
@@ -124,7 +124,6 @@ contract ProofOfIdentity is
         __ERC721_init("Proof of Identity", "H1-ID");
         __UUPSUpgradeable_init();
         _permissionsInterface = IPermissionsInterface(permissionsInterface);
-        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(DEFAULT_ADMIN_ROLE, networkAdmin);
         _grantRole(OPERATOR_ROLE, networkOperator);
     }
