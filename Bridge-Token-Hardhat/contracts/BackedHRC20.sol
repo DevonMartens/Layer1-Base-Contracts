@@ -54,7 +54,6 @@ contract BackedHRC20 is
         __AccessControl_init();
         __UUPSUpgradeable_init();
         __ERC20_init(name, symbol);
-        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(DEFAULT_ADMIN_ROLE, havenFoundation);
         _grantRole(OPERATOR_ROLE, networkOperator);
     }
