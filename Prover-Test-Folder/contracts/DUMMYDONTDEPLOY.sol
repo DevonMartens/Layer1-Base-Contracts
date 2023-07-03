@@ -9,7 +9,7 @@ interface IPermissionsInterface {
     ) external;
 }
 
-contract Dummy is IPermissionsInterface {
+contract DummyPermissionsContract is IPermissionsInterface {
 
 
     constructor(){}
