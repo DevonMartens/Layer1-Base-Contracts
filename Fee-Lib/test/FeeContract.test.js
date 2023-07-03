@@ -16,11 +16,16 @@ describe("Fee Contract: Testing the initial values to validate expected contract
   let Address4;
   let ValidatorRewardsFactory;
   let ValidatorContract;
+  let ValidatorContract2;
+  let ValidatorContract3;
   let FeeContractFactory;
   let FeeContract;
+  let FeeOracleContract;
   let BlockTimeStampFeeContractDeployed;
   let ContractDeployerArray;
   let SingleWeightArray;
+  let Address3SendsH1;
+  let Address3SignsFeeContractWith3Validators
   beforeEach(async () => {
     // Gets all addresses and signers
     const [ContractDeployers, Address2s, Address3s, Address4s] = await ethers.getSigners();
@@ -45,12 +50,36 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       [ContractDeployerArray, SingleWeightArray, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
+    ValidatorContract2 = await upgrades.deployProxy(
+      ValidatorRewardsFactory,
+      [ContractDeployerArray, SingleWeightArray, ContractDeployer, ContractDeployer],
+      { initializer: "initialize", kind: "uups" }
+    );
+    ValidatorContract3 = await upgrades.deployProxy(
+      ValidatorRewardsFactory,
+      [ContractDeployerArray, SingleWeightArray, ContractDeployer, ContractDeployer],
+      { initializer: "initialize", kind: "uups" }
+    );
+    const ThreeValidatorArray = [
+        ValidatorContract.address,
+        ValidatorContract2.address,
+        ValidatorContract3.address,
+      ];
+    const ThreeWeightsArray = [1,2,3];
+    FeeContractWith3Validators = await upgrades.deployProxy(
+      FeeContractFactory,
+      [FeeOracleContract.address, ThreeValidatorArray, ThreeWeightsArray, ContractDeployer, ContractDeployer],
+      { initializer: "initialize", kind: "uups" }
+    );
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
       [FeeOracleContract.address, ContractDeployerArray, SingleWeightArray, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     BlockTimeStampFeeContractDeployed = await time.latest();
+    Address3SendsH1 = await ethers.getSigner(Address3);
+    const Address3Signer = await ethers.getSigner(Address3);
+    Address3SignsFeeContractWith3Validators = FeeContractWith3Validators.connect(Address3Signer);
   });
 describe("Fee Contract: Testing the initial values to validate expected contract state", function () {
   // it("The FeeContract, ValidatorRewards contract, and H1 Native contracts", async () => {
@@ -244,290 +273,257 @@ describe("Fee Contract: Adding and adjusting wieghts and channels functions", fu
     await expectRevert(FeeContractWithMaxAddressesAndWeights.addChannel(ValidatorContract5.address, 6), "124");
   });
 });
-// describe("Fee Contract: Initail tests that require oracle feedback", function () {
-//   let ContractDeployer;
-//   let OracleContract;
-//   let ValidatorContract;
-//   let ValidatorContract2;
-//   let ValidatorContract3;
-//   let FeeContract;
-//   let random;
-//   let randomSig;
-//   let randomAddressIsTheSigner;
-//   beforeEach(async () => {
-//     //addresses for using
-//     const [ContractDeployers, alices, randoms] = await ethers.getSigners();
-//     ContractDeployer = await ContractDeployers.getAddress();
-//     alice = await alices.getAddress();
-//     random = await randoms.getAddress();
-//     randomSig = ethers.provider.getSigner(random);
-//     //get contract factories
-//     const ValidatorRewardsFactory = await ethers.getContractFactory(
-//       "ValidatorRewards"
-//     );
-//     const FeeContractFactory = await ethers.getContractFactory("FeeContract");
-//     const OracleFactory = await ethers.getContractFactory("FeeOracle");
-//     //deploy Oracle
-//     OracleContract = await OracleFactory.deploy();
-//     //turns it into an array
-//     const addressArray = [alice, ContractDeployer, random];
-//     const weightArray = [1, 2, 3];
-//     //validator contracts printed out
-//     ValidatorContract = await upgrades.deployProxy(
-//       ValidatorRewardsFactory,
-//       [ContractDeployerArray, SingleWeightArray, ContractDeployer, ContractDeployer],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     ValidatorContract2 = await upgrades.deployProxy(
-//       ValidatorRewardsFactory,
-//       [ContractDeployerArray, SingleWeightArray, ContractDeployer, ContractDeployer],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     ValidatorContract3 = await upgrades.deployProxy(
-//       ValidatorRewardsFactory,
-//       [ContractDeployerArray, SingleWeightArray, ContractDeployer, ContractDeployer],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     const ValidatorArray = [
-//       ValidatorContract.address,
-//       ValidatorContract2.address,
-//       ValidatorContract3.address,
-//     ];
-//     // Fee contract
-//     FeeContract = await upgrades.deployProxy(
-//       FeeContractFactory,
-//       [OracleContract.address, ValidatorArray, weightArray, ContractDeployer, ContractDeployer],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     randomSig = await ethers.getSigner(random);
-//     secondAddressSigner = await ethers.getSigner(random);
-//     randomAddressIsTheSigner = FeeContract.connect(secondAddressSigner);
-//   });
+describe("Fee Contract: Initail tests that require oracle feedback", function () {
+  // let ValidatorContract;
+  // let ValidatorContract2;
+  // let ValidatorContract3;
+  // beforeEach(async () => {
 
-//   it("Confirm Oracle is giving correct data to fee contract", async () => {
-//     const ValueOfQuery = await FeeContract.queryOracle();
-//     const otherValue = await OracleContract.consult();
-//     expect(ValueOfQuery).to.equal(otherValue);
-//   });
-//   it("Test CollectFee Function is sending eth to validators", async () => {
-//     await randomSig.sendTransaction({
-//       to: FeeContract.address,
-//       value: SIX_ETH,
-//     });
-//     const ExpectedPayout = await FeeContract.amountPaidToUponNextDistribution(
-//       1
-//     );
-//     await time.increase(time.duration.days(1));
-//     expect(ExpectedPayout).to.equal(TWO_ETH);
-//     expect(() => FeeContract.collectFee()).to.changeEtherBalance(
-//       ValidatorContract,
-//       ONE_ETH
-//     );
-//   });
-//   it("Test CollectFee Function is requiring 24 hours or a Distributor role", async () => {
-//     await randomSig.sendTransaction({
-//       to: FeeContract.address,
-//       value: SIX_ETH,
-//     });
-//     const ExpectedPayout = await FeeContract.amountPaidToUponNextDistribution(
-//       1
-//     );
-//     expect(ExpectedPayout).to.equal(TWO_ETH);
-//     expectRevert(randomAddressIsTheSigner.collectFee(), "121");
-//     await FeeContract.collectFee();
-//   });
-//   it("Test CollectFee Function should requiring 24 hours between calls", async () => {
-//     await randomSig.sendTransaction({
-//       to: FeeContract.address,
-//       value: SIX_ETH,
-//     });
-//     await expectRevert(randomAddressIsTheSigner.collectFee(), "121");
-//     await time.increase(time.duration.days(1));
-//     await randomAddressIsTheSigner.collectFee();
-//     //randomAddressIsTheSigner
-//   });
-//   it("Test collectFee Function is requiring 24 hours", async () => {
-//     await randomSig.sendTransaction({
-//       to: FeeContract.address,
-//       value: SIX_ETH,
-//     });
-//     const ExpectedPayout = await FeeContract.amountPaidToUponNextDistribution(
-//       1
-//     );
-//     await time.increase(time.duration.days(1));
-//     expect(ExpectedPayout).to.equal(TWO_ETH);
-//     await randomAddressIsTheSigner.collectFee();
-//     //randomAddressIsTheSigner
-//   });
-//   it("Test collectFee should change the lastDistribution", async () => {
-//     await randomSig.sendTransaction({
-//       to: FeeContract.address,
-//       value: SIX_ETH,
-//     });
-//     const beforeLastDistribution = await FeeContract.getLastDistributionBlock();
-//     await FeeContract.collectFee();
-//     const afterLastDistribution = await FeeContract.getLastDistributionBlock();
-//     expect(afterLastDistribution.toString()).not.to.equal(
-//       beforeLastDistribution
-//     );
-//     const current = await time.latest();
-//     expect(afterLastDistribution.toString()).to.equal(current.toString());
-//   });
-//   it("Test forceFee Function should refresh the oracle", async () => {
-//     await randomSig.sendTransaction({
-//       to: FeeContract.address,
-//       value: SIX_ETH,
-//     });
-//     await FeeContract.forceFee();
-//     expect(await OracleContract.viewJustKeepAdding()).to.equal(8);
-//   });
-//   it("Test forceFee should change the lastDistribution", async () => {
-//     await randomSig.sendTransaction({
-//       to: FeeContract.address,
-//       value: SIX_ETH,
-//     });
-//     const beforeLastDistribution = await FeeContract.getLastDistributionBlock();
-//     await FeeContract.forceFee();
-//     const afterLastDistribution = await FeeContract.getLastDistributionBlock();
-//     expect(afterLastDistribution.toString()).not.to.equal(
-//       beforeLastDistribution
-//     );
-//     const current = await time.latest();
-//     expect(afterLastDistribution.toString()).to.equal(current.toString());
-//   });
-//   it("Test CollectFee Function should refresh the oracle", async () => {
-//     await randomSig.sendTransaction({
-//       to: FeeContract.address,
-//       value: SIX_ETH,
-//     });
-//     await time.increase(time.duration.days(1));
-//     await FeeContract.collectFee();
-//     expect(await OracleContract.viewJustKeepAdding()).to.equal(8);
-//   });
-//   it("Test ForceFee Function is sending eth to validators", async () => {
-//     await randomSig.sendTransaction({
-//       to: FeeContract.address,
-//       value: SIX_ETH,
-//     });
-//     const ExpectedPayout = await FeeContract.amountPaidToUponNextDistribution(
-//       1
-//     );
-//     expect(ExpectedPayout).to.equal(TWO_ETH);
-//     expect(() => FeeContract.forceFee()).to.changeEtherBalance(
-//       ValidatorContract,
-//       ONE_ETH
-//     );
-//   });
-// });
-// describe("Fee Contract: General Getters and Setters", function () {
-//   let ContractDeployer;
-//   let Address2;
-//   let ValidatorContract;
-//   let FeeContract;
-//   let weight;
-//   let FeeOracleContract;
-//   let estimatedResetTime;
-//   let other;
-//   beforeEach(async () => {
-//     //example weight 100% of bounty 1/1
-//     weight = [1, 2, 3];
-//     const [ContractDeployers, Address2s, randoms, others] = await ethers.getSigners();
-//     //address for contract inputs
-//     const ContractDeployer = await ContractDeployers.getAddress();
-//     Address2 = await Address2s.getAddress();
-//     const random = await randoms.getAddress();
-//     other = await others.getAddress();
-//     //address of validators in validator rewards
-//     const ValidatorRewards = await ethers.getContractFactory(
-//       "ValidatorRewards"
-//     );
-//     const FeeContractFactory = await ethers.getContractFactory("FeeContract");
-//     const FeeOracleFactory = await ethers.getContractFactory("FeeOracle");
-//     //addrees for contracts
-//     const addressArray = await [ContractDeployer, Address2, random];
-//     FeeOracleContract = await FeeOracleFactory.deploy();
-//     ValidatorContract = await upgrades.deployProxy(
-//       ValidatorRewardsFactory,
-//       [addressArray, weight, ContractDeployer, ContractDeployer],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     FeeContract = await upgrades.deployProxy(
-//       FeeContractFactory,
-//       [FeeOracleContract.address, addressArray, weight, ContractDeployer, ContractDeployer],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     const timestamp = await time.latest();
-//     estimatedResetTime = timestamp + 86400;
-//   });
+  //   const weightArray = [1, 2, 3];
+    //validator contracts printed out
+    // ValidatorContract = await upgrades.deployProxy(
+    //   ValidatorRewardsFactory,
+    //   [ContractDeployerArray, SingleWeightArray, ContractDeployer, ContractDeployer],
+    //   { initializer: "initialize", kind: "uups" }
+    // );
+    // ValidatorContract2 = await upgrades.deployProxy(
+    //   ValidatorRewardsFactory,
+    //   [ContractDeployerArray, SingleWeightArray, ContractDeployer, ContractDeployer],
+    //   { initializer: "initialize", kind: "uups" }
+    // );
+    // ValidatorContract3 = await upgrades.deployProxy(
+    //   ValidatorRewardsFactory,
+    //   [ContractDeployerArray, SingleWeightArray, ContractDeployer, ContractDeployer],
+    //   { initializer: "initialize", kind: "uups" }
+    // );
+    // const ValidatorArray = [
+    //   ValidatorContract.address,
+    //   ValidatorContract2.address,
+    //   ValidatorContract3.address,
+    // ];
+    // // Fee contract
+    // FeeContract = await upgrades.deployProxy(
+    //   FeeContractFactory,
+    //   [FeeOracleContract.address, ValidatorArray, weightArray, ContractDeployer, ContractDeployer],
+    //   { initializer: "initialize", kind: "uups" }
+    // );
+  //   Address3SendsH1 = await ethers.getSigner(Address3);
+  //   secondAddressSigner = await ethers.getSigner(Address3);
+  //   Address3SignsFeeContractWith3Validators = FeeContract.connect(secondAddressSigner);
+  // });
 
-//   it("The Reset Fee should revert if it has not been 24 hours and the fee is NOT zero", async () => {
-//     //sets fee so its not 0
-//     await FeeContract.resetFee();
-//     //checks that query oracle is equal to 1 the anticipated value
-//     expect(await FeeContract.queryOracle()).to.equal(1);
-//     //change the value
-//     await FeeOracleContract.setPriceAverage(TWO_ETH);
-//     //reset fee
-//     await expectRevert(FeeContract.resetFee(), "121");
-//     //checks updated value
-//   });
-//   it("The Reset Fee should change Fee Value", async () => {
-//     //checks that query oracle is equal to 1 the anticipated value
-//     expect(await FeeContract.queryOracle()).to.equal(1);
-//     //change the value
-//     await FeeOracleContract.setPriceAverage(TWO_ETH);
-//     //wait 24 hours
-//     await time.increase(time.duration.days(1));
-//     //reset fee
-//     await FeeContract.resetFee();
-//     //checks updated value
-//     expect(await FeeContract.queryOracle()).to.equal(TWO_ETH);
-//   });
-//   it("The Reset Fee should change the requiredReset", async () => {
-//     const reset = await FeeContract.getNextResetTime();
-//     // const testReset = reset.toString;
-//     expect(reset.toString()).to.be.equal(estimatedResetTime.toString());
-//     //wait 24 hours
-//     await time.increase(time.duration.days(1));
-//     //reset fee
-//     await FeeContract.resetFee();
-//     const newResetValue = await FeeContract.getNextResetTime();
-//     //add 1 second for time
-//     const newEstimatedResetTime = estimatedResetTime + 86401;
-//     //close to could be a few seconds off to account for txns
-//     expect(newResetValue.toString()).to.equal(newEstimatedResetTime.toString());
-//   });
-//   it("setOracle should change the oracle address", async () => {
-//     const firstOracle = await FeeContract.getOracleAddress();
-//     const OracleContractAddress = FeeOracleContract.address;
-//     expect(firstOracle.toString()).to.equal(OracleContractAddress.toString());
-//     await FeeContract.setOracle(Address2);
-//     const reset = await FeeContract.getOracleAddress();
-//     expect(reset.toString()).to.equal(Address2.toString());
-//   });
-//   it("setEpoch should change the epochLength", async () => {
-//     const firstepochLength = await FeeContract.epochLength();
-//     await FeeContract.setEpoch(1);
-//     const reset = await FeeContract.epochLength();
-//     expect(reset.toString()).to.equal("1");
-//     expect(firstepochLength.toString()).not.to.equal(reset.toString());
-//   });
-//   it("isOriginalAddress should return false if the address is in the array", async () => {
-//     const knownAddress = await FeeContract.isOriginalAddress(Address2);
-//     expect(knownAddress).to.equal(false);
-//   });
-//   it("isOriginalAddress should return true if the address is in the array", async () => {
-//     const unknownAddress = await FeeContract.isOriginalAddress(other);
-//     expect(unknownAddress).to.equal(true);
-//   });
-//   it("isOriginalAddress if/else determines true/false", async () => {
-//     const knownAddress = await FeeContract.isOriginalAddress(Address2);
-//     expect(knownAddress).to.equal(false);
-//     const unknownAddress = await FeeContract.isOriginalAddress(other);
-//     expect(unknownAddress).to.equal(true);
-//   });
-//   //isOriginalAddress
-// });
+  it("Confirm Oracle is giving correct data to fee contract", async () => {
+    const ValueOfQuery = await FeeContract.queryOracle();
+    const Address4Value = await FeeOracleContract.consult();
+    expect(ValueOfQuery).to.equal(Address4Value);
+  });
+  it("Test CollectFee Function is sending eth to validators", async () => {
+    await Address3SendsH1.sendTransaction({
+      to: FeeContractWith3Validators.address,
+      value: SIX_ETH,
+    });
+    const ExpectedPayout = await FeeContractWith3Validators.amountPaidToUponNextDistribution(
+      1
+    );
+    await time.increase(time.duration.days(1));
+    expect(ExpectedPayout).to.equal(TWO_ETH);
+    expect(() => FeeContractWith3Validators.collectFee()).to.changeEtherBalance(
+      ValidatorContract,
+      ONE_ETH
+    );
+  });
+  it("Test CollectFee Function is requiring 24 hours or a Distributor role", async () => {
+    await Address3SendsH1.sendTransaction({
+      to: FeeContractWith3Validators.address,
+      value: SIX_ETH,
+    });
+    const ExpectedPayout = await FeeContractWith3Validators.amountPaidToUponNextDistribution(
+      1
+    );
+    expect(ExpectedPayout.toString()).to.equal(TWO_ETH.toString());
+    expectRevert(Address3SignsFeeContractWith3Validators.collectFee(), "121");
+    await FeeContractWith3Validators.collectFee();
+  });
+  it("Test CollectFee Function should requiring 24 hours between calls", async () => {
+    await Address3SendsH1.sendTransaction({
+      to: FeeContractWith3Validators.address,
+      value: SIX_ETH,
+    });
+    await expectRevert(Address3SignsFeeContractWith3Validators.collectFee(), "121");
+    await time.increase(time.duration.days(1));
+    await Address3SignsFeeContractWith3Validators.collectFee();
+  });
+  it("Test collectFee Function is requiring 24 hours", async () => {
+    await Address3SendsH1.sendTransaction({
+      to: FeeContractWith3Validators.address,
+      value: SIX_ETH,
+    });
+    const ExpectedPayout = await FeeContractWith3Validators.amountPaidToUponNextDistribution(
+      1
+    );
+    await time.increase(time.duration.days(1));
+    expect(ExpectedPayout.toString()).to.equal(TWO_ETH.toString());
+    await Address3SignsFeeContractWith3Validators.collectFee();
+  });
+  it("Test collectFee should change the lastDistribution", async () => {
+    await Address3SendsH1.sendTransaction({
+      to: FeeContract.address,
+      value: SIX_ETH,
+    });
+    const beforeLastDistribution = await FeeContract.getLastDistributionBlock();
+    await FeeContract.collectFee();
+    const afterLastDistribution = await FeeContract.getLastDistributionBlock();
+    expect(afterLastDistribution.toString()).not.to.equal(
+      beforeLastDistribution
+    );
+    const current = await time.latest();
+    expect(afterLastDistribution.toString()).to.equal(current.toString());
+  });
+  it("Test forceFee Function should refresh the oracle", async () => {
+    await Address3SendsH1.sendTransaction({
+      to: FeeContract.address,
+      value: SIX_ETH,
+    });
+    await FeeContract.forceFee();
+    expect(await FeeOracleContract.viewJustKeepAdding()).to.equal(8);
+  });
+  it("Test forceFee should change the lastDistribution", async () => {
+    await Address3SendsH1.sendTransaction({
+      to: FeeContract.address,
+      value: SIX_ETH,
+    });
+    const beforeLastDistribution = await FeeContract.getLastDistributionBlock();
+    await FeeContract.forceFee();
+    const afterLastDistribution = await FeeContract.getLastDistributionBlock();
+    expect(afterLastDistribution.toString()).not.to.equal(
+      beforeLastDistribution
+    );
+    const current = await time.latest();
+    expect(afterLastDistribution.toString()).to.equal(current.toString());
+  });
+  it("Test CollectFee Function should refresh the oracle", async () => {
+    await Address3SendsH1.sendTransaction({
+      to: FeeContract.address,
+      value: SIX_ETH,
+    });
+    await time.increase(time.duration.days(1));
+    await FeeContract.collectFee();
+    expect(await FeeOracleContract.viewJustKeepAdding()).to.equal(8);
+  });
+  it("Test ForceFee Function is sending eth to validators", async () => {
+    await Address3SendsH1.sendTransaction({
+      to: FeeContractWith3Validators.address,
+      value: SIX_ETH,
+    });
+    expect(() => FeeContractWith3Validators.forceFee()).to.changeEtherBalance(
+      ValidatorContract,
+      ONE_ETH
+    );
+  });
+});
+describe("Fee Contract: General Getters and Setters", function () {
+  let estimatedResetTime;
+  let Address4;
+  beforeEach(async () => {
+    //example weight 100% of bounty 1/1
+    weight = [1, 2, 3];
+    const [ContractDeployers, Address2s, Address3s, Address4s] = await ethers.getSigners();
+    //address for contract inputs
+    const ContractDeployer = await ContractDeployers.getAddress();
+    Address2 = await Address2s.getAddress();
+    const Address3 = await Address3s.getAddress();
+    Address4 = await Address4s.getAddress();
+    //address of validators in validator rewards
+    const ValidatorRewards = await ethers.getContractFactory(
+      "ValidatorRewards"
+    );
+    const FeeContractFactory = await ethers.getContractFactory("FeeContract");
+    const FeeOracleFactory = await ethers.getContractFactory("FeeOracle");
+    //addrees for contracts
+    const addressArray = await [ContractDeployer, Address2, Address3];
+    FeeOracleContract = await FeeOracleFactory.deploy();
+    ValidatorContract = await upgrades.deployProxy(
+      ValidatorRewardsFactory,
+      [addressArray, weight, ContractDeployer, ContractDeployer],
+      { initializer: "initialize", kind: "uups" }
+    );
+    FeeContract = await upgrades.deployProxy(
+      FeeContractFactory,
+      [FeeOracleContract.address, addressArray, weight, ContractDeployer, ContractDeployer],
+      { initializer: "initialize", kind: "uups" }
+    );
+    const timestamp = await time.latest();
+    estimatedResetTime = timestamp + 86400;
+  });
+
+  it("The Reset Fee should revert if it has not been 24 hours and the fee is NOT zero", async () => {
+    //sets fee so its not 0
+    await FeeContract.resetFee();
+    //checks that query oracle is equal to 1 the anticipated value
+    expect(await FeeContract.queryOracle()).to.equal(1);
+    //change the value
+    await FeeOracleContract.setPriceAverage(TWO_ETH);
+    //reset fee
+    await expectRevert(FeeContract.resetFee(), "121");
+    //checks updated value
+  });
+  it("The Reset Fee should change Fee Value", async () => {
+    //checks that query oracle is equal to 1 the anticipated value
+    expect(await FeeContract.queryOracle()).to.equal(1);
+    //change the value
+    await FeeOracleContract.setPriceAverage(TWO_ETH);
+    //wait 24 hours
+    await time.increase(time.duration.days(1));
+    //reset fee
+    await FeeContract.resetFee();
+    //checks updated value
+    expect(await FeeContract.queryOracle()).to.equal(TWO_ETH);
+  });
+  it("The Reset Fee should change the requiredReset", async () => {
+    const reset = await FeeContract.getNextResetTime();
+    // const testReset = reset.toString;
+    expect(reset.toString()).to.be.equal(estimatedResetTime.toString());
+    //wait 24 hours
+    await time.increase(time.duration.days(1));
+    //reset fee
+    await FeeContract.resetFee();
+    const newResetValue = await FeeContract.getNextResetTime();
+    //add 1 second for time
+    const newEstimatedResetTime = estimatedResetTime + 86401;
+    //close to could be a few seconds off to account for txns
+    expect(newResetValue.toString()).to.equal(newEstimatedResetTime.toString());
+  });
+  it("setOracle should change the oracle address", async () => {
+    const firstOracle = await FeeContract.getOracleAddress();
+    const OracleContractAddress = FeeOracleContract.address;
+    expect(firstOracle.toString()).to.equal(FeeOracleContractAddress.toString());
+    await FeeContract.setOracle(Address2);
+    const reset = await FeeContract.getOracleAddress();
+    expect(reset.toString()).to.equal(Address2.toString());
+  });
+  it("setEpoch should change the epochLength", async () => {
+    const firstepochLength = await FeeContract.epochLength();
+    await FeeContract.setEpoch(1);
+    const reset = await FeeContract.epochLength();
+    expect(reset.toString()).to.equal("1");
+    expect(firstepochLength.toString()).not.to.equal(reset.toString());
+  });
+  it("isOriginalAddress should return false if the address is in the array", async () => {
+    const knownAddress = await FeeContract.isOriginalAddress(Address2);
+    expect(knownAddress).to.equal(false);
+  });
+  it("isOriginalAddress should return true if the address is in the array", async () => {
+    const unknownAddress = await FeeContract.isOriginalAddress(Address4);
+    expect(unknownAddress).to.equal(true);
+  });
+  it("isOriginalAddress if/else determines true/false", async () => {
+    const knownAddress = await FeeContract.isOriginalAddress(Address2);
+    expect(knownAddress).to.equal(false);
+    const unknownAddress = await FeeContract.isOriginalAddress(Address4);
+    expect(unknownAddress).to.equal(true);
+  });
+  //isOriginalAddress
+});
 // describe("Fee Contract: AccessControl", function () {
 //   let ContractDeployer;
 //   let ValidatorContract;
@@ -537,25 +533,25 @@ describe("Fee Contract: Adding and adjusting wieghts and channels functions", fu
 //   let oracleFake;
 //   let OPERATOR_ROLE;
 //   let weight;
-//   let randomSig;
+//   let Address3SendsH1;
 //   let FROM;
-//   let other;
-//   let random;
+//   let Address4;
+//   let Address3;
 //   let FromContractDeployer;
 //   let DEFAULT_ADMIN_ROLE;
 //   let FeeContractFactory;
 //   beforeEach(async () => {
 //     //example weight 100% of bounty 1/1
 //     weight = [1];
-//     const [ContractDeployers, Address2s, randoms, others] = await ethers.getSigners();
+//     const [ContractDeployers, Address2s, Address3s, Address4s] = await ethers.getSigners();
 //     ContractDeployer = await ContractDeployers.getAddress();
 //     oracleFake = await Address2s.getAddress();
-//     other = await others.getAddress();
-//     random = await randoms.getAddress();
-//     randomSig = ethers.provider.getSigner(random);
+//     Address4 = await Address4s.getAddress();
+//     Address3 = await Address3s.getAddress();
+//     Address3SendsH1 = ethers.provider.getSigner(Address3);
 //     //address of validators in validator rewards
 //     ContractDeployerArray = await [ContractDeployer];
-//     FROM = random.toLowerCase();
+//     FROM = Address3.toLowerCase();
 //     FromContractDeployer = ContractDeployer.toLowerCase();
 //     const ValidatorRewards = await ethers.getContractFactory(
 //       "ValidatorRewards"
@@ -578,20 +574,20 @@ describe("Fee Contract: Adding and adjusting wieghts and channels functions", fu
 //   //setEpoch
 //   it("OPERATOR_ROLE should be the only one to setEpoch", async () => {
 //     await expectRevert(
-//       FeeContract.connect(randomSig).setEpoch(1),
+//       FeeContract.connect(Address3SendsH1).setEpoch(1),
 //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
 //     );
 //   });
 
 //   it("OPERATOR_ROLE should be the only one to adjust channels", async () => {
 //     await expectRevert(
-//       FeeContract.connect(randomSig).adjustChannel(1, other, 75),
+//       FeeContract.connect(Address3SendsH1).adjustChannel(1, Address4, 75),
 //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
 //     );
 //   });
 //   it("OPERATOR_ROLE should be the only one to adjust channels", async () => {
 //     await expectRevert(
-//       FeeContract.connect(randomSig).addChannel(other, 75),
+//       FeeContract.connect(Address3SendsH1).addChannel(Address4, 75),
 //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
 //     );
 //   });
@@ -613,13 +609,13 @@ describe("Fee Contract: Adding and adjusting wieghts and channels functions", fu
 //   });
 //   it("OPERATOR_ROLE should be the only one who can force fees", async () => {
 //     await expectRevert(
-//       FeeContract.connect(randomSig).forceFee(),
+//       FeeContract.connect(Address3SendsH1).forceFee(),
 //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
 //     );
 //   });
 //   it("OPERATOR_ROLE should be the only one who can setOracle address", async () => {
 //     await expectRevert(
-//       FeeContract.connect(randomSig).setOracle(ContractDeployer),
+//       FeeContract.connect(Address3SendsH1).setOracle(ContractDeployer),
 //       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
 //     );
 //   });
@@ -671,22 +667,22 @@ describe("Fee Contract: Adding and adjusting wieghts and channels functions", fu
 //     let ContractDeployerArray;
 //     let oracleFake;
 //     let weight;
-//     let randomSig;
+//     let Address3SendsH1;
 //     let FROM;
-//     let other;
-//     let random;
+//     let Address4;
+//     let Address3;
 //     beforeEach(async () => {
 //       //example weight 100% of bounty 1/1
 //       weight = [1];
-//       const [ContractDeployers, Address2s, randoms, others] = await ethers.getSigners();
+//       const [ContractDeployers, Address2s, Address3s, Address4s] = await ethers.getSigners();
 //       ContractDeployer = await ContractDeployers.getAddress();
 //       oracleFake = await Address2s.getAddress();
-//       other = await others.getAddress();
-//       random = await randoms.getAddress();
-//       randomSig = ethers.provider.getSigner(random);
+//       Address4 = await Address4s.getAddress();
+//       Address3 = await Address3s.getAddress();
+//       Address3SendsH1 = ethers.provider.getSigner(Address3);
 //       //address of validators in validator rewards
 //       ContractDeployerArray = await [ContractDeployer];
-//       FROM = random.toLowerCase();
+//       FROM = Address3.toLowerCase();
 //       const ValidatorRewards = await ethers.getContractFactory(
 //         "ValidatorRewards"
 //       );
@@ -706,7 +702,7 @@ describe("Fee Contract: Adding and adjusting wieghts and channels functions", fu
 //     it("forceFee should distribute funds regardless of sucess or failure upon an address", async () => {
 //       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
 //       const DummyContract = await DummyContractFactory.deploy();
-//       const InputArray = [DummyContract.address, random, ContractDeployer];
+//       const InputArray = [DummyContract.address, Address3, ContractDeployer];
 //       const NumberArray = [1, 2, 3, 4];
 //       const FeeContract = await ethers.getContractFactory("FeeContract");
 //       const FeeContractForTest = await upgrades.deployProxy(
@@ -719,7 +715,7 @@ describe("Fee Contract: Adding and adjusting wieghts and channels functions", fu
 //     it("Fee contract collectFee() should revert if there is an unsuccessful transfer made)", async () => {
 //       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
 //       const DummyContract = await DummyContractFactory.deploy();
-//       const InputArray = [DummyContract.address, random, ContractDeployer];
+//       const InputArray = [DummyContract.address, Address3, ContractDeployer];
 //       const NumberArray = [1, 2, 3, 4];
 //       const FeeContract = await ethers.getContractFactory("FeeContract");
 //       const FeeContractForTest = await upgrades.deployProxy(
@@ -727,7 +723,7 @@ describe("Fee Contract: Adding and adjusting wieghts and channels functions", fu
 //         [DummyContract.address, InputArray, NumberArray, ContractDeployer, ContractDeployer],
 //         { initializer: "initialize", kind: "uups" }
 //       );
-//       await randomSig.sendTransaction({
+//       await Address3SendsH1.sendTransaction({
 //         to: FeeContractForTest.address,
 //         value: SIX_ETH,
 //       });
@@ -736,7 +732,7 @@ describe("Fee Contract: Adding and adjusting wieghts and channels functions", fu
 //     it("Fee contract collectFee() should revert if there are no funds to rebate gas)", async () => {
 //       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
 //       const DummyContract = await DummyContractFactory.deploy();
-//       const InputArray = [DummyContract.address, random, ContractDeployer];
+//       const InputArray = [DummyContract.address, Address3, ContractDeployer];
 //       const NumberArray = [1, 2, 3, 4];
 //       const FeeContract = await ethers.getContractFactory("FeeContract");
 //       const FeeContractForTest = await upgrades.deployProxy(

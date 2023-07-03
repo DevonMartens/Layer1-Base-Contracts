@@ -113,23 +113,23 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
      * be managed we also don't allow duplicate addresses or zero addresses.
      * @notice The total weight is tracked by `CONTRACT_SHARES` which we use to send correct amounts to each channel.
      */
-    function addChannel(
-        address _newChannelAddress,
-        uint8 _weight
-    ) external onlyRole(OPERATOR_ROLE) {
-        if (channels.length == 5) {
-            revert(Errors.CONTRACT_LIMIT_REACHED);
-        }
-        if (
-            isOriginalAddress(_newChannelAddress) == false ||
-            address(0) == _newChannelAddress
-        ) {
-            revert(Errors.INVALID_ADDRESS);
-        }
-        channels.push(_newChannelAddress);
-        weights.push(_weight);
-        CONTRACT_SHARES += _weight;
-    }
+    // function addChannel(
+    //     address _newChannelAddress,
+    //     uint8 _weight
+    // ) external onlyRole(OPERATOR_ROLE) {
+    //     if (channels.length == 5) {
+    //         revert(Errors.CONTRACT_LIMIT_REACHED);
+    //     }
+    //     if (
+    //         isOriginalAddress(_newChannelAddress) == false ||
+    //         address(0) == _newChannelAddress
+    //     ) {
+    //         revert(Errors.INVALID_ADDRESS);
+    //     }
+    //     channels.push(_newChannelAddress);
+    //     weights.push(_weight);
+    //     CONTRACT_SHARES += _weight;
+    // }
 
     /**
      * @notice  Logic to adjust a channel and its weight.
@@ -141,25 +141,25 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
      * which we adjust here by subtracting the old number and adding the new.
      */
 
-    function adjustChannel(
-        uint8 _index,
-        address _newChannelAddress,
-        uint8 _newWeight
-    ) external onlyRole(OPERATOR_ROLE) {
-        if (
-            _newChannelAddress == address(0) ||
-            isOriginalAddress(_newChannelAddress) == false
-        ) {
-            revert(Errors.INVALID_ADDRESS);
-        }
-        if (_index > 4) {
-            revert(Errors.INCORRECT_INDEX);
-        }
-        channels[_index] = _newChannelAddress;
-        CONTRACT_SHARES -= weights[_index];
-        weights[_index] = _newWeight;
-        CONTRACT_SHARES += _newWeight;
-    }
+    // function adjustChannel(
+    //     uint8 _index,
+    //     address _newChannelAddress,
+    //     uint8 _newWeight
+    // ) external onlyRole(OPERATOR_ROLE) {
+    //     if (
+    //         _newChannelAddress == address(0) ||
+    //         isOriginalAddress(_newChannelAddress) == false
+    //     ) {
+    //         revert(Errors.INVALID_ADDRESS);
+    //     }
+    //     if (_index > 4) {
+    //         revert(Errors.INCORRECT_INDEX);
+    //     }
+    //     channels[_index] = _newChannelAddress;
+    //     CONTRACT_SHARES -= weights[_index];
+    //     weights[_index] = _newWeight;
+    //     CONTRACT_SHARES += _newWeight;
+    // }
 
     /**
    @notice This is to adjust the length of time between payouts from the contract.
@@ -178,48 +178,48 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
    @dev The function reverts should the function have been called less than 24 hours ago.
    */
 
-    function collectFee() external {
-        if (
-            block.timestamp > lastDistribution + epochLength ||
-            hasRole(OPERATOR_ROLE, msg.sender)
-        ) {
-            uint rebateValue = queryOracle();
-            (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(
-                ""
-            );
-            require(gasRebate, Errors.GAS_REBATE_FAILED);
+    // function collectFee() external {
+    //     if (
+    //         block.timestamp > lastDistribution + epochLength ||
+    //         hasRole(OPERATOR_ROLE, msg.sender)
+    //     ) {
+    //         uint rebateValue = queryOracle();
+    //         (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(
+    //             ""
+    //         );
+    //         require(gasRebate, Errors.GAS_REBATE_FAILED);
 
-            uint amount = address(this).balance;
+    //         uint amount = address(this).balance;
 
-            for (uint i = 0; i < channels.length; i++) {
-                uint share = (amount * weights[i]) / CONTRACT_SHARES;
-                (bool sent, ) = channels[i].call{value: share}("");
-                require(sent, Errors.TRANSFER_FAILED);
+    //         for (uint i = 0; i < channels.length; i++) {
+    //             uint share = (amount * weights[i]) / CONTRACT_SHARES;
+    //             (bool sent, ) = channels[i].call{value: share}("");
+    //             require(sent, Errors.TRANSFER_FAILED);
 
-                emit FeesDistributed(block.timestamp, channels[i], share);
-            }
-            lastDistribution = block.timestamp;
-            _refreshOracle();
-        } else {
-            revert(Errors.HOLD_TIME_IS_24_HOURS);
-        }
-    }
+    //             emit FeesDistributed(block.timestamp, channels[i], share);
+    //         }
+    //         lastDistribution = block.timestamp;
+    //         _refreshOracle();
+    //     } else {
+    //         revert(Errors.HOLD_TIME_IS_24_HOURS);
+    //     }
+    // }
 
     /** 
    @notice Function triggered to force distribution of funds to channels.
    */
 
-    function forceFee() external payable onlyRole(OPERATOR_ROLE) {
-        uint amount = address(this).balance;
-        for (uint i = 0; i < channels.length; i++) {
-            uint share = (amount * weights[i]) / CONTRACT_SHARES;
-            (bool success, ) = channels[i].call{value: share}("");
-            require(success, Errors.TRANSFER_FAILED);
-            emit FeesDistributed(block.timestamp, channels[i], share);
-        }
-        _refreshOracle();
-        lastDistribution = block.timestamp;
-    }
+    // function forceFee() external payable onlyRole(OPERATOR_ROLE) {
+    //     uint amount = address(this).balance;
+    //     for (uint i = 0; i < channels.length; i++) {
+    //         uint share = (amount * weights[i]) / CONTRACT_SHARES;
+    //         (bool success, ) = channels[i].call{value: share}("");
+    //         require(success, Errors.TRANSFER_FAILED);
+    //         emit FeesDistributed(block.timestamp, channels[i], share);
+    //     }
+    //     _refreshOracle();
+    //     lastDistribution = block.timestamp;
+    // }
 
     /**
    @notice Setter function to adjust oracle address.
