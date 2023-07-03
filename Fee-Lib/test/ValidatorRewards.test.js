@@ -269,7 +269,7 @@ describe("Validator Rewards: AccessControl In the contract", function () {
       ),
       `AccessControl: account ${FromContractDeployer} is missing role ${DEFAULT_ADMIN_ROLE}`
     );
-    const ValidatorContractV2 = await upgrades.upgradeProxy(
+    await upgrades.upgradeProxy(
       ValidatorContract.address,
       ValidatorRewardsFactory,
       {

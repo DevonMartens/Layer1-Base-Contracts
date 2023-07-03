@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>7/7</span>
+        <span class='fraction'>0/7</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>6/6</span>
+        <span class='fraction'>0/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>3/3</span>
+        <span class='fraction'>0/3</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>11/11</span>
+        <span class='fraction'>0/11</span>
       </div>
     </div>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -111,27 +111,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">13×</span>
-<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9×</span>
-<span class="cline-any cline-yes">9×</span>
-<span class="cline-any cline-yes">8×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">142×</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">141×</span>
-<span class="cline-any cline-yes">141×</span>
-<span class="cline-any cline-yes">141×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,7 +125,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: ISC
@@ -160,12 +160,12 @@ contract H1NativeApplication is FeeQuery {
     FeeQuery public FeeQueryNative;
 &nbsp;
     // Modifier to send fees to the fee contract and to the developer in contracts.
-    modifier applicationFee() {
-        if (msg.value &lt; callFee() &amp;&amp; callFee() &gt; 0) {
-            revert(Errors.INSUFFICIENT_FUNDS);
+<span class="fstat-no" title="function not covered" >    modifier applicationFee() {</span>
+<span class="cstat-no" title="statement not covered" >        if (msg.value &lt; callFee() &amp;&amp; callFee() &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >            revert(Errors.INSUFFICIENT_FUNDS)</span>;
         }
-        (bool success, ) = FeeContract.call{value: callFee()}("");
-        require(success, Errors.TRANSFER_FAILED);
+<span class="cstat-no" title="statement not covered" >        (bool success, ) = FeeContract.call{value: callFee()}("");</span>
+<span class="cstat-no" title="statement not covered" >        require(success, Errors.TRANSFER_FAILED)</span>;
         _;
     }
 &nbsp;
@@ -175,9 +175,9 @@ contract H1NativeApplication is FeeQuery {
      * @dev For the param walletToCollectFees the deployer
      * of this wallet should consider a setter for this address in their dApp.
      */
-    constructor(address _FeeContract) {
-        if (_FeeContract == address(0)) {
-            revert(Errors.INVALID_ADDRESS);
+<span class="fstat-no" title="function not covered" >    constructor(address _FeeContract) {</span>
+<span class="cstat-no" title="statement not covered" >        if (_FeeContract == address(0)) {</span>
+<span class="cstat-no" title="statement not covered" >            revert(Errors.INVALID_ADDRESS)</span>;
         }
         FeeContract = _FeeContract;
         FeeQueryNative = FeeQuery(_FeeContract);
@@ -189,8 +189,8 @@ contract H1NativeApplication is FeeQuery {
    @dev It returns a uint256 that is used in the applicationFee modifier.
    */
 &nbsp;
-    function callFee() public view returns (uint256) {
-        return FeeQuery(FeeContract).getFee();
+<span class="fstat-no" title="function not covered" >    function callFee() public view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return FeeQuery(FeeContract).getFee();</span>
     }
 }
 &nbsp;</pre></td></tr>
@@ -199,7 +199,7 @@ contract H1NativeApplication is FeeQuery {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 03 2023 07:13:37 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 03 2023 07:54:02 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>
