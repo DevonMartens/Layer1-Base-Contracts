@@ -18,10 +18,7 @@ interface IFeeOracle {
     function refreshOracle() external returns (bool success);
 }
 
-contract HasNoRecieveFunctionForFailedTxns is
-    FeeQuery,
-    AccessControl
-{
+contract HasNoRecieveFunctionForFailedTxns is FeeQuery, AccessControl {
     /**
      * @dev The event is triggered during the collectFee function.
      *It sends the time, the address receiving it, and the fee amount owed.
@@ -83,8 +80,6 @@ contract HasNoRecieveFunctionForFailedTxns is
             weights.push(_weights[i]);
         }
     }
-
-
 
     /**
    @notice This is the call to get the correct value for the fee across all native applications.
@@ -172,7 +167,7 @@ contract HasNoRecieveFunctionForFailedTxns is
    @dev The function reverts should the function have been called less than 24 hours ago.
    */
 
-    function grabFee() external  {
+    function grabFee() external {
         if (
             block.timestamp > lastDistribution + epochLength ||
             hasRole(OPERATOR_ROLE, msg.sender)
@@ -325,6 +320,4 @@ contract HasNoRecieveFunctionForFailedTxns is
     function _refreshOracle() internal returns (bool success) {
         return (IFeeOracle(oracle).refreshOracle());
     }
-
-
 }

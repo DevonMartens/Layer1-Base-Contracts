@@ -1,4 +1,3 @@
-
 const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
 
@@ -9,7 +8,7 @@ NINE_H1 = ethers.utils.parseUnits("9", "ether");
 TEN_H1 = ethers.utils.parseUnits("10", "ether");
 
 describe("H1NativeApplication and Imported Modifier applicationFee()", function () {
-  let owner;
+  let ContractDeployer;
   let FeeContract;
   let H1NativeApplicationDeployed;
   let SimpleStorageWithFeeDeployed;
@@ -19,13 +18,16 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
   let FeeContractSigner;
   let H1NativeApplicationFactory;
   beforeEach(async () => {
-    //addresses for using
-    const [owners, alices, randoms] = await ethers.getSigners();
-    owner = await owners.getAddress();
-    alice = await alices.getAddress();
-    random = await randoms.getAddress();
-    randomSig = ethers.provider.getSigner(random);
-    //get contract factories
+    // Gets signers and addresses
+    const [ContractDeployers, Address2s, Address3s] = await ethers.getSigners();
+    ContractDeployer = await ContractDeployers.getAddress();
+    Address2 = await Address2s.getAddress();
+    Address3 = await Address3s.getAddress();
+    Address3Sig = ethers.provider.getSigner(Address3);
+    // Contract inputs
+    const addressArray = [Address2, ContractDeployer, Address3];
+    const weightArray = [1, 2, 3];
+    // Gets Contract Factories
     const ValidatorRewardsFactory = await ethers.getContractFactory(
       "ValidatorRewards"
     );
@@ -40,27 +42,25 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     SimpleStorageWithFeeFactory = await ethers.getContractFactory(
       "SimpleStorageWithFee"
     );
-    //deploy Oracle
+    // Deploys Contracts
     OracleContract = await OracleFactory.deploy();
-    //turns it into an array
-    const addressArray = [alice, owner, random];
-    const weightArray = [1, 2, 3];
-    //validator contracts printed out
+
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner],
+      [addressArray, weightArray, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract2 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner],
+      [addressArray, weightArray, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract3 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner],
+      [addressArray, weightArray, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
+
     const ValidatorArray = [
       ValidatorContract.address,
       ValidatorContract2.address,
@@ -69,19 +69,27 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     // Fee contract
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
-      [OracleContract.address, ValidatorArray, weightArray, owner, owner],
+      [
+        OracleContract.address,
+        ValidatorArray,
+        weightArray,
+        ContractDeployer,
+        ContractDeployer,
+      ],
       { initializer: "initialize", kind: "uups" }
     );
-    BadFeeContract = await
-      BadFeeContractFactory.deploy(OracleContract.address, ValidatorArray, weightArray, owner, owner);
-    randomSig = await ethers.getSigner(random);
-    secondAddressSigner = await ethers.getSigner(random);
-    randomAddressIsTheSigner = FeeContract.connect(secondAddressSigner);
-    //H1NativeApplication contains modifer to import into all contracts for recieving funds
+    BadFeeContract = await BadFeeContractFactory.deploy(
+      OracleContract.address,
+      ValidatorArray,
+      weightArray,
+      ContractDeployer,
+      ContractDeployer
+    );
+
     H1NativeApplicationDeployed = await H1NativeApplicationFactory.deploy(
       FeeContract.address
     );
-    //simple storage for testing
+
     SimpleStorageWithFeeDeployed = await SimpleStorageWithFeeFactory.deploy(
       FeeContract.address
     );
@@ -90,12 +98,10 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     );
     FeeContractSigner = ethers.provider.getSigner(FeeContract.address);
   });
-  //20,21,23,26,50
   it("H1NativeApplication should revert with insuffiecent funds if not enough H1 is passed into a function", async () => {
     await FeeContract.resetFee();
     await expectRevert(SimpleStorageWithFeeDeployed.set(1), "125");
     await SimpleStorageWithFeeDeployed.set(1, { value: 1 });
-    
   });
   //SimpleStorageWithFeeFactory
   it("H1NativeApplication should revert if transfer to fee lib fails", async () => {
@@ -114,7 +120,9 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
 
     const TEN_H1_STRING = TEN_H1.toString();
     await expect(
-      SimpleStorageWithFeeDeployed.connect(randomSig).set(1, { value: TEN_H1 })
+      SimpleStorageWithFeeDeployed.connect(Address3Sig).set(1, {
+        value: TEN_H1,
+      })
     ).to.changeEtherBalance(FeeContractSigner, TEN_H1_STRING);
   });
   it("set in simple storage  should adjust get ", async () => {
@@ -167,7 +175,5 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
       await expectRevert(SimpleStorageWithFeeDeployed.set(1), "125");
       await SimpleStorageWithFeeDeployed.set(1, { value: 1 });
     });
-  
   });
-
 });

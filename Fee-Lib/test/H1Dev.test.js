@@ -8,11 +8,11 @@ NINE_H1 = ethers.utils.parseUnits("9", "ether");
 TEN_H1 = ethers.utils.parseUnits("10", "ether");
 
 describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", function () {
-  let owner;
-  let ownerSigner;
+  let ContractDeployer;
+  let ContractDeployerSigner;
   let OracleContract;
   let FeeContract;
-  let randomSig;
+  let Address3Sig;
   let H1DevelopedApplication;
   let SimpleStorageWithDevAppFee;
   let H1DevelopedApplicationFactory;
@@ -22,12 +22,12 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
   let SimpleStorageBadDevWallet;
   beforeEach(async () => {
     //addresses for using
-    const [owners, alices, randoms] = await ethers.getSigners();
-    owner = await owners.getAddress();
-    alice = await alices.getAddress();
-    random = await randoms.getAddress();
-    randomSig = ethers.provider.getSigner(random);
-    ownerSigner = ethers.provider.getSigner(owner);
+    const [ContractDeployers, Address2s, Address3s] = await ethers.getSigners();
+    ContractDeployer = await ContractDeployers.getAddress();
+    Address2 = await Address2s.getAddress();
+    Address3 = await Address3s.getAddress();
+    Address3Sig = ethers.provider.getSigner(Address3);
+    ContractDeployerSigner = ethers.provider.getSigner(ContractDeployer);
     //get contract factories
     const ValidatorRewardsFactory = await ethers.getContractFactory(
       "ValidatorRewards"
@@ -47,22 +47,22 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     //deploy Oracle
     OracleContract = await OracleFactory.deploy();
     //turns it into an array
-    const addressArray = [alice, owner, random];
+    const addressArray = [Address2, ContractDeployer, Address3];
     const weightArray = [1, 2, 3];
     //validator contracts printed out
     ValidatorContract = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner],
+      [addressArray, weightArray, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract2 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner],
+      [addressArray, weightArray, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     ValidatorContract3 = await upgrades.deployProxy(
       ValidatorRewardsFactory,
-      [addressArray, weightArray, owner, owner],
+      [addressArray, weightArray, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     const ValidatorArray = [
@@ -73,28 +73,31 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     // Fee contract
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
-      [OracleContract.address, ValidatorArray, weightArray, owner, owner],
+      [OracleContract.address, ValidatorArray, weightArray, ContractDeployer, ContractDeployer],
       { initializer: "initialize", kind: "uups" }
     );
     //bad fee contract
-    BadFeeContract = await 
-      BadFeeContractFactory.deploy(
-      OracleContract.address, ValidatorArray, weightArray, owner, owner
+    BadFeeContract = await BadFeeContractFactory.deploy(
+      OracleContract.address,
+      ValidatorArray,
+      weightArray,
+      ContractDeployer,
+      ContractDeployer
     );
-    FeeContractSigner = ethers.provider.getSigner(FeeContract.address);;
+    FeeContractSigner = ethers.provider.getSigner(FeeContract.address);
 
     H1DevelopedApplication = await H1DevelopedApplicationFactory.deploy(
       FeeContract.address,
-      owner
+      ContractDeployer
     );
     SimpleStorageWithDevAppFee = await SimpleStorageWithDevAppFeeFactory.deploy(
       FeeContract.address,
-      owner
+      ContractDeployer
     );
     SimpleStorageBadFeeContract =
       await SimpleStorageWithDevAppFeeFactory.deploy(
         BadFeeContract.address,
-        owner
+        ContractDeployer
       );
     SimpleStorageBadDevWallet = await SimpleStorageWithDevAppFeeFactory.deploy(
       FeeContract.address,
@@ -134,7 +137,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     await expectRevert(
       H1DevelopedApplicationFactory.deploy(
         "0x0000000000000000000000000000000000000000",
-        owner
+        ContractDeployer
       ),
       "123"
     );
@@ -152,9 +155,9 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     const NINE_H1_STRING = NINE_H1.toString();
     const ONE_H1_STRING = ONE_H1.toString();
     await expect(
-      SimpleStorageWithDevAppFee.connect(randomSig).set(1, { value: TEN_H1 })
+      SimpleStorageWithDevAppFee.connect(Address3Sig).set(1, { value: TEN_H1 })
     ).to.changeEtherBalances(
-      [ownerSigner, FeeContractSigner],
+      [ContractDeployerSigner, FeeContractSigner],
       [NINE_H1_STRING, ONE_H1_STRING]
     );
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
