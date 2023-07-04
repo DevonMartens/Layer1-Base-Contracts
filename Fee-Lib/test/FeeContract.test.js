@@ -423,39 +423,10 @@ describe("Fee Contract: Initail tests that require oracle feedback", function ()
 });
 describe("Fee Contract: General Getters and Setters", function () {
   let estimatedResetTime;
-  let Address4;
   beforeEach(async () => {
-    //example weight 100% of bounty 1/1
-    weight = [1, 2, 3];
-    const [ContractDeployers, Address2s, Address3s, Address4s] = await ethers.getSigners();
-    //address for contract inputs
-    const ContractDeployer = await ContractDeployers.getAddress();
-    Address2 = await Address2s.getAddress();
-    const Address3 = await Address3s.getAddress();
-    Address4 = await Address4s.getAddress();
-    //address of validators in validator rewards
-    const ValidatorRewards = await ethers.getContractFactory(
-      "ValidatorRewards"
-    );
-    const FeeContractFactory = await ethers.getContractFactory("FeeContract");
-    const FeeOracleFactory = await ethers.getContractFactory("FeeOracle");
-    //addrees for contracts
-    const addressArray = await [ContractDeployer, Address2, Address3];
-    FeeOracleContract = await FeeOracleFactory.deploy();
-    ValidatorContract = await upgrades.deployProxy(
-      ValidatorRewardsFactory,
-      [addressArray, weight, ContractDeployer, ContractDeployer],
-      { initializer: "initialize", kind: "uups" }
-    );
-    FeeContract = await upgrades.deployProxy(
-      FeeContractFactory,
-      [FeeOracleContract.address, addressArray, weight, ContractDeployer, ContractDeployer],
-      { initializer: "initialize", kind: "uups" }
-    );
     const timestamp = await time.latest();
     estimatedResetTime = timestamp + 86400;
   });
-
   it("The Reset Fee should revert if it has not been 24 hours and the fee is NOT zero", async () => {
     //sets fee so its not 0
     await FeeContract.resetFee();
@@ -496,7 +467,7 @@ describe("Fee Contract: General Getters and Setters", function () {
   it("setOracle should change the oracle address", async () => {
     const firstOracle = await FeeContract.getOracleAddress();
     const OracleContractAddress = FeeOracleContract.address;
-    expect(firstOracle.toString()).to.equal(FeeOracleContractAddress.toString());
+    expect(firstOracle.toString()).to.equal(OracleContractAddress.toString());
     await FeeContract.setOracle(Address2);
     const reset = await FeeContract.getOracleAddress();
     expect(reset.toString()).to.equal(Address2.toString());
@@ -509,7 +480,7 @@ describe("Fee Contract: General Getters and Setters", function () {
     expect(firstepochLength.toString()).not.to.equal(reset.toString());
   });
   it("isOriginalAddress should return false if the address is in the array", async () => {
-    const knownAddress = await FeeContract.isOriginalAddress(Address2);
+    const knownAddress = await FeeContract.isOriginalAddress(ContractDeployer);
     expect(knownAddress).to.equal(false);
   });
   it("isOriginalAddress should return true if the address is in the array", async () => {
@@ -517,237 +488,199 @@ describe("Fee Contract: General Getters and Setters", function () {
     expect(unknownAddress).to.equal(true);
   });
   it("isOriginalAddress if/else determines true/false", async () => {
-    const knownAddress = await FeeContract.isOriginalAddress(Address2);
+    const knownAddress = await FeeContract.isOriginalAddress(ContractDeployer);
     expect(knownAddress).to.equal(false);
     const unknownAddress = await FeeContract.isOriginalAddress(Address4);
     expect(unknownAddress).to.equal(true);
   });
-  //isOriginalAddress
 });
-// describe("Fee Contract: AccessControl", function () {
-//   let ContractDeployer;
-//   let ValidatorContract;
-//   let Fee;
-//   let deployBlockTimeStamp;
-//   let ContractDeployerArray;
-//   let oracleFake;
-//   let OPERATOR_ROLE;
-//   let weight;
-//   let Address3SendsH1;
-//   let FROM;
-//   let Address4;
-//   let Address3;
-//   let FromContractDeployer;
-//   let DEFAULT_ADMIN_ROLE;
-//   let FeeContractFactory;
-//   beforeEach(async () => {
-//     //example weight 100% of bounty 1/1
-//     weight = [1];
-//     const [ContractDeployers, Address2s, Address3s, Address4s] = await ethers.getSigners();
-//     ContractDeployer = await ContractDeployers.getAddress();
-//     oracleFake = await Address2s.getAddress();
-//     Address4 = await Address4s.getAddress();
-//     Address3 = await Address3s.getAddress();
-//     Address3SendsH1 = ethers.provider.getSigner(Address3);
-//     //address of validators in validator rewards
-//     ContractDeployerArray = await [ContractDeployer];
-//     FROM = Address3.toLowerCase();
-//     FromContractDeployer = ContractDeployer.toLowerCase();
-//     const ValidatorRewards = await ethers.getContractFactory(
-//       "ValidatorRewards"
-//     );
-//     FeeContractFactory = await ethers.getContractFactory("FeeContract");
-//     ValidatorContract = await upgrades.deployProxy(
-//       ValidatorRewardsFactory,
-//       [ContractDeployerArray, weight, ContractDeployer, ContractDeployer],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     Fee = await upgrades.deployProxy(
-//       FeeContractFactory,
-//       [oracleFake, ContractDeployerArray, weight, ContractDeployer, ContractDeployer],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     deployBlockTimeStamp = await time.latest();
-//     OPERATOR_ROLE = await FeeContract.OPERATOR_ROLE();
-//     DEFAULT_ADMIN_ROLE = await FeeContract.DEFAULT_ADMIN_ROLE();
-//   });
-//   //setEpoch
-//   it("OPERATOR_ROLE should be the only one to setEpoch", async () => {
-//     await expectRevert(
-//       FeeContract.connect(Address3SendsH1).setEpoch(1),
-//       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-//     );
-//   });
-
-//   it("OPERATOR_ROLE should be the only one to adjust channels", async () => {
-//     await expectRevert(
-//       FeeContract.connect(Address3SendsH1).adjustChannel(1, Address4, 75),
-//       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-//     );
-//   });
-//   it("OPERATOR_ROLE should be the only one to adjust channels", async () => {
-//     await expectRevert(
-//       FeeContract.connect(Address3SendsH1).addChannel(Address4, 75),
-//       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-//     );
-//   });
-//   it("roles should be set upon deployment", async () => {
-//     expect(await FeeContract.hasRole(OPERATOR_ROLE, ContractDeployer)).to.equal(true);
-//     expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, ContractDeployer)).to.equal(true);
-//     expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, ContractDeployer)).to.equal(true);
-//     expect(await FeeContract.hasRole(OPERATOR_ROLE, oracleFake)).to.equal(false);
-//     expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, oracleFake)).to.equal(false);
-//     expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, oracleFake)).to.equal(false);
-//   });
-//   it("roles should be set upon deployment", async () => {
-//     await FeeContract.grantRole(OPERATOR_ROLE, oracleFake);
-//     await FeeContract.grantRole(DEFAULT_ADMIN_ROLE, oracleFake);
-//     await FeeContract.grantRole(DEFAULT_ADMIN_ROLE, oracleFake);
-//     expect(await FeeContract.hasRole(OPERATOR_ROLE, oracleFake)).to.equal(true);
-//     expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, oracleFake)).to.equal(true);
-//     expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, oracleFake)).to.equal(true);
-//   });
-//   it("OPERATOR_ROLE should be the only one who can force fees", async () => {
-//     await expectRevert(
-//       FeeContract.connect(Address3SendsH1).forceFee(),
-//       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-//     );
-//   });
-//   it("OPERATOR_ROLE should be the only one who can setOracle address", async () => {
-//     await expectRevert(
-//       FeeContract.connect(Address3SendsH1).setOracle(ContractDeployer),
-//       `AccessControl: account ${FROM} is missing role ${OPERATOR_ROLE}`
-//     );
-//   });
-//   it("upgrades should only be allowed to be called by DEFAULT_ADMIN_ROLE", async function () {
-//     const FeeContractHasADifferentUpgrader = await upgrades.deployProxy(
-//       FeeContractFactory,
-//       [oracleFake, ContractDeployerArray, weight, Address2, Address2],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     await expectRevert(
-//       upgrades.upgradeProxy(
-//         FeeContractHasADifferentUpgrader.address,
-//         FeeContractFactory,
-//         {
-//           kind: "uups",
-//         }
-//       ),
-//       `AccessControl: account ${FromContractDeployer} is missing role ${DEFAULT_ADMIN_ROLE}`
-//     );
-//     await upgrades.upgradeProxy(FeeContract.address, FeeContractFactory, {
-//       kind: "uups",
-//     });
-//   });
-//   it("upgrades should only be allowed to be called by DEFAULT_ADMIN_ROLE", async function () {
-//     const FeeContractHasADifferentUpgrader = await upgrades.deployProxy(
-//       FeeContractFactory,
-//       [oracleFake, ContractDeployerArray, weight, Address2, Address2],
-//       { initializer: "initialize", kind: "uups" }
-//     );
-//     await expectRevert(
-//       upgrades.upgradeProxy(
-//         FeeContractHasADifferentUpgrader.address,
-//         FeeContractFactory,
-//         {
-//           kind: "uups",
-//         }
-//       ),
-//       `AccessControl: account ${FromContractDeployer} is missing role ${DEFAULT_ADMIN_ROLE}`
-//     );
-//     await upgrades.upgradeProxy(FeeContract.address, FeeContractFactory, {
-//       kind: "uups",
-//     });
-//   });
-//   describe("Fee Contract: Force and collect fee functions", function () {
-//     let ContractDeployer;
-//     let ValidatorContract;
-//     let Fee;
-//     let deployBlockTimeStamp;
-//     let ContractDeployerArray;
-//     let oracleFake;
-//     let weight;
-//     let Address3SendsH1;
-//     let FROM;
-//     let Address4;
-//     let Address3;
-//     beforeEach(async () => {
-//       //example weight 100% of bounty 1/1
-//       weight = [1];
-//       const [ContractDeployers, Address2s, Address3s, Address4s] = await ethers.getSigners();
-//       ContractDeployer = await ContractDeployers.getAddress();
-//       oracleFake = await Address2s.getAddress();
-//       Address4 = await Address4s.getAddress();
-//       Address3 = await Address3s.getAddress();
-//       Address3SendsH1 = ethers.provider.getSigner(Address3);
-//       //address of validators in validator rewards
-//       ContractDeployerArray = await [ContractDeployer];
-//       FROM = Address3.toLowerCase();
-//       const ValidatorRewards = await ethers.getContractFactory(
-//         "ValidatorRewards"
-//       );
-//       FeeContractFactory = await ethers.getContractFactory("FeeContract");
-//       ValidatorContract = await upgrades.deployProxy(
-//         ValidatorRewardsFactory,
-//         [ContractDeployerArray, weight, ContractDeployer, ContractDeployer],
-//         { initializer: "initialize", kind: "uups" }
-//       );
-//       Fee = await upgrades.deployProxy(
-//         FeeContractFactory,
-//         [oracleFake, ContractDeployerArray, weight, ContractDeployer, ContractDeployer],
-//         { initializer: "initialize", kind: "uups" }
-//       );
-//       deployBlockTimeStamp = await time.latest();
-//     });
-//     it("forceFee should distribute funds regardless of sucess or failure upon an address", async () => {
-//       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
-//       const DummyContract = await DummyContractFactory.deploy();
-//       const InputArray = [DummyContract.address, Address3, ContractDeployer];
-//       const NumberArray = [1, 2, 3, 4];
-//       const FeeContract = await ethers.getContractFactory("FeeContract");
-//       const FeeContractForTest = await upgrades.deployProxy(
-//         FeeContract,
-//         [DummyContract.address, InputArray, NumberArray, ContractDeployer, ContractDeployer],
-//         { initializer: "initialize", kind: "uups" }
-//       );
-//       await expectRevert(FeeContractForTest.forceFee(), "112");
-//     });
-//     it("Fee contract collectFee() should revert if there is an unsuccessful transfer made)", async () => {
-//       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
-//       const DummyContract = await DummyContractFactory.deploy();
-//       const InputArray = [DummyContract.address, Address3, ContractDeployer];
-//       const NumberArray = [1, 2, 3, 4];
-//       const FeeContract = await ethers.getContractFactory("FeeContract");
-//       const FeeContractForTest = await upgrades.deployProxy(
-//         FeeContract,
-//         [DummyContract.address, InputArray, NumberArray, ContractDeployer, ContractDeployer],
-//         { initializer: "initialize", kind: "uups" }
-//       );
-//       await Address3SendsH1.sendTransaction({
-//         to: FeeContractForTest.address,
-//         value: SIX_ETH,
-//       });
-//       await expectRevert(FeeContractForTest.collectFee(), "112");
-//     });
-//     it("Fee contract collectFee() should revert if there are no funds to rebate gas)", async () => {
-//       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
-//       const DummyContract = await DummyContractFactory.deploy();
-//       const InputArray = [DummyContract.address, Address3, ContractDeployer];
-//       const NumberArray = [1, 2, 3, 4];
-//       const FeeContract = await ethers.getContractFactory("FeeContract");
-//       const FeeContractForTest = await upgrades.deployProxy(
-//         FeeContract,
-//         [DummyContract.address, InputArray, NumberArray, ContractDeployer, ContractDeployer],
-//         { initializer: "initialize", kind: "uups" }
-//       );
-//       await expectRevert(FeeContractForTest.collectFee(), "122");
-//     });
-//     // it("The contract: have correct values for oracle, total contract shares, and lastDistribution", async () => {
-//     //     //gets oracle from Fee contract and ensures it is equal to Address2 the original inpul
-//     //     expect(await FeeContract.getOracleAddress()).to.equal(oracleFake)
-//     //     //gets last distribution from contract and ensures its equal to deployment time
-//     //     expect(await FeeContract.getLastDistributionBlock()).to.equal(deployBlockTimeStamp);
-//     // });
-//   });
-// });
+describe("Fee Contract: AccessControl", function () {
+  let OPERATOR_ROLE;
+  let DEFAULT_ADMIN_ROLE;
+  let ContractDeployerErrorMessageForAccessControl;
+  let Address3ErrorMessageForAccessControl;
+  beforeEach(async () => {
+    ContractDeployerErrorMessageForAccessControl = ContractDeployer.toLowerCase();
+    Address3ErrorMessageForAccessControl = Address3.toLowerCase();
+    deployBlockTimeStamp = await time.latest();
+    OPERATOR_ROLE = await FeeContract.OPERATOR_ROLE();
+    DEFAULT_ADMIN_ROLE = await FeeContract.DEFAULT_ADMIN_ROLE();
+  });
+  it("OPERATOR_ROLE should be the only one to setEpoch", async () => {
+    await expectRevert(
+      FeeContract.connect(Address3SendsH1).setEpoch(1),
+      `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
+    );
+  });
+  it("OPERATOR_ROLE should be the only one to adjust channels", async () => {
+    await expectRevert(
+      FeeContract.connect(Address3SendsH1).adjustChannel(1, Address4, 75),
+      `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
+    );
+  });
+  it("OPERATOR_ROLE should be the only one to adjust channels", async () => {
+    await expectRevert(
+      FeeContract.connect(Address3SendsH1).addChannel(Address4, 75),
+      `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
+    );
+  });
+  it("roles should be set upon deployment", async () => {
+    expect(await FeeContract.hasRole(OPERATOR_ROLE, ContractDeployer)).to.equal(true);
+    expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, ContractDeployer)).to.equal(true);
+    expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, ContractDeployer)).to.equal(true);
+    expect(await FeeContract.hasRole(OPERATOR_ROLE, Address2)).to.equal(false);
+    expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, Address2)).to.equal(false);
+    expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, Address2)).to.equal(false);
+  });
+  it("roles should be set upon deployment", async () => {
+    await FeeContract.grantRole(OPERATOR_ROLE, Address2);
+    await FeeContract.grantRole(DEFAULT_ADMIN_ROLE, Address2);
+    await FeeContract.grantRole(DEFAULT_ADMIN_ROLE, Address2);
+    expect(await FeeContract.hasRole(OPERATOR_ROLE, Address2)).to.equal(true);
+    expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, Address2)).to.equal(true);
+    expect(await FeeContract.hasRole(DEFAULT_ADMIN_ROLE, Address2)).to.equal(true);
+  });
+  it("OPERATOR_ROLE should be the only one who can force fees", async () => {
+    await expectRevert(
+      FeeContract.connect(Address3SendsH1).forceFee(),
+      `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
+    );
+  });
+  it("OPERATOR_ROLE should be the only one who can setOracle address", async () => {
+    await expectRevert(
+      FeeContract.connect(Address3SendsH1).setOracle(ContractDeployer),
+      `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
+    );
+  });
+  it("upgrades should only be allowed to be called by DEFAULT_ADMIN_ROLE", async function () {
+    const FeeContractHasADifferentUpgrader = await upgrades.deployProxy(
+      FeeContractFactory,
+      [Address2, ContractDeployerArray, SingleWeightArray, Address2, Address2],
+      { initializer: "initialize", kind: "uups" }
+    );
+    await expectRevert(
+      upgrades.upgradeProxy(
+        FeeContractHasADifferentUpgrader.address,
+        FeeContractFactory,
+        {
+          kind: "uups",
+        }
+      ),
+      `AccessControl: account ${ContractDeployerErrorMessageForAccessControl} is missing role ${DEFAULT_ADMIN_ROLE}`
+    );
+    await upgrades.upgradeProxy(FeeContract.address, FeeContractFactory, {
+      kind: "uups",
+    });
+  });
+  it("upgrades should only be allowed to be called by DEFAULT_ADMIN_ROLE", async function () {
+    const FeeContractHasADifferentUpgrader = await upgrades.deployProxy(
+      FeeContractFactory,
+      [Address2, ContractDeployerArray, SingleWeightArray, Address2, Address2],
+      { initializer: "initialize", kind: "uups" }
+    );
+    await expectRevert(
+      upgrades.upgradeProxy(
+        FeeContractHasADifferentUpgrader.address,
+        FeeContractFactory,
+        {
+          kind: "uups",
+        }
+      ),
+      `AccessControl: account ${ContractDeployerErrorMessageForAccessControl} is missing role ${DEFAULT_ADMIN_ROLE}`
+    );
+    await upgrades.upgradeProxy(FeeContract.address, FeeContractFactory, {
+      kind: "uups",
+    });
+  });
+});
+  describe("Fee Contract: Force and collect fee functions", function () {
+    // let ContractDeployer;
+    // let ValidatorContract;
+    // let Fee;
+    // let deployBlockTimeStamp;
+    // let ContractDeployerArray;
+    // let Address2;
+    // let weight;
+    // let Address3SendsH1;
+    // let FROM;
+    // let Address4;
+    // let Address3;
+    // beforeEach(async () => {
+    //   //example weight 100% of bounty 1/1
+    //   weight = [1];
+    //   const [ContractDeployers, Address2s, Address3s, Address4s] = await ethers.getSigners();
+    //   ContractDeployer = await ContractDeployers.getAddress();
+    //   Address2 = await Address2s.getAddress();
+    //   Address4 = await Address4s.getAddress();
+    //   Address3 = await Address3s.getAddress();
+    //   Address3SendsH1 = ethers.provider.getSigner(Address3);
+    //   //address of validators in validator rewards
+    //   ContractDeployerArray = await [ContractDeployer];
+    //   FROM = Address3.toLowerCase();
+    //   const ValidatorRewards = await ethers.getContractFactory(
+    //     "ValidatorRewards"
+    //   );
+    //   FeeContractFactory = await ethers.getContractFactory("FeeContract");
+    //   ValidatorContract = await upgrades.deployProxy(
+    //     ValidatorRewardsFactory,
+    //     [ContractDeployerArray, weight, ContractDeployer, ContractDeployer],
+    //     { initializer: "initialize", kind: "uups" }
+    //   );
+    //   Fee = await upgrades.deployProxy(
+    //     FeeContractFactory,
+    //     [Address2, ContractDeployerArray, weight, ContractDeployer, ContractDeployer],
+    //     { initializer: "initialize", kind: "uups" }
+    //   );
+    //   deployBlockTimeStamp = await time.latest();
+    // });
+    it("forceFee should distribute funds regardless of sucess or failure upon an address", async () => {
+      const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
+      const DummyContract = await DummyContractFactory.deploy();
+      const InputArray = [DummyContract.address, Address3, ContractDeployer];
+      const NumberArray = [1, 2, 3, 4];
+      const FeeContract = await ethers.getContractFactory("FeeContract");
+      const FeeContractForTest = await upgrades.deployProxy(
+        FeeContract,
+        [DummyContract.address, InputArray, NumberArray, ContractDeployer, ContractDeployer],
+        { initializer: "initialize", kind: "uups" }
+      );
+      await expectRevert(FeeContractForTest.forceFee(), "112");
+    });
+    it("Fee contract collectFee() should revert if there is an unsuccessful transfer made)", async () => {
+      const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
+      const DummyContract = await DummyContractFactory.deploy();
+      const InputArray = [DummyContract.address, Address3, ContractDeployer];
+      const NumberArray = [1, 2, 3, 4];
+      const FeeContract = await ethers.getContractFactory("FeeContract");
+      const FeeContractForTest = await upgrades.deployProxy(
+        FeeContract,
+        [DummyContract.address, InputArray, NumberArray, ContractDeployer, ContractDeployer],
+        { initializer: "initialize", kind: "uups" }
+      );
+      await Address3SendsH1.sendTransaction({
+        to: FeeContractForTest.address,
+        value: SIX_ETH,
+      });
+      await expectRevert(FeeContractForTest.collectFee(), "112");
+    });
+    it("Fee contract collectFee() should revert if there are no funds to rebate gas)", async () => {
+      const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
+      const DummyContract = await DummyContractFactory.deploy();
+      const InputArray = [DummyContract.address, Address3, ContractDeployer];
+      const NumberArray = [1, 2, 3, 4];
+      const FeeContract = await ethers.getContractFactory("FeeContract");
+      const FeeContractForTest = await upgrades.deployProxy(
+        FeeContract,
+        [DummyContract.address, InputArray, NumberArray, ContractDeployer, ContractDeployer],
+        { initializer: "initialize", kind: "uups" }
+      );
+      await expectRevert(FeeContractForTest.collectFee(), "122");
+    });
+    // it("The contract: have correct values for oracle, total contract shares, and lastDistribution", async () => {
+    //     //gets oracle from Fee contract and ensures it is equal to Address2 the original inpul
+    //     expect(await FeeContract.getOracleAddress()).to.equal(Address2)
+    //     //gets last distribution from contract and ensures its equal to deployment time
+    //     expect(await FeeContract.getLastDistributionBlock()).to.equal(deployBlockTimeStamp);
+    // });
+  });
 });

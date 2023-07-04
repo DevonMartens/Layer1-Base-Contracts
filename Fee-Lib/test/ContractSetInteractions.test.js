@@ -43,7 +43,7 @@ describe("Contract Interactions", function () {
     const FeeContractFactory = await ethers.getContractFactory("FeeContract");
     const OracleFactory = await ethers.getContractFactory("FeeOracle");
     const BadFeeContractFactory = await ethers.getContractFactory(
-      "FeeContractHasNoRecieveFunctionForFailedTxns"
+      "HasNoRecieveFunctionForFailedTxns"
     );
     H1NativeApplicationFactory = await ethers.getContractFactory(
       "H1NativeApplication"
@@ -90,10 +90,9 @@ describe("Contract Interactions", function () {
       { initializer: "initialize", kind: "uups" }
     );
     //bad fee contract
-    BadFeeContract = await upgrades.deployProxy(
-      BadFeeContractFactory,
-      [OracleContract.address, ValidatorArray, weightArray, owner, owner],
-      { initializer: "initialize", kind: "uups" }
+    BadFeeContract = await 
+      BadFeeContractFactory.deploy(
+      OracleContract.address, ValidatorArray, weightArray, owner, owner
     );
     FeeContractSigner = ethers.provider.getSigner(FeeContract.address);
     secondAddressSigner = await ethers.getSigner(random);
@@ -258,7 +257,7 @@ describe("Contract Interactions", function () {
     await expectRevert(SimpleStorageBadDevWallet.set(1, { value: 1 }), "112");
   });
   it("H1NativeApplication should revert if transfer to fee lib fails", async () => {
-    await BadFeeContract.resetFee();
+    await BadFeeContract.setAgainFee();
     await expectRevert(SimpleStorageBadFeeContract.set(1, { value: 1 }), "112");
   });
   //       it("H1NativeApplication applicationFee() should throw an error if the FeeContract Can't recieve funds", async () => {

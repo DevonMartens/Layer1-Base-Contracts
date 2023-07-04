@@ -2,10 +2,7 @@
 
 pragma solidity ^0.8.2;
 
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "./FeeQuery.sol";
 import "./Errors.sol";
 
@@ -21,11 +18,9 @@ interface IFeeOracle {
     function refreshOracle() external returns (bool success);
 }
 
-contract FeeContractHasNoRecieveFunctionForFailedTxns is
+contract HasNoRecieveFunctionForFailedTxns is
     FeeQuery,
-    Initializable,
-    AccessControlUpgradeable,
-    UUPSUpgradeable
+    AccessControl
 {
     /**
      * @dev The event is triggered during the collectFee function.
@@ -60,23 +55,20 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
    @param _oracle is the address for the oracle that is consulted to determine fees.
    @param _channels array channels are the channels that receive payments.
    @param _weights are the amount of shares each channel receive.
-   @param networkAdmin the address that can add or revoke address priveledges/
+   @param havenFoundation the address that can add or revoke address priveledges/
    @param networkOperator operator address that manages functions.
    @dev lastDistribution is the current timestamp fees distributed every 24 hours.
    @dev There cannot be more than five channels.
    */
 
-    function initialize(
+    constructor(
         address _oracle,
         address[] memory _channels,
         uint8[] memory _weights,
-        address networkAdmin,
+        address havenFoundation,
         address networkOperator
-    ) external initializer {
-        __AccessControl_init();
-        __UUPSUpgradeable_init();
-        _revokeRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(DEFAULT_ADMIN_ROLE, networkAdmin);
+    ) {
+        _grantRole(DEFAULT_ADMIN_ROLE, havenFoundation);
         _grantRole(OPERATOR_ROLE, networkOperator);
         if (_channels.length > 5 || _weights.length > 5) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
@@ -92,13 +84,15 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
         }
     }
 
+
+
     /**
    @notice This is the call to get the correct value for the fee across all native applications.
    @dev This call queries the oracle to set a fee.
    @dev After that is complete it then sets the time that the oracle needs to be rechecked.
    */
 
-    function resetFee() external {
+    function setAgainFee() external {
         if (block.timestamp > requiredReset || fee == 0) {
             fee = queryOracle();
             requiredReset = block.timestamp + epochLength;
@@ -113,23 +107,23 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
      * be managed we also don't allow duplicate addresses or zero addresses.
      * @notice The total weight is tracked by `CONTRACT_SHARES` which we use to send correct amounts to each channel.
      */
-    // function addChannel(
-    //     address _newChannelAddress,
-    //     uint8 _weight
-    // ) external onlyRole(OPERATOR_ROLE) {
-    //     if (channels.length == 5) {
-    //         revert(Errors.CONTRACT_LIMIT_REACHED);
-    //     }
-    //     if (
-    //         isOriginalAddress(_newChannelAddress) == false ||
-    //         address(0) == _newChannelAddress
-    //     ) {
-    //         revert(Errors.INVALID_ADDRESS);
-    //     }
-    //     channels.push(_newChannelAddress);
-    //     weights.push(_weight);
-    //     CONTRACT_SHARES += _weight;
-    // }
+    function plusChannel(
+        address _newChannelAddress,
+        uint8 _weight
+    ) external onlyRole(OPERATOR_ROLE) {
+        if (channels.length == 5) {
+            revert(Errors.CONTRACT_LIMIT_REACHED);
+        }
+        if (
+            isOriginalAddress(_newChannelAddress) == false ||
+            address(0) == _newChannelAddress
+        ) {
+            revert(Errors.INVALID_ADDRESS);
+        }
+        channels.push(_newChannelAddress);
+        weights.push(_weight);
+        CONTRACT_SHARES += _weight;
+    }
 
     /**
      * @notice  Logic to adjust a channel and its weight.
@@ -141,31 +135,31 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
      * which we adjust here by subtracting the old number and adding the new.
      */
 
-    // function adjustChannel(
-    //     uint8 _index,
-    //     address _newChannelAddress,
-    //     uint8 _newWeight
-    // ) external onlyRole(OPERATOR_ROLE) {
-    //     if (
-    //         _newChannelAddress == address(0) ||
-    //         isOriginalAddress(_newChannelAddress) == false
-    //     ) {
-    //         revert(Errors.INVALID_ADDRESS);
-    //     }
-    //     if (_index > 4) {
-    //         revert(Errors.INCORRECT_INDEX);
-    //     }
-    //     channels[_index] = _newChannelAddress;
-    //     CONTRACT_SHARES -= weights[_index];
-    //     weights[_index] = _newWeight;
-    //     CONTRACT_SHARES += _newWeight;
-    // }
+    function moveChannel(
+        uint8 _index,
+        address _newChannelAddress,
+        uint8 _newWeight
+    ) external onlyRole(OPERATOR_ROLE) {
+        if (
+            _newChannelAddress == address(0) ||
+            isOriginalAddress(_newChannelAddress) == false
+        ) {
+            revert(Errors.INVALID_ADDRESS);
+        }
+        if (_index > 4) {
+            revert(Errors.INCORRECT_INDEX);
+        }
+        channels[_index] = _newChannelAddress;
+        CONTRACT_SHARES -= weights[_index];
+        weights[_index] = _newWeight;
+        CONTRACT_SHARES += _newWeight;
+    }
 
     /**
    @notice This is to adjust the length of time between payouts from the contract.
    @param new_epochLength the length of time between payouts from the contract.
    */
-    function setEpoch(
+    function newEpoch(
         uint256 new_epochLength
     ) external onlyRole(OPERATOR_ROLE) {
         epochLength = new_epochLength;
@@ -178,55 +172,55 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
    @dev The function reverts should the function have been called less than 24 hours ago.
    */
 
-    // function collectFee() external {
-    //     if (
-    //         block.timestamp > lastDistribution + epochLength ||
-    //         hasRole(OPERATOR_ROLE, msg.sender)
-    //     ) {
-    //         uint rebateValue = queryOracle();
-    //         (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(
-    //             ""
-    //         );
-    //         require(gasRebate, Errors.GAS_REBATE_FAILED);
+    function grabFee() external  {
+        if (
+            block.timestamp > lastDistribution + epochLength ||
+            hasRole(OPERATOR_ROLE, msg.sender)
+        ) {
+            uint rebateValue = queryOracle();
+            (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(
+                ""
+            );
+            require(gasRebate, Errors.GAS_REBATE_FAILED);
 
-    //         uint amount = address(this).balance;
+            uint amount = address(this).balance;
 
-    //         for (uint i = 0; i < channels.length; i++) {
-    //             uint share = (amount * weights[i]) / CONTRACT_SHARES;
-    //             (bool sent, ) = channels[i].call{value: share}("");
-    //             require(sent, Errors.TRANSFER_FAILED);
+            for (uint i = 0; i < channels.length; i++) {
+                uint share = (amount * weights[i]) / CONTRACT_SHARES;
+                (bool sent, ) = channels[i].call{value: share}("");
+                require(sent, Errors.TRANSFER_FAILED);
 
-    //             emit FeesDistributed(block.timestamp, channels[i], share);
-    //         }
-    //         lastDistribution = block.timestamp;
-    //         _refreshOracle();
-    //     } else {
-    //         revert(Errors.HOLD_TIME_IS_24_HOURS);
-    //     }
-    // }
+                emit FeesDistributed(block.timestamp, channels[i], share);
+            }
+            lastDistribution = block.timestamp;
+            _refreshOracle();
+        } else {
+            revert(Errors.HOLD_TIME_IS_24_HOURS);
+        }
+    }
 
     /** 
    @notice Function triggered to force distribution of funds to channels.
    */
 
-    // function forceFee() external payable onlyRole(OPERATOR_ROLE) {
-    //     uint amount = address(this).balance;
-    //     for (uint i = 0; i < channels.length; i++) {
-    //         uint share = (amount * weights[i]) / CONTRACT_SHARES;
-    //         (bool success, ) = channels[i].call{value: share}("");
-    //         require(success, Errors.TRANSFER_FAILED);
-    //         emit FeesDistributed(block.timestamp, channels[i], share);
-    //     }
-    //     _refreshOracle();
-    //     lastDistribution = block.timestamp;
-    // }
+    function pressureFee() external payable onlyRole(OPERATOR_ROLE) {
+        uint amount = address(this).balance;
+        for (uint i = 0; i < channels.length; i++) {
+            uint share = (amount * weights[i]) / CONTRACT_SHARES;
+            (bool success, ) = channels[i].call{value: share}("");
+            require(success, Errors.TRANSFER_FAILED);
+            emit FeesDistributed(block.timestamp, channels[i], share);
+        }
+        _refreshOracle();
+        lastDistribution = block.timestamp;
+    }
 
     /**
    @notice Setter function to adjust oracle address.
    @param _newOracle the new oracle address.
    */
 
-    function setOracle(address _newOracle) external onlyRole(OPERATOR_ROLE) {
+    function newOracle(address _newOracle) external onlyRole(OPERATOR_ROLE) {
         oracle = _newOracle;
     }
 
@@ -332,12 +326,5 @@ contract FeeContractHasNoRecieveFunctionForFailedTxns is
         return (IFeeOracle(oracle).refreshOracle());
     }
 
-    /**
-   @notice Function to upgrade contract override to protect.
-   @param newImplementation new implementation address.
-   */
 
-    function _authorizeUpgrade(
-        address newImplementation
-    ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 }
