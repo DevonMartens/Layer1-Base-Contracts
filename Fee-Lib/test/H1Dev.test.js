@@ -11,16 +11,8 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
   let owner;
   let ownerSigner;
   let OracleContract;
-  let ValidatorContract;
-  let ValidatorContract2;
-  let ValidatorContract3;
   let FeeContract;
-  let random;
   let randomSig;
-  let randomAddressIsTheSigner;
-  let H1NativeApplicationDeployed;
-  let SimpleStorageWithFeeDeployed;
-  let H1NativeApplicationFactory;
   let H1DevelopedApplication;
   let SimpleStorageWithDevAppFee;
   let H1DevelopedApplicationFactory;
@@ -45,12 +37,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     const BadFeeContractFactory = await ethers.getContractFactory(
       "HasNoRecieveFunctionForFailedTxns"
     );
-    H1NativeApplicationFactory = await ethers.getContractFactory(
-      "H1NativeApplication"
-    );
-    const SimpleStorageWithFeeFactory = await ethers.getContractFactory(
-      "SimpleStorageWithFee"
-    );
+
     H1DevelopedApplicationFactory = await ethers.getContractFactory(
       "H1DevelopedApplication"
     );
@@ -94,20 +81,11 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
       BadFeeContractFactory.deploy(
       OracleContract.address, ValidatorArray, weightArray, owner, owner
     );
-    FeeContractSigner = ethers.provider.getSigner(FeeContract.address);
-    secondAddressSigner = await ethers.getSigner(random);
-    randomAddressIsTheSigner = FeeContract.connect(secondAddressSigner);
-    //H1NativeApplication contains modifer to import into all contracts for recieving funds
-    H1NativeApplicationDeployed = await H1NativeApplicationFactory.deploy(
-      FeeContract.address
-    );
+    FeeContractSigner = ethers.provider.getSigner(FeeContract.address);;
+
     H1DevelopedApplication = await H1DevelopedApplicationFactory.deploy(
       FeeContract.address,
       owner
-    );
-    //simple storage for testing
-    SimpleStorageWithFeeDeployed = await SimpleStorageWithFeeFactory.deploy(
-      FeeContract.address
     );
     SimpleStorageWithDevAppFee = await SimpleStorageWithDevAppFeeFactory.deploy(
       FeeContract.address,
@@ -123,53 +101,6 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
       BadFeeContract.address
     );
   });
-
-  it("The oracle should be requesting the amount from simple storage", async () => {
-    await FeeContract.resetFee();
-    await expectRevert(SimpleStorageWithFeeDeployed.set(1), "125");
-    await SimpleStorageWithFeeDeployed.set(1, { value: 1 });
-  });
-  it("H1NativeApplication applicationFee() should not if call fee is 0 ", async () => {
-    await SimpleStorageWithFeeDeployed.set(1);
-  });
-  it("H1NativeApplication applicationFee() should not if call fee is 0 and no value is sent but should if it is greater than", async () => {
-    await SimpleStorageWithFeeDeployed.set(1);
-    await FeeContract.resetFee();
-    await expectRevert(SimpleStorageWithFeeDeployed.set(1), "125");
-    await SimpleStorageWithFeeDeployed.set(1, { value: 1 });
-  });
-  it("H1NativeApplication applicationFee() should not if call fee is 0 and no value is sent but should if it is greater than", async () => {
-    await OracleContract.setPriceAverage(ONE_H1);
-    await FeeContract.resetFee();
-    await expectRevert(SimpleStorageWithFeeDeployed.set(1), "125");
-    expect(() =>
-      SimpleStorageWithFeeDeployed.set(1, {
-        value: ONE_H1,
-      }).to.changeEtherBalance(FeeContract.address, ONE_H1)
-    );
-  });
-  it("H1NativeApplication callFee should mirror fee contracts", async () => {
-    expect(await H1NativeApplicationDeployed.callFee()).to.equal(0);
-    await OracleContract.setPriceAverage(ONE_H1);
-    await FeeContract.resetFee();
-    const FeeFromFeeContract = await FeeContract.queryOracle();
-    expect(FeeFromFeeContract.toString()).to.equal(ONE_H1.toString());
-  });
-  it("H1NativeApplication callFee should mirror fee contracts", async () => {
-    expect(await H1NativeApplicationDeployed.FeeContract()).to.equal(
-      FeeContract.address
-    );
-  });
-  it("H1NativeApplication should not deploy if the fee contract address is set to 0", async () => {
-    //use unspecified because cannot estimate gas will be returned
-    await expectRevert(
-      H1NativeApplicationFactory.deploy(
-        "0x0000000000000000000000000000000000000000"
-      ),
-      "123"
-    );
-  });
-  //Next
   it("H1DevelopedApplication devApplicationFee() should not if call fee is 0 and no value is sent but should if it is greater than", async () => {
     await SimpleStorageWithDevAppFee.set(1);
     await FeeContract.resetFee();
@@ -193,12 +124,12 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     const FeeFromFeeContract = await FeeContract.queryOracle();
     expect(FeeFromFeeContract.toString()).to.equal(ONE_H1.toString());
   });
-  it("H1NativeApplication callFee should mirror fee contracts", async () => {
+  it("H1DevelopedApplication callFee should mirror fee contracts", async () => {
     expect(await H1DevelopedApplication.FeeContract()).to.equal(
       FeeContract.address
     );
   });
-  it("H1NativeApplication should not deploy if the fee contract address is set to 0", async () => {
+  it("H1DevelopedApplication should not deploy if the fee contract address is set to 0", async () => {
     //use unspecified because cannot estimate gas will be returned
     await expectRevert(
       H1DevelopedApplicationFactory.deploy(
@@ -214,12 +145,6 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     await SimpleStorageWithDevAppFee.set(1, { value: 1 });
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
   });
-  it("set in simple storage  should adjust get ", async () => {
-    await SimpleStorageWithFeeDeployed.set(1);
-    await FeeContract.resetFee();
-    await SimpleStorageWithFeeDeployed.set(1, { value: 1 });
-    expect(await SimpleStorageWithFeeDeployed.get()).to.equal(1);
-  });
 
   it("H1DevelopedApplication devApplicationFee() disperse ether to the dev wallet provided", async () => {
     await OracleContract.setPriceAverage(TEN_H1);
@@ -234,29 +159,16 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     );
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
   });
-  it("H1NativeApplication applicationFee() disperse ether to the Fee Contract", async () => {
-    await OracleContract.setPriceAverage(TEN_H1);
-
-    await FeeContract.resetFee();
-
-    const TEN_H1_STRING = TEN_H1.toString();
-    await expect(
-      SimpleStorageWithFeeDeployed.connect(randomSig).set(1, { value: TEN_H1 })
-    ).to.changeEtherBalance(FeeContractSigner, TEN_H1_STRING);
-  });
-  it("SimpleStorageWithDevAppFee set function should set the variable stored data", async () => {
-    await SimpleStorageWithDevAppFee.set(1);
-  });
   it("SimpleStorageWithDevAppFee get function should get the variable stored data", async () => {
     await SimpleStorageWithDevAppFee.set(1);
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
   });
-  it("H1NativeApplication should revert if transfer to fee lib fails", async () => {
-    await FeeContract.resetFee();
-    await expectRevert(SimpleStorageBadDevWallet.set(1, { value: 1 }), "112");
-  });
-  it("H1NativeApplication should revert if transfer to fee lib fails", async () => {
+  it("H1DevelopedApplication should revert if transfer to fee lib fails", async () => {
     await BadFeeContract.setAgainFee();
     await expectRevert(SimpleStorageBadFeeContract.set(1, { value: 1 }), "112");
+  });
+  it("H1DevelopedApplication should revert if transfer to fee lib fails", async () => {
+    await FeeContract.resetFee();
+    await expectRevert(SimpleStorageBadDevWallet.set(1, { value: 1 }), "112");
   });
 });
