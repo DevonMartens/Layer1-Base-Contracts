@@ -82,12 +82,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     Address3SignsFeeContractWith3Validators = FeeContractWith3Validators.connect(Address3Signer);
   });
 describe("Fee Contract: Testing the initial values to validate expected contract state", function () {
-  // it("The FeeContract, ValidatorRewards contract, and H1 Native contracts", async () => {
-  //   const H1NativeApplication = await ethers.getContractFactory(
-  //     "H1NativeApplication"
-  //   );
-  //   await H1NativeApplication.deploy(FeeContract.address);
-  // });
   it("The FeeContract should have correct values for wieght and channel (view functions getWieght and getChannel also confirmed)", async () => {
     expect(await FeeContract.getChannels()).to.deep.equal(ContractDeployerArray);
     expect(await FeeContract.getWieghts()).to.deep.equal(SingleWeightArray);
@@ -594,45 +588,6 @@ describe("Fee Contract: AccessControl", function () {
   });
 });
   describe("Fee Contract: Force and collect fee functions", function () {
-    // let ContractDeployer;
-    // let ValidatorContract;
-    // let Fee;
-    // let deployBlockTimeStamp;
-    // let ContractDeployerArray;
-    // let Address2;
-    // let weight;
-    // let Address3SendsH1;
-    // let FROM;
-    // let Address4;
-    // let Address3;
-    // beforeEach(async () => {
-    //   //example weight 100% of bounty 1/1
-    //   weight = [1];
-    //   const [ContractDeployers, Address2s, Address3s, Address4s] = await ethers.getSigners();
-    //   ContractDeployer = await ContractDeployers.getAddress();
-    //   Address2 = await Address2s.getAddress();
-    //   Address4 = await Address4s.getAddress();
-    //   Address3 = await Address3s.getAddress();
-    //   Address3SendsH1 = ethers.provider.getSigner(Address3);
-    //   //address of validators in validator rewards
-    //   ContractDeployerArray = await [ContractDeployer];
-    //   FROM = Address3.toLowerCase();
-    //   const ValidatorRewards = await ethers.getContractFactory(
-    //     "ValidatorRewards"
-    //   );
-    //   FeeContractFactory = await ethers.getContractFactory("FeeContract");
-    //   ValidatorContract = await upgrades.deployProxy(
-    //     ValidatorRewardsFactory,
-    //     [ContractDeployerArray, weight, ContractDeployer, ContractDeployer],
-    //     { initializer: "initialize", kind: "uups" }
-    //   );
-    //   Fee = await upgrades.deployProxy(
-    //     FeeContractFactory,
-    //     [Address2, ContractDeployerArray, weight, ContractDeployer, ContractDeployer],
-    //     { initializer: "initialize", kind: "uups" }
-    //   );
-    //   deployBlockTimeStamp = await time.latest();
-    // });
     it("forceFee should distribute funds regardless of sucess or failure upon an address", async () => {
       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
       const DummyContract = await DummyContractFactory.deploy();
@@ -676,11 +631,5 @@ describe("Fee Contract: AccessControl", function () {
       );
       await expectRevert(FeeContractForTest.collectFee(), "122");
     });
-    // it("The contract: have correct values for oracle, total contract shares, and lastDistribution", async () => {
-    //     //gets oracle from Fee contract and ensures it is equal to Address2 the original inpul
-    //     expect(await FeeContract.getOracleAddress()).to.equal(Address2)
-    //     //gets last distribution from contract and ensures its equal to deployment time
-    //     expect(await FeeContract.getLastDistributionBlock()).to.equal(deployBlockTimeStamp);
-    // });
   });
 });
