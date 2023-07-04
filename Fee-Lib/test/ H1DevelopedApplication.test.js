@@ -2,7 +2,7 @@ const { ethers, upgrades } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
-describe("H1DevelopedApplication inital values standalone", function () {
+describe("H1NativeApplication and Imported Modifier applicationFee()", function () {
   let owner;
   let OracleContract;
   let ValidatorContract;
