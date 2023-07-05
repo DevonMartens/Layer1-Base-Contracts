@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/ProofOfIdentity.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> ProofOfIdentity.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>28/28</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>22/22</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>12/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>35/35</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">180×</span>
+<span class="cline-any cline-yes">180×</span>
+<span class="cline-any cline-yes">180×</span>
+<span class="cline-any cline-yes">180×</span>
+<span class="cline-any cline-yes">180×</span>
+<span class="cline-any cline-yes">180×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">60×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+&nbsp;
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "./IPermissionsInterface.sol";
+import "./UserInformation.sol";
+import "./Errors.sol";
+import "./UserInformationPreventsOnExpiry.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+&nbsp;
+/**
+* @title Proof of Identity Framework
+* @author Haven1 Development Team
+* @notice This contract is responsible for the registering and updating of 
+* users on Haven1, storing de-identified data for utilisation across the network
+* @dev Nominated operator role(s) are responsible for authorising and minting 
+* identity NFTs and storing information with registration calldata
+* the contract interacts with the Quroum framework via the network level 
+* permissions interface to approve accounts to transact on the network
+* the contract imports the OpenZeppelin ERC721 standard, overriding transfer 
+* functions to prevent the Identity NFTs being transferred between accounts
+*/
+&nbsp;
+contract ProofOfIdentity is
+    UserInformation,
+    UserInformationPreventsOnExpiry,
+    Initializable, 
+    ERC721Upgradeable, 
+    AccessControlUpgradeable,
+    UUPSUpgradeable
+{
+    using Counters for Counters.Counter;
+&nbsp;
+    /** 
+    * @dev The event is triggered during the `suspendAccountDeleteTokenAndIdentityBlob` 
+    * it includes the account, tokenId, and reason for suspension.
+    */
+    event AccountSuspendedTokenBurned(
+        address indexed account,
+        uint256 indexed tokenId,
+        string indexed reason
+    );
+&nbsp;
+    /** 
+    * @dev The event is triggered during the suspendAccountMaintainTokenAndIdentityBlob function. 
+    * It includes the tokenId and the reason. 
+    * This will include temporary susepensions/
+    */
+&nbsp;
+    event AccountSuspendedTokenMaintained(
+        address indexed account,
+        string indexed reason
+    );
+&nbsp;
+    /** 
+    * @dev The event is triggered when `updateIdentity` is called. 
+    * It emits the account that was updated and the tokenId.
+    */
+    event IdentityIssued(
+        address indexed account, 
+        uint256 indexed tokenId
+        );
+&nbsp;
+    /** 
+    * @dev The event is triggered during the updateIdentity when an identity is updated 
+    * it includes the address the token is minted to and the tokenId.
+    */
+    event IdentityUpdated(
+        address indexed account, 
+        uint256 indexed tokenId
+        );
+    
+  	
+    /**	
+     * @dev The event is triggered when `updateTokenURI` is called. 
+     * It emits the account the token is minted to, the tokenId and the new URI.	
+     */
+    event TokenURIUpdated(
+        address indexed account,
+        uint256 indexed tokenId,
+        string indexed newURI
+    );
+    
+    // Tracks tokenIds
+    Counters.Counter private _tokenIdCounter;
+&nbsp;
+    // Stores the Quourum Network permissions interface address.
+    IPermissionsInterface private _permissionsInterface;
+&nbsp;
+    // Mappings to Track Relations for Identity.
+    mapping(address =&gt; uint256) private _tokenOfHolder;
+	
+    // Maps tokenId to custom URI.
+    mapping(uint256 =&gt; string) private _tokenURI;
+&nbsp;
+     // Stores keccak256 hash of OPERATOR_ROLE for access control.
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
+&nbsp;
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+&nbsp;
+     /**	
+     * @notice `initalize` function is ran at the time of deployment to support the upgradable proxy, 
+     * it defines the permissions interface and the default admin role for access control or "network operator"	
+     * @dev The function includes name and symbol to satisfy ERC721 contract requirements.	
+     * `_disableInitializers` called to prevent re-initialization as per OpenZeppelin recommendations.	
+     * @param permissionsInterface address of the Quorum permissions interface contract.	
+     * @param networkAdmin address of the Network Operator Multisig, to be declared as default admin for access control.	
+     * @param networkOperator address that controls operations in the contract
+     */
+    function initialize(
+        address permissionsInterface,
+        address networkAdmin,
+        address networkOperator
+    )
+    external initializer
+    {
+         __AccessControl_init();
+        __ERC721_init("Proof of Identity", "H1-ID");
+        __UUPSUpgradeable_init();
+        _permissionsInterface = IPermissionsInterface(permissionsInterface);
+        _grantRole(DEFAULT_ADMIN_ROLE, networkAdmin);
+        _grantRole(OPERATOR_ROLE, networkOperator);
+    }
+&nbsp;
+    /**	
+     * @notice `issueIdentity` function is only callable by operator role, once an identity has been minted it is not transferable.	
+     * @dev once identity is minted, the contract will call the permissions interface contract, 
+     * adding role access via the `assignAccountRole` function.	
+     * @param account address of the target user.	
+     * @param countryCode is the users region identifier as defined by ISO3 standards - 
+     * Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.	
+     * @param userType is passed to assigned an account type - retail (0) or instituton (1), 
+     * by not using an enum we allow for additional classes in the future.	
+     * @param expiry is passed to assign an expiry time for the documents provided by the operator role, 
+     * ensuring user documentation is in date if an application chooses to implement.	
+     * @param level is passed to assign a KYC level to the user account, by combining the region code and KYC 
+     * level we allow for specific regional restrictions to be implemented by developers.	
+     * @param tokenUri is passed to provide a custom URI to the tokenId for future utilisation and expansion of proof of identity framework.	
+     * @return tokenId the id of the token minted to the account.	
+     */
+    function issueIdentity(
+        address account,
+        string calldata countryCode,
+        uint8 userType,
+        uint8 level,
+        uint256 expiry,
+        string calldata tokenUri
+    ) external onlyRole(OPERATOR_ROLE) returns(uint256) {
+        require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
+&nbsp;
+        require(expiry &gt; block.timestamp, Errors.ID_INVALID_EXPIRED);
+         _tokenIdCounter.increment();
+        uint256 tokenId = _tokenIdCounter.current();
+&nbsp;
+        identityBlob[account] = IdentityBlob({
+            tokenId: tokenId,
+            countryCode: countryCode,
+            userType: userType,
+            level: level,
+            expiry: expiry
+        });
+&nbsp;
+        _safeMint(account, tokenId);
+        _tokenURI[tokenId] = tokenUri;
+        _tokenOfHolder[account] = tokenId;
+        _permissionsInterface.assignAccountRole(account, "HAVEN1", "VTCALL");
+        emit IdentityIssued(account, tokenId);
+        return tokenId;
+    }
+&nbsp;
+    /**	
+     * @notice `updateIdentity` function is only callable by operator role, 
+     * its purpose is to update an identity for changing user details over time.	
+     * @dev the function requires an ID to have been issued to the account, if the account does not have an ID it will revert.	
+     * @param account address of the target user.	
+     * @param countryCode is the users region identifier as defined by ISO3 standards - 
+     * Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.	
+     * @param userType is passed to assigned an account type - retail (0) or instituton (1), 
+     * by not using an enum we allow for additional classes in the future.	
+     * @param expiry is passed to assign an expiry time for the documents provided by the operator role, 
+     * ensuring user documentation is in date if an application chooses to implement.	
+     * @param level is passed to assign a KYC level to the user account, by combining the region code and 
+     * KYC level we allow for specific regional restrictions to be implemented by developers.	
+     * @param tokenUri is passed to provide a custom URI to the tokenId for future utilisation and 
+     * expansion of proof of identity framework.	
+     */	
+&nbsp;
+&nbsp;
+    function updateIdentity(
+        address account,
+        string calldata countryCode,
+        uint8 userType,
+        uint8 level,
+        uint256 expiry,
+        string calldata tokenUri
+    ) external onlyRole(OPERATOR_ROLE) {
+        require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
+&nbsp;
+        uint256 tokenId = identityBlob[account].tokenId;
+        identityBlob[account] = IdentityBlob({
+            tokenId: tokenId,
+            countryCode: countryCode,
+            userType: userType,
+            level: level,
+            expiry: expiry
+        });
+        _tokenURI[tokenId] = tokenUri;
+        emit IdentityUpdated(account, tokenId);
+    }
+&nbsp;
+     /**	
+     * @notice `updateTokenURI` function is only callable by operator role, 
+     * its purpose is to update the tokenUri of an account.	
+     * @param account the account of the tokenUri to update.	
+     * @param tokenUri the URI data to update for the token Id.	
+     */
+    function updateTokenURI(
+        address account,
+        string calldata tokenUri
+    ) external onlyRole(OPERATOR_ROLE) {
+        uint256 tokenId = _tokenOfHolder[account];
+        require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);
+        _tokenURI[tokenId] = tokenUri;
+        emit TokenURIUpdated(account, tokenId, tokenUri);
+    }
+&nbsp;
+       /**
+     * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by operator role, it suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account.
+     * @dev To unsuspend an account, a user must lodge a request with the operator, the ability to unsuspend accounts is not provided in this contract and requires intervention to resolve.
+     * @param suspendAddress the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping.
+     * @param reason the reason the address is being suspended.
+     */
+&nbsp;
+    function suspendAccountMaintainTokenAndIdentityBlob(
+        address suspendAddress,
+        string calldata reason
+    ) external onlyRole(OPERATOR_ROLE) {
+        _permissionsInterface.updateAccountStatus("HAVEN1", suspendAddress, 1);
+        emit AccountSuspendedTokenMaintained(suspendAddress, reason);
+    }
+    	
+    /**	
+     * @notice `totalSupply` function allows a call to view the count of issued tokens to monitor overall distribution.	
+     * @return totalSupply provides total supply of tokenIds issued	
+     */	
+    function totalSupply() public view returns (uint256) {	
+        return (_tokenIdCounter.current());	
+    }
+&nbsp;
+   	
+     /**	
+     * @notice `tokenURI` function allows tokenURI to be viewed	
+     * @dev Overrides OpenZeppelins implementation with custom return logic	
+     * @param tokenId is passed to retrieve the mapped URI	
+     * @return tokenUri provides URI for specified tokenId passed	
+     */	
+    function tokenURI(	
+        uint256 tokenId	
+    ) public view virtual override returns (string memory tokenUri) {	
+        require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);	
+        return _tokenURI[tokenId];	
+    }	
+&nbsp;
+&nbsp;
+    /**
+     * @dev See {IERC721-transferFrom}.
+     *      The function reverts to keep the token soulbound.
+     */
+&nbsp;
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public pure override (ERC721Upgradeable)  {
+        revert(Errors.ID_NOT_TRANSFERABLE);
+    }
+&nbsp;
+    /**	
+     * @dev Overrides OpenZeppelin `transferFrom` implementation to prevent transferring of token	
+     */
+&nbsp;
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public pure override {
+        revert(Errors.ID_NOT_TRANSFERABLE);
+    }
+&nbsp;
+  	
+    /**	
+     * @dev Overrides OpenZeppelin `safeTransferFrom` implementation to prevent transferring of token
+     */
+&nbsp;
+   function _authorizeUpgrade(address newImplementation)
+        internal
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        override
+    {}
+&nbsp;
+   	/**
+    * @dev Overrides OpenZeppelin `supportsInterface` implementation to ensure the same interfaces can support access control and ERC721.	
+    */
+&nbsp;
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view override(ERC721Upgradeable, AccessControlUpgradeable) returns (bool) {
+        return super.supportsInterface(interfaceId);
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 03 2023 05:29:49 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
