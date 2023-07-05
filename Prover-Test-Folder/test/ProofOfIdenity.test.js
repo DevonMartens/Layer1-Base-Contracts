@@ -246,7 +246,7 @@ describe("Proof of Identity Contract", function () {
       //checks that the original tokenURI is tokenURI
       expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("tokenURI");
       //updates the tokenURI
-      await ProofOfIdentityContract.updateTokenURI(Address2, "Updated");
+      await ProofOfIdentityContract.updateTokenURI(Address2, 1, "Updated");
       //checks that the token URI has updated to the anticpated URI
       expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("Updated");
     });
@@ -375,6 +375,7 @@ describe("Proof of Identity Contract", function () {
       await expectRevert(
         Address2SignsProofOfIdentityContract.updateTokenURI(
           Address2,
+          1,
           "Updated"
         ),
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
@@ -490,7 +491,7 @@ describe("Proof of Identity Contract", function () {
     });
     it("Proof of Identity Contract:  `updateTokenURI` should not allow an account's tokenURI to be updated if they dont have an id.", async () => {
       await expectRevert(
-        ProofOfIdentityContract.updateTokenURI(Address3, "token"),
+        ProofOfIdentityContract.updateTokenURI(Address3, 2, "token"),
         `101`
       );
     });
@@ -532,7 +533,7 @@ describe("Proof of Identity Contract", function () {
         .withArgs(Address3, 2);
     });
     it("Proof of Identity Contract: The TokenURIUpdated event should emit in updateTokenURI with the account and tokenId.", async () => {
-      await expect(ProofOfIdentityContract.updateTokenURI(Address2, "NewURI"))
+      await expect(ProofOfIdentityContract.updateTokenURI(Address2, 1, "NewURI"))
         .to.emit(ProofOfIdentityContract, "TokenURIUpdated")
         .withArgs(Address2, 1, "NewURI");
     });

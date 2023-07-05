@@ -88,9 +88,6 @@ contract ProofOfIdentity is
 
     // Stores the Quourum Network permissions interface address.
     IPermissionsInterface private _permissionsInterface;
-
-    // Mappings to Track Relations for Identity.
-    mapping(address => uint256) private _tokenOfHolder;
 	
     // Maps tokenId to custom URI.
     mapping(uint256 => string) private _tokenURI;
@@ -166,7 +163,6 @@ contract ProofOfIdentity is
 
         _safeMint(account, _tokenIdCounter.current());
         _tokenURI[_tokenIdCounter.current()] = tokenUri;
-        _tokenOfHolder[account] = _tokenIdCounter.current();
         _permissionsInterface.assignAccountRole(account, "HAVEN1", "VTCALL");
         emit IdentityIssued(account, _tokenIdCounter.current());
         return _tokenIdCounter.current();
@@ -220,9 +216,9 @@ contract ProofOfIdentity is
      */
     function updateTokenURI(
         address account,
+        uint256 tokenId,
         string calldata tokenUri
     ) external onlyRole(OPERATOR_ROLE) {
-        uint256 tokenId = _tokenOfHolder[account];
         require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);
         _tokenURI[tokenId] = tokenUri;
         emit TokenURIUpdated(account, tokenId, tokenUri);
