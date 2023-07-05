@@ -153,13 +153,15 @@ contract ProofOfIdentity is
         require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
          _tokenIdCounter.increment();
 
-        identityBlob[account] = IdentityBlob({
-            tokenId: _tokenIdCounter.current(),
-            countryCode: countryCode,
-            userType: userType,
-            level: level,
-            expiry: expiry
-        });
+        _setStruct(account, _tokenIdCounter.current(), countryCode, userType, level, expiry); 
+
+        // identityBlob[account] = IdentityBlob({
+        //     tokenId: _tokenIdCounter.current(),
+        //     countryCode: countryCode,
+        //     userType: userType,
+        //     level: level,
+        //     expiry: expiry
+        // });
 
         _safeMint(account, _tokenIdCounter.current());
         _tokenURI[_tokenIdCounter.current()] = tokenUri;
@@ -196,16 +198,16 @@ contract ProofOfIdentity is
     ) external onlyRole(OPERATOR_ROLE) {
         require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
 
-        uint256 tokenId = identityBlob[account].tokenId;
-        identityBlob[account] = IdentityBlob({
-            tokenId: tokenId,
-            countryCode: countryCode,
-            userType: userType,
-            level: level,
-            expiry: expiry
-        });
-        _tokenURI[tokenId] = tokenUri;
-        emit IdentityUpdated(account, tokenId);
+        _setStruct(account, identityBlob[account].tokenId, countryCode, userType, level, expiry);
+        // identityBlob[account] = IdentityBlob({
+        //     tokenId: identityBlob[account].tokenId,
+        //     countryCode: countryCode,
+        //     userType: userType,
+        //     level: level,
+        //     expiry: expiry
+        // });
+        _tokenURI[identityBlob[account].tokenId] = tokenUri;
+        emit IdentityUpdated(account, identityBlob[account].tokenId);
     }
 
      /**	
@@ -285,6 +287,24 @@ contract ProofOfIdentity is
         uint256 tokenId
     ) public pure override {
         revert(Errors.ID_NOT_TRANSFERABLE);
+    }
+
+    function _setStruct(
+        address account,
+        uint256 tokenId,
+        string calldata countryCode,
+        uint8 userType,
+        uint8 level,
+        uint256 expiry
+    )   
+    internal {
+       identityBlob[account] = IdentityBlob({
+            tokenId: tokenId,
+            countryCode: countryCode,
+            userType: userType,
+            level: level,
+            expiry: expiry
+        });
     }
 
   	
