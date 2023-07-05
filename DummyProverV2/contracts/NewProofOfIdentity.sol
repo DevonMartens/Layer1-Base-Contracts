@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "./IPermissionsInterface.sol";
@@ -29,7 +29,7 @@ contract NewProofOfIdentity is
     AccessControlUpgradeable,
     UUPSUpgradeable
 {
-    using Counters for Counters.Counter;
+    using CountersUpgradeable for CountersUpgradeable.Counter;
 
     /** 
     * @dev The event is triggered during the `suspendAccountDeleteTokenAndIdentityBlob` 
@@ -82,14 +82,11 @@ contract NewProofOfIdentity is
     );
     
     // Tracks tokenIds
-    Counters.Counter private _tokenIdCounter;
+    CountersUpgradeable.Counter private _tokenIdCounter;
 
     // Stores the Quourum Network permissions interface address.
     IPermissionsInterface private _permissionsInterface;
 
-    // Mappings to Track Relations for Identity.
-    mapping(address => uint256) private _tokenOfHolder;
-	
     // Maps tokenId to custom URI.
     mapping(uint256 => string) private _tokenURI;
 
@@ -125,48 +122,63 @@ contract NewProofOfIdentity is
         _grantRole(OPERATOR_ROLE, networkOperator);
     }
 
-    
-     IdentityBlob[] public array;
+  
     function issueIdentity(
-        IdentityBlob[] calldata _newBlob,
         address account,
-        // string calldata countryCode,
-        // string calldata name,
-        // // uint8 age,
-        // uint8 userType,
-        // uint8 level,
-        // uint256 expiry,
+        string calldata countryCode,
+        uint8 userType,
+        uint8 level,
+        uint256 expiry,
+        string calldata name,
+        uint8 age,
+        bool hasDog,
+      //  bool hasCat,
+       // string calldata lastName,
         string calldata tokenUri
-    )
-     external onlyRole(OPERATOR_ROLE) returns(uint256) {
+    ) external onlyRole(OPERATOR_ROLE) returns(uint256) {
         require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
 
-       // require(_newBlob.expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
+        require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
          _tokenIdCounter.increment();
-        uint256 tokenId = _tokenIdCounter.current();
-      // B memory b = B({a: aa[aIndex]});
-        // identityBlob[account] = IdentityBlob
-        // ;
-        IdentityBlob storage _array = identityBlob[account];
-        //_newBlob;
-        // IdentityBlob({
-            // tokenId: tokenId,
-            // countryCode: countryCode,
-            // // age: age,
-            // userType: userType,
-            // level: level,
-            // expiry: expiry,
-            // name: name
-       //});
 
-        _safeMint(account, tokenId);
-        _tokenURI[tokenId] = tokenUri;
-        _tokenOfHolder[account] = tokenId;
+         _setStruct(account, countryCode, userType, level, expiry, name, age, hasDog);
+         //lastName);
+
+        _safeMint(account, _tokenIdCounter.current());
+        _tokenURI[_tokenIdCounter.current()] = tokenUri;
         _permissionsInterface.assignAccountRole(account, "HAVEN1", "VTCALL");
-        emit IdentityIssued(account, tokenId);
-        return tokenId;
+        emit IdentityIssued(account, _tokenIdCounter.current());
+        return _tokenIdCounter.current();
     }
 
+    function _setStruct(
+             address account,
+        string calldata countryCode,
+        uint8 userType,
+        uint8 level,
+        uint256 expiry,
+        string calldata name,
+        uint8 age,
+        bool hasDog
+   //     bool hasCat
+        //,
+     //   string calldata lastName
+    )   
+    internal {
+       identityBlob[account] = IdentityBlob({
+            tokenId: _tokenIdCounter.current(),
+            countryCode: countryCode,
+            userType: userType,
+            level: level,
+            expiry: expiry,
+            name: name,
+            age: age,
+            hasDog : hasDog
+         
+            //,
+      //      lastName: lastName
+        });
+    }
     /**	
      * @notice `updateIdentity` function is only callable by operator role, 
      * its purpose is to update an identity for changing user details over time.	
@@ -185,31 +197,48 @@ contract NewProofOfIdentity is
      */	
 
 
-    function updateIdentity(
-        address account,
-        string calldata countryCode,
-        // uint8 age,
-        uint8 userType,
-        uint8 level,
-        uint256 expiry,
-        string calldata name,
-        string calldata tokenUri
-    ) external onlyRole(OPERATOR_ROLE) {
-        require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
+    // function updateIdentity(
+    //     address account,
+    //     string calldata countryCode,
+    //     // uint8 age,
+    //     uint8 userType,
+    //     uint8 level,
+    //     uint256 expiry,
+    //     string calldata name,
+    //      uint8 age,
+    //     bool hasDog,
+    //     string calldata tokenUri
+    // ) external onlyRole(OPERATOR_ROLE) {
+      
 
-        uint256 tokenId = identityBlob[account].tokenId;
-        identityBlob[account] = IdentityBlob({
-            tokenId: tokenId,
-            countryCode: countryCode,
-            // age: age,
-            userType: userType,
-            level: level,
-            expiry: expiry,
-            name: name
-        });
-        // _tokenURI[tokenId] = tokenUri;
-        emit IdentityUpdated(account, tokenId);
-    }
+    //     require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
+    // {
+    //     identityBlob[account].countryCode = countryCode;
+    // }
+    // {
+    //     identityBlob[account].userType = userType;
+    // }
+    // {
+    //     identityBlob[account].level  = level;
+    // }
+    // {
+    //     identityBlob[account].expiry = expiry;
+    // }    
+    // {
+    //     identityBlob[account].name = name;
+    // }
+    // {
+    //     identityBlob[account].age = age;
+    // }
+    // {
+    //     identityBlob[account].hasDog = hasDog;
+    // }
+    // {
+    //     // _tokenURI[tokenId] = tokenUri;
+    //     emit IdentityUpdated(account, identityBlob[account].tokenId);
+    // }
+    // }
+
 
      /**	
      * @notice `updateTokenURI` function is only callable by operator role, 
@@ -219,9 +248,9 @@ contract NewProofOfIdentity is
      */
     function updateTokenURI(
         address account,
+        uint256 tokenId,
         string calldata tokenUri
     ) external onlyRole(OPERATOR_ROLE) {
-        uint256 tokenId = _tokenOfHolder[account];
         require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);
         _tokenURI[tokenId] = tokenUri;
         emit TokenURIUpdated(account, tokenId, tokenUri);
@@ -230,7 +259,6 @@ contract NewProofOfIdentity is
        /**
      * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by operator role, it suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account.
      * @dev To unsuspend an account, a user must lodge a request with the operator, the ability to unsuspend accounts is not provided in this contract and requires intervention to resolve.
-     * @param suspendAddress the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping.
      * @param reason the reason the address is being suspended.
      */
 

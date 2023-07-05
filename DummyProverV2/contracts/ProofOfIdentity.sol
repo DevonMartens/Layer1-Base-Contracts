@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "./IPermissionsInterface.sol";
 import "./UserInformation.sol";
-import "./Errors.sol";
 import "./UserInformationPreventsOnExpiry.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -32,7 +31,7 @@ contract ProofOfIdentity is
     AccessControlUpgradeable,
     UUPSUpgradeable
 {
-    using Counters for Counters.Counter;
+    using CountersUpgradeable for CountersUpgradeable.Counter;
 
     /** 
     * @dev The event is triggered during the `suspendAccountDeleteTokenAndIdentityBlob` 
@@ -85,13 +84,10 @@ contract ProofOfIdentity is
     );
     
     // Tracks tokenIds
-    Counters.Counter private _tokenIdCounter;
+     CountersUpgradeable.Counter private _tokenIdCounter;
 
     // Stores the Quourum Network permissions interface address.
     IPermissionsInterface private _permissionsInterface;
-
-    // Mappings to Track Relations for Identity.
-    mapping(address => uint256) private _tokenOfHolder;
 	
     // Maps tokenId to custom URI.
     mapping(uint256 => string) private _tokenURI;
@@ -156,22 +152,20 @@ contract ProofOfIdentity is
 
         require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
          _tokenIdCounter.increment();
-        uint256 tokenId = _tokenIdCounter.current();
 
         identityBlob[account] = IdentityBlob({
-            tokenId: tokenId,
+            tokenId: _tokenIdCounter.current(),
             countryCode: countryCode,
             userType: userType,
             level: level,
             expiry: expiry
         });
 
-        _safeMint(account, tokenId);
-        _tokenURI[tokenId] = tokenUri;
-        _tokenOfHolder[account] = tokenId;
+        _safeMint(account, _tokenIdCounter.current());
+        _tokenURI[_tokenIdCounter.current()] = tokenUri;
         _permissionsInterface.assignAccountRole(account, "HAVEN1", "VTCALL");
-        emit IdentityIssued(account, tokenId);
-        return tokenId;
+        emit IdentityIssued(account, _tokenIdCounter.current());
+        return _tokenIdCounter.current();
     }
 
     /**	
@@ -222,9 +216,9 @@ contract ProofOfIdentity is
      */
     function updateTokenURI(
         address account,
+        uint256 tokenId,
         string calldata tokenUri
     ) external onlyRole(OPERATOR_ROLE) {
-        uint256 tokenId = _tokenOfHolder[account];
         require(_exists(tokenId), Errors.ID_DOES_NOT_EXIST);
         _tokenURI[tokenId] = tokenUri;
         emit TokenURIUpdated(account, tokenId, tokenUri);
@@ -233,7 +227,6 @@ contract ProofOfIdentity is
        /**
      * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by operator role, it suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account.
      * @dev To unsuspend an account, a user must lodge a request with the operator, the ability to unsuspend accounts is not provided in this contract and requires intervention to resolve.
-     * @param suspendAddress the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping.
      * @param reason the reason the address is being suspended.
      */
 
