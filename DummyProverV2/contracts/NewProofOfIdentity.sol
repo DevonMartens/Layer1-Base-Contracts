@@ -125,47 +125,39 @@ contract NewProofOfIdentity is
         _grantRole(OPERATOR_ROLE, networkOperator);
     }
 
-    /**	
-     * @notice `issueIdentity` function is only callable by operator role, once an identity has been minted it is not transferable.	
-     * @dev once identity is minted, the contract will call the permissions interface contract, 
-     * adding role access via the `assignAccountRole` function.	
-     * @param account address of the target user.	
-     * @param countryCode is the users region identifier as defined by ISO3 standards - 
-     * Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.	
-     * @param userType is passed to assigned an account type - retail (0) or instituton (1), 
-     * by not using an enum we allow for additional classes in the future.	
-     * @param expiry is passed to assign an expiry time for the documents provided by the operator role, 
-     * ensuring user documentation is in date if an application chooses to implement.	
-     * @param level is passed to assign a KYC level to the user account, by combining the region code and KYC 
-     * level we allow for specific regional restrictions to be implemented by developers.	
-     * @param tokenUri is passed to provide a custom URI to the tokenId for future utilisation and expansion of proof of identity framework.	
-     * @return tokenId the id of the token minted to the account.	
-     */
+    
+     IdentityBlob[] public array;
     function issueIdentity(
+        IdentityBlob[] calldata _newBlob,
         address account,
-        string calldata countryCode,
-        string calldata name,
-        // uint8 age,
-        uint8 userType,
-        uint8 level,
-        uint256 expiry,
+        // string calldata countryCode,
+        // string calldata name,
+        // // uint8 age,
+        // uint8 userType,
+        // uint8 level,
+        // uint256 expiry,
         string calldata tokenUri
-    ) external onlyRole(OPERATOR_ROLE) returns(uint256) {
+    )
+     external onlyRole(OPERATOR_ROLE) returns(uint256) {
         require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
 
-        require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
+       // require(_newBlob.expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
          _tokenIdCounter.increment();
         uint256 tokenId = _tokenIdCounter.current();
-
-        identityBlob[account] = IdentityBlob({
-            tokenId: tokenId,
-            countryCode: countryCode,
-            // age: age,
-            userType: userType,
-            level: level,
-            expiry: expiry,
-            name: name
-        });
+      // B memory b = B({a: aa[aIndex]});
+        // identityBlob[account] = IdentityBlob
+        // ;
+        IdentityBlob storage _array = identityBlob[account];
+        //_newBlob;
+        // IdentityBlob({
+            // tokenId: tokenId,
+            // countryCode: countryCode,
+            // // age: age,
+            // userType: userType,
+            // level: level,
+            // expiry: expiry,
+            // name: name
+       //});
 
         _safeMint(account, tokenId);
         _tokenURI[tokenId] = tokenUri;
