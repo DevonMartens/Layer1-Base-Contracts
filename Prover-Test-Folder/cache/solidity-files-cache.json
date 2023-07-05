@@ -204,8 +204,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/ProofOfIdentity.sol": {
-      "lastModificationDate": 1688579460107,
-      "contentHash": "7dcc796349a630ff0cb22da525618f82",
+      "lastModificationDate": 1688585382172,
+      "contentHash": "b3800f27f54c7f703bef22fa677302fc",
       "sourceName": "contracts/ProofOfIdentity.sol",
       "solcConfig": {
         "version": "0.8.2",

@@ -155,22 +155,21 @@ contract ProofOfIdentity is
 
         require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
          _tokenIdCounter.increment();
-        uint256 tokenId = _tokenIdCounter.current();
 
         identityBlob[account] = IdentityBlob({
-            tokenId: tokenId,
+            tokenId: _tokenIdCounter.current(),
             countryCode: countryCode,
             userType: userType,
             level: level,
             expiry: expiry
         });
 
-        _safeMint(account, tokenId);
-        _tokenURI[tokenId] = tokenUri;
-        _tokenOfHolder[account] = tokenId;
+        _safeMint(account, _tokenIdCounter.current());
+        _tokenURI[_tokenIdCounter.current()] = tokenUri;
+        _tokenOfHolder[account] = _tokenIdCounter.current();
         _permissionsInterface.assignAccountRole(account, "HAVEN1", "VTCALL");
-        emit IdentityIssued(account, tokenId);
-        return tokenId;
+        emit IdentityIssued(account, _tokenIdCounter.current());
+        return _tokenIdCounter.current();
     }
 
     /**	
