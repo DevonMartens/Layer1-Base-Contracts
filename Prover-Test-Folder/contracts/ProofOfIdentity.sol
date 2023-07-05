@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "./IPermissionsInterface.sol";
@@ -31,7 +31,7 @@ contract ProofOfIdentity is
     AccessControlUpgradeable,
     UUPSUpgradeable
 {
-    using Counters for Counters.Counter;
+    using CountersUpgradeable for CountersUpgradeable.Counter;
 
     /** 
     * @dev The event is triggered during the `suspendAccountDeleteTokenAndIdentityBlob` 
@@ -84,7 +84,7 @@ contract ProofOfIdentity is
     );
     
     // Tracks tokenIds
-    Counters.Counter private _tokenIdCounter;
+     CountersUpgradeable.Counter private _tokenIdCounter;
 
     // Stores the Quourum Network permissions interface address.
     IPermissionsInterface private _permissionsInterface;
