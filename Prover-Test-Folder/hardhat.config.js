@@ -5,6 +5,7 @@ require("@nomiclabs/hardhat-etherscan");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
 require("@nomiclabs/hardhat-solhint");
+require("hardhat-contract-sizer");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -17,5 +18,5 @@ module.exports = {
       },
     },
   },
-  allowUnlimitedContractSize: true,
+ // allowUnlimitedContractSize: true,
 };

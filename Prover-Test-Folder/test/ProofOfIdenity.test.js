@@ -17,7 +17,7 @@ describe("Proof of Identity Contract", function () {
       "DummyPermissionsContract"
     );
     IPermissionsInterfaceDummyInstance = await IPermissionsInterface.deploy();
-    // Gets
+    // Gets signers
     const [ContractDeployers, Address2s, Address3s] = await ethers.getSigners();
     ContractDeployer = await ContractDeployers.getAddress();
     Address2 = await Address2s.getAddress();

@@ -18,6 +18,14 @@ contract NewVerifiableIdentity is NewUserInformation {
 
     NewUserInformation private VERIFIABLE_IDENTITY;
 
+    //dummy function
+    function getUserName(
+        address account
+    ) public view returns (string memory userName) {
+        return (VERIFIABLE_IDENTITY.getUserAccountName(account));
+    }
+
+
     /**
     @notice getUserCountryCode function returns the country code from the users account
     @param account address of the target user account

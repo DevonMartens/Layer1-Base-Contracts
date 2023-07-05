@@ -8,7 +8,7 @@ require("@nomiclabs/hardhat-solhint");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: "0.8.2",
+  solidity: "0.8.19",
   settings: {
     optimizer: {
       enabled: true,

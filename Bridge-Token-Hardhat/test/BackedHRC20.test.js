@@ -1,7 +1,18 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { Signer, Wallet } = require("ethers");
+require("dotenv").config();
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
+
+//permit test
+const { fromRpcSig } = require("ethereumjs-util");
+const web3 = require("web3");
+
+const defaultSender = "0x7102dc57665234F8d68Fcf84F31f45263c59c3b3";
+const defaultKey = process.env["PrivateKey"];
+// second Buidler default account
+const ONE_ETH = ethers.utils.parseUnits("1", "ether");
 
 describe("BackedHRC20 Haven1 Token Contract", async () => {
   let ContractDeployer;
@@ -10,9 +21,9 @@ describe("BackedHRC20 Haven1 Token Contract", async () => {
   let BackedHRC20Contract;
   let Address2SignsBackedHRC20;
   beforeEach(async () => {
-    const [owners, alices] = await ethers.getSigners();
+    const [owners, Address2s] = await ethers.getSigners();
     ContractDeployer = await owners.getAddress();
-    Address2 = await alices.getAddress();
+    Address2 = await Address2s.getAddress();
     BackedHRC20Factory = await ethers.getContractFactory("BackedHRC20");
     BackedHRC20Contract = await upgrades.deployProxy(
       BackedHRC20Factory,
@@ -117,17 +128,19 @@ describe("BackedHRC20 Haven1 Token Contract", async () => {
     let BackedHRC20HasDifferentAdmins_DEFAULT_ADMIN_ROLE;
     beforeEach(async () => {
       Address2ErrorMessageForAccessControl = Address2.toLowerCase();
-      ContractDeployerErrorMessageForAccessControl = ContractDeployer.toLowerCase();
+      ContractDeployerErrorMessageForAccessControl =
+        ContractDeployer.toLowerCase();
       // Getting access control roles
       OPERATOR_ROLE = await BackedHRC20Contract.OPERATOR_ROLE();
       DEFAULT_ADMIN_ROLE = await BackedHRC20Contract.DEFAULT_ADMIN_ROLE();
-      // Deploys another contract 
+      // Deploys another contract
       BackedHRC20HasDifferentAdmins = await upgrades.deployProxy(
         BackedHRC20Factory,
         ["HAVEN1", "HRC20", Address2, Address2],
         { initializer: "initialize", kind: "uups" }
       );
-      BackedHRC20HasDifferentAdmins_DEFAULT_ADMIN_ROLE = await BackedHRC20HasDifferentAdmins.DEFAULT_ADMIN_ROLE();
+      BackedHRC20HasDifferentAdmins_DEFAULT_ADMIN_ROLE =
+        await BackedHRC20HasDifferentAdmins.DEFAULT_ADMIN_ROLE();
     });
     it("Backed HRC20: only the OPERATOR_ROLE should be able to pause and unpause the contract", async () => {
       await expectRevert(
@@ -168,7 +181,10 @@ describe("BackedHRC20 Haven1 Token Contract", async () => {
     });
     it("Backed HRC20: only the DEFAULT_ADMIN_ROLE should be able to grant roles (not the contract deployer)", async () => {
       await expectRevert(
-        BackedHRC20HasDifferentAdmins.grantRole(OPERATOR_ROLE, ContractDeployer),
+        BackedHRC20HasDifferentAdmins.grantRole(
+          OPERATOR_ROLE,
+          ContractDeployer
+        ),
         `AccessControl: account ${ContractDeployerErrorMessageForAccessControl} is missing role ${BackedHRC20HasDifferentAdmins_DEFAULT_ADMIN_ROLE}`
       );
     });
@@ -229,6 +245,40 @@ describe("BackedHRC20 Haven1 Token Contract", async () => {
           BackedHRC20HasDifferentAdmins.address
         )
       ).to.equal(8);
+    });
+    it("Backed HRC20: The permit function should not allow contracts to be approved", async () => {
+      const provider = hre.ethers.provider;
+      const owner = defaultSender;
+      const spender = Address2;
+      const nonce = await BackedHRC20Contract.nonces(defaultSender);
+      const maxDeadline = 49035734057903;
+      //use keys
+      const defaulAddressSigner = new Wallet(defaultKey, provider);
+      const defaultSignsBackedHRC20 =
+        BackedHRC20Contract.connect(defaulAddressSigner);
+      const ContractDeployerSendsH1 = await ethers.getSigner(ContractDeployer);
+
+      await BackedHRC20Contract.issueBackedToken(defaultSender, 12);
+      await ContractDeployerSendsH1.sendTransaction({
+        to: defaultSender,
+        value: ONE_ETH,
+      });
+
+      const message = web3.utils.soliditySha3(
+        owner,
+        spender,
+        1,
+        nonce,
+        maxDeadline
+      );
+
+      const signatureObject = await web3.eth.accounts.sign(message, defaultKey);
+
+      const { v, r, s } = fromRpcSig(signatureObject.signature);
+
+      await expectRevert.unspecified(
+        defaultSignsBackedHRC20.permit(owner, spender, 1, maxDeadline, v, r, s)
+      );
     });
   });
 });

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -12,6 +13,7 @@ import "./Errors.sol";
 contract BackedHRC20 is
     Initializable,
     ERC20Upgradeable,
+    ERC20PermitUpgradeable,
     PausableUpgradeable,
     AccessControlUpgradeable,
     UUPSUpgradeable
@@ -98,30 +100,13 @@ contract BackedHRC20 is
     @param amount the number of tokens they send on behalf of the owner.
     */
 
-    function approve(
+    function _approve(
+        address owner,
         address spender,
         uint256 amount
-    ) public virtual override returns (bool) {
+    ) internal virtual override {
         require(isContract(spender) == true, Errors.ONLY_APPROVES_CONTRACTS);
-        address owner = _msgSender();
-        _approve(owner, spender, amount);
-        return true;
-    }
-
-    /**
-    @notice Same as ERC-20's function but does not allow wallets to be approved only contracts.
-    @param spender is the address being approved to move another wallets tokens.
-    @param addedValue the number of tokens added to the original number that the spender is approved to send on behalf of the owner.
-    */
-
-    function increaseAllowance(
-        address spender,
-        uint256 addedValue
-    ) public virtual override returns (bool) {
-        require(isContract(spender) == true, Errors.ONLY_APPROVES_CONTRACTS);
-        address owner = _msgSender();
-        _approve(owner, spender, allowance(owner, spender) + addedValue);
-        return true;
+        super._approve(owner, spender, amount);
     }
 
     /**
