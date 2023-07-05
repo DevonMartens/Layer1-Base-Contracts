@@ -10,11 +10,10 @@ TEN_H1 = ethers.utils.parseUnits("10", "ether");
 describe("H1NativeApplication and Imported Modifier applicationFee()", function () {
   let ContractDeployer;
   let FeeContract;
+  let BadFeeContract;
   let H1NativeApplicationDeployed;
   let SimpleStorageWithFeeDeployed;
-  let SimpleStorageWithFeeFactory;
   let SimpleStorageBadFeeContract;
-  let BadFeeContract;
   let FeeContractSigner;
   let H1NativeApplicationFactory;
   beforeEach(async () => {
@@ -103,7 +102,6 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     await expectRevert(SimpleStorageWithFeeDeployed.set(1), "125");
     await SimpleStorageWithFeeDeployed.set(1, { value: 1 });
   });
-  //SimpleStorageWithFeeFactory
   it("H1NativeApplication should revert if transfer to fee lib fails", async () => {
     await BadFeeContract.setAgainFee();
     await expectRevert(SimpleStorageBadFeeContract.set(1, { value: 1 }), "112");

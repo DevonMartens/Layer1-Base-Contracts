@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.2;
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
 import "./FeeQuery.sol";
 import "./Errors.sol";
 
@@ -18,7 +17,7 @@ interface IFeeOracle {
     function refreshOracle() external returns (bool success);
 }
 
-contract HasNoRecieveFunctionForFailedTxns is FeeQuery, AccessControl {
+contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
     /**
      * @dev The event is triggered during the collectFee function.
      *It sends the time, the address receiving it, and the fee amount owed.
@@ -44,8 +43,11 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery, AccessControl {
     // Amount of time between each distribution.
     uint256 private lastDistribution;
 
-    //Role to control contract
-    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
+    // Address variables to aviod changes in constructor size since this is a dummy contract
+    address private mockAddress;
+
+    address private mockAddress2;
+
 
     /**
    @notice The initialize is initiating variables during deployment.
@@ -65,11 +67,11 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery, AccessControl {
         address havenFoundation,
         address networkOperator
     ) {
-        _grantRole(DEFAULT_ADMIN_ROLE, havenFoundation);
-        _grantRole(OPERATOR_ROLE, networkOperator);
         if (_channels.length > 5 || _weights.length > 5) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
+        mockAddress = havenFoundation;
+        mockAddress2 = networkOperator;
         lastDistribution = block.timestamp;
         epochLength = 86400;
         requiredReset = block.timestamp + 86400;
@@ -105,7 +107,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery, AccessControl {
     function plusChannel(
         address _newChannelAddress,
         uint8 _weight
-    ) external onlyRole(OPERATOR_ROLE) {
+    ) external {
         if (channels.length == 5) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
@@ -134,7 +136,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery, AccessControl {
         uint8 _index,
         address _newChannelAddress,
         uint8 _newWeight
-    ) external onlyRole(OPERATOR_ROLE) {
+    ) external  {
         if (
             _newChannelAddress == address(0) ||
             isOriginalAddress(_newChannelAddress) == false
@@ -156,7 +158,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery, AccessControl {
    */
     function newEpoch(
         uint256 new_epochLength
-    ) external onlyRole(OPERATOR_ROLE) {
+    ) external {
         epochLength = new_epochLength;
     }
 
@@ -170,7 +172,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery, AccessControl {
     function grabFee() external {
         if (
             block.timestamp > lastDistribution + epochLength ||
-            hasRole(OPERATOR_ROLE, msg.sender)
+            msg.sender == mockAddress2
         ) {
             uint rebateValue = queryOracle();
             (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(
@@ -198,7 +200,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery, AccessControl {
    @notice Function triggered to force distribution of funds to channels.
    */
 
-    function pressureFee() external payable onlyRole(OPERATOR_ROLE) {
+    function pressureFee() external payable  {
         uint amount = address(this).balance;
         for (uint i = 0; i < channels.length; i++) {
             uint share = (amount * weights[i]) / CONTRACT_SHARES;
@@ -215,7 +217,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery, AccessControl {
    @param _newOracle the new oracle address.
    */
 
-    function newOracle(address _newOracle) external onlyRole(OPERATOR_ROLE) {
+    function newOracle(address _newOracle) external {
         oracle = _newOracle;
     }
 
