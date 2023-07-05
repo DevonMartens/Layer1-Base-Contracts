@@ -4,7 +4,7 @@ const { ethers, upgrades } = require("hardhat");
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
 
-describe("Proof of Identity Contract", function () {
+describe("Proof of Identity Contract: Identity Blob struct after upgrades.", function () {
     let ProofOfIdentityContract;
     let ProofOfIdentityFactory;
     let IPermissionsInterfaceDummyInstance;
@@ -76,5 +76,82 @@ it("User level should be maintained even after an upgrade occurs", async functio
       expect(await VerifiableIdentity.getUserLevel(Address2)).to.equal(3);
       //call from new Verifiable Identity contract for legacy NFT
       expect(await NewVerifiableIdentity.getUserLevel(Address2)).to.equal(3);
+  });
+  it("Country code should be maintained even after an upgrade occurs", async function () {
+    // Upgrade the contract 
+    const ProofOfIdentityContractV2 = await upgrades.upgradeProxy(
+      ProofOfIdentityContract.address,
+      NewProofOfIdentityFactory,
+      {
+        kind: "uups",
+      }
+    );
+     //const NewNewVerifiableIdentity
+     const NewVerifiableIdentityFactory = await ethers.getContractFactory(
+        "NewVerifiableIdentity"
+      );
+
+      const NewVerifiableIdentity = await NewVerifiableIdentityFactory.deploy(
+        //even though the address would be the same really
+        ProofOfIdentityContractV2.address
+      );
+      //call from old Verifiable Identity contract for legacy NFT
+      expect(await VerifiableIdentity.getUserCountryCode(Address2)).to.equal("1");
+      //call from new Verifiable Identity contract for legacy NFT
+      expect(await NewVerifiableIdentity.getUserCountryCode(Address2)).to.equal("1");
+  });
+  it("User type should be maintained even after an upgrade occurs", async function () {
+    // Upgrade the contract 
+    const ProofOfIdentityContractV2 = await upgrades.upgradeProxy(
+      ProofOfIdentityContract.address,
+      NewProofOfIdentityFactory,
+      {
+        kind: "uups",
+      }
+    );
+     //const NewNewVerifiableIdentity
+     const NewVerifiableIdentityFactory = await ethers.getContractFactory(
+        "NewVerifiableIdentity"
+      );
+
+      const NewVerifiableIdentity = await NewVerifiableIdentityFactory.deploy(
+        //even though the address would be the same really
+        ProofOfIdentityContractV2.address
+      );
+      //call from old Verifiable Identity contract for legacy NFT
+      expect(await VerifiableIdentity.getUserType(Address2)).to.equal(2);
+      //call from new Verifiable Identity contract for legacy NFT
+      expect(await NewVerifiableIdentity.getUserType(Address2)).to.equal(2);
+  });
+  it("The identity blob struct should still be callable", async function () {
+    // Upgrade the contract 
+    const ProofOfIdentityContractV2 = await upgrades.upgradeProxy(
+      ProofOfIdentityContract.address,
+      NewProofOfIdentityFactory,
+      {
+        kind: "uups",
+      }
+    );
+     //const NewNewVerifiableIdentity
+     const NewVerifiableIdentityFactory = await ethers.getContractFactory(
+        "NewVerifiableIdentity"
+      );
+
+      const NewVerifiableIdentity = await NewVerifiableIdentityFactory.deploy(
+        //even though the address would be the same really
+        ProofOfIdentityContractV2.address
+      );
+ 
+
+      const oldUserBlob = await VerifiableIdentity.getUserIdentityData(Address2);
+      const newUserBlob = await NewVerifiableIdentity.getUserIdentityData(Address2);
+      //userType
+      // call from old Verifiable Identity contract for legacy NFT
+      expect(oldUserBlob.userType).to.equal(2);
+      //call from new Verifiable Identity contract for legacy NFT
+      expect(newUserBlob.userType).to.equal(2);
+      // expect(
+      //   await NewVerifiableIdentity.getUserIdentityData(Address2)
+      // ).to.deep.equal(await VerifiableIdentity.getUserIdentityData(Address2));
   });
  });
