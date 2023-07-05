@@ -145,13 +145,11 @@ it("User level should be maintained even after an upgrade occurs", async functio
 
       const oldUserBlob = await VerifiableIdentity.getUserIdentityData(Address2);
       const newUserBlob = await NewVerifiableIdentity.getUserIdentityData(Address2);
-      //userType
-      // call from old Verifiable Identity contract for legacy NFT
+      expect(oldUserBlob.level).to.equal(3);
+      expect(newUserBlob.level).to.equal(3);
       expect(oldUserBlob.userType).to.equal(2);
-      //call from new Verifiable Identity contract for legacy NFT
       expect(newUserBlob.userType).to.equal(2);
-      // expect(
-      //   await NewVerifiableIdentity.getUserIdentityData(Address2)
-      // ).to.deep.equal(await VerifiableIdentity.getUserIdentityData(Address2));
+      expect(oldUserBlob.countryCode).to.equal("1");
+      expect(newUserBlob.countryCode).to.equal("1");
   });
  });
