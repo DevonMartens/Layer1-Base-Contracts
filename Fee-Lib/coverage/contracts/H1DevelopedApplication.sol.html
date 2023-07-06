@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">77.78% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>14/18</span>
+        <span class='fraction'>20/20</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">66.67% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>8/12</span>
+        <span class='fraction'>14/14</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>6/8</span>
+        <span class='fraction'>8/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">80% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>20/25</span>
+        <span class='fraction'>27/27</span>
       </div>
     </div>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -139,7 +139,9 @@
 94
 95
 96
-97</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+97
+98
+99</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -170,12 +172,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">121×</span>
+<span class="cline-any cline-yes">181×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">120×</span>
-<span class="cline-any cline-yes">120×</span>
-<span class="cline-any cline-yes">120×</span>
+<span class="cline-any cline-yes">180×</span>
+<span class="cline-any cline-yes">180×</span>
+<span class="cline-any cline-yes">180×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -192,9 +194,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -219,20 +221,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27×</span>
-<span class="cline-any cline-yes">27×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">28×</span>
 <span class="cline-any cline-yes">28×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: ISC
@@ -282,14 +286,14 @@ contract H1DevelopedApplication is FeeQuery {
         }
         (bool success, ) = FeeContract.call{value: getHavenFee()}("");
         require(success, Errors.TRANSFER_FAILED);
-        bool sent = payable(developerWallet).send(getDeveloperFee());
+        bool sent = payable(developerWallet).send(getDeveloperPayment());
         require(sent, Errors.TRANSFER_FAILED);
         _;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function setDevApplicationFee(uint256 newDevFee) external {</span>
-<span class="cstat-no" title="statement not covered" >        require(msg.sender == developerWallet, Errors.INVALID_ADDRESS)</span>;
-<span class="cstat-no" title="statement not covered" >        require(callMiniumFee() &gt; newDevFee, Errors.INVALID_FEE)</span>;
+    function setDevApplicationFee(uint256 newDevFee) external {
+        require(msg.sender == developerWallet, Errors.INVALID_ADDRESS);
+        require(callMiniumFee() &lt; newDevFee, Errors.INVALID_FEE);
         devFee = newDevFee;
     }
 &nbsp;
@@ -297,7 +301,7 @@ contract H1DevelopedApplication is FeeQuery {
    @notice This is the view function to get the fee amount owed to the developer.
    @dev It is 90% of the contract balance.
    */
-    function getDeveloperFee() public view returns (uint256 developerFee) {
+    function getDeveloperPayment() public view returns (uint256 developerFee) {
         uint256 currentFee = calculateDevFee();
         developerFee = (currentFee / 10) * 9;
     }
@@ -325,10 +329,12 @@ contract H1DevelopedApplication is FeeQuery {
         return currentFeePrice;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function callMiniumFee() public view returns (uint256) {</span>
-        //current fee then needs to be multiplied by their fee which needs a minuiim set by operator
-<span class="cstat-no" title="statement not covered" >        uint256 minFeeFromFeeContract = FeeQuery(FeeContract).getMinFee();</span>
-<span class="cstat-no" title="statement not covered" >        return minFeeFromFeeContract;</span>
+    function callMiniumFee() public view returns (uint256) {
+        uint256 minFeeFromFeeContract = FeeQuery(FeeContract).getMinFee();
+        if(minFeeFromFeeContract &gt; devFee){
+            revert(Errors.INVALID_FEE);
+        }
+        return minFeeFromFeeContract;
     }
 &nbsp;
 }</pre></td></tr>
@@ -337,7 +343,7 @@ contract H1DevelopedApplication is FeeQuery {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 06 2023 06:17:07 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 06 2023 07:24:48 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

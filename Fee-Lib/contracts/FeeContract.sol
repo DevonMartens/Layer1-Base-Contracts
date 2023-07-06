@@ -113,10 +113,10 @@ contract FeeContract is
     }
 
     /**
-     * @dev Logic to add new channel with weight.
-     * @notice We allow 5 contracts per Fee Contract to ensure distribution can
+     * @notice Logic to add new channel with weight.
+     * @dev We allow 5 contracts per Fee Contract to ensure distribution can
      * be managed we also don't allow duplicate addresses or zero addresses.
-     * @notice The total weight is tracked by `CONTRACT_SHARES` which we use to send correct amounts to each channel.
+     * @dev The total weight is tracked by `CONTRACT_SHARES` which we use to send correct amounts to each channel.
      */
     function addChannel(
         address _newChannelAddress,
@@ -138,7 +138,7 @@ contract FeeContract is
 
     /**
      * @notice  Logic to adjust a channel and its weight.
-     * @param _index the index of the validator in the validators array.
+     * @param _index the index of the channels and weights array.
      * @param _newChannelAddress the address of the validator replacing the old one.
      * @param _newWeight the amount of total shares the new address will receive.
      * @dev the index to avoid a work around to the 5 channel limit and for 0 address.
@@ -165,6 +165,22 @@ contract FeeContract is
         weights[_index] = _newWeight;
         CONTRACT_SHARES += _newWeight;
     }
+
+       // remove
+    /**
+     * @notice  Logic to remove a channel and its weight.
+     * @param index the index of the channels and weights array.
+     * @dev The total weight is tracked by `CONTRACT_SHARES`
+     * which we subtract the value from in the middle of this function.
+     */
+    function removeChannelAndWieghtByIndex(uint index)  external onlyRole(OPERATOR_ROLE) {
+        channels[index] = channels[channels.length-1];
+        channels.pop();
+        CONTRACT_SHARES -= weights[index];
+        weights[index] = weights[weights.length-1];
+        weights.pop();
+    }
+
 
     /**
    @notice This is to adjust the length of time between payouts from the contract.
@@ -225,6 +241,14 @@ contract FeeContract is
         lastDistribution = block.timestamp;
     }
 
+     /**
+   @notice `setMinFee` is a setter function to set the minium fee for developer applications.
+   @param miniumAmount is the lowest amount a developer can charge to run their applications.
+    */
+    function setMinFee(uint256 miniumAmount) external onlyRole(OPERATOR_ROLE) {
+        minFee = miniumAmount;
+    }
+
     /**
    @notice Setter function to adjust oracle address.
    @param _newOracle the new oracle address.
@@ -232,15 +256,6 @@ contract FeeContract is
 
     function setOracle(address _newOracle) external onlyRole(OPERATOR_ROLE) {
         oracle = _newOracle;
-    }
-
-    // remove
-    function removeChannelAndWieghtByIndex(uint index)  external onlyRole(OPERATOR_ROLE) {
-        channels[index] = channels[channels.length-1];
-        channels.pop();
-        CONTRACT_SHARES -= weights[index];
-        weights[index] = weights[weights.length-1];
-        weights.pop();
     }
 
     /**

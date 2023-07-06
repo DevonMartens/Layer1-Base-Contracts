@@ -45,14 +45,14 @@ contract H1DevelopedApplication is FeeQuery {
         }
         (bool success, ) = FeeContract.call{value: getHavenFee()}("");
         require(success, Errors.TRANSFER_FAILED);
-        bool sent = payable(developerWallet).send(getDeveloperFee());
+        bool sent = payable(developerWallet).send(getDeveloperPayment());
         require(sent, Errors.TRANSFER_FAILED);
         _;
     }
 
     function setDevApplicationFee(uint256 newDevFee) external {
         require(msg.sender == developerWallet, Errors.INVALID_ADDRESS);
-        require(callMiniumFee() > newDevFee, Errors.INVALID_FEE);
+        require(callMiniumFee() < newDevFee, Errors.INVALID_FEE);
         devFee = newDevFee;
     }
 
@@ -60,7 +60,7 @@ contract H1DevelopedApplication is FeeQuery {
    @notice This is the view function to get the fee amount owed to the developer.
    @dev It is 90% of the contract balance.
    */
-    function getDeveloperFee() public view returns (uint256 developerFee) {
+    function getDeveloperPayment() public view returns (uint256 developerFee) {
         uint256 currentFee = calculateDevFee();
         developerFee = (currentFee / 10) * 9;
     }
@@ -89,8 +89,10 @@ contract H1DevelopedApplication is FeeQuery {
     }
 
     function callMiniumFee() public view returns (uint256) {
-        //current fee then needs to be multiplied by their fee which needs a minuiim set by operator
         uint256 minFeeFromFeeContract = FeeQuery(FeeContract).getMinFee();
+        if(minFeeFromFeeContract > devFee){
+            revert(Errors.INVALID_FEE);
+        }
         return minFeeFromFeeContract;
     }
 

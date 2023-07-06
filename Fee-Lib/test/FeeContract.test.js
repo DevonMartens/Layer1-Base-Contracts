@@ -557,6 +557,11 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       expect(reset.toString()).to.equal("1");
       expect(firstepochLength.toString()).not.to.equal(reset.toString());
     });
+    it("Fee Contract: The setMinFee function should change the change the minFee amount.", async () => {
+      expect(await FeeContract.getMinFee()).to.equal(0);
+      await FeeContract.setMinFee(1);
+      expect(await FeeContract.getMinFee()).to.equal(1);
+    });
     it("Fee Contract: The isOriginalAddress function should return false if the address is in the array of channels.", async () => {
       const knownAddress = await FeeContract.isOriginalAddress(
         ContractDeployer
@@ -581,21 +586,33 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       OPERATOR_ROLE = await FeeContract.OPERATOR_ROLE();
       DEFAULT_ADMIN_ROLE = await FeeContract.DEFAULT_ADMIN_ROLE();
     });
+    it("Fee Contract: Only addresses with OPERATOR_ROLE should be able call to setMinFee.", async () => {
+      await expectRevert(
+        FeeContract.connect(Address3SendsH1).setMinFee(1),
+        `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
+      );
+    });
     it("Fee Contract: Only addresses with OPERATOR_ROLE should be able call to setEpoch.", async () => {
       await expectRevert(
         FeeContract.connect(Address3SendsH1).setEpoch(1),
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });
-    it("Fee Contract: Only addresses with OPERATOR_ROLE should be the only one to adjust channels.", async () => {
+    it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to adjust channels.", async () => {
       await expectRevert(
         FeeContract.connect(Address3SendsH1).adjustChannel(1, Address4, 75),
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });
-    it("Fee Contract: Only addresses with OPERATOR_ROLE should be the only one to adjust channels.", async () => {
+    it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to adjust channels.", async () => {
       await expectRevert(
         FeeContract.connect(Address3SendsH1).addChannel(Address4, 75),
+        `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
+      );
+    });
+    it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to remove channels.", async () => {
+      await expectRevert(
+        FeeContract.connect(Address3SendsH1).removeChannelAndWieghtByIndex(0),
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });

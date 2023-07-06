@@ -23,14 +23,16 @@ contract FeeQuery {
     // Storage for minium fee.
     uint256 public minFee;
 
-
+    /**
+   @notice This is the function to retrieve the minium dev fee allowed for developers.
+    */
     function getMinFee() public view returns (uint256) {
             return minFee;
     }
 
     /**
-   @notice This is the function the modifier consults to view the fee from the fee contract.
-   @dev The required reset means the fee updates every 24 hours.
+   @notice This is the function consults the fee contract to get the fee.
+   @dev The required reset means the fee must be updated every 24 hours.
     */
     function getFee() public view returns (uint256) {
         if (requiredReset < block.timestamp) {

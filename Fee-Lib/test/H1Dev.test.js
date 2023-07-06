@@ -147,13 +147,30 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
       "123"
     );
   });
-  it("set in simple storage with dev fee should adjust get ", async () => {
+  it("set in simple storage with dev fee should adjust get", async () => {
     await SimpleStorageWithDevAppFee.set(1);
     await FeeContract.resetFee();
     await SimpleStorageWithDevAppFee.set(1, { value: 1 });
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
   });
-
+  it("the min fee should be inforced", async () => {
+    await H1DevelopedApplication.setDevApplicationFee(100);
+  });
+  it("H1DevelopedApplication: The function callMiniumFee() should revert if the devFee is too low.", async () => {
+    await FeeContract.setMinFee(100)
+    await expectRevert(H1DevelopedApplication.callMiniumFee(), "131");
+  });
+  it("H1DevelopedApplication: The function calculateDevFee() should return devFee * USD.", async () => {
+    expect(await H1DevelopedApplication.calculateDevFee()).to.equal(0)
+  });
+  it("H1DevelopedApplication: The function setDevApplicationFee() should only be callabe by the developerWallet.", async () => {
+    await expectRevert(H1DevelopedApplication.connect(Address3Sig).setDevApplicationFee(89), "123");
+  });
+  //
+  it("H1DevelopedApplication: The function setDevApplicationFee() should only not allow values less than the fee contract permits.", async () => {
+    await FeeContract.setMinFee(100)
+    await expectRevert(H1DevelopedApplication.setDevApplicationFee(89), "131");
+  });
   it("H1DevelopedApplication devApplicationFee() disperse ether to the dev wallet provided", async () => {
     await OracleContract.setPriceAverage(TEN_H1);
     await FeeContract.resetFee();
