@@ -144,11 +144,11 @@ describe("Validator Rewards Contract", function () {
       expect(await ValidatorContract.releasable(Address2)).to.equal(TWO_H1);
       expect(await ValidatorContract.releasable(Address3)).to.equal(THREE_H1);
     });
-    it("the view isOriginalAddress should return false if the address is in the validators array", async () => {
-      expect(await ValidatorContract.isOriginalAddress(Address2)).to.equal(
+    it("the view isTheAddressInTheValidatorsArray should return false if the address is in the validators array", async () => {
+      expect(await ValidatorContract.isTheAddressInTheValidatorsArray(Address2)).to.equal(
         false
       );
-      expect(await ValidatorContract.isOriginalAddress(Address4)).to.equal(
+      expect(await ValidatorContract.isTheAddressInTheValidatorsArray(Address4)).to.equal(
         true
       );
     });

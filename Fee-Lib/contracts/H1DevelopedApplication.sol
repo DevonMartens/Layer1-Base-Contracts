@@ -3,7 +3,7 @@
 import "./Errors.sol";
 import "./FeeQuery.sol";
 
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.0;
 
 /**
  * @title H1DevelopedApplication

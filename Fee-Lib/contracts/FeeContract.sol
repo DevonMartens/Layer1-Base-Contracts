@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -78,7 +78,7 @@ contract FeeContract is
         __UUPSUpgradeable_init();
         _grantRole(DEFAULT_ADMIN_ROLE, havenFoundation);
         _grantRole(OPERATOR_ROLE, networkOperator);
-        if (_channels.length > 5 || _weights.length > 5) {
+        if (_channels.length > 10 || _weights.length > 10) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
         lastDistribution = block.timestamp;
@@ -122,11 +122,11 @@ contract FeeContract is
         address _newChannelAddress,
         uint8 _weight
     ) external onlyRole(OPERATOR_ROLE) {
-        if (channels.length == 5) {
+        if (channels.length == 10) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
         if (
-            isOriginalAddress(_newChannelAddress) == false ||
+            isTheAddressInTheChannelsArray(_newChannelAddress) == false ||
             address(0) == _newChannelAddress
         ) {
             revert(Errors.INVALID_ADDRESS);
@@ -153,7 +153,7 @@ contract FeeContract is
     ) external onlyRole(OPERATOR_ROLE) {
         if (
             _newChannelAddress == address(0) ||
-            isOriginalAddress(_newChannelAddress) == false
+            isTheAddressInTheChannelsArray(_newChannelAddress) == false
         ) {
             revert(Errors.INVALID_ADDRESS);
         }
@@ -250,7 +250,7 @@ contract FeeContract is
     }
 
     /**
-   @notice Setter function to adjust oracle address.
+   @notice `setOracle` this setter function to adjust oracle address.
    @param _newOracle the new oracle address.
    */
 
@@ -259,11 +259,11 @@ contract FeeContract is
     }
 
     /**
-   @notice This view function checks if the address is in the channels array.
+   @notice `isTheAddressInTheChannelsArray` this view function checks if the address is in the channels array.
    @dev It is used in functions above to ensure no duplicate addresses are added to the channels.
    */
 
-    function isOriginalAddress(address channel) public view returns (bool) {
+    function isTheAddressInTheChannelsArray(address channel) public view returns (bool) {
         for (uint i = 0; i < channels.length; i++) {
             if (channels[i] == channel) {
                 return false;
@@ -273,7 +273,8 @@ contract FeeContract is
     }
 
     /**
-   @notice Function to view when the fee will need to be reset by.
+   * @notice `getNextResetTime` this view function will 
+   * tell when the fee will need to be reset by via the timestamp.
    */
 
     function getNextResetTime() public view returns (uint256) {
@@ -281,7 +282,7 @@ contract FeeContract is
     }
 
     /**
-   @notice Function to allow ability to view all channels.
+   @notice `getChannels` this function to allow ability to view all channels.
    */
 
     function getChannels() public view returns (address[] memory) {
@@ -289,7 +290,7 @@ contract FeeContract is
     }
 
     /**
-   @notice Function that allows ability to view all weights.
+   @notice `getWieghts` this function that allows ability to view all weights.
    */
 
     function getWieghts() public view returns (uint8[] memory) {
@@ -297,7 +298,7 @@ contract FeeContract is
     }
 
     /**
-   @notice Function that allows ability to view oracle address.
+   @notice `getOracleAddress` this function that allows ability to view oracle address.
    */
 
     function getOracleAddress() public view returns (address) {
@@ -305,8 +306,9 @@ contract FeeContract is
     }
 
     /**
-   @notice Function that allows ability to view the amount an address is supposed to be paid based on array position.
-   @param index the number in the array of channels/weights representing the index.
+   * @notice `amountPaidToUponNextDistribution` this function allows the
+   * ability to view the amount an address is supposed to be paid based on array position.
+   * @param index the number in the array of channels/weights representing the index.
    */
 
     function amountPaidToUponNextDistribution(
@@ -316,8 +318,9 @@ contract FeeContract is
     }
 
     /**
-   @notice Allows ability to view a channel and its corresponding weight via index.
-   @param index the number in the array of channels.
+   * @notice `getChannelWeightByIndex` this function allows ability to view a channel 
+   * and its corresponding weight via index.
+   * @param index the number in the array of channels.
    */
 
     function getChannelWeightByIndex(
@@ -329,7 +332,8 @@ contract FeeContract is
     }
 
     /**
-   @notice View function to check the total number of shares that have been dispersed to addresses.
+   * @notice `getTotalContractShares` this view function to check the total 
+   * number of shares that have been dispersed to addresses.
    */
 
     function getTotalContractShares() public view returns (uint8) {
@@ -337,7 +341,8 @@ contract FeeContract is
     }
 
     /**
-   @notice View function to check the block in which the last distribution occured
+   * @notice `getLastDistributionBlock` this view function to 
+   * check the block in which the last distribution occured
    */
 
     function getLastDistributionBlock() public view returns (uint256) {
@@ -345,7 +350,7 @@ contract FeeContract is
     }
 
     /**
-   @notice Function to consult oracle to get fee amount.
+   @notice `queryOracle` this function is to consult oracle to get fee amount.
    */
 
     function queryOracle() public view returns (uint feeAmount) {
@@ -353,7 +358,7 @@ contract FeeContract is
     }
 
     /**
-   @notice Function to consult oracle to update.
+   @notice `_refreshOracle` this function to consult oracle to update.
    */
 
     function _refreshOracle() internal returns (bool success) {
@@ -361,7 +366,7 @@ contract FeeContract is
     }
 
     /**
-   @notice Function to upgrade contract override to protect.
+   @notice _authorizeUpgrad this function to upgrade contract override to protect.
    @param newImplementation new implementation address.
    */
 

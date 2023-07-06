@@ -3,7 +3,7 @@
 import "./FeeQuery.sol";
 import "./Errors.sol";
 
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.0;
 
 /// @title H1NativeApplication
 /// @notice This contract has a modifer that ensures fees are sent the FeeContract.

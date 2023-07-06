@@ -145,13 +145,13 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     let ValidatorContract4;
     let ValidatorContract5;
     let ValidatorContract6;
-    let max5ArrayWeight;
-    let max5ArrayChannel;
+    let max10ArrayWeight;
+    let max10ArrayChannel;
     let FeeContractWithMaxAddressesAndWeights;
-    let FourPositionArrayFeeContract;
+    let NinePositionArrayFeeContract;
     beforeEach(async () => {
       //addresses for using
-      max5ArrayWeight = [1, 2, 3, 4, 5];
+      max10ArrayWeight = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5];
       //validator array that is too heavey
       ValidatorContract2 = await upgrades.deployProxy(
         ValidatorRewardsFactory,
@@ -203,13 +203,68 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         ],
         { initializer: "initialize", kind: "uups" }
       );
+      ValidatorContract7 = await upgrades.deployProxy(
+      ValidatorRewardsFactory,
+      [
+        ContractDeployerArray,
+        SingleWeightArray,
+        ContractDeployer,
+        ContractDeployer,
+      ],
+      { initializer: "initialize", kind: "uups" }
+    );
+    ValidatorContract8 = await upgrades.deployProxy(
+      ValidatorRewardsFactory,
+      [
+        ContractDeployerArray,
+        SingleWeightArray,
+        ContractDeployer,
+        ContractDeployer,
+      ],
+      { initializer: "initialize", kind: "uups" }
+    );
+    ValidatorContract9 = await upgrades.deployProxy(
+      ValidatorRewardsFactory,
+      [
+        ContractDeployerArray,
+        SingleWeightArray,
+        ContractDeployer,
+        ContractDeployer,
+      ],
+      { initializer: "initialize", kind: "uups" }
+    );
+    ValidatorContract10 = await upgrades.deployProxy(
+      ValidatorRewardsFactory,
+      [
+        ContractDeployerArray,
+        SingleWeightArray,
+        ContractDeployer,
+        ContractDeployer,
+      ],
+      { initializer: "initialize", kind: "uups" }
+    );
+    ValidatorContract11 = await upgrades.deployProxy(
+      ValidatorRewardsFactory,
+      [
+        ContractDeployerArray,
+        SingleWeightArray,
+        ContractDeployer,
+        ContractDeployer,
+      ],
+      { initializer: "initialize", kind: "uups" }
+    );
       //channel
-      max5ArrayChannel = [
+      max10ArrayChannel = [
         ValidatorContract.address,
         ValidatorContract2.address,
         ValidatorContract3.address,
         ValidatorContract4.address,
         ValidatorContract5.address,
+        ValidatorContract6.address,
+        ValidatorContract7.address,
+        ValidatorContract8.address,
+        ValidatorContract9.address,
+        ValidatorContract10.address,
       ];
 
       // ValidatorContract = await ValidatorRewards.deploy(ContractDeployerArray, weight, ContractDeployer, ContractDeployer)
@@ -217,27 +272,32 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         FeeContractFactory,
         [
           Address2,
-          max5ArrayChannel,
-          max5ArrayWeight,
+          max10ArrayChannel,
+          max10ArrayWeight,
           ContractDeployer,
           ContractDeployer,
         ],
         { initializer: "initialize", kind: "uups" }
       );
-      FourPositionsArrayOfChannels = [
+      NinePositionsArrayOfChannels = [
         ValidatorContract.address,
         ValidatorContract2.address,
         ValidatorContract3.address,
         ValidatorContract4.address,
+        ValidatorContract5.address,
+        ValidatorContract6.address,
+        ValidatorContract7.address,
+        ValidatorContract8.address,
+        ValidatorContract9.address,
       ];
       //Shorter Fee Contract
-      FourPositionsArrayOfWeights = [1, 2, 3, 4, 5];
-      FourPositionArrayFeeContract = await upgrades.deployProxy(
+      NinePositionsArrayOfWeights = [1, 2, 3, 4, 5, 1, 2, 3, 4];
+      NinePositionArrayFeeContract = await upgrades.deployProxy(
         FeeContractFactory,
         [
           Address2,
-          FourPositionsArrayOfChannels,
-          FourPositionsArrayOfWeights,
+          NinePositionsArrayOfChannels,
+          NinePositionsArrayOfWeights,
           ContractDeployer,
           ContractDeployer,
         ],
@@ -253,8 +313,13 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         ValidatorContract4.address,
         ValidatorContract5.address,
         ValidatorContract6.address,
+        ValidatorContract7.address,
+        ValidatorContract8.address,
+        ValidatorContract9.address,
+        ValidatorContract10.address,
+        ValidatorContract11.address,
       ];
-      const oversizedWieghtsArray = [1, 2, 3, 4, 5, 6];
+      const oversizedWieghtsArray = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5];
       await expectRevert(
         upgrades.deployProxy(
           FeeContractFactory,
@@ -275,10 +340,10 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     it("Fee Contract: The adjustChannel function should change the correct wieght and channel.", async () => {
       expect(
         await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()
-      ).to.equal(15);
+      ).to.equal(30);
       await FeeContractWithMaxAddressesAndWeights.adjustChannel(
         4,
-        ValidatorContract6.address,
+        ValidatorContract11.address,
         6
       );
       const channel5ShouldHaveWeightOf6 =
@@ -289,12 +354,12 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     });
     it("Fee Contract: The removeChannelAndWieghtByIndex function remove wieght, channel and subtract the total contract shares.", async () => {
       await FeeContractWithMaxAddressesAndWeights.removeChannelAndWieghtByIndex(
-       4
+       9
       );
-      const countingArray = [1,2,3,4]
-      expect(await FeeContractWithMaxAddressesAndWeights.getChannels()).to.deep.equal(FourPositionsArrayOfChannels)
+      const countingArray = [1,2,3,4, 5, 1,2,3,4]
+      expect(await FeeContractWithMaxAddressesAndWeights.getChannels()).to.deep.equal(NinePositionsArrayOfChannels)
       expect(await FeeContractWithMaxAddressesAndWeights.getWieghts()).to.deep.equal(countingArray)
-      expect(await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()).to.equal(10);
+      expect(await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()).to.equal(25);
     });
     it("Fee Contract: The adjustChannel function will revert if you input an existing channel.", async () => {
       await expectRevert(
@@ -308,7 +373,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     });
     it("Fee Contract: The addChannel function should revert if you input 0 address.", async () => {
       await expectRevert(
-        FourPositionArrayFeeContract.addChannel(
+        NinePositionArrayFeeContract.addChannel(
           "0x0000000000000000000000000000000000000000",
           6
         ),
@@ -325,26 +390,26 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         "123"
       );
     });
-    it("Fee Contract: The adjustChannel function should revert if you input an index greater than 4.", async () => {
+    it("Fee Contract: The adjustChannel function should revert if you input an index greater than 9.", async () => {
       await expectRevert(
         FeeContractWithMaxAddressesAndWeights.adjustChannel(
-          7,
-          ValidatorContract6.address,
+          17,
+          ValidatorContract11.address,
           6
         ),
         "111"
       );
     });
     it("Fee Contract: The initalize function will fail if you put 6+ weights or addresses.", async () => {
-      await max5ArrayWeight.push(4);
+      await max10ArrayWeight.push(4);
 
       await expectRevert(
         upgrades.deployProxy(
           FeeContractFactory,
           [
             Address2,
-            max5ArrayChannel,
-            max5ArrayWeight,
+            max10ArrayChannel,
+            max10ArrayWeight,
             ContractDeployer,
             ContractDeployer,
           ],
@@ -356,39 +421,39 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     it("Fee Contract: The addChannel function should allow a new channel and wieght value the adjust the contract's total shares.", async () => {
       //gets original share amount to add to to confirm adjustments
       const originalShareAmount =
-        await FourPositionArrayFeeContract.getTotalContractShares();
+        await NinePositionArrayFeeContract.getTotalContractShares();
       //add 5
       const newExpectedShareAmount = originalShareAmount + 5;
       //add a channel 5th so this should be max
-      await FourPositionArrayFeeContract.addChannel(
-        ValidatorContract5.address,
+      await NinePositionArrayFeeContract.addChannel(
+        ValidatorContract10.address,
         5
       );
       //expect 5 to be added to old total
       expect(
-        await FourPositionArrayFeeContract.getTotalContractShares()
+        await NinePositionArrayFeeContract.getTotalContractShares()
       ).to.equal(newExpectedShareAmount);
       //confirms array is has the values of our addition for position 4
-      const positionFour =
-        await FourPositionArrayFeeContract.getChannelWeightByIndex(4);
-      const addressOfPositionFour = positionFour[0];
-      const wieghtsOfPositionFour = positionFour[1];
+      const positionNine =
+        await NinePositionArrayFeeContract.getChannelWeightByIndex(4);
+      const addressOfPositionNine = positionNine[0];
+      const wieghtsOfPositionNine = positionNine[1];
       //address of position 4 should be Validator Contract 5
-      expect(addressOfPositionFour).to.equal(ValidatorContract5.address);
+      expect(addressOfPositionNine).to.equal(ValidatorContract5.address);
       //wieghts of position 4 should be 5
-      expect(5).to.equal(wieghtsOfPositionFour);
+      expect(5).to.equal(wieghtsOfPositionNine);
     });
     it("Fee Contract: The addChannel function should not allow duplicates.", async () => {
       //add a channel 5th so this should be max
       await expectRevert(
-        FourPositionArrayFeeContract.addChannel(ValidatorContract3.address, 6),
+        NinePositionArrayFeeContract.addChannel(ValidatorContract3.address, 6),
         "123"
       );
     });
     it("Fee Contract: The addChannel function should not allow more than 5 channels", async () => {
       await expectRevert(
         FeeContractWithMaxAddressesAndWeights.addChannel(
-          ValidatorContract5.address,
+          ValidatorContract11.address,
           6
         ),
         "124"
@@ -562,14 +627,14 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       await FeeContract.setMinFee(1);
       expect(await FeeContract.getMinFee()).to.equal(1);
     });
-    it("Fee Contract: The isOriginalAddress function should return false if the address is in the array of channels.", async () => {
-      const knownAddress = await FeeContract.isOriginalAddress(
+    it("Fee Contract: The isTheAddressInTheChannelsArray function should return false if the address is in the array of channels.", async () => {
+      const knownAddress = await FeeContract.isTheAddressInTheChannelsArray(
         ContractDeployer
       );
       expect(knownAddress).to.equal(false);
     });
-    it("Fee Contract: The isOriginalAddress function should return true if the address is in the array of channels.", async () => {
-      const unknownAddress = await FeeContract.isOriginalAddress(Address4);
+    it("Fee Contract: The isTheAddressInTheChannelsArray function should return true if the address is in the array of channels.", async () => {
+      const unknownAddress = await FeeContract.isTheAddressInTheChannelsArray(Address4);
       expect(unknownAddress).to.equal(true);
     });
   });
