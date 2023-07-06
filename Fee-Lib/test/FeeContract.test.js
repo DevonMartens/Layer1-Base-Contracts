@@ -287,6 +287,15 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const weightOfChannel5 = await channel5ShouldHaveWeightOf6[1];
       expect(await weightOfChannel5).to.equal(6);
     });
+    it("Fee Contract: The removeChannelAndWieghtByIndex function remove wieght, channel and subtract the total contract shares.", async () => {
+      await FeeContractWithMaxAddressesAndWeights.removeChannelAndWieghtByIndex(
+       4
+      );
+      const countingArray = [1,2,3,4]
+      expect(await FeeContractWithMaxAddressesAndWeights.getChannels()).to.deep.equal(FourPositionsArrayOfChannels)
+      expect(await FeeContractWithMaxAddressesAndWeights.getWieghts()).to.deep.equal(countingArray)
+      expect(await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()).to.equal(10);
+    });
     it("Fee Contract: The adjustChannel function will revert if you input an existing channel.", async () => {
       await expectRevert(
         FeeContractWithMaxAddressesAndWeights.adjustChannel(
@@ -444,14 +453,14 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const current = await time.latest();
       expect(afterLastDistribution.toString()).to.equal(current.toString());
     });
-    it("Fee Contract: The forceFee function should refresh the oracle.", async () => {
-      await Address3SendsH1.sendTransaction({
-        to: FeeContract.address,
-        value: SIX_H1,
-      });
-      await FeeContract.forceFee();
-      expect(await FeeOracleContract.viewJustKeepAdding()).to.equal(8);
-    });
+    // it("Fee Contract: The forceFee function should refresh the oracle.", async () => {
+    //   await Address3SendsH1.sendTransaction({
+    //     to: FeeContract.address,
+    //     value: SIX_H1,
+    //   });
+    //   await FeeContract.forceFee();
+    //   expect(await FeeOracleContract.viewJustKeepAdding()).to.equal(8);
+    // });
     it("Fee Contract: The forceFee function should change the lastDistribution timestamp.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContract.address,

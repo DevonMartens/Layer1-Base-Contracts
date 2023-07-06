@@ -38,4 +38,5 @@ library Errors {
     string public constant ZERO_VARIABLE_NOT_ACCEPTED = "128";
     string public constant ADDRESS_ALREADY_HAS_A_VALUE = "129";
     string public constant INVALID_INDEX = "130";
+    string public constant INVALID_FEE = "131";
 }

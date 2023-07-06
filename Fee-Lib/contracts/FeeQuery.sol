@@ -20,6 +20,13 @@ contract FeeQuery {
     uint256 public requiredReset;
     // Storage for the application fee.
     uint256 public fee;
+    // Storage for minium fee.
+    uint256 public minFee;
+
+
+    function getMinFee() public view returns (uint256) {
+            return minFee;
+    }
 
     /**
    @notice This is the function the modifier consults to view the fee from the fee contract.

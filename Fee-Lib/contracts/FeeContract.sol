@@ -8,6 +8,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./FeeQuery.sol";
 import "./Errors.sol";
 
+//ability to remove channel
+// force distro
 /** 
 @title FeeContract
 @notice This contract outlines how fees are distributed by validators on Haven1.
@@ -220,7 +222,6 @@ contract FeeContract is
             require(success, Errors.TRANSFER_FAILED);
             emit FeesDistributed(block.timestamp, channels[i], share);
         }
-        _refreshOracle();
         lastDistribution = block.timestamp;
     }
 
@@ -231,6 +232,15 @@ contract FeeContract is
 
     function setOracle(address _newOracle) external onlyRole(OPERATOR_ROLE) {
         oracle = _newOracle;
+    }
+
+    // remove
+    function removeChannelAndWieghtByIndex(uint index)  external onlyRole(OPERATOR_ROLE) {
+        channels[index] = channels[channels.length-1];
+        channels.pop();
+        CONTRACT_SHARES -= weights[index];
+        weights[index] = weights[weights.length-1];
+        weights.pop();
     }
 
     /**

@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">77.78% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>12/12</span>
+        <span class='fraction'>14/18</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">66.67% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>8/8</span>
+        <span class='fraction'>8/12</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">75% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>5/5</span>
+        <span class='fraction'>6/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">80% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>17/17</span>
+        <span class='fraction'>20/25</span>
       </div>
     </div>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -116,7 +116,30 @@
 71
 72
 73
-74</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -136,16 +159,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10×</span>
-<span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8×</span>
-<span class="cline-any cline-yes">8×</span>
-<span class="cline-any cline-yes">7×</span>
-<span class="cline-any cline-yes">7×</span>
-<span class="cline-any cline-yes">6×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -162,6 +175,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">120×</span>
 <span class="cline-any cline-yes">120×</span>
+<span class="cline-any cline-yes">120×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -185,8 +218,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">28×</span>
 <span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: ISC
@@ -208,19 +254,8 @@ contract H1DevelopedApplication is FeeQuery {
     address public FeeContract;
     // Address storage for developer wallet.
     address developerWallet;
-&nbsp;
-    // Modifier to send fees to the fee contract and to the developer in contracts.
-    modifier devApplicationFee() {
-        if (msg.value &lt; callFee() &amp;&amp; callFee() &gt; 0) {
-            revert(Errors.INSUFFICIENT_FUNDS);
-        }
-        (bool success, ) = FeeContract.call{value: getHavenFee()}("");
-        require(success, Errors.TRANSFER_FAILED);
-        bool sent = payable(developerWallet).send(getDeveloperFee());
-        require(sent, Errors.TRANSFER_FAILED);
-        _;
-    }
-&nbsp;
+    // Stoarge variable for the fee set by the developer.
+    uint256 devFee;
     /**
      * @notice Constructor to initialize contract deployment.
      * @param _FeeContract address of fee contract to pay fees.
@@ -229,20 +264,41 @@ contract H1DevelopedApplication is FeeQuery {
      * of this wallet should consider a setter for this address in their dApp.
      */
 &nbsp;
-    constructor(address _FeeContract, address walletToCollectFees) {
+    constructor(address _FeeContract, address walletToCollectFees, uint256 applicationFee) 
+    {
         if (_FeeContract == address(0)) {
             revert(Errors.INVALID_ADDRESS);
         }
         FeeContract = _FeeContract;
         developerWallet = payable(walletToCollectFees);
+        devFee = applicationFee;
     }
 &nbsp;
-    /**
+&nbsp;
+    // Modifier to send fees to the fee contract and to the developer in contracts.
+    modifier devApplicationFee() {
+        if (msg.value &lt; calculateDevFee() &amp;&amp; calculateDevFee() &gt; 0) {
+             revert(Errors.INSUFFICIENT_FUNDS);
+        }
+        (bool success, ) = FeeContract.call{value: getHavenFee()}("");
+        require(success, Errors.TRANSFER_FAILED);
+        bool sent = payable(developerWallet).send(getDeveloperFee());
+        require(sent, Errors.TRANSFER_FAILED);
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setDevApplicationFee(uint256 newDevFee) external {</span>
+<span class="cstat-no" title="statement not covered" >        require(msg.sender == developerWallet, Errors.INVALID_ADDRESS)</span>;
+<span class="cstat-no" title="statement not covered" >        require(callMiniumFee() &gt; newDevFee, Errors.INVALID_FEE)</span>;
+        devFee = newDevFee;
+    }
+&nbsp;
+   /**
    @notice This is the view function to get the fee amount owed to the developer.
    @dev It is 90% of the contract balance.
    */
     function getDeveloperFee() public view returns (uint256 developerFee) {
-        uint256 currentFee = callFee();
+        uint256 currentFee = calculateDevFee();
         developerFee = (currentFee / 10) * 9;
     }
 &nbsp;
@@ -252,23 +308,36 @@ contract H1DevelopedApplication is FeeQuery {
    */
 &nbsp;
     function getHavenFee() public view returns (uint256 havenOneFee) {
-        uint256 currentFee = callFee();
+        uint256 currentFee = calculateDevFee();
         havenOneFee = currentFee / 10;
+    }
+&nbsp;
+    // Calculate dev fee
+    
+    function calculateDevFee() public view returns (uint256) {
+        uint256 devFeeInUSD = (callFee() * devFee);
+        return devFeeInUSD;
     }
 &nbsp;
     //query fee function
     function callFee() public view returns (uint256) {
-        uint256 currentFee = FeeQuery(FeeContract).getFee();
-        return currentFee;
+        uint256 currentFeePrice = FeeQuery(FeeContract).getFee();
+        return currentFeePrice;
     }
-}
-&nbsp;</pre></td></tr>
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function callMiniumFee() public view returns (uint256) {</span>
+        //current fee then needs to be multiplied by their fee which needs a minuiim set by operator
+<span class="cstat-no" title="statement not covered" >        uint256 minFeeFromFeeContract = FeeQuery(FeeContract).getMinFee();</span>
+<span class="cstat-no" title="statement not covered" >        return minFeeFromFeeContract;</span>
+    }
+&nbsp;
+}</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 06 2023 02:48:50 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 06 2023 06:17:07 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

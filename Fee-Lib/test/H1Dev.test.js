@@ -88,20 +88,24 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
 
     H1DevelopedApplication = await H1DevelopedApplicationFactory.deploy(
       FeeContract.address,
-      ContractDeployer
+      ContractDeployer,
+      1
     );
     SimpleStorageWithDevAppFee = await SimpleStorageWithDevAppFeeFactory.deploy(
       FeeContract.address,
-      ContractDeployer
+      ContractDeployer,
+      1
     );
     SimpleStorageBadFeeContract =
       await SimpleStorageWithDevAppFeeFactory.deploy(
         BadFeeContract.address,
-        ContractDeployer
+        ContractDeployer,
+        1
       );
     SimpleStorageBadDevWallet = await SimpleStorageWithDevAppFeeFactory.deploy(
       FeeContract.address,
-      BadFeeContract.address
+      BadFeeContract.address,
+      1
     );
   });
   it("H1DevelopedApplication devApplicationFee() should not if call fee is 0 and no value is sent but should if it is greater than", async () => {
@@ -137,7 +141,8 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     await expectRevert(
       H1DevelopedApplicationFactory.deploy(
         "0x0000000000000000000000000000000000000000",
-        ContractDeployer
+        ContractDeployer,
+        1
       ),
       "123"
     );
