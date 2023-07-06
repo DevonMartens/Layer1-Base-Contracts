@@ -132,16 +132,16 @@ contract NewProofOfIdentity is
         string calldata name,
         uint8 age,
         bool hasDog,
-      //  bool hasCat,
-       // string calldata lastName,
+       bool hasCat,
+       string calldata lastName,
         string calldata tokenUri
     ) external onlyRole(OPERATOR_ROLE) returns(uint256) {
-        require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
+        // require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
 
-        require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
+        // require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
          _tokenIdCounter.increment();
 
-         _setStruct(account, countryCode, userType, level, expiry, name, age, hasDog);
+         _setStruct(account, countryCode, userType, level, expiry, name, age, hasDog, hasCat, lastName);
          //lastName);
 
         _safeMint(account, _tokenIdCounter.current());
@@ -159,10 +159,9 @@ contract NewProofOfIdentity is
         uint256 expiry,
         string calldata name,
         uint8 age,
-        bool hasDog
-   //     bool hasCat
-        //,
-     //   string calldata lastName
+        bool hasDog,
+        bool hasCat,
+       string calldata lastName
     )   
     internal {
        identityBlob[account] = IdentityBlob({
@@ -173,10 +172,9 @@ contract NewProofOfIdentity is
             expiry: expiry,
             name: name,
             age: age,
-            hasDog : hasDog
-         
-            //,
-      //      lastName: lastName
+            hasDog : hasDog,
+            hasCat : hasCat,
+            lastName : lastName
         });
     }
     /**	

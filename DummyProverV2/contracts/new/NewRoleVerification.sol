@@ -28,8 +28,8 @@ abstract contract NewRoleVerification {
         string name;
         uint8 age;
         bool hasDog;
- //       bool hasCat;
-    //    string lastName;
+       bool hasCat;
+       string lastName;
     }
 
     /**
