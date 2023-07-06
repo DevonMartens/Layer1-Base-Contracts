@@ -33,15 +33,6 @@ contract ProofOfIdentity is
 {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
-    /** 
-    * @dev The event is triggered during the `suspendAccountDeleteTokenAndIdentityBlob` 
-    * it includes the account, tokenId, and reason for suspension.
-    */
-    event AccountSuspendedTokenBurned(
-        address indexed account,
-        uint256 indexed tokenId,
-        string indexed reason
-    );
 
     /** 
     * @dev The event is triggered during the suspendAccountMaintainTokenAndIdentityBlob function. 
