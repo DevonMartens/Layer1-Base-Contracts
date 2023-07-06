@@ -12,8 +12,8 @@ import "./Errors.sol";
 // force distro
 /** 
 @title FeeContract
-@notice This contract outlines how fees are distributed by validators on Haven1.
-@dev The primary function of this contract is to ensure proper distribution from Haven1 applications.
+@notice This contract collects and distributes application fees from user application transactions.
+@dev The primary function of this contract is to ensure proper distribution from Haven1 applications to distribution channels.
 */
 
 interface IFeeOracle {
@@ -44,28 +44,29 @@ contract FeeContract is
     // Address used to consult to find fee amounts.
     address private oracle;
 
-    // Array for address used to consult to find fee amounts.
+      // Array of addresses stored for fee distribution.
     address[] channels;
 
-    // Array for address used to consult to find fee amounts.
+    // Array of corresponding weights to the channels array for distribution amounts.
     uint8[] weights;
 
-    // Amount of time between each distribution.
+    // The time of last fee distribution.
     uint256 private lastDistribution;
 
-    //Role to control contract
+    // Role to control contract
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
-    /**
-   @notice The initialize is initiating variables during deployment.
+   /**
+   @notice `initialize` is initiating variables during deployment.
    @param _oracle is the address for the oracle that is consulted to determine fees.
    @param _channels array channels are the channels that receive payments.
-   @param _weights are the amount of shares each channel receive.
-   @param havenFoundation the address that can add or revoke address priveledges/
+   @param _weights are the amount of shares each channel receives.
+   @param havenFoundation the address that can add or revoke address privileges.
    @param networkOperator operator address that manages functions.
    @dev lastDistribution is the current timestamp fees distributed every 24 hours.
    @dev There cannot be more than five channels.
    */
+
 
     function initialize(
         address _oracle,
@@ -93,12 +94,12 @@ contract FeeContract is
     }
 
     /** 
-   @notice This function gives the contract the ability to receive H1 from external addresses msg.data must be empty.
+   @notice `receive` gives the contract the ability to receive H1 from external addresses msg.data must be empty.
    */
     receive() external payable {}
 
     /**
-   @notice This is the call to get the correct value for the fee across all native applications.
+   @notice `resetFee` is the call to get the correct value for the fee across all native applications.
    @dev This call queries the oracle to set a fee.
    @dev After that is complete it then sets the time that the oracle needs to be rechecked.
    */
@@ -113,7 +114,7 @@ contract FeeContract is
     }
 
     /**
-     * @notice Logic to add new channel with weight.
+     * @notice `addChannel` includes the logic to add new channel with weight.
      * @dev We allow 5 contracts per Fee Contract to ensure distribution can
      * be managed we also don't allow duplicate addresses or zero addresses.
      * @dev The total weight is tracked by `CONTRACT_SHARES` which we use to send correct amounts to each channel.
@@ -137,7 +138,7 @@ contract FeeContract is
     }
 
     /**
-     * @notice  Logic to adjust a channel and its weight.
+     * @notice  `adjustChannel` incudes the logic to adjust a channel and its weight.
      * @param _index the index of the channels and weights array.
      * @param _newChannelAddress the address of the validator replacing the old one.
      * @param _newWeight the amount of total shares the new address will receive.
@@ -166,9 +167,8 @@ contract FeeContract is
         CONTRACT_SHARES += _newWeight;
     }
 
-    // remove
     /**
-     * @notice  Logic to remove a channel and its weight.
+     * @notice `removeChannelAndWieghtByIndex` is the logic to remove a channel and its weight.
      * @param index the index of the channels and weights array.
      * @dev The total weight is tracked by `CONTRACT_SHARES`
      * which we subtract the value from in the middle of this function.
@@ -184,7 +184,7 @@ contract FeeContract is
     }
 
     /**
-   @notice This is to adjust the length of time between payouts from the contract.
+   @notice `setEpoch` is to adjust the length of time between payouts from the contract.
    @param new_epochLength the length of time between payouts from the contract.
    */
     function setEpoch(
@@ -194,10 +194,9 @@ contract FeeContract is
     }
 
     /** 
-   @notice Function triggered by distributeFeesToChannels in other contracts to disburse payment to distribute funds to channels.
-   @dev Function can be called by a wallet every 24 hours, gas is rebated.
+   @notice `distributeFeesToChannels` to disburse payment to distribute funds to channels.
+   @dev Function can be called by a wallet every 24 hours.
    @dev The balance of the contract is distributed to channels and an event is triggered FeesDistributed.
-   @dev The function reverts should the function have been called less than 24 hours ago.
    */
 
     function distributeFeesToChannels() external payable {
@@ -228,7 +227,7 @@ contract FeeContract is
     }
 
     /** 
-   @notice Function triggered to force distribution of funds to channels.
+   @notice `forceFeeDistribution` function triggered to force distribution of funds to channels.
    */
 
     function forceFeeDistribution() external payable onlyRole(OPERATOR_ROLE) {
@@ -369,7 +368,7 @@ contract FeeContract is
     }
 
     /**
-   @notice _authorizeUpgrad this function to upgrade contract override to protect.
+   @notice `_authorizeUpgrade` this function to upgrade contract override to protect.
    @param newImplementation new implementation address.
    */
 
