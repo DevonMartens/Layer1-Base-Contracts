@@ -4,9 +4,9 @@ const { time } = require("@nomicfoundation/hardhat-network-helpers");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
-const SIX_ETH = ethers.utils.parseUnits("6", "ether");
-const TWO_ETH = ethers.utils.parseUnits("2", "ether");
-const ONE_ETH = ethers.utils.parseUnits("1", "ether");
+const SIX_H1 = ethers.utils.parseUnits("6", "ether");
+const TWO_H1 = ethers.utils.parseUnits("2", "ether");
+const ONE_H1 = ethers.utils.parseUnits("1", "ether");
 
 describe("Fee Contract: Testing the initial values to validate expected contract state", function () {
   let ContractDeployer;
@@ -245,7 +245,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       );
     });
 
-    it("Fee Contract:: should allow a max of 5 addresses and 5 wieghts (representing validator rewards) in the initalizer", async () => {
+    it("Fee Contract: Deployment should allow a max of 5 addresses and 5 wieghts in the initalizer function.", async () => {
       const oversizedAddressArray = [
         ValidatorContract.address,
         ValidatorContract2.address,
@@ -316,7 +316,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         "123"
       );
     });
-    it("Fee Contract:The adjustChannel function should revert if you input an index greater than 4.", async () => {
+    it("Fee Contract: The adjustChannel function should revert if you input an index greater than 4.", async () => {
       await expectRevert(
         FeeContractWithMaxAddressesAndWeights.adjustChannel(
           7,
@@ -369,14 +369,14 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       //wieghts of position 4 should be 5
       expect(5).to.equal(wieghtsOfPositionFour);
     });
-    it("Fee Contract: addChannel should not allow duplicates.", async () => {
+    it("Fee Contract: The addChannel function should not allow duplicates.", async () => {
       //add a channel 5th so this should be max
       await expectRevert(
         FourPositionArrayFeeContract.addChannel(ValidatorContract3.address, 6),
         "123"
       );
     });
-    it("Fee Contract: addChannel should not allow more than 5 channels", async () => {
+    it("Fee Contract: The addChannel function should not allow more than 5 channels", async () => {
       await expectRevert(
         FeeContractWithMaxAddressesAndWeights.addChannel(
           ValidatorContract5.address,
@@ -395,31 +395,31 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     it("Fee Contract: The collectFee function is sending eth to validators.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContractWith3Validators.address,
-        value: SIX_ETH,
+        value: SIX_H1,
       });
       const ExpectedPayout =
         await FeeContractWith3Validators.amountPaidToUponNextDistribution(1);
       await time.increase(time.duration.days(1));
-      expect(ExpectedPayout).to.equal(TWO_ETH);
+      expect(ExpectedPayout).to.equal(TWO_H1);
       expect(() =>
         FeeContractWith3Validators.collectFee()
-      ).to.changeEtherBalance(ValidatorContract, ONE_ETH);
+      ).to.changeEtherBalance(ValidatorContract, ONE_H1);
     });
     it("Fee Contract: The collectFee function is requiring 24 hours or a Distributor role.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContractWith3Validators.address,
-        value: SIX_ETH,
+        value: SIX_H1,
       });
       const ExpectedPayout =
         await FeeContractWith3Validators.amountPaidToUponNextDistribution(1);
-      expect(ExpectedPayout.toString()).to.equal(TWO_ETH.toString());
+      expect(ExpectedPayout.toString()).to.equal(TWO_H1.toString());
       expectRevert(Address3SignsFeeContractWith3Validators.collectFee(), "121");
       await FeeContractWith3Validators.collectFee();
     });
     it("Fee Contract: The collectFee function should require 24 hours between calls.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContractWith3Validators.address,
-        value: SIX_ETH,
+        value: SIX_H1,
       });
       await expectRevert(
         Address3SignsFeeContractWith3Validators.collectFee(),
@@ -431,7 +431,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     it("Fee Contract: Test collectFee should change the lastDistribution.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContract.address,
-        value: SIX_ETH,
+        value: SIX_H1,
       });
       const beforeLastDistribution =
         await FeeContract.getLastDistributionBlock();
@@ -447,7 +447,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     it("Fee Contract: The forceFee function should refresh the oracle.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContract.address,
-        value: SIX_ETH,
+        value: SIX_H1,
       });
       await FeeContract.forceFee();
       expect(await FeeOracleContract.viewJustKeepAdding()).to.equal(8);
@@ -455,7 +455,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     it("Fee Contract: The forceFee function should change the lastDistribution timestamp.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContract.address,
-        value: SIX_ETH,
+        value: SIX_H1,
       });
       const beforeLastDistribution =
         await FeeContract.getLastDistributionBlock();
@@ -468,23 +468,23 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const current = await time.latest();
       expect(afterLastDistribution.toString()).to.equal(current.toString());
     });
-    it("Fee Contract: The collectFee function should refresh the oracle/", async () => {
+    it("Fee Contract: The collectFee function should refresh the oracle.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContract.address,
-        value: SIX_ETH,
+        value: SIX_H1,
       });
       await time.increase(time.duration.days(1));
       await FeeContract.collectFee();
       expect(await FeeOracleContract.viewJustKeepAdding()).to.equal(8);
     });
-    it("Fee Contract: The forceFee function should sending eth to validators.", async () => {
+    it("Fee Contract: The forceFee function should send H1 to validators.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContractWith3Validators.address,
-        value: SIX_ETH,
+        value: SIX_H1,
       });
       expect(() => FeeContractWith3Validators.forceFee()).to.changeEtherBalance(
         ValidatorContract,
-        ONE_ETH
+        ONE_H1
       );
     });
   });
@@ -494,28 +494,28 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const timestamp = await time.latest();
       estimatedResetTime = timestamp + 86400;
     });
-    it("Fee Contract: The Reset Fee should revert if it has not been 24 hours and the fee is NOT zero", async () => {
+    it("Fee Contract: The resetFee() function should revert if it has not been 24 hours and the fee is NOT zero.", async () => {
       //sets fee so its not 0
       await FeeContract.resetFee();
       //checks that query oracle is equal to 1 the anticipated value
       expect(await FeeContract.queryOracle()).to.equal(1);
       //change the value
-      await FeeOracleContract.setPriceAverage(TWO_ETH);
+      await FeeOracleContract.setPriceAverage(TWO_H1);
       //reset fee
       await expectRevert(FeeContract.resetFee(), "121");
       //checks updated value
     });
-    it("Fee Contract: The Reset Fee should change fee value, readable by querying the oracle.", async () => {
+    it("Fee Contract: The resetFee() function should change fee value, readable by querying the oracle.", async () => {
       //checks that query oracle is equal to 1 the anticipated value
       expect(await FeeContract.queryOracle()).to.equal(1);
       //change the value
-      await FeeOracleContract.setPriceAverage(TWO_ETH);
+      await FeeOracleContract.setPriceAverage(TWO_H1);
       //wait 24 hours
       await time.increase(time.duration.days(1));
       //reset fee
       await FeeContract.resetFee();
       //checks updated value
-      expect(await FeeContract.queryOracle()).to.equal(TWO_ETH);
+      expect(await FeeContract.queryOracle()).to.equal(TWO_H1);
     });
     it("Fee Contract: The resetFee function should change the requiredReset time.", async () => {
       const reset = await FeeContract.getNextResetTime();
@@ -541,7 +541,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const reset = await FeeContract.getOracleAddress();
       expect(reset.toString()).to.equal(Address2.toString());
     });
-    it("Fee Contract: The setEpoch function should change the epochLength", async () => {
+    it("Fee Contract: The setEpoch function should change the epochLength.", async () => {
       const firstepochLength = await FeeContract.epochLength();
       await FeeContract.setEpoch(1);
       const reset = await FeeContract.epochLength();
@@ -681,7 +681,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       );
       await expectRevert(FeeContractForTest.forceFee(), "112");
     });
-    it("Fee Contract: The collectFee() function should revert if there is an unsuccessful transfer made)", async () => {
+    it("Fee Contract: The collectFee() function should revert if there is an unsuccessful transfer is made.", async () => {
       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
       const DummyContract = await DummyContractFactory.deploy();
       const InputArray = [DummyContract.address, Address3, ContractDeployer];
@@ -700,11 +700,11 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       );
       await Address3SendsH1.sendTransaction({
         to: FeeContractForTest.address,
-        value: SIX_ETH,
+        value: SIX_H1,
       });
       await expectRevert(FeeContractForTest.collectFee(), "112");
     });
-    it("Fee Contract: THe collectFee() function should revert if there are no funds in the contract to rebate gas.)", async () => {
+    it("Fee Contract: THe collectFee() function should revert if there are no funds in the contract to rebate gas.", async () => {
       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
       const DummyContract = await DummyContractFactory.deploy();
       const InputArray = [DummyContract.address, Address3, ContractDeployer];
