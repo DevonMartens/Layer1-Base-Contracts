@@ -40,7 +40,7 @@ contract H1NativeApplication is FeeQuery {
     }
 
     /**
-   @notice This is the view function to get the fee amount from the feeContract.
+   @notice `callFee` this is view function is to get the fee amount from the feeContract.
    @dev It returns a uint256 that is used in the applicationFee modifier.
    */
 

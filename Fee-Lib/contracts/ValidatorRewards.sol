@@ -101,7 +101,10 @@ contract ValidatorRewards is
         address account,
         uint256 shares
     ) external onlyRole(OPERATOR_ROLE) {
-        require(isTheAddressInTheValidatorsArray(account) == false, Errors.NO_DUPLICATES);
+        require(
+            isTheAddressInTheValidatorsArray(account) == false,
+            Errors.NO_DUPLICATES
+        );
         require(shares > 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED);
         _totalShares -= _shares[account];
         _totalShares += shares;
@@ -242,7 +245,9 @@ contract ValidatorRewards is
    @dev It is used in functions above to ensure no duplicate addresses are added to the validatorList.
    */
 
-    function isTheAddressInTheValidatorsArray(address validator) public view returns (bool) {
+    function isTheAddressInTheValidatorsArray(
+        address validator
+    ) public view returns (bool) {
         for (uint i = 0; i < validatorsAddressArray.length; i++) {
             if (validatorsAddressArray[i] == validator) {
                 return false;

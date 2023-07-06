@@ -29,7 +29,7 @@ contract FeeContract is
     UUPSUpgradeable
 {
     /**
-     * @dev The event is triggered during the collectFee function.
+     * @dev The event is triggered during the distributeFeesToChannels function.
      *It sends the time, the address receiving it, and the fee amount owed.
      */
     event FeesDistributed(
@@ -166,21 +166,22 @@ contract FeeContract is
         CONTRACT_SHARES += _newWeight;
     }
 
-       // remove
+    // remove
     /**
      * @notice  Logic to remove a channel and its weight.
      * @param index the index of the channels and weights array.
      * @dev The total weight is tracked by `CONTRACT_SHARES`
      * which we subtract the value from in the middle of this function.
      */
-    function removeChannelAndWieghtByIndex(uint index)  external onlyRole(OPERATOR_ROLE) {
-        channels[index] = channels[channels.length-1];
+    function removeChannelAndWieghtByIndex(
+        uint index
+    ) external onlyRole(OPERATOR_ROLE) {
+        channels[index] = channels[channels.length - 1];
         channels.pop();
         CONTRACT_SHARES -= weights[index];
-        weights[index] = weights[weights.length-1];
+        weights[index] = weights[weights.length - 1];
         weights.pop();
     }
-
 
     /**
    @notice This is to adjust the length of time between payouts from the contract.
@@ -193,13 +194,13 @@ contract FeeContract is
     }
 
     /** 
-   @notice Function triggered by collectFee in other contracts to disburse payment to distribute funds to channels.
+   @notice Function triggered by distributeFeesToChannels in other contracts to disburse payment to distribute funds to channels.
    @dev Function can be called by a wallet every 24 hours, gas is rebated.
    @dev The balance of the contract is distributed to channels and an event is triggered FeesDistributed.
    @dev The function reverts should the function have been called less than 24 hours ago.
    */
 
-    function collectFee() external payable {
+    function distributeFeesToChannels() external payable {
         if (
             block.timestamp > lastDistribution + epochLength ||
             hasRole(OPERATOR_ROLE, msg.sender)
@@ -230,7 +231,7 @@ contract FeeContract is
    @notice Function triggered to force distribution of funds to channels.
    */
 
-    function forceFee() external payable onlyRole(OPERATOR_ROLE) {
+    function forceFeeDistribution() external payable onlyRole(OPERATOR_ROLE) {
         uint amount = address(this).balance;
         for (uint i = 0; i < channels.length; i++) {
             uint share = (amount * weights[i]) / CONTRACT_SHARES;
@@ -241,7 +242,7 @@ contract FeeContract is
         lastDistribution = block.timestamp;
     }
 
-     /**
+    /**
    @notice `setMinFee` is a setter function to set the minium fee for developer applications.
    @param miniumAmount is the lowest amount a developer can charge to run their applications.
     */
@@ -263,7 +264,9 @@ contract FeeContract is
    @dev It is used in functions above to ensure no duplicate addresses are added to the channels.
    */
 
-    function isTheAddressInTheChannelsArray(address channel) public view returns (bool) {
+    function isTheAddressInTheChannelsArray(
+        address channel
+    ) public view returns (bool) {
         for (uint i = 0; i < channels.length; i++) {
             if (channels[i] == channel) {
                 return false;
@@ -273,9 +276,9 @@ contract FeeContract is
     }
 
     /**
-   * @notice `getNextResetTime` this view function will 
-   * tell when the fee will need to be reset by via the timestamp.
-   */
+     * @notice `getNextResetTime` this view function will
+     * tell when the fee will need to be reset by via the timestamp.
+     */
 
     function getNextResetTime() public view returns (uint256) {
         return requiredReset;
@@ -306,10 +309,10 @@ contract FeeContract is
     }
 
     /**
-   * @notice `amountPaidToUponNextDistribution` this function allows the
-   * ability to view the amount an address is supposed to be paid based on array position.
-   * @param index the number in the array of channels/weights representing the index.
-   */
+     * @notice `amountPaidToUponNextDistribution` this function allows the
+     * ability to view the amount an address is supposed to be paid based on array position.
+     * @param index the number in the array of channels/weights representing the index.
+     */
 
     function amountPaidToUponNextDistribution(
         uint8 index
@@ -318,10 +321,10 @@ contract FeeContract is
     }
 
     /**
-   * @notice `getChannelWeightByIndex` this function allows ability to view a channel 
-   * and its corresponding weight via index.
-   * @param index the number in the array of channels.
-   */
+     * @notice `getChannelWeightByIndex` this function allows ability to view a channel
+     * and its corresponding weight via index.
+     * @param index the number in the array of channels.
+     */
 
     function getChannelWeightByIndex(
         uint8 index
@@ -332,18 +335,18 @@ contract FeeContract is
     }
 
     /**
-   * @notice `getTotalContractShares` this view function to check the total 
-   * number of shares that have been dispersed to addresses.
-   */
+     * @notice `getTotalContractShares` this view function to check the total
+     * number of shares that have been dispersed to addresses.
+     */
 
     function getTotalContractShares() public view returns (uint8) {
         return CONTRACT_SHARES;
     }
 
     /**
-   * @notice `getLastDistributionBlock` this view function to 
-   * check the block in which the last distribution occured
-   */
+     * @notice `getLastDistributionBlock` this view function to
+     * check the block in which the last distribution occured
+     */
 
     function getLastDistributionBlock() public view returns (uint256) {
         return lastDistribution;

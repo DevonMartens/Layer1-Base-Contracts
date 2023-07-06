@@ -19,6 +19,7 @@ contract H1DevelopedApplication is FeeQuery {
     address developerWallet;
     // Stoarge variable for the fee set by the developer.
     uint256 devFee;
+
     /**
      * @notice Constructor to initialize contract deployment.
      * @param _FeeContract address of fee contract to pay fees.
@@ -27,8 +28,11 @@ contract H1DevelopedApplication is FeeQuery {
      * of this wallet should consider a setter for this address in their dApp.
      */
 
-    constructor(address _FeeContract, address walletToCollectFees, uint256 applicationFee) 
-    {
+    constructor(
+        address _FeeContract,
+        address walletToCollectFees,
+        uint256 applicationFee
+    ) {
         if (_FeeContract == address(0)) {
             revert(Errors.INVALID_ADDRESS);
         }
@@ -37,11 +41,10 @@ contract H1DevelopedApplication is FeeQuery {
         devFee = applicationFee;
     }
 
-
     // Modifier to send fees to the fee contract and to the developer in contracts.
     modifier devApplicationFee() {
         if (msg.value < calculateDevFee() && calculateDevFee() > 0) {
-             revert(Errors.INSUFFICIENT_FUNDS);
+            revert(Errors.INSUFFICIENT_FUNDS);
         }
         (bool success, ) = FeeContract.call{value: getHavenFee()}("");
         require(success, Errors.TRANSFER_FAILED);
@@ -50,15 +53,20 @@ contract H1DevelopedApplication is FeeQuery {
         _;
     }
 
+     /**
+   @notice `setDevApplicationFee` sets the fee amount charged to the consumer.
+   @dev It is split 10% feeContract and 90% to the development team.
+   */
     function setDevApplicationFee(uint256 newDevFee) external {
         require(msg.sender == developerWallet, Errors.INVALID_ADDRESS);
         require(callMiniumFee() < newDevFee, Errors.INVALID_FEE);
         devFee = newDevFee;
     }
 
-   /**
-   @notice This is the view function to get the fee amount owed to the developer.
-   @dev It is 90% of the contract balance.
+    /**
+   * @notice `getDeveloperPayment` the view function 
+   * is to get the fee amount owed to the developer.
+   * @dev It is 90% of the contract balance.
    */
     function getDeveloperPayment() public view returns (uint256 developerFee) {
         uint256 currentFee = calculateDevFee();
@@ -66,7 +74,7 @@ contract H1DevelopedApplication is FeeQuery {
     }
 
     /**
-   @notice This is the view function to get the fee amount owed to the FeeContract.
+   @notice `getHavenFee` gets the fee amount owed to the FeeContract.
    @dev It is 10% of the contract balance.
    */
 
@@ -75,25 +83,30 @@ contract H1DevelopedApplication is FeeQuery {
         havenOneFee = currentFee / 10;
     }
 
-    // Calculate dev fee
-    
+    /**
+   @notice `calculateDevFee` consults the oracle and gets the fee back in USD.
+   */
     function calculateDevFee() public view returns (uint256) {
         uint256 devFeeInUSD = (callFee() * devFee);
         return devFeeInUSD;
     }
 
-    //query fee function
+    /**
+   @notice `callFee` gets the value for H1 in USD.
+   */
     function callFee() public view returns (uint256) {
         uint256 currentFeePrice = FeeQuery(FeeContract).getFee();
         return currentFeePrice;
     }
 
+    /**
+   @notice `callMiniumFee` gets the minium fee from the Fee contract.
+   */
     function callMiniumFee() public view returns (uint256) {
         uint256 minFeeFromFeeContract = FeeQuery(FeeContract).getMinFee();
-        if(minFeeFromFeeContract > devFee){
+        if (minFeeFromFeeContract > devFee) {
             revert(Errors.INVALID_FEE);
         }
         return minFeeFromFeeContract;
     }
-
 }

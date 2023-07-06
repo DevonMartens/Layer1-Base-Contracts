@@ -48,7 +48,6 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
 
     address private mockAddress2;
 
-
     /**
    @notice The initialize is initiating variables during deployment.
    @param _oracle is the address for the oracle that is consulted to determine fees.
@@ -104,10 +103,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
      * be managed we also don't allow duplicate addresses or zero addresses.
      * @notice The total weight is tracked by `CONTRACT_SHARES` which we use to send correct amounts to each channel.
      */
-    function plusChannel(
-        address _newChannelAddress,
-        uint8 _weight
-    ) external {
+    function plusChannel(address _newChannelAddress, uint8 _weight) external {
         if (channels.length == 5) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
@@ -136,7 +132,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
         uint8 _index,
         address _newChannelAddress,
         uint8 _newWeight
-    ) external  {
+    ) external {
         if (
             _newChannelAddress == address(0) ||
             isOriginalAddress(_newChannelAddress) == false
@@ -156,9 +152,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
    @notice This is to adjust the length of time between payouts from the contract.
    @param new_epochLength the length of time between payouts from the contract.
    */
-    function newEpoch(
-        uint256 new_epochLength
-    ) external {
+    function newEpoch(uint256 new_epochLength) external {
         epochLength = new_epochLength;
     }
 
@@ -200,7 +194,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
    @notice Function triggered to force distribution of funds to channels.
    */
 
-    function pressureFee() external payable  {
+    function pressureFee() external payable {
         uint amount = address(this).balance;
         for (uint i = 0; i < channels.length; i++) {
             uint share = (amount * weights[i]) / CONTRACT_SHARES;

@@ -145,12 +145,12 @@ describe("Validator Rewards Contract", function () {
       expect(await ValidatorContract.releasable(Address3)).to.equal(THREE_H1);
     });
     it("the view isTheAddressInTheValidatorsArray should return false if the address is in the validators array", async () => {
-      expect(await ValidatorContract.isTheAddressInTheValidatorsArray(Address2)).to.equal(
-        false
-      );
-      expect(await ValidatorContract.isTheAddressInTheValidatorsArray(Address4)).to.equal(
-        true
-      );
+      expect(
+        await ValidatorContract.isTheAddressInTheValidatorsArray(Address2)
+      ).to.equal(false);
+      expect(
+        await ValidatorContract.isTheAddressInTheValidatorsArray(Address4)
+      ).to.equal(true);
     });
   });
   describe("Validator Rewards: Validator management adding (addValidator) and adjusting functions (adjustValidator).", function () {

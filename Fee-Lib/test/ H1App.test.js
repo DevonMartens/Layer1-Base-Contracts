@@ -94,7 +94,9 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     SimpleStorageBadFeeContract = await SimpleStorageWithFeeFactory.deploy(
       BadFeeContract.address
     );
-    FeeContractSignerForBalanceChecks = ethers.provider.getSigner(FeeContract.address);
+    FeeContractSignerForBalanceChecks = ethers.provider.getSigner(
+      FeeContract.address
+    );
   });
   it("H1NativeApplication Contract: contracts importing the modifier applicationFee() will have functions that revert with 125 if not enough H1 is passed into a function.", async () => {
     await FeeContract.resetFee();
@@ -145,4 +147,3 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     );
   });
 });
-

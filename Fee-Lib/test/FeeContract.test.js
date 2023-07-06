@@ -204,55 +204,55 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         { initializer: "initialize", kind: "uups" }
       );
       ValidatorContract7 = await upgrades.deployProxy(
-      ValidatorRewardsFactory,
-      [
-        ContractDeployerArray,
-        SingleWeightArray,
-        ContractDeployer,
-        ContractDeployer,
-      ],
-      { initializer: "initialize", kind: "uups" }
-    );
-    ValidatorContract8 = await upgrades.deployProxy(
-      ValidatorRewardsFactory,
-      [
-        ContractDeployerArray,
-        SingleWeightArray,
-        ContractDeployer,
-        ContractDeployer,
-      ],
-      { initializer: "initialize", kind: "uups" }
-    );
-    ValidatorContract9 = await upgrades.deployProxy(
-      ValidatorRewardsFactory,
-      [
-        ContractDeployerArray,
-        SingleWeightArray,
-        ContractDeployer,
-        ContractDeployer,
-      ],
-      { initializer: "initialize", kind: "uups" }
-    );
-    ValidatorContract10 = await upgrades.deployProxy(
-      ValidatorRewardsFactory,
-      [
-        ContractDeployerArray,
-        SingleWeightArray,
-        ContractDeployer,
-        ContractDeployer,
-      ],
-      { initializer: "initialize", kind: "uups" }
-    );
-    ValidatorContract11 = await upgrades.deployProxy(
-      ValidatorRewardsFactory,
-      [
-        ContractDeployerArray,
-        SingleWeightArray,
-        ContractDeployer,
-        ContractDeployer,
-      ],
-      { initializer: "initialize", kind: "uups" }
-    );
+        ValidatorRewardsFactory,
+        [
+          ContractDeployerArray,
+          SingleWeightArray,
+          ContractDeployer,
+          ContractDeployer,
+        ],
+        { initializer: "initialize", kind: "uups" }
+      );
+      ValidatorContract8 = await upgrades.deployProxy(
+        ValidatorRewardsFactory,
+        [
+          ContractDeployerArray,
+          SingleWeightArray,
+          ContractDeployer,
+          ContractDeployer,
+        ],
+        { initializer: "initialize", kind: "uups" }
+      );
+      ValidatorContract9 = await upgrades.deployProxy(
+        ValidatorRewardsFactory,
+        [
+          ContractDeployerArray,
+          SingleWeightArray,
+          ContractDeployer,
+          ContractDeployer,
+        ],
+        { initializer: "initialize", kind: "uups" }
+      );
+      ValidatorContract10 = await upgrades.deployProxy(
+        ValidatorRewardsFactory,
+        [
+          ContractDeployerArray,
+          SingleWeightArray,
+          ContractDeployer,
+          ContractDeployer,
+        ],
+        { initializer: "initialize", kind: "uups" }
+      );
+      ValidatorContract11 = await upgrades.deployProxy(
+        ValidatorRewardsFactory,
+        [
+          ContractDeployerArray,
+          SingleWeightArray,
+          ContractDeployer,
+          ContractDeployer,
+        ],
+        { initializer: "initialize", kind: "uups" }
+      );
       //channel
       max10ArrayChannel = [
         ValidatorContract.address,
@@ -354,12 +354,18 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     });
     it("Fee Contract: The removeChannelAndWieghtByIndex function remove wieght, channel and subtract the total contract shares.", async () => {
       await FeeContractWithMaxAddressesAndWeights.removeChannelAndWieghtByIndex(
-       9
+        9
       );
-      const countingArray = [1,2,3,4, 5, 1,2,3,4]
-      expect(await FeeContractWithMaxAddressesAndWeights.getChannels()).to.deep.equal(NinePositionsArrayOfChannels)
-      expect(await FeeContractWithMaxAddressesAndWeights.getWieghts()).to.deep.equal(countingArray)
-      expect(await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()).to.equal(25);
+      const countingArray = [1, 2, 3, 4, 5, 1, 2, 3, 4];
+      expect(
+        await FeeContractWithMaxAddressesAndWeights.getChannels()
+      ).to.deep.equal(NinePositionsArrayOfChannels);
+      expect(
+        await FeeContractWithMaxAddressesAndWeights.getWieghts()
+      ).to.deep.equal(countingArray);
+      expect(
+        await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()
+      ).to.equal(25);
     });
     it("Fee Contract: The adjustChannel function will revert if you input an existing channel.", async () => {
       await expectRevert(
@@ -466,7 +472,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const Address4Value = await FeeOracleContract.consult();
       expect(ValueOfQuery).to.equal(Address4Value);
     });
-    it("Fee Contract: The collectFee function is sending eth to validators.", async () => {
+    it("Fee Contract: The distributeFeesToChannels function is sending eth to validators.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContractWith3Validators.address,
         value: SIX_H1,
@@ -476,10 +482,10 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       await time.increase(time.duration.days(1));
       expect(ExpectedPayout).to.equal(TWO_H1);
       expect(() =>
-        FeeContractWith3Validators.collectFee()
+        FeeContractWith3Validators.distributeFeesToChannels()
       ).to.changeEtherBalance(ValidatorContract, ONE_H1);
     });
-    it("Fee Contract: The collectFee function is requiring 24 hours or a Distributor role.", async () => {
+    it("Fee Contract: The distributeFeesToChannels function is requiring 24 hours or a Distributor role.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContractWith3Validators.address,
         value: SIX_H1,
@@ -487,29 +493,32 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const ExpectedPayout =
         await FeeContractWith3Validators.amountPaidToUponNextDistribution(1);
       expect(ExpectedPayout.toString()).to.equal(TWO_H1.toString());
-      expectRevert(Address3SignsFeeContractWith3Validators.collectFee(), "121");
-      await FeeContractWith3Validators.collectFee();
+      expectRevert(
+        Address3SignsFeeContractWith3Validators.distributeFeesToChannels(),
+        "121"
+      );
+      await FeeContractWith3Validators.distributeFeesToChannels();
     });
-    it("Fee Contract: The collectFee function should require 24 hours between calls.", async () => {
+    it("Fee Contract: The distributeFeesToChannels function should require 24 hours between calls.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContractWith3Validators.address,
         value: SIX_H1,
       });
       await expectRevert(
-        Address3SignsFeeContractWith3Validators.collectFee(),
+        Address3SignsFeeContractWith3Validators.distributeFeesToChannels(),
         "121"
       );
       await time.increase(time.duration.days(1));
-      await Address3SignsFeeContractWith3Validators.collectFee();
+      await Address3SignsFeeContractWith3Validators.distributeFeesToChannels();
     });
-    it("Fee Contract: Test collectFee should change the lastDistribution.", async () => {
+    it("Fee Contract: Test distributeFeesToChannels should change the lastDistribution.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContract.address,
         value: SIX_H1,
       });
       const beforeLastDistribution =
         await FeeContract.getLastDistributionBlock();
-      await FeeContract.collectFee();
+      await FeeContract.distributeFeesToChannels();
       const afterLastDistribution =
         await FeeContract.getLastDistributionBlock();
       expect(afterLastDistribution.toString()).not.to.equal(
@@ -518,22 +527,14 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const current = await time.latest();
       expect(afterLastDistribution.toString()).to.equal(current.toString());
     });
-    // it("Fee Contract: The forceFee function should refresh the oracle.", async () => {
-    //   await Address3SendsH1.sendTransaction({
-    //     to: FeeContract.address,
-    //     value: SIX_H1,
-    //   });
-    //   await FeeContract.forceFee();
-    //   expect(await FeeOracleContract.viewJustKeepAdding()).to.equal(8);
-    // });
-    it("Fee Contract: The forceFee function should change the lastDistribution timestamp.", async () => {
+    it("Fee Contract: The forceFeeDistribution function should change the lastDistribution timestamp.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContract.address,
         value: SIX_H1,
       });
       const beforeLastDistribution =
         await FeeContract.getLastDistributionBlock();
-      await FeeContract.forceFee();
+      await FeeContract.forceFeeDistribution();
       const afterLastDistribution =
         await FeeContract.getLastDistributionBlock();
       expect(afterLastDistribution.toString()).not.to.equal(
@@ -542,24 +543,23 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const current = await time.latest();
       expect(afterLastDistribution.toString()).to.equal(current.toString());
     });
-    it("Fee Contract: The collectFee function should refresh the oracle.", async () => {
+    it("Fee Contract: The distributeFeesToChannels function should refresh the oracle.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContract.address,
         value: SIX_H1,
       });
       await time.increase(time.duration.days(1));
-      await FeeContract.collectFee();
+      await FeeContract.distributeFeesToChannels();
       expect(await FeeOracleContract.viewJustKeepAdding()).to.equal(8);
     });
-    it("Fee Contract: The forceFee function should send H1 to validators.", async () => {
+    it("Fee Contract: The forceFeeDistribution function should send H1 to validators.", async () => {
       await Address3SendsH1.sendTransaction({
         to: FeeContractWith3Validators.address,
         value: SIX_H1,
       });
-      expect(() => FeeContractWith3Validators.forceFee()).to.changeEtherBalance(
-        ValidatorContract,
-        ONE_H1
-      );
+      expect(() =>
+        FeeContractWith3Validators.forceFeeDistribution()
+      ).to.changeEtherBalance(ValidatorContract, ONE_H1);
     });
   });
   describe("Fee Contract: General Getters and Setters", function () {
@@ -634,7 +634,9 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       expect(knownAddress).to.equal(false);
     });
     it("Fee Contract: The isTheAddressInTheChannelsArray function should return true if the address is in the array of channels.", async () => {
-      const unknownAddress = await FeeContract.isTheAddressInTheChannelsArray(Address4);
+      const unknownAddress = await FeeContract.isTheAddressInTheChannelsArray(
+        Address4
+      );
       expect(unknownAddress).to.equal(true);
     });
   });
@@ -715,7 +717,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     });
     it("Fee Contract: The OPERATOR_ROLE should be the only one who can force fees to validators.", async () => {
       await expectRevert(
-        FeeContract.connect(Address3SendsH1).forceFee(),
+        FeeContract.connect(Address3SendsH1).forceFeeDistribution(),
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });
@@ -753,7 +755,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     });
   });
   describe("Fee Contract: Force and collect fee functions", function () {
-    it("Fee Contract: The forceFee function should not distribute funds to validators if they all can't accept it.", async () => {
+    it("Fee Contract: The forceFeeDistribution function should not distribute funds to validators if they all can't accept it.", async () => {
       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
       const DummyContract = await DummyContractFactory.deploy();
       const InputArray = [DummyContract.address, Address3, ContractDeployer];
@@ -770,9 +772,9 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         ],
         { initializer: "initialize", kind: "uups" }
       );
-      await expectRevert(FeeContractForTest.forceFee(), "112");
+      await expectRevert(FeeContractForTest.forceFeeDistribution(), "112");
     });
-    it("Fee Contract: The collectFee() function should revert if there is an unsuccessful transfer is made.", async () => {
+    it("Fee Contract: The distributeFeesToChannels() function should revert if there is an unsuccessful transfer is made.", async () => {
       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
       const DummyContract = await DummyContractFactory.deploy();
       const InputArray = [DummyContract.address, Address3, ContractDeployer];
@@ -793,9 +795,9 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         to: FeeContractForTest.address,
         value: SIX_H1,
       });
-      await expectRevert(FeeContractForTest.collectFee(), "112");
+      await expectRevert(FeeContractForTest.distributeFeesToChannels(), "112");
     });
-    it("Fee Contract: THe collectFee() function should revert if there are no funds in the contract to rebate gas.", async () => {
+    it("Fee Contract: THe distributeFeesToChannels() function should revert if there are no funds in the contract to rebate gas.", async () => {
       const DummyContractFactory = await ethers.getContractFactory("FeeOracle");
       const DummyContract = await DummyContractFactory.deploy();
       const InputArray = [DummyContract.address, Address3, ContractDeployer];
@@ -812,7 +814,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         ],
         { initializer: "initialize", kind: "uups" }
       );
-      await expectRevert(FeeContractForTest.collectFee(), "122");
+      await expectRevert(FeeContractForTest.distributeFeesToChannels(), "122");
     });
   });
 });

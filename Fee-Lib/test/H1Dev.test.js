@@ -73,7 +73,13 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     // Fee contract
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
-      [OracleContract.address, ValidatorArray, weightArray, ContractDeployer, ContractDeployer],
+      [
+        OracleContract.address,
+        ValidatorArray,
+        weightArray,
+        ContractDeployer,
+        ContractDeployer,
+      ],
       { initializer: "initialize", kind: "uups" }
     );
     //bad fee contract
@@ -157,18 +163,21 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     await H1DevelopedApplication.setDevApplicationFee(100);
   });
   it("H1DevelopedApplication: The function callMiniumFee() should revert if the devFee is too low.", async () => {
-    await FeeContract.setMinFee(100)
+    await FeeContract.setMinFee(100);
     await expectRevert(H1DevelopedApplication.callMiniumFee(), "131");
   });
   it("H1DevelopedApplication: The function calculateDevFee() should return devFee * USD.", async () => {
-    expect(await H1DevelopedApplication.calculateDevFee()).to.equal(0)
+    expect(await H1DevelopedApplication.calculateDevFee()).to.equal(0);
   });
   it("H1DevelopedApplication: The function setDevApplicationFee() should only be callabe by the developerWallet.", async () => {
-    await expectRevert(H1DevelopedApplication.connect(Address3Sig).setDevApplicationFee(89), "123");
+    await expectRevert(
+      H1DevelopedApplication.connect(Address3Sig).setDevApplicationFee(89),
+      "123"
+    );
   });
   //
   it("H1DevelopedApplication: The function setDevApplicationFee() should only not allow values less than the fee contract permits.", async () => {
-    await FeeContract.setMinFee(100)
+    await FeeContract.setMinFee(100);
     await expectRevert(H1DevelopedApplication.setDevApplicationFee(89), "131");
   });
   it("H1DevelopedApplication devApplicationFee() disperse ether to the dev wallet provided", async () => {

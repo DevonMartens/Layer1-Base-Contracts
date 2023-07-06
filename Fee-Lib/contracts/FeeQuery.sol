@@ -27,7 +27,7 @@ contract FeeQuery {
    @notice This is the function to retrieve the minium dev fee allowed for developers.
     */
     function getMinFee() public view returns (uint256) {
-            return minFee;
+        return minFee;
     }
 
     /**
