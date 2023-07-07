@@ -154,6 +154,26 @@ contract ValidatorRewards is
     }
 
     /**
+   @notice `addValidator` adds a new validator to the contract.
+   @param account The address of the payee to add.
+   @param shares The number of shares owned by the payee.
+   */
+//     function removeValidator(
+//         address account,
+//         uint256 index
+//     ) external onlyRole(OPERATOR_ROLE) {
+//         require(account != address(0), Errors.ZERO_ADDRESS_NOT_VALID_ARGUMENT);
+//         require(shares > 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED);
+//         require(_shares[account] == 0, Errors.ADDRESS_ALREADY_HAS_A_VALUE);
+// channels[index] = channels[channels.length - 1];
+//         channels.pop();
+//         validatorsAddressArray.push(account);
+//         _shares[account] = shares;
+//         _totalShares = _totalShares + shares;
+//         emit ValidatorAdded(account, shares, newTotalSharesAmount);
+//     }
+
+    /**
    @notice `totalShares` is the getter for the total shares held by validators.
    */
     function totalShares() public view returns (uint256) {

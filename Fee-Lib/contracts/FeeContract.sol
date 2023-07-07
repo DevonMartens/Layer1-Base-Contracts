@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./FeeQuery.sol";
 import "./Errors.sol";
 
-//ability to remove channel
+
 // force distro
 /** 
 @title FeeContract
@@ -176,10 +176,15 @@ contract FeeContract is
     function removeChannelAndWieghtByIndex(
         uint index
     ) external onlyRole(OPERATOR_ROLE) {
-        channels[index] = channels[channels.length - 1];
+        for (uint i = index; i<channels.length-1; i++){
+            channels[i] = channels[i+1];
+        }
         channels.pop();
         CONTRACT_SHARES -= weights[index];
         weights[index] = weights[weights.length - 1];
+        for (uint i = index; i<weights.length-1; i++){
+            weights[i] = weights[i+1];
+        }
         weights.pop();
     }
 

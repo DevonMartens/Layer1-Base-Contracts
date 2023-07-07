@@ -367,6 +367,32 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()
       ).to.equal(25);
     });
+    it("Fee Contract: The removeChannelAndWieghtByIndex function remove wieght, channel and subtract the total contract shares from any index.", async () => {
+      await FeeContractWithMaxAddressesAndWeights.removeChannelAndWieghtByIndex(
+        1
+      );
+      const countingArray = [1, 3, 4, 5, 1, 2, 3, 4, 5];
+      PositionIndexOneGoneArrayOfChannels = [
+          ValidatorContract.address,
+          ValidatorContract3.address,
+          ValidatorContract4.address,
+          ValidatorContract5.address,
+          ValidatorContract6.address,
+          ValidatorContract7.address,
+          ValidatorContract8.address,
+          ValidatorContract9.address,
+          ValidatorContract10.address,
+        ];
+      expect(
+        await FeeContractWithMaxAddressesAndWeights.getChannels()
+      ).to.deep.equal(PositionIndexOneGoneArrayOfChannels);
+      expect(
+        await FeeContractWithMaxAddressesAndWeights.getWieghts()
+      ).to.deep.equal(countingArray);
+      expect(
+        await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()
+      ).to.equal(28);
+    });
     it("Fee Contract: The adjustChannel function will revert if you input an existing channel.", async () => {
       await expectRevert(
         FeeContractWithMaxAddressesAndWeights.adjustChannel(
