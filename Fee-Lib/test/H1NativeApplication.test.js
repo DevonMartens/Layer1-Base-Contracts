@@ -107,7 +107,7 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     await BadFeeContract.setAgainFee();
     await expectRevert(SimpleStorageBadFeeContract.set(1, { value: 1 }), "112");
   });
-  it("H1NativeApplication Contract: when utilized properly applicationFee() disperse ether to the Fee Contract.", async () => {
+  it("H1NativeApplication Contract: The modifer applicationFee() disperse ether to the Fee Contract.", async () => {
     await OracleContract.setPriceAverage(TEN_H1);
 
     await FeeContract.resetFee();

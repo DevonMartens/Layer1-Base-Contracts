@@ -53,7 +53,7 @@ contract H1DevelopedApplication is FeeQuery {
         _;
     }
 
-     /**
+    /**
    @notice `setDevApplicationFee` sets the fee amount charged to the consumer.
    @dev It is split 10% feeContract and 90% to the development team.
    */
@@ -64,10 +64,10 @@ contract H1DevelopedApplication is FeeQuery {
     }
 
     /**
-   * @notice `getDeveloperPayment` the view function 
-   * is to get the fee amount owed to the developer.
-   * @dev It is 90% of the contract balance.
-   */
+     * @notice `getDeveloperPayment` the view function
+     * is to get the fee amount owed to the developer.
+     * @dev It is 90% of the contract balance.
+     */
     function getDeveloperPayment() public view returns (uint256 developerFee) {
         uint256 currentFee = calculateDevFee();
         developerFee = (currentFee / 10) * 9;

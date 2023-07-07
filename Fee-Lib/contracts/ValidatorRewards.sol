@@ -32,7 +32,11 @@ contract ValidatorRewards is
     /**
      * @dev Event for when a validator is removed.
      */
-    event ValidatorRemoved(address account, uint256 shares, uint256 newTotalSharesAmount);
+    event ValidatorRemoved(
+        address account,
+        uint256 shares,
+        uint256 newTotalSharesAmount
+    );
 
     /**
      * @dev Event for when the validator address is changed. Used in `adjustValidatorAddress`.
@@ -67,7 +71,7 @@ contract ValidatorRewards is
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
     /**
-   @notice The contract deploys with a list of validator addresses and their total shares.
+   @notice `initialize` occurs when the contract deploys with a list of validator addresses and their total shares.
    @param validatorsList an array of validators to accept fees.
    @param shares is an array of shares that is part of the total amount distributed from the contract.
    @param havenFoundation is the address that can grant and remove permissions aka the DEFAULT_ADMIN_ROLE.
@@ -168,8 +172,8 @@ contract ValidatorRewards is
         uint256 index
     ) external onlyRole(OPERATOR_ROLE) {
         require(_shares[account] > 0, Errors.INVALID_ADDRESS);
-        for (uint i = index; i< validatorsAddressArray.length-1; i++){
-            validatorsAddressArray[i] = validatorsAddressArray[i+1];
+        for (uint i = index; i < validatorsAddressArray.length - 1; i++) {
+            validatorsAddressArray[i] = validatorsAddressArray[i + 1];
         }
         validatorsAddressArray.pop();
         uint256 shares = _shares[account];
@@ -282,7 +286,7 @@ contract ValidatorRewards is
     }
 
     /**
-   @notice Function to upgrade contract override to protect.
+   @notice `_authorizeUpgrade` function to upgrade contract override to protect.
    @param newImplementation new implementation address.
    */
 
@@ -291,7 +295,7 @@ contract ValidatorRewards is
     ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 
     /**
-     * @notice internal logic for computing the pending payment of an `account`
+     * @notice `_pendingPayment` internal logic for computing the pending payment of an `account`
      * given the token historical balances and already released amounts.
      * @param account the account to check the amount of total received and released amount.
      * @param totalReceived the account to check the amount of total received and released amount.

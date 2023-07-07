@@ -114,7 +114,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       expect(await FeeContract.getChannels()).to.deep.equal(
         ContractDeployerArray
       );
-      expect(await FeeContract.getWieghts()).to.deep.equal(SingleWeightArray);
+      expect(await FeeContract.getWeights()).to.deep.equal(SingleWeightArray);
     });
     it("Fee Contract:: The values passed into the contructor for oracle, total contract shares, and lastDistribution should match the values recieved from the view functions getOracleAddress and getOracleAddress.", async () => {
       //gets oracle from Fee contract and ensures it is equal to Address2 the original inpul
@@ -305,7 +305,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       );
     });
 
-    it("Fee Contract: Deployment should allow a max of 5 addresses and 5 wieghts in the initalizer function.", async () => {
+    it("Fee Contract: Deployment should allow a max of 10 addresses and 10 wieghts in the initalizer function.", async () => {
       const oversizedAddressArray = [
         ValidatorContract.address,
         ValidatorContract2.address,
@@ -352,8 +352,8 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const weightOfChannel5 = await channel5ShouldHaveWeightOf6[1];
       expect(await weightOfChannel5).to.equal(6);
     });
-    it("Fee Contract: The removeChannelAndWieghtByIndex function remove wieght, channel and subtract the total contract shares.", async () => {
-      await FeeContractWithMaxAddressesAndWeights.removeChannelAndWieghtByIndex(
+    it("Fee Contract: The removeChannelAndWeightByIndex function remove wieght, channel and subtract the total contract shares.", async () => {
+      await FeeContractWithMaxAddressesAndWeights.removeChannelAndWeightByIndex(
         9
       );
       const countingArray = [1, 2, 3, 4, 5, 1, 2, 3, 4];
@@ -361,33 +361,33 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         await FeeContractWithMaxAddressesAndWeights.getChannels()
       ).to.deep.equal(NinePositionsArrayOfChannels);
       expect(
-        await FeeContractWithMaxAddressesAndWeights.getWieghts()
+        await FeeContractWithMaxAddressesAndWeights.getWeights()
       ).to.deep.equal(countingArray);
       expect(
         await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()
       ).to.equal(25);
     });
-    it("Fee Contract: The removeChannelAndWieghtByIndex function remove wieght, channel and subtract the total contract shares from any index.", async () => {
-      await FeeContractWithMaxAddressesAndWeights.removeChannelAndWieghtByIndex(
+    it("Fee Contract: The removeChannelAndWeightByIndex function remove wieght, channel and subtract the total contract shares from any index.", async () => {
+      await FeeContractWithMaxAddressesAndWeights.removeChannelAndWeightByIndex(
         1
       );
       const countingArray = [1, 3, 4, 5, 1, 2, 3, 4, 5];
       PositionIndexOneGoneArrayOfChannels = [
-          ValidatorContract.address,
-          ValidatorContract3.address,
-          ValidatorContract4.address,
-          ValidatorContract5.address,
-          ValidatorContract6.address,
-          ValidatorContract7.address,
-          ValidatorContract8.address,
-          ValidatorContract9.address,
-          ValidatorContract10.address,
-        ];
+        ValidatorContract.address,
+        ValidatorContract3.address,
+        ValidatorContract4.address,
+        ValidatorContract5.address,
+        ValidatorContract6.address,
+        ValidatorContract7.address,
+        ValidatorContract8.address,
+        ValidatorContract9.address,
+        ValidatorContract10.address,
+      ];
       expect(
         await FeeContractWithMaxAddressesAndWeights.getChannels()
       ).to.deep.equal(PositionIndexOneGoneArrayOfChannels);
       expect(
-        await FeeContractWithMaxAddressesAndWeights.getWieghts()
+        await FeeContractWithMaxAddressesAndWeights.getWeights()
       ).to.deep.equal(countingArray);
       expect(
         await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()
@@ -472,11 +472,9 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const wieghtsOfPositionNine = positionNine[1];
       //address of position 4 should be Validator Contract 5
       expect(addressOfPositionNine).to.equal(ValidatorContract5.address);
-      //wieghts of position 4 should be 5
       expect(5).to.equal(wieghtsOfPositionNine);
     });
     it("Fee Contract: The addChannel function should not allow duplicates.", async () => {
-      //add a channel 5th so this should be max
       await expectRevert(
         NinePositionArrayFeeContract.addChannel(ValidatorContract3.address, 6),
         "123"
@@ -622,8 +620,8 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const giveASecondTimestamp = timestamp + 1;
       const giveASecondEstimatedResetTime = estimatedResetTime + 1;
       await expect(FeeContract.resetFee())
-      .to.emit(FeeContract, "FeeReset")
-      .withArgs(giveASecondTimestamp, giveASecondEstimatedResetTime);
+        .to.emit(FeeContract, "FeeReset")
+        .withArgs(giveASecondTimestamp, giveASecondEstimatedResetTime);
     });
     it("Fee Contract: The resetFee function should change the requiredReset time.", async () => {
       const reset = await FeeContract.getNextResetTime();
@@ -713,7 +711,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     });
     it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to remove channels.", async () => {
       await expectRevert(
-        FeeContract.connect(Address3SendsH1).removeChannelAndWieghtByIndex(0),
+        FeeContract.connect(Address3SendsH1).removeChannelAndWeightByIndex(0),
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });

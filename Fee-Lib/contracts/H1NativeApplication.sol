@@ -9,8 +9,10 @@ pragma solidity ^0.8.0;
 /// @notice This contract has a modifer that ensures fees are sent the FeeContract.
 /// @dev The primary function of this contract is to be used as an import for native building on Haven.
 contract H1NativeApplication is FeeQuery {
+
     // Storage for fee contract address.
     address public FeeContract;
+    
     // Storage to access FeeQuery functions.
     FeeQuery public FeeQueryNative;
 

@@ -8,7 +8,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./FeeQuery.sol";
 import "./Errors.sol";
 
-
 // force distro
 /** 
 @title FeeContract
@@ -38,18 +37,15 @@ contract FeeContract is
         uint256 indexed amount
     );
 
-     /**
+    /**
      * @dev The event is triggered during the resetFee function.
      * It sends the time of the new reset and current call.
      */
-     event FeeReset(
-        uint256 indexed currentTimestamp,
-        uint256 indexed newReset
-    );
+    event FeeReset(uint256 indexed currentTimestamp, uint256 indexed newReset);
 
     /**
      * @dev The event is triggered during the addChannel function.
-     * It sends the address, shares, and total shares of the contract. 
+     * It sends the address, shares, and total shares of the contract.
      */
     event ChannelAdded(
         address indexed newChannelAddress,
@@ -78,13 +74,13 @@ contract FeeContract is
         uint256 indexed newTotalSharesAmount
     );
 
-    // Used to divide an addresses shares by the total.
+    // The total amount that we divide an addresses shares by to compute payments.
     uint8 private CONTRACT_SHARES;
 
     // Address used to consult to find fee amounts.
     address private oracle;
 
-      // Array of addresses stored for fee distribution.
+    // Array of addresses stored for fee distribution.
     address[] channels;
 
     // Array of corresponding weights to the channels array for distribution amounts.
@@ -93,10 +89,10 @@ contract FeeContract is
     // The time of last fee distribution.
     uint256 private lastDistribution;
 
-    // Role to control contract
+    // Role to control the contract.
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
-   /**
+    /**
    @notice `initialize` is initiating variables during deployment.
    @param _oracle is the address for the oracle that is consulted to determine fees.
    @param _channels array channels are the channels that receive payments.
@@ -104,9 +100,8 @@ contract FeeContract is
    @param havenFoundation the address that can add or revoke address privileges.
    @param networkOperator operator address that manages functions.
    @dev lastDistribution is the current timestamp fees distributed every 24 hours.
-   @dev There cannot be more than five channels.
+   @dev There cannot be more than ten channels.
    */
-
 
     function initialize(
         address _oracle,
@@ -156,9 +151,10 @@ contract FeeContract is
 
     /**
      * @notice `addChannel` includes the logic to add new channel with weight.
-     * @dev We allow 5 contracts per Fee Contract to ensure distribution can
+     * @dev We allow 10 contracts per Fee Contract to ensure distribution can
      * be managed we also don't allow duplicate addresses or zero addresses.
-     * @dev The total weight is tracked by `CONTRACT_SHARES` which we use to send correct amounts to each channel.
+     * @dev The total weight is tracked by `CONTRACT_SHARES` which we use to 
+     * divide each addresses shares by to send correct amounts to each channel.
      */
     function addChannel(
         address _newChannelAddress,
@@ -200,7 +196,7 @@ contract FeeContract is
         ) {
             revert(Errors.INVALID_ADDRESS);
         }
-        if (_index > 4) {
+        if (_index > 10) {
             revert(Errors.INCORRECT_INDEX);
         }
         CONTRACT_SHARES -= weights[_index];
@@ -210,23 +206,23 @@ contract FeeContract is
     }
 
     /**
-     * @notice `removeChannelAndWieghtByIndex` is the logic to remove a channel and its weight.
+     * @notice `removeChannelAndWeightByIndex` is the logic to remove a channel and its weight.
      * @param index the index of the channels and weights array.
      * @dev The total weight is tracked by `CONTRACT_SHARES`
      * which we subtract the value from in the middle of this function.
      */
-    function removeChannelAndWieghtByIndex(
+    function removeChannelAndWeightByIndex(
         uint index
     ) external onlyRole(OPERATOR_ROLE) {
         address removedAddress = channels[index];
-        for (uint i = index; i<channels.length-1; i++){
-            channels[i] = channels[i+1];
+        for (uint i = index; i < channels.length - 1; i++) {
+            channels[i] = channels[i + 1];
         }
         channels.pop();
         CONTRACT_SHARES -= weights[index];
         weights[index] = weights[weights.length - 1];
-        for (uint i = index; i<weights.length-1; i++){
-            weights[i] = weights[i+1];
+        for (uint i = index; i < weights.length - 1; i++) {
+            weights[i] = weights[i + 1];
         }
         weights.pop();
         emit ChannelRemoved(removedAddress, CONTRACT_SHARES);
@@ -341,10 +337,10 @@ contract FeeContract is
     }
 
     /**
-   @notice `getWieghts` this function that allows ability to view all weights.
+   @notice `getWeights` this function that allows ability to view all weights.
    */
 
-    function getWieghts() public view returns (uint8[] memory) {
+    function getWeights() public view returns (uint8[] memory) {
         return weights;
     }
 
