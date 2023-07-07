@@ -10,9 +10,11 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 import "./Errors.sol";
 
-/// @title ValidatorRewards
-/// @notice This contract ensures fees are sent to the validator addresses.
-/// @dev The primary function of this contract is to disburse funds from Haven applications.
+/** 
+@title ValidatorRewards
+@notice This contract ensures fees are sent to the validator addresses.
+@dev The primary function of this contract is to disburse funds from Haven applications.
+*/
 
 contract ValidatorRewards is
     Initializable,

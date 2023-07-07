@@ -9,7 +9,7 @@ import "./FeeQuery.sol";
 import "./Errors.sol";
 
 // force distro
-/** 
+/**
 @title FeeContract
 @notice This contract collects and distributes application fees from user application transactions.
 @dev The primary function of this contract is to ensure proper distribution from Haven1 applications to distribution channels.
@@ -27,6 +27,7 @@ contract FeeContract is
     AccessControlUpgradeable,
     UUPSUpgradeable
 {
+    
     /**
      * @dev The event is triggered during the distributeFeesToChannels function.
      * It sends the time, the address receiving it, and the fee amount owed.
@@ -93,16 +94,15 @@ contract FeeContract is
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
     /**
-   @notice `initialize` is initiating variables during deployment.
-   @param _oracle is the address for the oracle that is consulted to determine fees.
-   @param _channels array channels are the channels that receive payments.
-   @param _weights are the amount of shares each channel receives.
-   @param havenFoundation the address that can add or revoke address privileges.
-   @param networkOperator operator address that manages functions.
-   @dev lastDistribution is the current timestamp fees distributed every 24 hours.
-   @dev There cannot be more than ten channels.
-   */
-
+    @notice `initialize` is initiating variables during deployment.
+    @param _oracle is the address for the oracle that is consulted to determine fees.
+    @param _channels array channels are the channels that receive payments.
+    @param _weights are the amount of shares each channel receives.
+    @param havenFoundation the address that can add or revoke address privileges.
+    @param networkOperator operator address that manages functions.
+    @dev lastDistribution is the current timestamp fees distributed every 24 hours.
+    @dev There cannot be more than ten channels.
+    */
     function initialize(
         address _oracle,
         address[] memory _channels,
@@ -128,16 +128,16 @@ contract FeeContract is
         }
     }
 
-    /** 
-   @notice `receive` gives the contract the ability to receive H1 from external addresses msg.data must be empty.
-   */
+    /**
+    @notice `receive` gives the contract the ability to receive H1 from external addresses msg.data must be empty.
+    */
     receive() external payable {}
 
     /**
-   @notice `resetFee` is the call to get the correct value for the fee across all native applications.
-   @dev This call queries the oracle to set a fee.
-   @dev After that is complete it then sets the time that the oracle needs to be rechecked.
-   */
+    @notice `resetFee` is the call to get the correct value for the fee across all native applications.
+    @dev This call queries the oracle to set a fee.
+    @dev After that is complete it then sets the time that the oracle needs to be rechecked.
+    */
 
     function resetFee() external {
         if (block.timestamp > requiredReset || fee == 0) {
@@ -150,11 +150,11 @@ contract FeeContract is
     }
 
     /**
-     * @notice `addChannel` includes the logic to add new channel with weight.
+     * @notice `addChannel` includes the logic to add a new channel with weight.
      * @dev We allow 10 contracts per Fee Contract to ensure distribution can
      * be managed we also don't allow duplicate addresses or zero addresses.
-     * @dev The total weight is tracked by `CONTRACT_SHARES` which we use to 
-     * divide each addresses shares by to send correct amounts to each channel.
+     * @dev The total weight is tracked by `CONTRACT_SHARES` which we use to
+     * divide each address's shares by sending correct amounts to each channel.
      */
     function addChannel(
         address _newChannelAddress,
@@ -176,7 +176,7 @@ contract FeeContract is
     }
 
     /**
-     * @notice  `adjustChannel` incudes the logic to adjust a channel and its weight.
+     * @notice `adjustChannel` includes the logic to adjust a channel and its weight.
      * @param _index the index of the channels and weights array.
      * @param _newChannelAddress the address of the validator replacing the old one.
      * @param _newWeight the amount of total shares the new address will receive.
@@ -229,20 +229,20 @@ contract FeeContract is
     }
 
     /**
-   @notice `setEpoch` is to adjust the length of time between payouts from the contract.
-   @param new_epochLength the length of time between payouts from the contract.
-   */
+    @notice `setEpoch` is to adjust the length of time between payouts from the contract.
+    @param new_epochLength the length of time between payouts from the contract.
+    */
     function setEpoch(
         uint256 new_epochLength
     ) external onlyRole(OPERATOR_ROLE) {
         epochLength = new_epochLength;
     }
 
-    /** 
-   @notice `distributeFeesToChannels` to disburse payment to distribute funds to channels.
-   @dev Function can be called by a wallet every 24 hours.
-   @dev The balance of the contract is distributed to channels and an event is triggered FeesDistributed.
-   */
+    /**
+    @notice `distributeFeesToChannels` to disburse payment to distribute funds to channels.
+    @dev Function can be called by a wallet every 24 hours.
+    @dev The balance of the contract is distributed to channels and an event is triggered FeesDistributed.
+    */
 
     function distributeFeesToChannels() external payable {
         if (
@@ -271,9 +271,9 @@ contract FeeContract is
         }
     }
 
-    /** 
-   @notice `forceFeeDistribution` function triggered to force distribution of funds to channels.
-   */
+    /**
+    @notice `forceFeeDistribution` function triggered to force distribution of funds to channels.
+    */
 
     function forceFeeDistribution() external payable onlyRole(OPERATOR_ROLE) {
         uint amount = address(this).balance;
@@ -287,26 +287,26 @@ contract FeeContract is
     }
 
     /**
-   @notice `setMinFee` is a setter function to set the minium fee for developer applications.
-   @param miniumAmount is the lowest amount a developer can charge to run their applications.
+    @notice `setMinFee` is a setter function to set the minimum fee for developer applications.
+    @param miniumAmount is the lowest amount a developer can charge to run their applications.
     */
     function setMinFee(uint256 miniumAmount) external onlyRole(OPERATOR_ROLE) {
         minFee = miniumAmount;
     }
 
     /**
-   @notice `setOracle` this setter function to adjust oracle address.
-   @param _newOracle the new oracle address.
-   */
+    @notice `setOracle` this setter function to adjust oracle address.
+    @param _newOracle the new oracle address.
+    */
 
     function setOracle(address _newOracle) external onlyRole(OPERATOR_ROLE) {
         oracle = _newOracle;
     }
 
     /**
-   @notice `isTheAddressInTheChannelsArray` this view function checks if the address is in the channels array.
-   @dev It is used in functions above to ensure no duplicate addresses are added to the channels.
-   */
+    @notice `isTheAddressInTheChannelsArray` this view function checks if the address is in the channels array.
+    @dev It is used in functions above to ensure no duplicate addresses are added to the channels.
+    */
 
     function isTheAddressInTheChannelsArray(
         address channel
@@ -321,7 +321,7 @@ contract FeeContract is
 
     /**
      * @notice `getNextResetTime` this view function will
-     * tell when the fee will need to be reset by via the timestamp.
+     * tell when the fee will need to be reset via the timestamp.
      */
 
     function getNextResetTime() public view returns (uint256) {
@@ -329,24 +329,24 @@ contract FeeContract is
     }
 
     /**
-   @notice `getChannels` this function to allow ability to view all channels.
-   */
+    @notice `getChannels` this function to allow the ability to view all channels.
+    */
 
     function getChannels() public view returns (address[] memory) {
         return channels;
     }
 
     /**
-   @notice `getWeights` this function that allows ability to view all weights.
-   */
+    @notice `getWeights` this function that allows the ability to view all weights.
+    */
 
     function getWeights() public view returns (uint8[] memory) {
         return weights;
     }
 
     /**
-   @notice `getOracleAddress` this function that allows ability to view oracle address.
-   */
+    @notice `getOracleAddress` this function that allows the ability to view oracle addresses.
+    */
 
     function getOracleAddress() public view returns (address) {
         return oracle;
@@ -389,7 +389,7 @@ contract FeeContract is
 
     /**
      * @notice `getLastDistributionBlock` this view function to
-     * check the block in which the last distribution occured
+     * check the block in which the last distribution occurred
      */
 
     function getLastDistributionBlock() public view returns (uint256) {
@@ -397,27 +397,28 @@ contract FeeContract is
     }
 
     /**
-   @notice `queryOracle` this function is to consult oracle to get fee amount.
-   */
+    @notice `queryOracle` this function is to consult oracle to get a fee amount.
+    */
 
     function queryOracle() public view returns (uint feeAmount) {
         return (IFeeOracle(oracle).consult());
     }
 
     /**
-   @notice `_refreshOracle` this function to consult oracle to update.
-   */
+    @notice `_refreshOracle` this function to consult oracle to update.
+    */
 
     function _refreshOracle() internal returns (bool success) {
         return (IFeeOracle(oracle).refreshOracle());
     }
 
     /**
-   @notice `_authorizeUpgrade` this function to upgrade contract override to protect.
-   @param newImplementation new implementation address.
-   */
+    @notice `_authorizeUpgrade` this function to upgrade contract override to protect.
+    @param newImplementation new implementation address.
+    */
 
     function _authorizeUpgrade(
         address newImplementation
     ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
+
 }

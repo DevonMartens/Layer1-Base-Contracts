@@ -6,7 +6,7 @@ import "./Errors.sol";
 pragma solidity ^0.8.0;
 
 /// @title H1NativeApplication
-/// @notice This contract has a modifer that ensures fees are sent the FeeContract.
+/// @notice This contract has a modifier that ensures fees are sent to the FeeContract.
 /// @dev The primary function of this contract is to be used as an import for native building on Haven.
 contract H1NativeApplication is FeeQuery {
 
@@ -42,9 +42,9 @@ contract H1NativeApplication is FeeQuery {
     }
 
     /**
-   @notice `callFee` this is view function is to get the fee amount from the feeContract.
-   @dev It returns a uint256 that is used in the applicationFee modifier.
-   */
+    @notice `callFee` this view function is to get the fee amount from the feeContract.
+    @dev It returns a uint256 that is used in the applicationFee modifier.
+    */
 
     function callFee() public view returns (uint256) {
         return FeeQuery(FeeContract).getFee();
