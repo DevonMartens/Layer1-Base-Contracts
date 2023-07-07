@@ -30,12 +30,52 @@ contract FeeContract is
 {
     /**
      * @dev The event is triggered during the distributeFeesToChannels function.
-     *It sends the time, the address receiving it, and the fee amount owed.
+     * It sends the time, the address receiving it, and the fee amount owed.
      */
     event FeesDistributed(
         uint256 indexed timestamp,
         address indexed to,
         uint256 indexed amount
+    );
+
+     /**
+     * @dev The event is triggered during the resetFee function.
+     * It sends the time of the new reset and current call.
+     */
+     event FeeReset(
+        uint256 indexed currentTimestamp,
+        uint256 indexed newReset
+    );
+
+    /**
+     * @dev The event is triggered during the addChannel function.
+     * It sends the address, shares, and total shares of the contract. 
+     */
+    event ChannelAdded(
+        address indexed newChannelAddress,
+        uint256 indexed channelWeight,
+        uint256 indexed contractShares
+    );
+
+    /**
+     * @dev The event is triggered during the adjustChannel function.
+     * It sends address of the adjusted channel it's old and current share amount and
+     * the new total shares amount of the contract.
+     */
+    event ChannelAdjusted(
+        address indexed addjustedChannel,
+        uint256 indexed newChannelWeight,
+        uint256 indexed currentContractShares
+    );
+
+    /**
+     * @dev The event is triggered during the removeChannel function.
+     * It sends the address that is no longer a channel
+     * and the new total shares amount of the contract.
+     */
+    event ChannelRemoved(
+        address indexed channelRemoved,
+        uint256 indexed newTotalSharesAmount
     );
 
     // Used to divide an addresses shares by the total.
@@ -108,6 +148,7 @@ contract FeeContract is
         if (block.timestamp > requiredReset || fee == 0) {
             fee = queryOracle();
             requiredReset = block.timestamp + epochLength;
+            emit FeeReset(block.timestamp, requiredReset);
         } else {
             revert(Errors.HOLD_TIME_IS_24_HOURS);
         }
@@ -135,6 +176,7 @@ contract FeeContract is
         channels.push(_newChannelAddress);
         weights.push(_weight);
         CONTRACT_SHARES += _weight;
+        emit ChannelAdded(_newChannelAddress, _weight, CONTRACT_SHARES);
     }
 
     /**
@@ -161,10 +203,10 @@ contract FeeContract is
         if (_index > 4) {
             revert(Errors.INCORRECT_INDEX);
         }
-        channels[_index] = _newChannelAddress;
         CONTRACT_SHARES -= weights[_index];
         weights[_index] = _newWeight;
         CONTRACT_SHARES += _newWeight;
+        emit ChannelAdjusted(_newChannelAddress, _newWeight, CONTRACT_SHARES);
     }
 
     /**
@@ -176,6 +218,7 @@ contract FeeContract is
     function removeChannelAndWieghtByIndex(
         uint index
     ) external onlyRole(OPERATOR_ROLE) {
+        address removedAddress = channels[index];
         for (uint i = index; i<channels.length-1; i++){
             channels[i] = channels[i+1];
         }
@@ -186,6 +229,7 @@ contract FeeContract is
             weights[i] = weights[i+1];
         }
         weights.pop();
+        emit ChannelRemoved(removedAddress, CONTRACT_SHARES);
     }
 
     /**

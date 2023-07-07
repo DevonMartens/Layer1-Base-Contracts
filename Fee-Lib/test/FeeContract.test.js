@@ -617,6 +617,14 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       //checks updated value
       expect(await FeeContract.queryOracle()).to.equal(TWO_H1);
     });
+    it("Fee Contract: The resetFee() function should emit an event with the current timestamp and newResetFee.", async () => {
+      const timestamp = await time.latest();
+      const giveASecondTimestamp = timestamp + 1;
+      const giveASecondEstimatedResetTime = estimatedResetTime + 1;
+      await expect(FeeContract.resetFee())
+      .to.emit(FeeContract, "FeeReset")
+      .withArgs(giveASecondTimestamp, giveASecondEstimatedResetTime);
+    });
     it("Fee Contract: The resetFee function should change the requiredReset time.", async () => {
       const reset = await FeeContract.getNextResetTime();
       // const testReset = reset.toString;
