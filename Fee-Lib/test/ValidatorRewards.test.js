@@ -244,6 +244,39 @@ describe("Validator Rewards Contract", function () {
       //Address4
       expect(await ValidatorContract.releasable(Address4)).to.equal(FOUR_H1);
     });
+    it("Validator Rewards: removeValidator should change the array position of validators.", async () => {
+      await ValidatorContract.removeValidator(Address2, 1);
+      //Address2 owed
+      expect(await ValidatorContract.validators(1)).not.to.equal(Address2);
+      //check total shares should be 3
+      expect(await ValidatorContract.validators(1)).to.equal(Address3);
+    });
+    it("removeValidator should change the dispersed payments and totalShares amounts and correctly pay all validators", async () => {
+      await Address2SendsH1.sendTransaction({
+        to: ValidatorContract.address,
+        value: SIX_H1,
+      });
+      //Address3s ether owned
+      expect(await ValidatorContract.releasable(Address3)).to.equal(THREE_H1);
+      // //Address2 owed
+      expect(await ValidatorContract.releasable(Address2)).to.equal(TWO_H1);
+      //removes address three at position 2
+      await ValidatorContract.removeValidator(Address3, 2);
+      // ContractDeployer owed
+      expect(await ValidatorContract.releasable(ContractDeployer)).to.equal(
+        TWO_H1
+      );
+      //Address2 owed
+      expect(await ValidatorContract.releasable(Address2)).to.equal(FOUR_H1);
+      //check total shares should be 3
+      expect(await ValidatorContract.totalShares()).to.equal(3);
+    });
+    it("removeValidator should change the dispersed payments and totalShares amounts and correctly pay all validators", async () => {
+      //removes address four which is not in the array
+      await expectRevert(ValidatorContract.removeValidator(Address4, 2), "123");
+      // ContractDeployer owed
+      
+    });
     it("addValidator should revert if someone tries to add a 0 address", async () => {
       await expectRevert(
         ValidatorContract.addValidator(
@@ -317,6 +350,15 @@ describe("Validator Rewards Contract", function () {
     it("adjusting validator should only be called by OPERATOR_ROLE", async () => {
       await expectRevert(
         Address2SignsValidatorRewardsContract.adjustValidatorShares(
+          ContractDeployer,
+          2
+        ),
+        `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
+      );
+    });
+    it("Validator Rewards: removeValidator should only be successfully called by the OPERATOR_ROLE.", async () => {
+      await expectRevert(
+        Address2SignsValidatorRewardsContract.removeValidator(
           ContractDeployer,
           2
         ),

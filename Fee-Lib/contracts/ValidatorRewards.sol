@@ -30,6 +30,11 @@ contract ValidatorRewards is
     event SharesAdjusted(address validator, uint256 shares);
 
     /**
+     * @dev Event for when a validator is removed.
+     */
+    event ValidatorRemoved(address account, uint256 shares, uint256 newTotalSharesAmount);
+
+    /**
      * @dev Event for when the validator address is changed. Used in `adjustValidatorAddress`.
      */
     event UpdatedValidator(
@@ -154,24 +159,24 @@ contract ValidatorRewards is
     }
 
     /**
-   @notice `addValidator` adds a new validator to the contract.
-   @param account The address of the payee to add.
-   @param shares The number of shares owned by the payee.
+   @notice `removeValidator` removes existing validator information from the contract.
+   @param account The address of the validator to remove.
+   @param index is the index that the validator is in the validatorsAddressArray.
    */
-//     function removeValidator(
-//         address account,
-//         uint256 index
-//     ) external onlyRole(OPERATOR_ROLE) {
-//         require(account != address(0), Errors.ZERO_ADDRESS_NOT_VALID_ARGUMENT);
-//         require(shares > 0, Errors.ZERO_VARIABLE_NOT_ACCEPTED);
-//         require(_shares[account] == 0, Errors.ADDRESS_ALREADY_HAS_A_VALUE);
-// channels[index] = channels[channels.length - 1];
-//         channels.pop();
-//         validatorsAddressArray.push(account);
-//         _shares[account] = shares;
-//         _totalShares = _totalShares + shares;
-//         emit ValidatorAdded(account, shares, newTotalSharesAmount);
-//     }
+    function removeValidator(
+        address account,
+        uint256 index
+    ) external onlyRole(OPERATOR_ROLE) {
+        require(_shares[account] > 0, Errors.INVALID_ADDRESS);
+        for (uint i = index; i< validatorsAddressArray.length-1; i++){
+            validatorsAddressArray[i] = validatorsAddressArray[i+1];
+        }
+        validatorsAddressArray.pop();
+        uint256 shares = _shares[account];
+        _totalShares -= shares;
+        _shares[account] = 0;
+        emit ValidatorRemoved(account, shares, _totalShares);
+    }
 
     /**
    @notice `totalShares` is the getter for the total shares held by validators.
