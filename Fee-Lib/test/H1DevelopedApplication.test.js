@@ -142,7 +142,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
       FeeContract.address
     );
   });
-  it("H1DevelopedApplication: should not deploy if the fee contract address is set to 0", async () => {
+  it("H1DevelopedApplication: The contract should not deploy if the fee contract address is set to 0.", async () => {
     //use unspecified because cannot estimate gas will be returned
     await expectRevert(
       H1DevelopedApplicationFactory.deploy(

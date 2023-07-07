@@ -13,10 +13,13 @@ pragma solidity ^0.8.0;
  */
 
 contract H1DevelopedApplication is FeeQuery {
+
     // Storage for fee contract address.
     address public FeeContract;
+
     // Address storage for developer wallet.
     address developerWallet;
+    
     // Stoarge variable for the fee set by the developer.
     uint256 devFee;
 
