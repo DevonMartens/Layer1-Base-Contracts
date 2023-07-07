@@ -19,11 +19,11 @@ contract NewVerifiableIdentity is NewUserInformation {
     NewUserInformation private VERIFIABLE_IDENTITY;
 
     //dummy function
-    function getUserName(
-        address account
-    ) public view returns (string memory userName) {
-        return (VERIFIABLE_IDENTITY.getUserAccountName(account));
-    }
+    // function getUserName(
+    //     address account
+    // ) public view returns (string memory userName) {
+    //     return (VERIFIABLE_IDENTITY.getUserAccountName(account));
+    // }
 
 
     /**

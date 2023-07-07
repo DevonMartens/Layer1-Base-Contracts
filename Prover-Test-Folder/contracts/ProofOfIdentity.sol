@@ -144,15 +144,13 @@ contract ProofOfIdentity is
         require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
          _tokenIdCounter.increment();
 
-        _setStruct(account, _tokenIdCounter.current(), countryCode, userType, level, expiry); 
-
-        // identityBlob[account] = IdentityBlob({
-        //     tokenId: _tokenIdCounter.current(),
-        //     countryCode: countryCode,
-        //     userType: userType,
-        //     level: level,
-        //     expiry: expiry
-        // });
+        identityBlob[account] = IdentityBlob({
+            tokenId: _tokenIdCounter.current(),
+            countryCode: countryCode,
+            userType: userType,
+            level: level,
+            expiry: expiry
+        });
 
         _safeMint(account, _tokenIdCounter.current());
         _tokenURI[_tokenIdCounter.current()] = tokenUri;
@@ -188,15 +186,14 @@ contract ProofOfIdentity is
         string calldata tokenUri
     ) external onlyRole(OPERATOR_ROLE) {
         require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
-
-        _setStruct(account, identityBlob[account].tokenId, countryCode, userType, level, expiry);
-        // identityBlob[account] = IdentityBlob({
-        //     tokenId: identityBlob[account].tokenId,
-        //     countryCode: countryCode,
-        //     userType: userType,
-        //     level: level,
-        //     expiry: expiry
-        // });
+        
+        identityBlob[account] = IdentityBlob({
+            tokenId: identityBlob[account].tokenId,
+            countryCode: countryCode,
+            userType: userType,
+            level: level,
+            expiry: expiry
+        });
         _tokenURI[identityBlob[account].tokenId] = tokenUri;
         emit IdentityUpdated(account, identityBlob[account].tokenId);
     }
@@ -278,24 +275,6 @@ contract ProofOfIdentity is
         uint256 tokenId
     ) public pure override {
         revert(Errors.ID_NOT_TRANSFERABLE);
-    }
-
-    function _setStruct(
-        address account,
-        uint256 tokenId,
-        string calldata countryCode,
-        uint8 userType,
-        uint8 level,
-        uint256 expiry
-    )   
-    internal {
-       identityBlob[account] = IdentityBlob({
-            tokenId: tokenId,
-            countryCode: countryCode,
-            userType: userType,
-            level: level,
-            expiry: expiry
-        });
     }
 
   	

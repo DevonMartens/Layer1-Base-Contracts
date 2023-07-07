@@ -11,8 +11,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./Errors.sol";
 
 /// @title ValidatorRewards
-/// @notice This contract ensures fees are sent the validator addresses.
-/// @dev The primary function of this contract is disperse funds from Haven applications.
+/// @notice This contract ensures fees are sent to the validator addresses.
+/// @dev The primary function of this contract is to disburse funds from Haven applications.
 
 contract ValidatorRewards is
     Initializable,
@@ -205,7 +205,7 @@ contract ValidatorRewards is
     }
 
     /**
-   @notice `released` ia the getter for the amount of Wrapped H1 already released to a payee.
+   @notice `released` is the getter for the amount of Wrapped H1 already released to a payee.
    @param account is the account to check the share amount.
    */
     function released(address account) public view returns (uint256) {

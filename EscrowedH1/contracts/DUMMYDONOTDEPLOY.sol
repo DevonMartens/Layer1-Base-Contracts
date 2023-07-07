@@ -1,7 +1,7 @@
-pragma solidity ^0.8.0
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-im
-
+import "./EscrowedH1.sol";
 contract MaliciousContract is EscrowedH1 {
     EscrowedH1 escrowedH1;
 
@@ -17,16 +17,16 @@ contract MaliciousContract is EscrowedH1 {
         escrowedH1.claim(index);
     }
 
-    function mintTokens()
+    // function mintTokens()
 
 
-    function vest(uint256 amount) external { 
+    // function vest(uint256 amount) external { 
     
-    escrowedH1.startVesting(uint256)
+    // escrowedH1.startVesting(uint256)
 
-    }
+    // }
 
-    receive() external payable {
-        // Do nothing
-    }
-};
+    // receive() external payable {
+    //     // Do nothing
+    // }
+}

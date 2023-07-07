@@ -13,18 +13,18 @@ import "./NewRoleVerification.sol";
 abstract contract NewUserInformation is NewRoleVerification {
 
     // START DUMMY FUNCTIONS
-    function getUserAccountName(
-        address account
-    ) public view returns (string memory name) {
-        if(keccak256(abi.encodePacked(identityBlob[account].name))
-         == 
-         keccak256(abi.encodePacked("")
-         ))
-        {
-            return "REGISTER_NAME";
-        }
-        return (identityBlob[account].name);
-    }
+    // function getUserAccountName(
+    //     address account
+    // ) public view returns (string memory name) {
+    //     if(keccak256(abi.encodePacked(identityBlob[account].name))
+    //      == 
+    //      keccak256(abi.encodePacked("")
+    //      ))
+    //     {
+    //         return "REGISTER_NAME";
+    //     }
+    //     return (identityBlob[account].name);
+    // }
 
     // function getUserAge(
     //     address account

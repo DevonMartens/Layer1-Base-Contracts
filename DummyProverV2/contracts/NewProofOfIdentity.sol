@@ -125,23 +125,29 @@ contract NewProofOfIdentity is
   
     function issueIdentity(
         address account,
-        string calldata countryCode,
-        uint8 userType,
-        uint8 level,
-        uint256 expiry,
-        string calldata name,
-        uint8 age,
-        bool hasDog,
-       bool hasCat,
-       string calldata lastName,
+    //     string calldata countryCode,
+    //     uint8 userType,
+    //     uint8 level,
+    //     uint256 expiry,
+    // //    string calldata name,
+    //     uint8 age,
+    //     bool hasDog,
+    //    bool hasCat,
+    //    string calldata lastName,
+    IdentityBlob,
         string calldata tokenUri
+    
     ) external onlyRole(OPERATOR_ROLE) returns(uint256) {
         // require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
 
         // require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
          _tokenIdCounter.increment();
-
-         _setStruct(account, countryCode, userType, level, expiry, name, age, hasDog, hasCat, lastName);
+       //  IdentityBlob newStruct = stateStruct;
+        identityBlob[account] = IdentityBlob;
+    //     IdentityBlob({
+    //         stateStruct:
+    // //       lastName : lastName
+    //     });
          //lastName);
 
         _safeMint(account, _tokenIdCounter.current());
@@ -151,32 +157,25 @@ contract NewProofOfIdentity is
         return _tokenIdCounter.current();
     }
 
-    function _setStruct(
-             address account,
-        string calldata countryCode,
-        uint8 userType,
-        uint8 level,
-        uint256 expiry,
-        string calldata name,
-        uint8 age,
-        bool hasDog,
-        bool hasCat,
-       string calldata lastName
-    )   
-    internal {
-       identityBlob[account] = IdentityBlob({
-            tokenId: _tokenIdCounter.current(),
-            countryCode: countryCode,
-            userType: userType,
-            level: level,
-            expiry: expiry,
-            name: name,
-            age: age,
-            hasDog : hasDog,
-            hasCat : hasCat,
-            lastName : lastName
-        });
-    }
+//     function _setStruct(
+//              address account,
+//         string calldata countryCode,
+//         uint8 userType,
+//         uint8 level,
+//         uint256 expiry,
+//    //     string calldata name,
+//         uint8 age,
+//         bool hasDog,
+//         bool hasCat
+//         //,
+//     //   string calldata lastName
+//     )   
+//     internal {
+//        identityBlob[account] = IdentityBlob({
+//             stateStruct
+//     //       lastName : lastName
+//         });
+//     }
     /**	
      * @notice `updateIdentity` function is only callable by operator role, 
      * its purpose is to update an identity for changing user details over time.	
