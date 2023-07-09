@@ -24,12 +24,6 @@ abstract contract NewRoleVerification {
         uint8 userType;
         uint8 level;
         uint256 expiry;
-        //random additions testing first in the middle of struct
-        // string name;
-        uint8 age;
-        bool hasDog;
-       bool hasCat;
-      // string lastName;
     }
 
     /**

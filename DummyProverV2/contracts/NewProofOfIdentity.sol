@@ -122,33 +122,19 @@ contract NewProofOfIdentity is
         _grantRole(OPERATOR_ROLE, networkOperator);
     }
 
-  
-    function issueIdentity(
-        address account,
-    //     string calldata countryCode,
-    //     uint8 userType,
-    //     uint8 level,
-    //     uint256 expiry,
-    // //    string calldata name,
-    //     uint8 age,
-    //     bool hasDog,
-    //    bool hasCat,
-    //    string calldata lastName,
-    IdentityBlob,
-        string calldata tokenUri
-    
-    ) external onlyRole(OPERATOR_ROLE) returns(uint256) {
-        // require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
 
-        // require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
+
+ function issueIdentity(
+        address account,
+       IdentityBlob memory _identityBlob,
+       string calldata tokenUri
+    ) external onlyRole(OPERATOR_ROLE) returns(uint256) {
+        require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
+
+        require(_identityBlob.expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
          _tokenIdCounter.increment();
-       //  IdentityBlob newStruct = stateStruct;
-        identityBlob[account] = IdentityBlob;
-    //     IdentityBlob({
-    //         stateStruct:
-    // //       lastName : lastName
-    //     });
-         //lastName);
+
+        identityBlob[account] = _identityBlob;
 
         _safeMint(account, _tokenIdCounter.current());
         _tokenURI[_tokenIdCounter.current()] = tokenUri;
@@ -156,86 +142,6 @@ contract NewProofOfIdentity is
         emit IdentityIssued(account, _tokenIdCounter.current());
         return _tokenIdCounter.current();
     }
-
-//     function _setStruct(
-//              address account,
-//         string calldata countryCode,
-//         uint8 userType,
-//         uint8 level,
-//         uint256 expiry,
-//    //     string calldata name,
-//         uint8 age,
-//         bool hasDog,
-//         bool hasCat
-//         //,
-//     //   string calldata lastName
-//     )   
-//     internal {
-//        identityBlob[account] = IdentityBlob({
-//             stateStruct
-//     //       lastName : lastName
-//         });
-//     }
-    /**	
-     * @notice `updateIdentity` function is only callable by operator role, 
-     * its purpose is to update an identity for changing user details over time.	
-     * @dev the function requires an ID to have been issued to the account, if the account does not have an ID it will revert.	
-     * @param account address of the target user.	
-     * @param countryCode is the users region identifier as defined by ISO3 standards - 
-     * Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.	
-     * @param userType is passed to assigned an account type - retail (0) or instituton (1), 
-     * by not using an enum we allow for additional classes in the future.	
-     * @param expiry is passed to assign an expiry time for the documents provided by the operator role, 
-     * ensuring user documentation is in date if an application chooses to implement.	
-     * @param level is passed to assign a KYC level to the user account, by combining the region code and 
-     * KYC level we allow for specific regional restrictions to be implemented by developers.	
-     * @param tokenUri is passed to provide a custom URI to the tokenId for future utilisation and 
-     * expansion of proof of identity framework.	
-     */	
-
-
-    // function updateIdentity(
-    //     address account,
-    //     string calldata countryCode,
-    //     // uint8 age,
-    //     uint8 userType,
-    //     uint8 level,
-    //     uint256 expiry,
-    //     string calldata name,
-    //      uint8 age,
-    //     bool hasDog,
-    //     string calldata tokenUri
-    // ) external onlyRole(OPERATOR_ROLE) {
-      
-
-    //     require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
-    // {
-    //     identityBlob[account].countryCode = countryCode;
-    // }
-    // {
-    //     identityBlob[account].userType = userType;
-    // }
-    // {
-    //     identityBlob[account].level  = level;
-    // }
-    // {
-    //     identityBlob[account].expiry = expiry;
-    // }    
-    // {
-    //     identityBlob[account].name = name;
-    // }
-    // {
-    //     identityBlob[account].age = age;
-    // }
-    // {
-    //     identityBlob[account].hasDog = hasDog;
-    // }
-    // {
-    //     // _tokenURI[tokenId] = tokenUri;
-    //     emit IdentityUpdated(account, identityBlob[account].tokenId);
-    // }
-    // }
-
 
      /**	
      * @notice `updateTokenURI` function is only callable by operator role, 
