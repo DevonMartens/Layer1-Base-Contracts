@@ -5,16 +5,21 @@ import "./Errors.sol";
 
 pragma solidity ^0.8.0;
 
-/// @title H1NativeApplication
-/// @notice This contract has a modifier that ensures fees are sent to the FeeContract.
-/// @dev The primary function of this contract is to be used as an import for native building on Haven.
-contract H1NativeApplication is FeeQuery {
+/*
+@title H1NativeApplication
+@notice This contract has a modifier that ensures fees are sent to the FeeContract.
+@dev The primary function of this contract is to be used as an import for native building on Haven.
+*/
+
+interface IFeeQuery {
+    function getFee() external view returns (uint256);
+}
+
+contract H1NativeApplication {
 
     // Storage for fee contract address.
     address public FeeContract;
     
-    // Storage to access FeeQuery functions.
-    FeeQuery public FeeQueryNative;
 
     // Modifier to send fees to the fee contract and to the developer in contracts.
     modifier applicationFee() {
@@ -37,8 +42,6 @@ contract H1NativeApplication is FeeQuery {
             revert(Errors.INVALID_ADDRESS);
         }
         FeeContract = _FeeContract;
-        FeeQueryNative = FeeQuery(_FeeContract);
-        epochLength = 86400;
     }
 
     /**
@@ -47,6 +50,6 @@ contract H1NativeApplication is FeeQuery {
     */
 
     function callFee() public view returns (uint256) {
-        return FeeQuery(FeeContract).getFee();
+        return IFeeQuery(FeeContract).getFee();
     }
 }

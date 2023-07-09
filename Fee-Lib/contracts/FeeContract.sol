@@ -15,8 +15,8 @@ import "./Errors.sol";
 @dev The primary function of this contract is to ensure proper distribution from Haven1 applications to distribution channels.
 */
 
-interface IFeeOracle {
-    function consult() external view returns (uint amountOut);
+interface IFeeQuery {
+    function consult() external view returns (uint256 amountOut);
 
     function refreshOracle() external returns (bool success);
 }
@@ -29,8 +29,8 @@ contract FeeContract is
 {
     
     /**
-     * @dev The event is triggered during the distributeFeesToChannels function.
-     * It sends the time, the address receiving it, and the fee amount owed.
+     * @dev The event is triggered during the `distributeFeesToChannels` function.
+     * It emits the time, the address receiving it, and the fee amount owed.
      */
     event FeesDistributed(
         uint256 indexed timestamp,
@@ -39,14 +39,14 @@ contract FeeContract is
     );
 
     /**
-     * @dev The event is triggered during the resetFee function.
-     * It sends the time of the new reset and current call.
+     * @dev The event is triggered during the `resetFee` function.
+     * It emits the time of the new reset and current call.
      */
     event FeeReset(uint256 indexed currentTimestamp, uint256 indexed newReset);
 
     /**
      * @dev The event is triggered during the addChannel function.
-     * It sends the address, shares, and total shares of the contract.
+     * It emits the address, shares, and total shares of the contract.
      */
     event ChannelAdded(
         address indexed newChannelAddress,
@@ -55,8 +55,8 @@ contract FeeContract is
     );
 
     /**
-     * @dev The event is triggered during the adjustChannel function.
-     * It sends address of the adjusted channel it's old and current share amount and
+     * @dev The event is triggered during the `adjustChannel` function.
+     * It emits address of the adjusted channel it's old and current share amount and
      * the new total shares amount of the contract.
      */
     event ChannelAdjusted(

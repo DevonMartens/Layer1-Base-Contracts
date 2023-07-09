@@ -12,7 +12,12 @@ pragma solidity ^0.8.0;
  * @dev The primary function of this contract is to be used as an import for developers building on Haven.
  */
 
-contract H1DevelopedApplication is FeeQuery {
+interface IFeeQuery {
+    function getMinFee() external view returns (uint256);
+    function getFee() external view returns (uint256);
+}
+
+contract H1DevelopedApplication {
     
     // Storage for fee contract address.
     address public FeeContract;
@@ -98,7 +103,7 @@ contract H1DevelopedApplication is FeeQuery {
     @notice `callFee` gets the value for H1 in USD.
     */
     function callFee() public view returns (uint256) {
-        uint256 currentFeePrice = FeeQuery(FeeContract).getFee();
+        uint256 currentFeePrice = IFeeQuery(FeeContract).getFee();
         return currentFeePrice;
     }
 
@@ -106,7 +111,7 @@ contract H1DevelopedApplication is FeeQuery {
     @notice `callMiniumFee` gets the minimum fee from the Fee contract.
     */
     function callMiniumFee() public view returns (uint256) {
-        uint256 minFeeFromFeeContract = FeeQuery(FeeContract).getMinFee();
+        uint256 minFeeFromFeeContract = IFeeQuery(FeeContract).getMinFee();
         if (minFeeFromFeeContract > devFee) {
             revert(Errors.INVALID_FEE);
         }
