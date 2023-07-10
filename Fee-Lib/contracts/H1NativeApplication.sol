@@ -50,7 +50,7 @@ contract H1NativeApplication {
     @dev It returns a uint256 that is used in the applicationFee modifier.
     */
 
-    function callFee() public returns (uint256) {
+    function callFee() public view returns (uint256) {
         return IFeeContract(FeeContract).getFee();
     }
 }

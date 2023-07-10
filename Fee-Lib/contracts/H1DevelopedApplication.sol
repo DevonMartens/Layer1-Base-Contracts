@@ -97,8 +97,8 @@ contract H1DevelopedApplication {
     */
     function calculateDevFee() public view returns (uint256) {
         uint256 feeInUSD = IFeeContract(FeeContract).getFee();
-        uint256 devFeeInUSD = feeInUSD * devFee;
-        return devFeeInUSD;
+        // uint256 devFeeInUSD = feeInUSD * devFee;
+        return feeInUSD * devFee;
     }
 
     /**
