@@ -12,7 +12,8 @@ pragma solidity ^0.8.0;
 */
 
 interface IFeeQuery {
-    function getFee() external view returns (uint256);
+    function getFee() external returns (uint256);
+
 }
 
 contract H1NativeApplication {
@@ -49,7 +50,7 @@ contract H1NativeApplication {
     @dev It returns a uint256 that is used in the applicationFee modifier.
     */
 
-    function callFee() public view returns (uint256) {
+    function callFee() public returns (uint256) {
         return IFeeQuery(FeeContract).getFee();
     }
 }

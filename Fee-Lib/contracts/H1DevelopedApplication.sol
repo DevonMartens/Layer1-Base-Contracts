@@ -13,8 +13,9 @@ pragma solidity ^0.8.0;
  */
 
 interface IFeeQuery {
-    function getMinFee() external view returns (uint256);
-    function getFee() external view returns (uint256);
+    function getMinFee() external returns (uint256);
+    //view 
+    function getFee() external returns (uint256);
 }
 
 contract H1DevelopedApplication {
@@ -72,11 +73,11 @@ contract H1DevelopedApplication {
     }
 
     /**
-     * @notice `getDeveloperPayment` the view function
+     * @notice `getDeveloperPayment` the  function
      * is to get the fee amount owed to the developer.
      * @dev It is 90% of the contract balance.
      */
-    function getDeveloperPayment() public view returns (uint256 developerFee) {
+    function getDeveloperPayment() public  returns (uint256 developerFee) {
         uint256 currentFee = calculateDevFee();
         developerFee = (currentFee / 10) * 9;
     }
@@ -86,7 +87,7 @@ contract H1DevelopedApplication {
     @dev It is 10% of the contract balance.
     */
 
-    function getHavenFee() public view returns (uint256 havenOneFee) {
+    function getHavenFee() public  returns (uint256 havenOneFee) {
         uint256 currentFee = calculateDevFee();
         havenOneFee = currentFee / 10;
     }
@@ -94,15 +95,16 @@ contract H1DevelopedApplication {
     /**
     @notice `calculateDevFee` consults the oracle and gets the fee back in USD.
     */
-    function calculateDevFee() public view returns (uint256) {
-        uint256 devFeeInUSD = (callFee() * devFee);
+    function calculateDevFee() public returns (uint256) {
+        uint256 feeInUSD = IFeeQuery(FeeContract).getFee();
+        uint256 devFeeInUSD = feeInUSD * devFee;
         return devFeeInUSD;
     }
 
     /**
     @notice `callFee` gets the value for H1 in USD.
     */
-    function callFee() public view returns (uint256) {
+    function callFee() public returns (uint256) {
         uint256 currentFeePrice = IFeeQuery(FeeContract).getFee();
         return currentFeePrice;
     }
@@ -110,7 +112,7 @@ contract H1DevelopedApplication {
     /**
     @notice `callMiniumFee` gets the minimum fee from the Fee contract.
     */
-    function callMiniumFee() public view returns (uint256) {
+    function callMiniumFee() public returns (uint256) {
         uint256 minFeeFromFeeContract = IFeeQuery(FeeContract).getMinFee();
         if (minFeeFromFeeContract > devFee) {
             revert(Errors.INVALID_FEE);

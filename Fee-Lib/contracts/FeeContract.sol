@@ -6,7 +6,6 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./FeeQuery.sol";
-import "./Errors.sol";
 
 // force distro
 /**
@@ -14,12 +13,6 @@ import "./Errors.sol";
 @notice This contract collects and distributes application fees from user application transactions.
 @dev The primary function of this contract is to ensure proper distribution from Haven1 applications to distribution channels.
 */
-
-interface IFeeOracle {
-    function consult() external view returns (uint256 amountOut);
-
-    function refreshOracle() external returns (bool success);
-}
 
 contract FeeContract is
     FeeQuery,
@@ -37,12 +30,6 @@ contract FeeContract is
         address indexed to,
         uint256 indexed amount
     );
-
-    /**
-     * @dev The event is triggered during the `resetFee` function.
-     * It emits the time of the new reset and current call.
-     */
-    event FeeReset(uint256 indexed currentTimestamp, uint256 indexed newReset);
 
     /**
      * @dev The event is triggered during the addChannel function.
@@ -77,9 +64,6 @@ contract FeeContract is
 
     // The total amount that we divide an addresses shares by to compute payments.
     uint8 private CONTRACT_SHARES;
-
-    // Address used to consult to find fee amounts.
-    address private oracle;
 
     // Array of addresses stored for fee distribution.
     address[] channels;
@@ -133,21 +117,6 @@ contract FeeContract is
     */
     receive() external payable {}
 
-    /**
-    @notice `resetFee` is the call to get the correct value for the fee across all native applications.
-    @dev This call queries the oracle to set a fee.
-    @dev After that is complete it then sets the time that the oracle needs to be rechecked.
-    */
-
-    function resetFee() external {
-        if (block.timestamp > requiredReset || fee == 0) {
-            fee = queryOracle();
-            requiredReset = block.timestamp + epochLength;
-            emit FeeReset(block.timestamp, requiredReset);
-        } else {
-            revert(Errors.HOLD_TIME_IS_24_HOURS);
-        }
-    }
 
     /**
      * @notice `addChannel` includes the logic to add a new channel with weight.
@@ -394,14 +363,6 @@ contract FeeContract is
 
     function getLastDistributionBlock() public view returns (uint256) {
         return lastDistribution;
-    }
-
-    /**
-    @notice `queryOracle` this function is to consult oracle to get a fee amount.
-    */
-
-    function queryOracle() public view returns (uint feeAmount) {
-        return (IFeeOracle(oracle).consult());
     }
 
     /**

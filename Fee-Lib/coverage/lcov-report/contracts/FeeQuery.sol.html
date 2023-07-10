@@ -22,22 +22,22 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>4/4</span>
+        <span class='fraction'>10/10</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>2/2</span>
+        <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/2</span>
+        <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>4/4</span>
+        <span class='fraction'>12/12</span>
       </div>
     </div>
   </div>
@@ -90,7 +90,50 @@
 45
 46
 47
-48</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,6 +157,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -130,16 +206,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">46×</span>
-<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">44×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: ISC
 &nbsp;
 pragma solidity ^0.8.0;
+&nbsp;
+import "./Errors.sol";
 &nbsp;
 /**
  * @title FeeQuery
@@ -148,11 +236,24 @@ pragma solidity ^0.8.0;
  * @dev The primary function of this contract is to ensure that the fee amount can be read in each contract.
  */
 &nbsp;
-interface IFeeContract {
-    function queryOracle() external view returns (uint);
+interface IFeeOracle {
+    function consult() external view returns (uint256 amountOut);
+&nbsp;
+    function refreshOracle() external returns (bool success);
 }
 &nbsp;
+&nbsp;
 contract FeeQuery {
+&nbsp;
+    /**
+     * @dev The event is triggered during the `resetFee` function.
+     * It emits the time of the new reset and current call.
+     */
+    event FeeReset(uint256 indexed currentTimestamp, uint256 indexed newReset);
+&nbsp;
+    // Address used to consult to find fee amounts.
+    address public oracle;
+&nbsp;
     // This is used to measure the time frame in which we wait to consult the oracle.
     uint256 public epochLength;
 &nbsp;
@@ -165,10 +266,28 @@ contract FeeQuery {
     // Storage for minimum fee.
     uint256 public minFee;
 &nbsp;
+       /**
+    @notice `resetFee` is the call to get the correct value for the fee across all native applications.
+    @dev This call queries the oracle to set a fee.
+    @dev After that is complete it then sets the time that the oracle needs to be rechecked.
+    */
+&nbsp;
+    function resetFee() public returns(uint256){
+        if (block.timestamp &gt; requiredReset || fee == 0) {
+            fee = queryOracle();
+            requiredReset = block.timestamp + epochLength;
+           emit FeeReset(block.timestamp, requiredReset);
+            return fee;
+         } else {
+             revert(Errors.HOLD_TIME_IS_24_HOURS);
+        }
+    }
+&nbsp;
+&nbsp;
     /**
     @notice `getMinFee` function to retrieve the minimum dev fee allowed for developers.
     */
-    function getMinFee() public view returns (uint256) {
+    function getMinFee() external view returns (uint256) {
         return minFee;
     }
 &nbsp;
@@ -176,13 +295,23 @@ contract FeeQuery {
     @notice `getFee` function consults the fee contract to get the fee.
     @dev The required reset means the fee must be updated every 24 hours.
     */
-    function getFee() public view returns (uint256) {
+    function getFee() external returns (uint256) {
         if (requiredReset &lt; block.timestamp) {
-            revert("resetFee()");
+           uint256 newFee = resetFee();
+            return newFee;
         } else {
             return fee;
         }
     }
+&nbsp;
+      /**
+    @notice `queryOracle` this function is to consult oracle to get a fee amount.
+    */
+&nbsp;
+    function queryOracle() public view returns (uint feeAmount) {
+        return (IFeeOracle(oracle).consult());
+    }
+&nbsp;
 }
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -190,7 +319,7 @@ contract FeeQuery {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Jul 07 2023 17:09:25 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 10 2023 04:34:37 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

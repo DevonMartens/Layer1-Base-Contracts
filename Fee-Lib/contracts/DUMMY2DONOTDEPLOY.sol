@@ -11,11 +11,11 @@ import "./Errors.sol";
 @dev The primary function of this contract is to ensure proper distribution from Haven1 applications.
 */
 
-interface IFeeOracle {
-    function consult() external view returns (uint amountOut);
+// interface IFeeOracle {
+//     function consult() external view returns (uint amountOut);
 
-    function refreshOracle() external returns (bool success);
-}
+//     function refreshOracle() external returns (bool success);
+// }
 
 contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
     /**
@@ -31,8 +31,8 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
     // Used to divide an addresses shares by the total.
     uint8 private CONTRACT_SHARES;
 
-    // Address used to consult to find fee amounts.
-    address private oracle;
+    // // Address used to consult to find fee amounts.
+    // address private oracle;
 
     // Array for address used to consult to find fee amounts.
     address[] channels;
@@ -305,9 +305,9 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
    @notice Function to consult oracle to get fee amount.
    */
 
-    function queryOracle() public view returns (uint feeAmount) {
-        return (IFeeOracle(oracle).consult());
-    }
+    // function queryOracle() public view returns (uint feeAmount) {
+    //     return (IFeeOracle(oracle).consult());
+    // }
 
     /**
    @notice Function to consult oracle to update.

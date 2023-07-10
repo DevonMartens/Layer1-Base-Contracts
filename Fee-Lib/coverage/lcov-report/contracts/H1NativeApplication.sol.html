@@ -37,7 +37,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>11/11</span>
+        <span class='fraction'>9/9</span>
       </div>
     </div>
   </div>
@@ -95,7 +95,11 @@
 50
 51
 52
-53</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+53
+54
+55
+56
+57</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,13 +118,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">70×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5×</span>
-<span class="cline-any cline-yes">5×</span>
-<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">69×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -129,22 +152,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">64×</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">63×</span>
-<span class="cline-any cline-yes">63×</span>
-<span class="cline-any cline-yes">63×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">15×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: ISC
@@ -154,16 +162,22 @@ import "./Errors.sol";
 &nbsp;
 pragma solidity ^0.8.0;
 &nbsp;
-/// @title H1NativeApplication
-/// @notice This contract has a modifier that ensures fees are sent to the FeeContract.
-/// @dev The primary function of this contract is to be used as an import for native building on Haven.
-contract H1NativeApplication is FeeQuery {
+/*
+@title H1NativeApplication
+@notice This contract has a modifier that ensures fees are sent to the FeeContract.
+@dev The primary function of this contract is to be used as an import for native building on Haven.
+*/
+&nbsp;
+interface IFeeQuery {
+    function getFee() external returns (uint256);
+&nbsp;
+}
+&nbsp;
+contract H1NativeApplication {
 &nbsp;
     // Storage for fee contract address.
     address public FeeContract;
     
-    // Storage to access FeeQuery functions.
-    FeeQuery public FeeQueryNative;
 &nbsp;
     // Modifier to send fees to the fee contract and to the developer in contracts.
     modifier applicationFee() {
@@ -186,8 +200,6 @@ contract H1NativeApplication is FeeQuery {
             revert(Errors.INVALID_ADDRESS);
         }
         FeeContract = _FeeContract;
-        FeeQueryNative = FeeQuery(_FeeContract);
-        epochLength = 86400;
     }
 &nbsp;
     /**
@@ -195,8 +207,8 @@ contract H1NativeApplication is FeeQuery {
     @dev It returns a uint256 that is used in the applicationFee modifier.
     */
 &nbsp;
-    function callFee() public view returns (uint256) {
-        return FeeQuery(FeeContract).getFee();
+    function callFee() public returns (uint256) {
+        return IFeeQuery(FeeContract).getFee();
     }
 }
 &nbsp;</pre></td></tr>
@@ -205,7 +217,7 @@ contract H1NativeApplication is FeeQuery {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Jul 07 2023 17:09:25 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 10 2023 04:34:37 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

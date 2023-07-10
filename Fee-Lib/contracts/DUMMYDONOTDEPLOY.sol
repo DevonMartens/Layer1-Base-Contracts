@@ -11,11 +11,11 @@ import "./Errors.sol";
 @dev The primary function of this contract is to ensure proper distribution from Haven1 applications.
 */
 
-interface IFeeOracle {
-    function consult() external returns (uint amountOut);
+// interface IFeeOracle {
+//     function consult() external returns (uint amountOut);
 
-    function refreshOracle() external returns (bool success);
-}
+//     function refreshOracle() external returns (bool success);
+// }
 
 contract FeeOracle is FeeQuery {
     uint priceAverage = 1;

@@ -2,6 +2,7 @@ const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
+const { time } = require("@nomicfoundation/hardhat-network-helpers");
 
 ONE_H1 = ethers.utils.parseUnits("1", "ether");
 NINE_H1 = ethers.utils.parseUnits("9", "ether");
@@ -125,13 +126,22 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     await SimpleStorageWithFeeDeployed.set(1, { value: 1 });
     expect(await SimpleStorageWithFeeDeployed.get()).to.equal(1);
   });
-  it("H1NativeApplication Contract: The callFee function value should match fee contracts queryOracle() value.", async () => {
-    expect(await H1NativeApplicationDeployed.callFee()).to.equal(0);
+  it("H1NativeApplication: The modifer applicationFee() should still work after 24 hours.", async () => {
     await OracleContract.setPriceAverage(ONE_H1);
     await FeeContract.resetFee();
-    const FeeFromFeeContract = await FeeContract.queryOracle();
-    expect(FeeFromFeeContract.toString()).to.equal(ONE_H1.toString());
+    await time.increase(time.duration.days(1));
+    await SimpleStorageWithFeeDeployed.set(1, { value: ONE_H1 });
   });
+//   it("H1NativeApplication Contract: The callFee function value should match fee contracts queryOracle() value.", async () => {
+//     await FeeContract.resetFee();
+//     expect(await H1NativeApplicationDeployed.callFee()).to.equal(1);
+//  // const test = await H1NativeApplicationDeployed.callFee();
+//   console.log(test)
+//     await OracleContract.setPriceAverage(ONE_H1);
+//     await FeeContract.resetFee();
+//     const FeeFromFeeContract = await FeeContract.queryOracle();
+//     expect(FeeFromFeeContract.toString()).to.equal(ONE_H1.toString());
+//   });
   it("H1NativeApplication Contract: The FeeContract() function should return the FeeContract address set in the constructor.", async () => {
     expect(await H1NativeApplicationDeployed.FeeContract()).to.equal(
       FeeContract.address

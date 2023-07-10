@@ -20,7 +20,7 @@ describe("FeeQuery Contract", function () {
     });
     it("FeeQuery Contract: Deployed independently with no contract inheriting it requiredReset should be 0.", async () => {
       const requiredReset = await FeeQueryContract.requiredReset();
-      expect(requiredReset.toString()).to.deep.equal("0");
+      expect(requiredReset.toString()).to.equal("0");
     });
     it("FeeQuery Contract: Deployed independently with no contract inheriting it getFee() should return resetFee()", async () => {
       await expectRevert(FeeQueryContract.getFee(), "resetFee()");
