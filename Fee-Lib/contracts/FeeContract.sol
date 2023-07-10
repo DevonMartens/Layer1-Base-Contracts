@@ -15,7 +15,7 @@ import "./Errors.sol";
 @dev The primary function of this contract is to ensure proper distribution from Haven1 applications to distribution channels.
 */
 
-interface IFeeQuery {
+interface IFeeOracle {
     function consult() external view returns (uint256 amountOut);
 
     function refreshOracle() external returns (bool success);
