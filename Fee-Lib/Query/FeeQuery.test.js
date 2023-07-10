@@ -4,7 +4,7 @@ const { ethers } = require("hardhat");
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
 describe("FeeQuery Contract", function () {
-  describe("FeeQuery Contract without other contract interactions.", function () {
+  describe("WILL RENAME: FeeQuery Contract imports.", function () {
     let FeeQueryContract;
     beforeEach(async () => {
       const FeeQueryFactory = await ethers.getContractFactory("FeeQuery");
@@ -25,8 +25,6 @@ describe("FeeQuery Contract", function () {
     it("FeeQuery Contract: Deployed independently with no contract inheriting it getFee() should return resetFee()", async () => {
       await expectRevert(FeeQueryContract.getFee(), "resetFee()");
     });
-  });
-  describe("FeeQuery Contract with Fee Oracle.", function () {
     let FeeOracleContract;
     beforeEach(async () => {
       const FeeOracleFactory = await ethers.getContractFactory("FeeOracle");

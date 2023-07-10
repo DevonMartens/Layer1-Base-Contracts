@@ -138,6 +138,17 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         "Initializable: contract is already initialized"
       );
     });
+    it("Fee Contract: getFee should change the value of the fee.", async () => {
+      await expect(FeeContract.getFee())
+      .to.emit(FeeContract, "FeeReset")
+      .withArgs(1);
+  
+    });
+    //
+    it("Fee Contract: getNextResetTime() should return the reset time and setRequiredReset should update it.", async () => {
+      await FeeContract.setRequiredReset(3);
+      expect(await FeeContract.getNextResetTime()).to.equal(3);
+    });
   });
   describe("Fee Contract: Adding and adjusting wieghts and channels functions", function () {
     let ValidatorContract2;
@@ -472,9 +483,11 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const wieghtsOfPositionNine = positionNine[1];
       //address of position 4 should be Validator Contract 5
       expect(addressOfPositionNine).to.equal(ValidatorContract5.address);
+      //wieghts of position 4 should be 5
       expect(5).to.equal(wieghtsOfPositionNine);
     });
     it("Fee Contract: The addChannel function should not allow duplicates.", async () => {
+
       await expectRevert(
         NinePositionArrayFeeContract.addChannel(ValidatorContract3.address, 6),
         "123"
@@ -592,53 +605,53 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const timestamp = await time.latest();
       estimatedResetTime = timestamp + 86400;
     });
-    it("Fee Contract: The resetFee() function should revert if it has not been 24 hours and the fee is NOT zero.", async () => {
-      //sets fee so its not 0
-      await FeeContract.resetFee();
-      //checks that query oracle is equal to 1 the anticipated value
-      expect(await FeeContract.queryOracle()).to.equal(1);
-      //change the value
-      await FeeOracleContract.setPriceAverage(TWO_H1);
-      //reset fee
-      await expectRevert(FeeContract.resetFee(), "121");
-      //checks updated value
-    });
-    it("Fee Contract: The resetFee() function should change fee value, readable by querying the oracle.", async () => {
-      //checks that query oracle is equal to 1 the anticipated value
-      expect(await FeeContract.queryOracle()).to.equal(1);
-      //change the value
-      await FeeOracleContract.setPriceAverage(TWO_H1);
-      //wait 24 hours
-      await time.increase(time.duration.days(1));
-      //reset fee
-      await FeeContract.resetFee();
-      //checks updated value
-      expect(await FeeContract.queryOracle()).to.equal(TWO_H1);
-    });
-    it("Fee Contract: The resetFee() function should emit an event with the current timestamp and newResetFee.", async () => {
-      const timestamp = await time.latest();
-      const giveASecondTimestamp = timestamp + 1;
-      const giveASecondEstimatedResetTime = estimatedResetTime + 1;
-      await expect(FeeContract.resetFee())
-        .to.emit(FeeContract, "FeeReset")
-        .withArgs(giveASecondTimestamp, giveASecondEstimatedResetTime);
-    });
-    it("Fee Contract: The resetFee function should change the requiredReset time.", async () => {
-      const reset = await FeeContract.getNextResetTime();
-      // const testReset = reset.toString;
-      expect(reset.toString()).to.be.equal(estimatedResetTime.toString());
-      //wait 24 hours
-      await time.increase(time.duration.days(1));
-      //reset fee
-      await FeeContract.resetFee();
-      const newResetValue = await FeeContract.getNextResetTime();
-      //add 1 second for time
-      const newEstimatedResetTime = estimatedResetTime + 86401;
-      //close to could be a few seconds off to account for txns
-      expect(newResetValue.toString()).to.equal(
-        newEstimatedResetTime.toString()
-      );
-    });
+    // it("Fee Contract: The resetFee() function should revert if it has not been 24 hours and the fee is NOT zero.", async () => {
+    //   //sets fee so its not 0
+    //   await FeeContract.resetFee();
+    //   //checks that query oracle is equal to 1 the anticipated value
+    //   expect(await FeeContract.queryOracle()).to.equal(1);
+    //   //change the value
+    //   await FeeOracleContract.setPriceAverage(TWO_H1);
+    //   //reset fee
+    //   await expectRevert(FeeContract.resetFee(), "121");
+    //   //checks updated value
+    // });
+    // it("Fee Contract: The resetFee() function should change fee value, readable by querying the oracle.", async () => {
+    //   //checks that query oracle is equal to 1 the anticipated value
+    //   expect(await FeeContract.queryOracle()).to.equal(1);
+    //   //change the value
+    //   await FeeOracleContract.setPriceAverage(TWO_H1);
+    //   //wait 24 hours
+    //   await time.increase(time.duration.days(1));
+    //   //reset fee
+    //   await FeeContract.resetFee();
+    //   //checks updated value
+    //   expect(await FeeContract.queryOracle()).to.equal(TWO_H1);
+    // });
+    // it("Fee Contract: The resetFee() function should emit an event with the current timestamp and newResetFee.", async () => {
+    //   const timestamp = await time.latest();
+    //   const giveASecondTimestamp = timestamp + 1;
+    //   const giveASecondEstimatedResetTime = estimatedResetTime + 1;
+    //   await expect(FeeContract.resetFee())
+    //     .to.emit(FeeContract, "FeeReset")
+    //     .withArgs(giveASecondTimestamp, giveASecondEstimatedResetTime);
+    // });
+    // it("Fee Contract: The resetFee function should change the requiredReset time.", async () => {
+    //   const reset = await FeeContract.getNextResetTime();
+    //   // const testReset = reset.toString;
+    //   expect(reset.toString()).to.be.equal(estimatedResetTime.toString());
+    //   //wait 24 hours
+    //   await time.increase(time.duration.days(1));
+    //   //reset fee
+    //   await FeeContract.resetFee();
+    //   const newResetValue = await FeeContract.getNextResetTime();
+    //   //add 1 second for time
+    //   const newEstimatedResetTime = estimatedResetTime + 86401;
+    //   //close to could be a few seconds off to account for txns
+    //   expect(newResetValue.toString()).to.equal(
+    //     newEstimatedResetTime.toString()
+    //   );
+    // });
     it("Fee Contract: The setOracle function should change the oracle address.", async () => {
       const firstOracle = await FeeContract.getOracleAddress();
       const OracleContractAddress = FeeOracleContract.address;
@@ -849,4 +862,42 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       await expectRevert(FeeContractForTest.distributeFeesToChannels(), "122");
     });
   });
+  // describe("WILL RENAME: FeeQuery Contract imports.", function () {
+  //   let FeeQueryContract;
+  //   beforeEach(async () => {
+  //     const FeeQueryFactory = await ethers.getContractFactory("FeeQuery");
+  //     FeeQueryContract = await FeeQueryFactory.deploy();
+  //   });
+  //   // it("FeeQuery Contract: Deployed independently with no contract inheriting it epochLength should be 0.", async () => {
+  //   //   const epochLength = await FeeQueryContract.epochLength();
+  //   //   expect(epochLength.toString()).to.deep.equal("0");
+  //   // });
+  //   // it("FeeQuery Contract: Deployed independently with no contract inheriting it the fee value should be 0.", async () => {
+  //   //   const fee = await FeeQueryContract.fee();
+  //   //   expect(fee.toString()).to.deep.equal("0");
+  //   // });
+  //   // it("FeeQuery Contract: Deployed independently with no contract inheriting it requiredReset should be 0.", async () => {
+  //   //   const requiredReset = await FeeQueryContract.requiredReset();
+  //   //   expect(requiredReset.toString()).to.equal("0");
+  //   // });
+  //   // it("FeeQuery Contract: Deployed independently with no contract inheriting it getFee() should return resetFee()", async () => {
+  //   //   await expectRevert(FeeQueryContract.getFee(), "resetFee()");
+  //   // });
+  //   // let FeeOracleContract;
+  //   // beforeEach(async () => {
+  //   //   const FeeOracleFactory = await ethers.getContractFactory("FeeOracle");
+  //   //   FeeOracleContract = await FeeOracleFactory.deploy();
+  //   // });
+  //   it("FeeQuery Contract: The function getFee with an oracle but no feeContract should return 0.", async () => {
+  //     await FeeContract.setRequiredReset(3926785679272);
+  //     const FeeFromContract = await FeeOracleContract.getFee();
+  //     expect(FeeFromContract.toString()).to.deep.equal("0");
+  //   });
+  //   it("FeeQuery Contract: The function getFee will return the fee amount unless the requiredReset is more than the current timestamp.", async () => {
+  //     await expectRevert(FeeOracleContract.getFee(), "resetFee()");
+  //     await FeeOracleContract.setRequiredReset(3926785679272);
+  //     const FeeFromContract = await FeeOracleContract.getFee();
+  //     expect(FeeFromContract.toString()).to.deep.equal("0");
+  //   });
+ // });
 });

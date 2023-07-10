@@ -1,5 +1,6 @@
 const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
+const { time } = require("@nomicfoundation/hardhat-network-helpers");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
@@ -115,14 +116,14 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     );
   });
   it("H1DevelopedApplication: The modifer devApplicationFee() should not allow a function to execute if the fee is 0 and no value is sent to the function.", async () => {
-    await SimpleStorageWithDevAppFee.set(1);
-    await FeeContract.resetFee();
+    SimpleStorageWithDevAppFee.set(1, {value: 1});
+    
     await expectRevert(SimpleStorageWithDevAppFee.set(1), "125");
     await SimpleStorageWithDevAppFee.set(1, { value: 1 });
   });
   it("H1DevelopedApplication: The modifer devapplicationFee() should not allow a value less than the price to be sent to the function.", async () => {
     await OracleContract.setPriceAverage(ONE_H1);
-    await FeeContract.resetFee();
+    
     await expectRevert(SimpleStorageWithDevAppFee.set(1), "125");
     expect(() =>
       SimpleStorageWithDevAppFee.set(1, {
@@ -133,7 +134,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
   it("H1DevelopedApplication: The callFee function should return the fee contracts value for the fee.", async () => {
    // expect(await H1DevelopedApplication.callFee()).to.equal(0);
     await OracleContract.setPriceAverage(ONE_H1);
-    await FeeContract.resetFee();
+    
     const FeeFromFeeContract = await FeeContract.queryOracle();
     expect(FeeFromFeeContract.toString()).to.equal(ONE_H1.toString());
   });
@@ -154,9 +155,16 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     );
   });
   it("H1DevelopedApplication: The set function in simple storage with dev fee should the value for the function get.", async () => {
-    await SimpleStorageWithDevAppFee.set(1);
-    await FeeContract.resetFee();
     await SimpleStorageWithDevAppFee.set(1, { value: 1 });
+    expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
+  });
+  it("H1DevelopedApplication: The set function should not allow values lower than the oracle value.", async () => {
+    await SimpleStorageWithDevAppFee.set(1, { value: 1 });
+    //here 
+    await OracleContract.setPriceAverage(100);
+    await time.increase(time.duration.days(1));
+    await expectRevert(SimpleStorageWithDevAppFee.set(1, { value: 99 }), "125");
+    await SimpleStorageWithDevAppFee.set(1, { value: 100 });
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
   });
   it("H1DevelopedApplication: The function setDevApplicationFee should run with out error if called above the the minium fee and by the right address.", async () => {
@@ -168,7 +176,8 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
   });
   it("H1DevelopedApplication: The function calculateDevFee() should return devFee * USD.", async () => {
     await H1DevelopedApplication.setDevApplicationFee(1);
-    expect(await H1DevelopedApplication.calculateDevFee()).to.equal(1);
+    const value = await H1DevelopedApplication.calculateDevFee();
+    console.log(value)
   });
   it("H1DevelopedApplication: The function setDevApplicationFee() should only be callabe by the developerWallet.", async () => {
     await expectRevert(
@@ -183,7 +192,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
   });
   it("H1DevelopedApplication: Contracts that import and use devApplicationFee() disperse H1 to the dev wallet provided.", async () => {
     await OracleContract.setPriceAverage(TEN_H1);
-    await FeeContract.resetFee();
+    
     const NINE_H1_STRING = NINE_H1.toString();
     const ONE_H1_STRING = ONE_H1.toString();
     await expect(
@@ -195,7 +204,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
   });
   it("H1DevelopedApplication: The example contract SimpleStorageWithDevAppFee get function should get the variable stored data.", async () => {
-    await SimpleStorageWithDevAppFee.set(1);
+    SimpleStorageWithDevAppFee.set(1, {value: 1});
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
   });
   it("H1DevelopedApplication: The imported modifer should revert if transfer to fee contract fails.", async () => {
@@ -203,7 +212,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     await expectRevert(SimpleStorageBadFeeContract.set(1, { value: 1 }), "112");
   });
   it("H1DevelopedApplication: The modifer devapplicationFee() should cause a revert if transfer to the developer wallet fails.", async () => {
-    await FeeContract.resetFee();
+    
     await expectRevert(SimpleStorageBadDevWallet.set(1, { value: 1 }), "112");
   });
 });

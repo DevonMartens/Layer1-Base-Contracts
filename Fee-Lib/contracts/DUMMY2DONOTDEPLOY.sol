@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-// import "./FeeQuery.sol";
 import "./Errors.sol";
 
 /** 
@@ -11,11 +10,6 @@ import "./Errors.sol";
 @dev The primary function of this contract is to ensure proper distribution from Haven1 applications.
 */
 
-// interface IFeeOracle {
-//     function consult() external view returns (uint amountOut);
-
-//     function refreshOracle() external returns (bool success);
-// }
 
 interface IFeeOracle {
     function consult() external view returns (uint256 amountOut);

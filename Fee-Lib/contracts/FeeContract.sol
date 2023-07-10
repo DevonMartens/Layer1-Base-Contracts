@@ -72,7 +72,7 @@ contract FeeContract is
      * @dev The event is triggered during the `resetFee` function.
      * It emits the time of the new reset and current call.
      */
-    event FeeReset(uint256 indexed currentTimestamp, uint256 indexed newReset);
+    event FeeReset(uint256 indexed newFee);
 
     // Address used to consult to find fee amounts.
     address private oracle;
@@ -204,7 +204,7 @@ contract FeeContract is
     /**
      * @notice `removeChannelAndWeightByIndex` is the logic to remove a channel and its weight.
      * @param index the index of the channels and weights array.
-     * @dev The total weight is tracked by `CONTRACT_SHARES`
+     * @dev The total weight is tracked by `CONTRACT_SHARES`.
      * which we subtract the value from in the middle of this function.
      */
     function removeChannelAndWeightByIndex(
@@ -232,6 +232,15 @@ contract FeeContract is
         uint256 new_epochLength
     ) external onlyRole(OPERATOR_ROLE) {
         epochLength = new_epochLength;
+    }
+
+    /**
+    @notice `setRequiredReset` is to adjust the next block in which dispersed payments and oracle update will occur from this contract.
+    @param newResetBlock the length of time between payouts and oracle updates from the contract.
+    */
+
+    function setRequiredReset(uint256 newResetBlock) external onlyRole(OPERATOR_ROLE) {
+        requiredReset = newResetBlock;
     }
 
     /**
@@ -298,6 +307,27 @@ contract FeeContract is
     function setOracle(address _newOracle) external onlyRole(OPERATOR_ROLE) {
         oracle = _newOracle;
     }
+
+    /**
+    @notice `getFee` function consults the fee contract to get the fee.
+    @dev The required reset means the fee must be updated every 24 hours.
+    */
+    function getFee() external returns (uint256) {
+        if (requiredReset < block.timestamp || fee == 0) {    
+            return resetFee();
+        } else {
+            return fee;
+        }
+    }
+
+    function resetFee() internal returns(uint256) {
+           uint256 newFee = queryOracle();
+           requiredReset = block.timestamp + epochLength;
+           emit FeeReset(newFee);
+           return newFee;
+
+    }
+
 
     /**
     @notice `isTheAddressInTheChannelsArray` this view function checks if the address is in the channels array.
@@ -369,9 +399,9 @@ contract FeeContract is
     function getChannelWeightByIndex(
         uint8 index
     ) public view returns (address, uint256) {
-        address a = channels[index];
-        uint8 b = weights[index];
-        return (a, b);
+        address channelOfIndex = channels[index];
+        uint8 weightOfIndex = weights[index];
+        return (channelOfIndex, weightOfIndex);
     }
 
     /**
@@ -393,26 +423,9 @@ contract FeeContract is
     }
 
     /**
-    @notice `resetFee` is the call to get the correct value for the fee across all native applications.
-    @dev This call queries the oracle to set a fee.
-    @dev After that is complete it then sets the time that the oracle needs to be rechecked.
-    */
-
-    function resetFee() public returns(uint256){
-        if (block.timestamp > requiredReset || fee == 0) {
-            fee = queryOracle();
-            requiredReset = block.timestamp + epochLength;
-           emit FeeReset(block.timestamp, requiredReset);
-            return fee;
-         } else {
-             revert(Errors.HOLD_TIME_IS_24_HOURS);
-        }
-    }
-
-    /**
     @notice `getMinFee` function to retrieve the minimum dev fee allowed for developers.
     */
-    function getMinFee() external view returns (uint256) {
+    function getMinFee() public view returns (uint256) {
         return minFee;
     }
 
@@ -428,21 +441,8 @@ contract FeeContract is
     @notice `_refreshOracle` this function to consult oracle to update.
     */
 
-    function _refreshOracle() internal returns (bool success) {
+    function _refreshOracle() public returns (bool success) {
         return (IFeeOracle(oracle).refreshOracle());
-    }
-
-     /**
-    @notice `getFee` function consults the fee contract to get the fee.
-    @dev The required reset means the fee must be updated every 24 hours.
-    */
-    function getFee() public returns (uint256) {
-        if (requiredReset < block.timestamp) {
-           uint256 newFee = resetFee();
-            return newFee;
-        } else {
-            return fee;
-        }
     }
 
     /**

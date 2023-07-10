@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">95% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>20/20</span>
+        <span class='fraction'>19/20</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>14/14</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">87.5% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>8/8</span>
+        <span class='fraction'>7/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">96.3% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>27/27</span>
+        <span class='fraction'>26/27</span>
       </div>
     </div>
   </div>
@@ -164,7 +164,9 @@
 119
 120
 121
-122</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+122
+123</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -233,9 +235,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -264,31 +266,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">28×</span>
 <span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-yes">28×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">29×</span>
-<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: ISC
 &nbsp;
 import "./Errors.sol";
-import "./FeeQuery.sol";
+// import "./FeeQuery.sol";
 &nbsp;
 pragma solidity ^0.8.0;
 &nbsp;
@@ -299,10 +301,11 @@ pragma solidity ^0.8.0;
  * @dev The primary function of this contract is to be used as an import for developers building on Haven.
  */
 &nbsp;
-interface IFeeQuery {
+interface IFeeContract {
     function getMinFee() external returns (uint256);
     //view 
     function getFee() external returns (uint256);
+&nbsp;
 }
 &nbsp;
 contract H1DevelopedApplication {
@@ -383,23 +386,23 @@ contract H1DevelopedApplication {
     @notice `calculateDevFee` consults the oracle and gets the fee back in USD.
     */
     function calculateDevFee() public returns (uint256) {
-        uint256 devFeeInUSD = (callFee() * devFee);
+        uint256 feeInUSD = IFeeContract(FeeContract).getFee();
+        uint256 devFeeInUSD = feeInUSD * devFee;
         return devFeeInUSD;
     }
 &nbsp;
     /**
     @notice `callFee` gets the value for H1 in USD.
     */
-    function callFee() public returns (uint256) {
-        uint256 currentFeePrice = IFeeQuery(FeeContract).getFee();
-        return currentFeePrice;
+<span class="fstat-no" title="function not covered" >    function callFee() public returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return IFeeContract(FeeContract).getFee();</span>
     }
 &nbsp;
     /**
     @notice `callMiniumFee` gets the minimum fee from the Fee contract.
     */
     function callMiniumFee() public returns (uint256) {
-        uint256 minFeeFromFeeContract = IFeeQuery(FeeContract).getMinFee();
+        uint256 minFeeFromFeeContract = IFeeContract(FeeContract).getMinFee();
         if (minFeeFromFeeContract &gt; devFee) {
             revert(Errors.INVALID_FEE);
         }
@@ -412,7 +415,7 @@ contract H1DevelopedApplication {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 10 2023 04:34:37 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 10 2023 07:18:28 GMT-0400 (Eastern Daylight Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

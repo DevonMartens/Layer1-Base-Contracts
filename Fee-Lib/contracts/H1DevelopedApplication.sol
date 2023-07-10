@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: ISC
 
 import "./Errors.sol";
-// import "./FeeQuery.sol";
 
 pragma solidity ^0.8.0;
 
@@ -106,8 +105,7 @@ contract H1DevelopedApplication {
     @notice `callFee` gets the value for H1 in USD.
     */
     function callFee() public returns (uint256) {
-        uint256 currentFeePrice = IFeeContract(FeeContract).getFee();
-        return currentFeePrice;
+        return IFeeContract(FeeContract).getFee();
     }
 
     /**
