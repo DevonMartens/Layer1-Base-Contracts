@@ -5,6 +5,7 @@ const { time } = require("@nomicfoundation/hardhat-network-helpers");
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
 ONE_H1 = ethers.utils.parseUnits("1", "ether");
+SIX_H1 = ethers.utils.parseUnits("6", "ether")
 NINE_H1 = ethers.utils.parseUnits("9", "ether");
 TEN_H1 = ethers.utils.parseUnits("10", "ether");
 
@@ -74,7 +75,8 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     // Fee contract
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
-      [
+      [ 
+        1,
         OracleContract.address,
         ValidatorArray,
         weightArray,
@@ -162,7 +164,13 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     await SimpleStorageWithDevAppFee.set(1, { value: 1 });
     //here 
     await OracleContract.setPriceAverage(100);
-    await time.increase(time.duration.days(1));
+
+    await time.increase(time.duration.days(2));
+    await Address3Sig.sendTransaction({
+      to: FeeContract.address,
+      value: SIX_H1,
+    });
+    await FeeContract.distributeFeesToChannels();
     await expectRevert(SimpleStorageWithDevAppFee.set(1, { value: 99 }), "125");
     await SimpleStorageWithDevAppFee.set(1, { value: 100 });
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
@@ -191,7 +199,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     await expectRevert(H1DevelopedApplication.setDevApplicationFee(89), "131");
   });
   it("H1DevelopedApplication: Contracts that import and use devApplicationFee() disperse H1 to the dev wallet provided.", async () => {
-    await OracleContract.setPriceAverage(TEN_H1);
+    await setDevApplicationFee.setPriceAverage(TEN_H1);
     
     const NINE_H1_STRING = NINE_H1.toString();
     const ONE_H1_STRING = ONE_H1.toString();

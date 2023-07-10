@@ -115,6 +115,7 @@ contract FeeContract is
     @dev There cannot be more than ten channels.
     */
     function initialize(
+        uint256 _fee,
         address _oracle,
         address[] memory _channels,
         uint8[] memory _weights,
@@ -128,6 +129,7 @@ contract FeeContract is
         if (_channels.length > 10 || _weights.length > 10) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
+        fee = _fee;
         lastDistribution = block.timestamp;
         epochLength = 86400;
         requiredReset = block.timestamp + 86400;
@@ -270,6 +272,7 @@ contract FeeContract is
                 emit FeesDistributed(block.timestamp, channels[i], share);
             }
             lastDistribution = block.timestamp;
+            fee = queryOracle();
             _refreshOracle();
         } else {
             revert(Errors.HOLD_TIME_IS_24_HOURS);
@@ -312,21 +315,17 @@ contract FeeContract is
     @notice `getFee` function consults the fee contract to get the fee.
     @dev The required reset means the fee must be updated every 24 hours.
     */
-    function getFee() external returns (uint256) {
-        if (requiredReset < block.timestamp || fee == 0) {    
-            return resetFee();
-        } else {
+    function getFee() public view returns (uint256) {
             return fee;
-        }
     }
 
-    function resetFee() internal returns(uint256) {
-           uint256 newFee = queryOracle();
-           requiredReset = block.timestamp + epochLength;
-           emit FeeReset(newFee);
-           return newFee;
+    // function _resetFee() internal returns(uint256) {
+    //        uint256 newFee = queryOracle();
+    //        requiredReset = block.timestamp + epochLength;
+    //        emit FeeReset(newFee);
+    //        return newFee;
 
-    }
+    // }
 
 
     /**

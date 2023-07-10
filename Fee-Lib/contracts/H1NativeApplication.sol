@@ -12,7 +12,7 @@ pragma solidity ^0.8.0;
 */
 
 interface IFeeContract {
-    function getFee() external returns (uint256);
+    function getFee() external view returns (uint256);
 
 }
 

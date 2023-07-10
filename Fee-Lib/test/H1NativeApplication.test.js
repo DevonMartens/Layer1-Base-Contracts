@@ -69,6 +69,7 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
       [
+        1,
         OracleContract.address,
         ValidatorArray,
         weightArray,

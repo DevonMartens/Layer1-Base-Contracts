@@ -14,7 +14,7 @@ pragma solidity ^0.8.0;
 interface IFeeContract {
     function getMinFee() external returns (uint256);
     //view 
-    function getFee() external returns (uint256);
+    function getFee() external view returns (uint256);
 
 }
 
@@ -77,7 +77,7 @@ contract H1DevelopedApplication {
      * is to get the fee amount owed to the developer.
      * @dev It is 90% of the contract balance.
      */
-    function getDeveloperPayment() public  returns (uint256 developerFee) {
+    function getDeveloperPayment() public view returns (uint256 developerFee) {
         uint256 currentFee = calculateDevFee();
         developerFee = (currentFee / 10) * 9;
     }
@@ -87,7 +87,7 @@ contract H1DevelopedApplication {
     @dev It is 10% of the contract balance.
     */
 
-    function getHavenFee() public  returns (uint256 havenOneFee) {
+    function getHavenFee() public  view returns (uint256 havenOneFee) {
         uint256 currentFee = calculateDevFee();
         havenOneFee = currentFee / 10;
     }
@@ -95,7 +95,7 @@ contract H1DevelopedApplication {
     /**
     @notice `calculateDevFee` consults the oracle and gets the fee back in USD.
     */
-    function calculateDevFee() public returns (uint256) {
+    function calculateDevFee() public view returns (uint256) {
         uint256 feeInUSD = IFeeContract(FeeContract).getFee();
         uint256 devFeeInUSD = feeInUSD * devFee;
         return devFeeInUSD;
