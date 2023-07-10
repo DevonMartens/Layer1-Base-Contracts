@@ -21,18 +21,23 @@ contract ValidatorRewards is
     AccessControlUpgradeable,
     UUPSUpgradeable
 {
-    /**
-     * @dev Event for when a new Validator is added. Includes their address and total shares.
+
+     /**
+     * @dev The event is triggered during the `addValidator` function.
+     * It emits the validator address and their total shares.
      */
     event ValidatorAdded(address account, uint256 shares);
 
     /**
-     * @dev Event for when shares are adjusted.
+     * @dev The event is triggered during the `adjustValidatorShares` function.
+     * It emits the validator address and the new number of thier shares.
      */
     event SharesAdjusted(address validator, uint256 shares);
 
     /**
-     * @dev Event for when a validator is removed.
+     * @dev The event is triggered during the `removeValidator` function.
+     * It emits the validator address, how many shares it used to hold, and 
+     * the new total shares for the contract.
      */
     event ValidatorRemoved(
         address account,
@@ -41,7 +46,8 @@ contract ValidatorRewards is
     );
 
     /**
-     * @dev Event for when the validator address is changed. Used in `adjustValidatorAddress`.
+     * @dev The event is triggered in the `adjustValidatorAddress` function.
+     * It emits the new old validator address and the address it has been updated to.
      */
     event UpdatedValidator(
         address indexed previousValidatorRewardAddress,

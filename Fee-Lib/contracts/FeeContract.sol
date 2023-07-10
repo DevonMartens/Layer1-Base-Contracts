@@ -59,7 +59,7 @@ contract FeeContract is
     );
 
     /**
-     * @dev The event is triggered during the removeChannel function.
+     * @dev The event is triggered during the `removeChannel` function.
      * It sends the address that is no longer a channel
      * and the new total shares amount of the contract.
      */
@@ -235,7 +235,7 @@ contract FeeContract is
     /**
     @notice `distributeFeesToChannels` to disburse payment to distribute funds to channels.
     @dev Function can be called by a wallet every 24 hours.
-    @dev The balance of the contract is distributed to channels and an event is triggered FeesDistributed.
+    @dev The balance of the contract is distributed to channels and an event is triggered FeesDistributed and the FeeRest event is to decalre the new amount.
     */
 
     function distributeFeesToChannels() external payable {
@@ -391,9 +391,9 @@ contract FeeContract is
     }
 
     /**
-    @notice `getMinFee` function to retrieve the minimum dev fee allowed for developers.
+    @notice `getMinimumAllottedFee` function to retrieve the minimum dev fee allowed for developers.
     */
-    function getMinFee() public view returns (uint256) {
+    function getMinimumAllottedFee() public view returns (uint256) {
         return minFee;
     }
 

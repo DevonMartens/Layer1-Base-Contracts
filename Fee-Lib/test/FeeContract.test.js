@@ -672,9 +672,9 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       expect(firstepochLength.toString()).not.to.equal(reset.toString());
     });
     it("Fee Contract: The setMinFee function should change the change the minFee amount.", async () => {
-      expect(await FeeContract.getMinFee()).to.equal(0);
+      expect(await FeeContract.getMinimumAllottedFee()).to.equal(0);
       await FeeContract.setMinFee(1);
-      expect(await FeeContract.getMinFee()).to.equal(1);
+      expect(await FeeContract.getMinimumAllottedFee()).to.equal(1);
     });
     it("Fee Contract: The isTheAddressInTheChannelsArray function should return false if the address is in the array of channels.", async () => {
       const knownAddress = await FeeContract.isTheAddressInTheChannelsArray(

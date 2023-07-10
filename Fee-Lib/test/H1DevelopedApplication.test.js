@@ -178,9 +178,9 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
   it("H1DevelopedApplication: The function setDevApplicationFee should run with out error if called above the the minium fee and by the right address.", async () => {
     await H1DevelopedApplication.setDevApplicationFee(100);
   });
-  it("H1DevelopedApplication: The function callMiniumFee() should revert if the devFee is too low.", async () => {
+  it("H1DevelopedApplication: The function callMinimumViableFee() should revert if the devFee is too low.", async () => {
     await FeeContract.setMinFee(100);
-    await expectRevert(H1DevelopedApplication.callMiniumFee(), "131");
+    await expectRevert(H1DevelopedApplication.callMinimumViableFee(), "131");
   });
   it("H1DevelopedApplication: The function calculateDevFee() should return devFee * USD.", async () => {
     await H1DevelopedApplication.setDevApplicationFee(1);

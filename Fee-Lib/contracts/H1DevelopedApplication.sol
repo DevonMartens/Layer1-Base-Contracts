@@ -12,8 +12,9 @@ pragma solidity ^0.8.0;
  */
 
 interface IFeeContract {
-    function getMinFee() external view returns (uint256);
-    //view 
+    
+    function getMinimumAllottedFee() external view returns (uint256);
+
     function getFee() external view returns (uint256);
 
 }
@@ -68,7 +69,7 @@ contract H1DevelopedApplication {
     */
     function setDevApplicationFee(uint256 newDevFee) external {
         require(msg.sender == developerWallet, Errors.INVALID_ADDRESS);
-        require(callMiniumFee() < newDevFee, Errors.INVALID_FEE);
+        require(callMinimumViableFee() < newDevFee, Errors.INVALID_FEE);
         devFee = newDevFee;
     }
 
@@ -95,24 +96,23 @@ contract H1DevelopedApplication {
     /**
     @notice `calculateDevFee` consults the oracle and gets the fee back in USD.
     */
-    function calculateDevFee() public view returns (uint256) {
+    function calculateDevFee() public view returns (uint256 developerFeeFromApplication) {
         uint256 feeInUSD = IFeeContract(FeeContract).getFee();
-        // uint256 devFeeInUSD = feeInUSD * devFee;
         return feeInUSD * devFee;
     }
 
     /**
     @notice `callFee` gets the value for H1 in USD.
     */
-    function callFee() public view returns (uint256) {
+    function callFee() public view returns (uint256 feeFromFeeContract) {
         return IFeeContract(FeeContract).getFee();
     }
 
     /**
-    @notice `callMiniumFee` gets the minimum fee from the Fee contract.
+    @notice `callMinimumViableFee` gets the minimum fee from the Fee contract.
     */
-    function callMiniumFee() public view returns (uint256) {
-        uint256 minFeeFromFeeContract = IFeeContract(FeeContract).getMinFee();
+    function callMinimumViableFee() public view returns (uint256) {
+        uint256 minFeeFromFeeContract = IFeeContract(FeeContract).getMinimumAllottedFee();
         if (minFeeFromFeeContract > devFee) {
             revert(Errors.INVALID_FEE);
         }
