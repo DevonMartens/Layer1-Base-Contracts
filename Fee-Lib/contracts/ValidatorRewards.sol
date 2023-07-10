@@ -56,15 +56,15 @@ contract ValidatorRewards is
     // Sum of all shares collectively held by addresses for division of H1.
     uint256 private _totalShares;
 
-    // Sum of all H1 collectively released.
-    uint256 private _totalReleased;
+    // Sum of all H1 collectively dispersed.
+    uint256 private _totalH1IssuedToValidators;
 
     // Mapping between an address and the number of shares of H1 it receives.
     // Payment = _shares/_totalShares * contract balance.
     mapping(address => uint256) private _shares;
 
     // Mapping between an address and how much H1 it has received.
-    mapping(address => uint256) private _released;
+    mapping(address => uint256) private _dispersed;
 
     // Array of all the addresses that receive H1.
     address[] private validatorsAddressArray;
@@ -192,10 +192,10 @@ contract ValidatorRewards is
     }
 
     /**
-   @notice `totalReleased` is the getter for the total amount of Wrapped H1 already released.
+   @notice `totalH1Issued` is the getter for the total amount of Wrapped H1 already dispersed.
    */
-    function totalReleased() public view returns (uint256) {
-        return _totalReleased;
+    function totalH1Issued() public view returns (uint256) {
+        return _totalH1IssuedToValidators;
     }
 
     /**
@@ -207,11 +207,11 @@ contract ValidatorRewards is
     }
 
     /**
-   @notice `released` is the getter for the amount of Wrapped H1 already released to a payee.
+   @notice `dispersed` is the getter for the amount of Wrapped H1 already dispersed to a payee.
    @param account is the account to check the share amount.
    */
-    function released(address account) public view returns (uint256) {
-        return _released[account];
+    function dispersed(address account) public view returns (uint256) {
+        return _dispersed[account];
     }
 
     /**
@@ -224,26 +224,26 @@ contract ValidatorRewards is
 
     /**
    @notice `releasable` is the getter for the amount of validator's Wrapped H1 in contract.
-   @param account the account to check the amount of total received and released amount.
+   @param account the account to check the amount of total received and dispersed amount.
    */
     function releasable(address account) public view returns (uint256) {
-        uint256 totalReceived = address(this).balance + totalReleased();
-        return _pendingPayment(account, totalReceived, released(account));
+        uint256 totalReceived = address(this).balance + totalH1Issued();
+        return _pendingPayment(account, totalReceived, dispersed(account));
     }
 
     /**
-     * @notice `release` triggers a transfer to a single `account` of the amount of Wrapped H1 they are owed,
+     * @notice `disperseSinglePaymentToValidator` triggers a transfer to a single `account` of the amount of Wrapped H1 they are owed,
      * according to their percentage of the total shares and their previous withdrawals.
-     * @param account the account to check the amount of total received and released amount.
+     * @param account the account to check the amount of total received and dispersed amount.
      */
 
-    function release(address payable account) public {
+    function disperseSinglePaymentToValidator(address payable account) public {
         require(_shares[account] > 0, Errors.ACCOUNT_HAS_NO_SHARES);
         uint256 payment = releasable(account);
 
-        _totalReleased += payment;
+        _totalH1IssuedToValidators += payment;
         unchecked {
-            _released[account] += payment;
+            _dispersed[account] += payment;
         }
 
         Address.sendValue(account, payment);
@@ -251,16 +251,16 @@ contract ValidatorRewards is
     }
 
     /**
-     * @notice `releaseAll` triggers a transfer to all validators of the amount of
+     * @notice `disperseAllPaymentsToValidators` triggers a transfer to all validators of the amount of
      * Wrapped H1 they are owed, according to their percentage of the total shares and their previous withdrawals.
      */
 
-    function releaseAll() external {
+    function disperseAllPaymentsToValidators() external {
         for (uint i; i < validatorsAddressArray.length; i++) {
             uint256 payment = releasable(validatorsAddressArray[i]);
-            _totalReleased += payment;
+            _totalH1IssuedToValidators += payment;
             unchecked {
-                _released[validatorsAddressArray[i]] += payment;
+                _dispersed[validatorsAddressArray[i]] += payment;
             }
             address payable account = payable(
                 address(validatorsAddressArray[i])
@@ -298,10 +298,10 @@ contract ValidatorRewards is
 
     /**
      * @notice `_pendingPayment` internal logic for computing the pending payment of an `account`
-     * given the token historical balances and already released amounts.
-     * @param account the account to check the amount of total received and released amount.
-     * @param totalReceived the account to check the amount of total received and released amount.
-     * @param alreadyReleased the account to check the amount of total received and released amount.
+     * given the token historical balances and already dispersed amounts.
+     * @param account the account to check the amount of total received and dispersed amount.
+     * @param totalReceived the account to check the amount of total received and dispersed amount.
+     * @param alreadyReleased the account to check the amount of total received and dispersed amount.
      */
 
     function _pendingPayment(

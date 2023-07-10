@@ -74,13 +74,13 @@ describe("Validator Rewards Contract", function () {
         value: ethers.utils.parseEther("1.0"), // Sends exactly 1.0 ether
       });
     });
-    it("Validator Rewards: Contract function should releaseAll() should distribute H1 as intended - via releaseAll view function `released` also should track the distribution.", async () => {
+    it("Validator Rewards: Contract function should disperseAllPaymentsToValidators() should distribute H1 as intended - via disperseAllPaymentsToValidators view function `dispersed` also should track the distribution.", async () => {
       //release funds
-      await Address2SignsValidatorRewardsContract.releaseAll();
+      await Address2SignsValidatorRewardsContract.disperseAllPaymentsToValidators();
       //get Address3s info
-      expect(await ValidatorContract.released(Address3)).to.equal(FIVE_H1);
+      expect(await ValidatorContract.dispersed(Address3)).to.equal(FIVE_H1);
     });
-    it("Validator Rewards: Contract should distribute H1 as intended - via release function for a single user.", async () => {
+    it("Validator Rewards: Contract should distribute H1 as intended - via disperseSinglePaymentToValidator function for a single user.", async () => {
       // send two eth to the contract
       await Address2SendsH1.sendTransaction({
         to: ValidatorContract.address,
@@ -91,15 +91,15 @@ describe("Validator Rewards Contract", function () {
         await ethers.provider.getBalance(ValidatorContract.address)
       ).to.equal(TWLEVE_H1);
       // Checks if any H1 was dispered
-      expect(await ValidatorContract.released(Address3)).to.equal(0);
+      expect(await ValidatorContract.dispersed(Address3)).to.equal(0);
       // //release funds
-      await Address2SignsValidatorRewardsContract.release(Address3);
+      await Address2SignsValidatorRewardsContract.disperseSinglePaymentToValidator(Address3);
       // get Address3s info afer release 1/ = 2/12
-      expect(await ValidatorContract.released(Address3)).to.equal(SIX_H1);
+      expect(await ValidatorContract.dispersed(Address3)).to.equal(SIX_H1);
     });
-    it("Validator Rewards: Contract function release should revert if the user has no shares.", async () => {
+    it("Validator Rewards: Contract function disperseSinglePaymentToValidator should revert if the user has no shares.", async () => {
       await expectRevert(
-        Address2SignsValidatorRewardsContract.release(Address4),
+        Address2SignsValidatorRewardsContract.disperseSinglePaymentToValidator(Address4),
         "126"
       );
     });
@@ -112,17 +112,17 @@ describe("Validator Rewards Contract", function () {
     it("Validator Rewards: The function totalShares should return the sum of all of the shares.", async () => {
       expect(await ValidatorContract.totalShares()).to.equal(6);
     });
-    it("Validator Rewards: The view function totalReleased() should account for the amount of Ether distributed from the contract.", async () => {
+    it("Validator Rewards: The view function totalH1Issued() should account for the amount of Ether distributed from the contract.", async () => {
       await Address2SendsH1.sendTransaction({
         to: ValidatorContract.address,
         value: TEN_H1,
       });
       // Sends funds to validators reward contract
-      await Address2SignsValidatorRewardsContract.releaseAll();
-      const totalReleasedFromValidatorRewards =
-        await ValidatorContract.totalReleased();
+      await Address2SignsValidatorRewardsContract.disperseAllPaymentsToValidators();
+      const totalH1IssuedFromValidatorRewards =
+        await ValidatorContract.totalH1Issued();
       // 10 H1 minus gas from sending is "9999999999999999999" to aviod big compared via strings
-      expect(totalReleasedFromValidatorRewards.toString()).to.equal(
+      expect(totalH1IssuedFromValidatorRewards.toString()).to.equal(
         "9999999999999999999"
       );
     });
@@ -173,9 +173,9 @@ describe("Validator Rewards Contract", function () {
         value: SEVEN_H1,
       });
       //call release all
-      await Address2SignsValidatorRewardsContract.releaseAll();
+      await Address2SignsValidatorRewardsContract.disperseAllPaymentsToValidators();
       //get ContractDeployer release info
-      expect(await ValidatorContract.released(ContractDeployer)).to.equal(
+      expect(await ValidatorContract.dispersed(ContractDeployer)).to.equal(
         TWO_H1
       );
     });
@@ -203,11 +203,11 @@ describe("Validator Rewards Contract", function () {
       });
       //verify ContractDeployer gets none of that - no releaseable H1
       expect(await ValidatorContract.releasable(Address3)).to.equal(0);
-      await ValidatorContract.releaseAll();
+      await ValidatorContract.disperseAllPaymentsToValidators();
       //checks what ContractDeployer got - should be none
-      expect(await ValidatorContract.released(Address3)).to.equal(0);
+      expect(await ValidatorContract.dispersed(Address3)).to.equal(0);
       // //checks what Address4 got - should be one eth
-      expect(await ValidatorContract.released(Address4)).to.equal(THREE_H1);
+      expect(await ValidatorContract.dispersed(Address4)).to.equal(THREE_H1);
     });
     it("Validator Rewards: The adjustValidatorAddress should adjust validator address that recieves payment.", async () => {
       await expectRevert(
