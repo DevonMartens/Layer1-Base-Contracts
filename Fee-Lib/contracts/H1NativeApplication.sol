@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: ISC
 
-import "./FeeQuery.sol";
+// import "./FeeQuery.sol";
 import "./Errors.sol";
 
 pragma solidity ^0.8.0;
@@ -11,7 +11,7 @@ pragma solidity ^0.8.0;
 @dev The primary function of this contract is to be used as an import for native building on Haven.
 */
 
-interface IFeeQuery {
+interface IFeeContract {
     function getFee() external returns (uint256);
 
 }
@@ -51,6 +51,6 @@ contract H1NativeApplication {
     */
 
     function callFee() public returns (uint256) {
-        return IFeeQuery(FeeContract).getFee();
+        return IFeeContract(FeeContract).getFee();
     }
 }

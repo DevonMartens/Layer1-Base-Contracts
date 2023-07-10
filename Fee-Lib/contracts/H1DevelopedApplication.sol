@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: ISC
 
 import "./Errors.sol";
-import "./FeeQuery.sol";
+// import "./FeeQuery.sol";
 
 pragma solidity ^0.8.0;
 
@@ -12,10 +12,11 @@ pragma solidity ^0.8.0;
  * @dev The primary function of this contract is to be used as an import for developers building on Haven.
  */
 
-interface IFeeQuery {
+interface IFeeContract {
     function getMinFee() external returns (uint256);
     //view 
     function getFee() external returns (uint256);
+
 }
 
 contract H1DevelopedApplication {
@@ -96,7 +97,7 @@ contract H1DevelopedApplication {
     @notice `calculateDevFee` consults the oracle and gets the fee back in USD.
     */
     function calculateDevFee() public returns (uint256) {
-        uint256 feeInUSD = IFeeQuery(FeeContract).getFee();
+        uint256 feeInUSD = IFeeContract(FeeContract).getFee();
         uint256 devFeeInUSD = feeInUSD * devFee;
         return devFeeInUSD;
     }
@@ -105,7 +106,7 @@ contract H1DevelopedApplication {
     @notice `callFee` gets the value for H1 in USD.
     */
     function callFee() public returns (uint256) {
-        uint256 currentFeePrice = IFeeQuery(FeeContract).getFee();
+        uint256 currentFeePrice = IFeeContract(FeeContract).getFee();
         return currentFeePrice;
     }
 
@@ -113,7 +114,7 @@ contract H1DevelopedApplication {
     @notice `callMiniumFee` gets the minimum fee from the Fee contract.
     */
     function callMiniumFee() public returns (uint256) {
-        uint256 minFeeFromFeeContract = IFeeQuery(FeeContract).getMinFee();
+        uint256 minFeeFromFeeContract = IFeeContract(FeeContract).getMinFee();
         if (minFeeFromFeeContract > devFee) {
             revert(Errors.INVALID_FEE);
         }

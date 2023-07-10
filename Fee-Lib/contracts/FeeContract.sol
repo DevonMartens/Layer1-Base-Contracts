@@ -5,17 +5,23 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "./FeeQuery.sol";
+import "./Errors.sol";
 
-// force distro
+
+
 /**
 @title FeeContract
 @notice This contract collects and distributes application fees from user application transactions.
 @dev The primary function of this contract is to ensure proper distribution from Haven1 applications to distribution channels.
 */
 
+interface IFeeOracle {
+    function consult() external view returns (uint256 amountOut);
+
+    function refreshOracle() external returns (bool success);
+}
+
 contract FeeContract is
-    FeeQuery,
     Initializable,
     AccessControlUpgradeable,
     UUPSUpgradeable
@@ -61,6 +67,27 @@ contract FeeContract is
         address indexed channelRemoved,
         uint256 indexed newTotalSharesAmount
     );
+
+    /**
+     * @dev The event is triggered during the `resetFee` function.
+     * It emits the time of the new reset and current call.
+     */
+    event FeeReset(uint256 indexed currentTimestamp, uint256 indexed newReset);
+
+    // Address used to consult to find fee amounts.
+    address private oracle;
+
+    // This is used to measure the time frame in which we wait to consult the oracle.
+    uint256 public epochLength;
+
+    // This is the block timestamp that the fee will need to be reset.
+    uint256 private requiredReset;
+
+    // Storage for the application fee.
+    uint256 private fee;
+
+    // Storage for minimum fee.
+    uint256 private minFee;
 
     // The total amount that we divide an addresses shares by to compute payments.
     uint8 private CONTRACT_SHARES;
@@ -366,11 +393,56 @@ contract FeeContract is
     }
 
     /**
+    @notice `resetFee` is the call to get the correct value for the fee across all native applications.
+    @dev This call queries the oracle to set a fee.
+    @dev After that is complete it then sets the time that the oracle needs to be rechecked.
+    */
+
+    function resetFee() public returns(uint256){
+        if (block.timestamp > requiredReset || fee == 0) {
+            fee = queryOracle();
+            requiredReset = block.timestamp + epochLength;
+           emit FeeReset(block.timestamp, requiredReset);
+            return fee;
+         } else {
+             revert(Errors.HOLD_TIME_IS_24_HOURS);
+        }
+    }
+
+    /**
+    @notice `getMinFee` function to retrieve the minimum dev fee allowed for developers.
+    */
+    function getMinFee() external view returns (uint256) {
+        return minFee;
+    }
+
+    /**
+    @notice `queryOracle` this function is to consult oracle to get a fee amount.
+    */
+
+    function queryOracle() public view returns (uint feeAmount) {
+        return (IFeeOracle(oracle).consult());
+    }
+
+    /**
     @notice `_refreshOracle` this function to consult oracle to update.
     */
 
     function _refreshOracle() internal returns (bool success) {
         return (IFeeOracle(oracle).refreshOracle());
+    }
+
+     /**
+    @notice `getFee` function consults the fee contract to get the fee.
+    @dev The required reset means the fee must be updated every 24 hours.
+    */
+    function getFee() public returns (uint256) {
+        if (requiredReset < block.timestamp) {
+           uint256 newFee = resetFee();
+            return newFee;
+        } else {
+            return fee;
+        }
     }
 
     /**

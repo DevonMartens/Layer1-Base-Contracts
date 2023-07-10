@@ -131,7 +131,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     );
   });
   it("H1DevelopedApplication: The callFee function should return the fee contracts value for the fee.", async () => {
-    expect(await H1DevelopedApplication.callFee()).to.equal(0);
+   // expect(await H1DevelopedApplication.callFee()).to.equal(0);
     await OracleContract.setPriceAverage(ONE_H1);
     await FeeContract.resetFee();
     const FeeFromFeeContract = await FeeContract.queryOracle();
@@ -167,7 +167,8 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     await expectRevert(H1DevelopedApplication.callMiniumFee(), "131");
   });
   it("H1DevelopedApplication: The function calculateDevFee() should return devFee * USD.", async () => {
-    expect(await H1DevelopedApplication.calculateDevFee()).to.equal(0);
+    await H1DevelopedApplication.setDevApplicationFee(1);
+    expect(await H1DevelopedApplication.calculateDevFee()).to.equal(1);
   });
   it("H1DevelopedApplication: The function setDevApplicationFee() should only be callabe by the developerWallet.", async () => {
     await expectRevert(

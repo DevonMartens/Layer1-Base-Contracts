@@ -41,7 +41,7 @@ contract FeeQuery {
     // Storage for minimum fee.
     uint256 public minFee;
 
-       /**
+    /**
     @notice `resetFee` is the call to get the correct value for the fee across all native applications.
     @dev This call queries the oracle to set a fee.
     @dev After that is complete it then sets the time that the oracle needs to be rechecked.
@@ -70,7 +70,7 @@ contract FeeQuery {
     @notice `getFee` function consults the fee contract to get the fee.
     @dev The required reset means the fee must be updated every 24 hours.
     */
-    function getFee() external returns (uint256) {
+    function getFee() public returns (uint256) {
         if (requiredReset < block.timestamp) {
            uint256 newFee = resetFee();
             return newFee;
