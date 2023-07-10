@@ -95,7 +95,8 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     );
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
-      [ 1,
+      [
+        1,
         FeeOracleContract.address,
         ContractDeployerArray,
         SingleWeightArray,
@@ -141,14 +142,14 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       );
     });
     it("Fee Contract: getFee should change the get the value fee.", async () => {
-       expect(await FeeContract.getFee()).to.equal(1);
-  
+      expect(await FeeContract.getFee()).to.equal(1);
     });
-    //
-    // it("Fee Contract: getNextResetTime() should return the reset time and setRequiredReset should update it.", async () => {
-    //   await FeeContract.setRequiredReset(3);
-    //   expect(await FeeContract.getNextResetTime()).to.equal(3);
-    // });
+    it("Fee Contract: updateFee() should adjust the fee to mirror the oracle.", async () => {
+      expect(await FeeContract.getFee()).to.equal(1);
+      await FeeOracleContract.setPriceAverage(100);
+      await FeeContract.updateFee();
+      expect(await FeeContract.getFee()).to.equal(100);
+    });
   });
   describe("Fee Contract: Adding and adjusting wieghts and channels functions", function () {
     let ValidatorContract2;
@@ -163,7 +164,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     beforeEach(async () => {
       //addresses for using
       max10ArrayWeight = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5];
-      //validator array that is too heavey
+      //validator array that is too heavy
       ValidatorContract2 = await upgrades.deployProxy(
         ValidatorRewardsFactory,
         [
@@ -491,7 +492,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       expect(5).to.equal(wieghtsOfPositionNine);
     });
     it("Fee Contract: The addChannel function should not allow duplicates.", async () => {
-
       await expectRevert(
         NinePositionArrayFeeContract.addChannel(ValidatorContract3.address, 6),
         "123"
@@ -714,6 +714,12 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });
+    it("Fee Contract: updateFee() should adjust the fee to mirror the oracle.", async () => {
+      await expectRevert(
+        FeeContract.connect(Address3SendsH1).updateFee(),
+        `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
+      );
+    });
     it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to adjust channels.", async () => {
       await expectRevert(
         FeeContract.connect(Address3SendsH1).adjustChannel(1, Address4, 75),
@@ -833,7 +839,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const FeeContract = await ethers.getContractFactory("FeeContract");
       const FeeContractForTest = await upgrades.deployProxy(
         FeeContract,
-        [ 
+        [
           1,
           DummyContract.address,
           InputArray,
@@ -907,5 +913,5 @@ describe("Fee Contract: Testing the initial values to validate expected contract
   //     const FeeFromContract = await FeeOracleContract.getFee();
   //     expect(FeeFromContract.toString()).to.deep.equal("0");
   //   });
- // });
+  // });
 });

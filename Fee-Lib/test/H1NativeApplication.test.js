@@ -101,7 +101,6 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     );
   });
   it("H1NativeApplication Contract: contracts importing the modifier applicationFee() will have functions that revert with 125 if not enough H1 is passed into a function.", async () => {
-    
     await expectRevert(SimpleStorageWithFeeDeployed.set(1), "125");
     await SimpleStorageWithFeeDeployed.set(1, { value: 1 });
   });
@@ -117,7 +116,7 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     });
     // to refresh
     await FeeContract.distributeFeesToChannels();
-    
+
     const TEN_H1_STRING = TEN_H1.toString();
     await expect(
       SimpleStorageWithFeeDeployed.connect(Address3Sig).set(1, {
@@ -127,13 +126,13 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
   });
   it("H1NativeApplication Contract: Contracts importing H1NativeApplication will require the correct Fee to execute functions with the applicationFee() modifer.", async () => {
     // await SimpleStorageWithFeeDeployed.set(1);
-    // 
+    //
     await SimpleStorageWithFeeDeployed.set(1, { value: 1 });
     expect(await SimpleStorageWithFeeDeployed.get()).to.equal(1);
   });
   it("H1NativeApplication: The modifer applicationFee() should still work after 24 hours.", async () => {
     await OracleContract.setPriceAverage(ONE_H1);
-    
+
     await time.increase(time.duration.days(1));
     //send fees to contract then call function to disperse
     await Address3Sig.sendTransaction({
@@ -145,7 +144,10 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     // txn reflects new price
     await SimpleStorageWithFeeDeployed.set(1, { value: ONE_H1 });
     //not enough H1
-    await expectRevert(SimpleStorageWithFeeDeployed.set(1, { value: 343 }), "125");
+    await expectRevert(
+      SimpleStorageWithFeeDeployed.set(1, { value: 343 }),
+      "125"
+    );
   });
   // it("H1NativeApplication Contract: The getFee should reset the fee.", async () => {
 

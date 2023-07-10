@@ -291,6 +291,14 @@ contract FeeContract is
     }
 
     /**
+    @notice `updateFee` is a setter function for admin to call on the fee function to reset it.
+    @dev this would be useful should the fee change drastically.
+    */
+    function updateFee() external onlyRole(OPERATOR_ROLE) {
+        fee = queryOracle();
+    }
+
+    /**
     @notice `setOracle` this setter function to adjust oracle address.
     @param _newOracle the new oracle address.
     */

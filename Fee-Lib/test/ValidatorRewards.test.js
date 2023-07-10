@@ -93,13 +93,17 @@ describe("Validator Rewards Contract", function () {
       // Checks if any H1 was dispered
       expect(await ValidatorContract.dispersed(Address3)).to.equal(0);
       // //release funds
-      await Address2SignsValidatorRewardsContract.disperseSinglePaymentToValidator(Address3);
+      await Address2SignsValidatorRewardsContract.disperseSinglePaymentToValidator(
+        Address3
+      );
       // get Address3s info afer release 1/ = 2/12
       expect(await ValidatorContract.dispersed(Address3)).to.equal(SIX_H1);
     });
     it("Validator Rewards: Contract function disperseSinglePaymentToValidator should revert if the user has no shares.", async () => {
       await expectRevert(
-        Address2SignsValidatorRewardsContract.disperseSinglePaymentToValidator(Address4),
+        Address2SignsValidatorRewardsContract.disperseSinglePaymentToValidator(
+          Address4
+        ),
         "126"
       );
     });
