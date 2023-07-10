@@ -12,7 +12,7 @@ pragma solidity ^0.8.0;
  */
 
 interface IFeeContract {
-    function getMinFee() external returns (uint256);
+    function getMinFee() external view returns (uint256);
     //view 
     function getFee() external view returns (uint256);
 
@@ -87,7 +87,7 @@ contract H1DevelopedApplication {
     @dev It is 10% of the contract balance.
     */
 
-    function getHavenFee() public  view returns (uint256 havenOneFee) {
+    function getHavenFee() public view returns (uint256 havenOneFee) {
         uint256 currentFee = calculateDevFee();
         havenOneFee = currentFee / 10;
     }
@@ -104,14 +104,14 @@ contract H1DevelopedApplication {
     /**
     @notice `callFee` gets the value for H1 in USD.
     */
-    function callFee() public returns (uint256) {
+    function callFee() public view returns (uint256) {
         return IFeeContract(FeeContract).getFee();
     }
 
     /**
     @notice `callMiniumFee` gets the minimum fee from the Fee contract.
     */
-    function callMiniumFee() public returns (uint256) {
+    function callMiniumFee() public view returns (uint256) {
         uint256 minFeeFromFeeContract = IFeeContract(FeeContract).getMinFee();
         if (minFeeFromFeeContract > devFee) {
             revert(Errors.INVALID_FEE);

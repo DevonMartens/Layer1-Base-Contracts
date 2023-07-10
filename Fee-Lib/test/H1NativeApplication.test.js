@@ -111,9 +111,13 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
   });
   it("H1NativeApplication Contract: The modifer applicationFee() disperse ether to the Fee Contract.", async () => {
     await OracleContract.setPriceAverage(TEN_H1);
-
+    await Address3Sig.sendTransaction({
+      to: FeeContract.address,
+      value: TEN_H1,
+    });
+    // to refresh
+    await FeeContract.distributeFeesToChannels();
     
-
     const TEN_H1_STRING = TEN_H1.toString();
     await expect(
       SimpleStorageWithFeeDeployed.connect(Address3Sig).set(1, {
@@ -131,19 +135,28 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     await OracleContract.setPriceAverage(ONE_H1);
     
     await time.increase(time.duration.days(1));
+    //send fees to contract then call function to disperse
+    await Address3Sig.sendTransaction({
+      to: FeeContract.address,
+      value: TEN_H1,
+    });
+    // to refresh oracle
+    await FeeContract.distributeFeesToChannels();
+    // txn reflects new price
     await SimpleStorageWithFeeDeployed.set(1, { value: ONE_H1 });
+    //not enough H1
     await expectRevert(SimpleStorageWithFeeDeployed.set(1, { value: 343 }), "125");
   });
-  it("H1NativeApplication Contract: The getFee should reset the fee.", async () => {
+  // it("H1NativeApplication Contract: The getFee should reset the fee.", async () => {
 
-    await OracleContract.setPriceAverage(ONE_H1);
-    await time.increase(time.duration.days(1));
-    await expect(H1NativeApplicationDeployed.callFee())
-    .to.emit(FeeContract, "FeeReset")
-    .withArgs(ONE_H1)
-    const FeeFromFeeContract = await FeeContract.queryOracle();
-    expect(FeeFromFeeContract.toString()).to.equal(ONE_H1.toString());
-  });
+  //   await OracleContract.setPriceAverage(ONE_H1);
+  //   await time.increase(time.duration.days(1));
+  //   await expect(H1NativeApplicationDeployed.callFee())
+  //   .to.emit(FeeContract, "FeeReset")
+  //   .withArgs(ONE_H1)
+  //   const FeeFromFeeContract = await FeeContract.queryOracle();
+  //   expect(FeeFromFeeContract.toString()).to.equal(ONE_H1.toString());
+  // });
   it("H1NativeApplication Contract: The FeeContract() function should return the FeeContract address set in the constructor.", async () => {
     expect(await H1NativeApplicationDeployed.FeeContract()).to.equal(
       FeeContract.address

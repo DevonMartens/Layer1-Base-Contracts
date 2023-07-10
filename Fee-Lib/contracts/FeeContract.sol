@@ -80,8 +80,8 @@ contract FeeContract is
     // This is used to measure the time frame in which we wait to consult the oracle.
     uint256 public epochLength;
 
-    // This is the block timestamp that the fee will need to be reset.
-    uint256 private requiredReset;
+    // // This is the block timestamp that the fee will need to be reset.
+    // uint256 private requiredReset;
 
     // Storage for the application fee.
     uint256 private fee;
@@ -132,7 +132,7 @@ contract FeeContract is
         fee = _fee;
         lastDistribution = block.timestamp;
         epochLength = 86400;
-        requiredReset = block.timestamp + 86400;
+        // requiredReset = block.timestamp + 86400;
         oracle = _oracle;
         for (uint i = 0; i < _channels.length; i++) {
             CONTRACT_SHARES += _weights[i];
@@ -236,14 +236,14 @@ contract FeeContract is
         epochLength = new_epochLength;
     }
 
-    /**
-    @notice `setRequiredReset` is to adjust the next block in which dispersed payments and oracle update will occur from this contract.
-    @param newResetBlock the length of time between payouts and oracle updates from the contract.
-    */
+    // /**
+    // @notice `setRequiredReset` is to adjust the next block in which dispersed payments and oracle update will occur from this contract.
+    // @param newResetBlock the length of time between payouts and oracle updates from the contract.
+    // */
 
-    function setRequiredReset(uint256 newResetBlock) external onlyRole(OPERATOR_ROLE) {
-        requiredReset = newResetBlock;
-    }
+    // function setRequiredReset(uint256 newResetBlock) external onlyRole(OPERATOR_ROLE) {
+    //     requiredReset = newResetBlock;
+    // }
 
     /**
     @notice `distributeFeesToChannels` to disburse payment to distribute funds to channels.
@@ -313,7 +313,6 @@ contract FeeContract is
 
     /**
     @notice `getFee` function consults the fee contract to get the fee.
-    @dev The required reset means the fee must be updated every 24 hours.
     */
     function getFee() public view returns (uint256) {
             return fee;
@@ -344,14 +343,14 @@ contract FeeContract is
         return true;
     }
 
-    /**
-     * @notice `getNextResetTime` this view function will
-     * tell when the fee will need to be reset via the timestamp.
-     */
+    // /**
+    //  * @notice `getNextResetTime` this view function will
+    //  * tell when the fee will need to be reset via the timestamp.
+    //  */
 
-    function getNextResetTime() public view returns (uint256) {
-        return requiredReset;
-    }
+    // function getNextResetTime() public view returns (uint256) {
+    //     return requiredReset;
+    // }
 
     /**
     @notice `getChannels` this function to allow the ability to view all channels.
