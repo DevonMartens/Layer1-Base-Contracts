@@ -104,7 +104,7 @@ contract BackedHRC20 is
         address owner,
         address spender,
         uint256 amount
-    ) internal virtual override whenNotPaused {
+    ) internal virtual override {
         require(isContract(spender) == true, Errors.ONLY_APPROVES_CONTRACTS);
         super._approve(owner, spender, amount);
     }
