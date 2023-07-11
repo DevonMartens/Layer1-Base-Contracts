@@ -22,9 +22,8 @@ contract BackedHRC20 is
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
     /**
-     * @dev The event is triggered during the suspendAccountMaintainTokenAndIdentityBlob function.
-     * It includes the tokenId and the reason.
-     * This will include temporary susepensions/
+     * @dev The event is triggered during the `burnFrom` function.
+     * It includes the account, the amount of tokens, and the reason.
      */
 
     event TokensBurnedFromAccount(
@@ -39,7 +38,9 @@ contract BackedHRC20 is
     }
 
     /** 
-    @notice variables initalized when the contract deploys.
+    @notice `initalize` function gives variables values when the contract deploys.
+    @param name the name of the token this contract distributes.
+    @param symbol the symbol of the token this contract distributes.
     @param havenFoundation can remove/add operator roles.
     @param networkOperator can pause/unpause the contract set to true to allow an address to be whitelisted or false to remove privledges.
     @dev The `OPERATOR_ROLE can be given after deployment by calling `grantRole(role, address)`
@@ -61,8 +62,9 @@ contract BackedHRC20 is
     }
 
     /** 
-    @notice Function to pause sending/depositing/withdrawing of tokens from contract.
-    @dev Only operator role can do this given in constructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
+    * @notice `pause` is a function to pause sending/depositing/withdrawing of tokens from contract.
+    * The `whenNotPaused` modifer will read the contracts state and not allow functions accordingly.
+    * @dev Only operator role can do this given in constructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
     */
 
     function pause() external onlyRole(OPERATOR_ROLE) {
@@ -70,7 +72,9 @@ contract BackedHRC20 is
     }
 
     /**
-    @notice Function to unpause (if paused) and allow sending/depositing/withdrawing of tokens from contract.
+    * @notice `unpause` allows contract functions with the `whenNotPaused` modifier
+    * to continue to run after the contract was previously paused and allow 
+    * sending/depositing/withdrawing of tokens from contract.
     */
 
     function unpause() external onlyRole(OPERATOR_ROLE) {
@@ -78,9 +82,9 @@ contract BackedHRC20 is
     }
 
     /**
-    @notice This function checks an address to ensure it is a contract NOT a wallet.
+    @notice `isContract` this function checks an address to ensure it is a contract NOT a wallet.
     @param _addr the address to be checked for if it is a contract or not.
-    @dev returns true if the input is a contract.
+    @dev It returns true if the input is a contract.
     @dev Used to override approvals and increase allowance.
     */
 
@@ -95,9 +99,10 @@ contract BackedHRC20 is
     }
 
     /**
-    @notice Same as ERC-20's function but does not allow wallets to be approved only contracts.
-    @param spender is the address being approved to move other wallets tokens.
-    @param amount the number of tokens they send on behalf of the owner.
+    * @notice `_approve` overrides ERC-20's function to approve addresses. 
+    * This function does not allow wallets to be approved only contracts.
+    * @param spender is the address being approved to move other wallets tokens.
+    * @param amount the number of tokens they send on behalf of the owner.
     */
 
     function _approve(
@@ -110,13 +115,14 @@ contract BackedHRC20 is
     }
 
     /**
-    @notice Function to deposit tokens for Haven1 via Yield App.
-    @param to address to recieve token.
-    @param amount number of tokens to be recieved.
-    @dev Function does not work when paused.
-    @dev If an address is blacklisted via `setBlackListAddress` it cannot recieve tokens.
-    @dev If isWhiteListContract is set to true addresses must be whitelisted via `setWhiteListAddress`.
-    @dev Only OPERATOR role can do this given in contructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
+    * @notice `issueBackedToken` this function Function to issue backed tokens for Haven1, managed by the network operator.
+    * @param to address to recieve token.
+    * @param amount number of tokens to be recieved.
+    * @dev Function does not work when paused.
+    * @dev If an address is blacklisted via `setBlackListAddress` it cannot recieve tokens.
+    * @dev If isWhiteListContract is set to true addresses must be whitelisted via `setWhiteListAddress`.
+    * @dev Only THE OPERATOR role can do this an address can obtain that rolein the contructor or 
+    * by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
     */
 
     function issueBackedToken(
@@ -127,11 +133,12 @@ contract BackedHRC20 is
     }
 
     /**
-    @notice Function to redeem backed tokens for Haven1, managed  by the network operator
-    @param amount number of tokens to be redeemed.
-    @dev Function does not work when paused.
-    @dev If  the amount is higher than the balance of the address an error reading "BALANCE_TOO_LOW" will be returned.
-    @dev Only OPERATOR role can do this given in contructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
+    * @notice `redeemBackedToken` function to redeem backed tokens for Haven1.
+    * It is managed by the network operator
+    * @param amount number of tokens to be redeemed.
+    * @dev Function does not work when paused.
+    * @dev If  the amount is higher than the balance of the address an error reading "BALANCE_TOO_LOW" will be returned.
+    * @dev Only OPERATOR role can do this given in contructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
     */
 
     function redeemBackedToken(uint256 amount) external whenNotPaused {
@@ -143,7 +150,7 @@ contract BackedHRC20 is
     }
 
     /**
-     * @notice This function will be used to provide additional onChain security on Haven1.
+     * @notice `burnFrom` this function will be used to provide additional onChain security on Haven1. 
      * The Haven1 Foundation will call it in case of theft or lost keys.
      * @param target the address that tokens will be burned from.
      * @param amount the amount of tokens that will be burned.
@@ -161,7 +168,7 @@ contract BackedHRC20 is
     }
 
     /**
-    @notice Function to upgrade contract override to protect.
+    @notice `_authorizeUpgrade` function to upgrade contract override to protect.
     @param newImplementation new implementation address.
     */
 
@@ -170,7 +177,7 @@ contract BackedHRC20 is
     ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 
     /**
-    @notice Function called when using ERC-20 standard transferring functions.
+    @notice `_beforeTokenTransfer` is called when using ERC-20 standard transferring functions.
     @param from address to remove tokens from.
     @param to receiver of tokens.
     @param amount number of tokens to be sent.
