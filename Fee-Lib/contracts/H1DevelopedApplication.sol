@@ -58,6 +58,30 @@ contract H1DevelopedApplication {
         require(success, Errors.TRANSFER_FAILED);
         bool sent = payable(developerWallet).send(getDeveloperPayment());
         require(sent, Errors.TRANSFER_FAILED);
+        if (msg.value - calculateDevFee() > 0) {
+            uint256 overflow = (msg.value - callFee());
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+                ""
+            );
+        }
+        _;
+    }
+
+    // Modifier to send fees to the fee contract and to the developer in contracts.
+    modifier devApplicationFeeWithPayment(uint256 H1PaymentToFunction) {
+        if (msg.value < calculateDevFee() && calculateDevFee() > 0) {
+            revert(Errors.INSUFFICIENT_FUNDS);
+        }
+        (bool success, ) = FeeContract.call{value: getHavenFee()}("");
+        require(success, Errors.TRANSFER_FAILED);
+        bool sent = payable(developerWallet).send(getDeveloperPayment());
+        require(sent, Errors.TRANSFER_FAILED);
+        if (msg.value - calculateDevFee() - H1PaymentToFunction > 0) {
+            uint256 overflow = (msg.value - callFee() - H1PaymentToFunction);
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+                ""
+            );
+        }
         _;
     }
 

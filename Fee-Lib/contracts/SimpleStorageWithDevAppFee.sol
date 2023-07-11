@@ -18,6 +18,11 @@ contract SimpleStorageWithDevAppFee is H1DevelopedApplication {
         storedData = x;
     }
 
+    function setAndPayForIt(uint x) external payable devApplicationFeeWithPayment(5) {
+        require(msg.value > 5, "CHEAP");
+        storedData = x;
+    }
+
     function get() public view returns (uint retVal) {
         return storedData;
     }

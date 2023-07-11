@@ -149,16 +149,18 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
       "125"
     );
   });
-  // it("H1NativeApplication Contract: The getFee should reset the fee.", async () => {
-
-  //   await OracleContract.setPriceAverage(ONE_H1);
-  //   await time.increase(time.duration.days(1));
-  //   await expect(H1NativeApplicationDeployed.callFee())
-  //   .to.emit(FeeContract, "FeeReset")
-  //   .withArgs(ONE_H1)
-  //   const FeeFromFeeContract = await FeeContract.queryOracle();
-  //   expect(FeeFromFeeContract.toString()).to.equal(ONE_H1.toString());
-  // });
+  it("H1NativeApplication: The modifer applicationFeeWithPayment() should return extra values.", async () => {
+    await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6 });
+    await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 27 });
+  });
+  it("H1NativeApplication: The modifer applicationFeeWithPayment() will revert if not enough fees are paid.", async () => {
+    await expectRevert(SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 0 }),"125");
+  
+  });
+  it("H1NativeApplication: The modifer applicationFee() will return excess values.", async () => {
+    await SimpleStorageWithFeeDeployed.set(1, { value: 2 });
+  
+  });
   it("H1NativeApplication Contract: The FeeContract() function should return the FeeContract address set in the constructor.", async () => {
     expect(await H1NativeApplicationDeployed.FeeContract()).to.equal(
       FeeContract.address

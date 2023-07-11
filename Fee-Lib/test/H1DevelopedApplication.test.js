@@ -123,6 +123,18 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     await expectRevert(SimpleStorageWithDevAppFee.set(1), "125");
     await SimpleStorageWithDevAppFee.set(1, { value: 1 });
   });
+  it("H1DevelopedApplication: The modifer devApplicationFee() should return extra values.", async () => {
+    await SimpleStorageWithDevAppFee.setAndPayForIt(1, { value: 6 });
+    await SimpleStorageWithDevAppFee.setAndPayForIt(1, { value: 27 });
+  });
+  it("H1DevelopedApplication: The modifer devApplicationFee() will revert if not enough fees are paid.", async () => {
+    await expectRevert(SimpleStorageWithDevAppFee.setAndPayForIt(1, { value: 0 }),"125");
+  
+  });
+  it("H1DevelopedApplication: The modifer devApplicationFee() will return excess values.", async () => {
+    await SimpleStorageWithDevAppFee.set(1, { value: 2 });
+  
+  });
   it("H1DevelopedApplication: The modifer devapplicationFee() should not allow a value less than the price to be sent to the function.", async () => {
     await OracleContract.setPriceAverage(ONE_H1);
 

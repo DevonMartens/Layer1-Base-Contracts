@@ -22,13 +22,35 @@ contract H1NativeApplication {
     address public FeeContract;
     
 
-    // Modifier to send fees to the fee contract and to the developer in contracts.
+    // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier applicationFee() {
         if (msg.value < callFee() && callFee() > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
         (bool success, ) = FeeContract.call{value: callFee()}("");
         require(success, Errors.TRANSFER_FAILED);
+        if (msg.value - callFee() > 0) {
+            uint256 overflow = (msg.value - callFee());
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+                ""
+            );
+        }
+        _;
+    }
+
+    // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
+    modifier applicationFeeWithPayment(uint256 H1PaymentToFunction) {
+        if (msg.value < callFee() && callFee() > 0) {
+            revert(Errors.INSUFFICIENT_FUNDS);
+        }
+        (bool success, ) = FeeContract.call{value: callFee()}("");
+        require(success, Errors.TRANSFER_FAILED);
+        if (msg.value - callFee() - H1PaymentToFunction > 0) {
+            uint256 overflow = (msg.value - callFee() - H1PaymentToFunction);
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+                ""
+            );
+        }
         _;
     }
 
