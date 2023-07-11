@@ -33,9 +33,7 @@ contract H1DevelopedApplication {
     /**
      * @notice Constructor to initialize contract deployment.
      * @param _FeeContract address of fee contract to pay fees.
-     * @param walletToCollectFees the address to receive 10% of the fees..
-     * @dev For the param walletToCollectFees the deployer
-     * of this wallet should consider a setter for this address in their dApp.
+     * @param walletToCollectFees the address to receive 10% of the fees.
      */
 
     constructor(
@@ -64,7 +62,7 @@ contract H1DevelopedApplication {
     }
 
     /**
-    @notice `setDevApplicationFee` sets the fee amount charged to the consumer.
+    @notice `setDevApplicationFee` sets the fee amount charged to utilize the application.
     @dev It is split 10% feeContract and 90% to the development team.
     */
     function setDevApplicationFee(uint256 newDevFee) external {
@@ -75,8 +73,8 @@ contract H1DevelopedApplication {
 
     /**
      * @notice `getDeveloperPayment` the  function
-     * is to get the fee amount owed to the developer.
-     * @dev It is 90% of the contract balance.
+     * is to get the fee amount payed to the developer.
+     * @dev It is 90% of the fee balance.
      */
     function getDeveloperPayment() public view returns (uint256 developerFee) {
         uint256 currentFee = calculateDevFee();
@@ -85,7 +83,7 @@ contract H1DevelopedApplication {
 
     /**
     @notice `getHavenFee` gets the fee amount owed to the FeeContract.
-    @dev It is 10% of the contract balance.
+    @dev It is 10% of the fee balance.
     */
 
     function getHavenFee() public view returns (uint256 havenOneFee) {

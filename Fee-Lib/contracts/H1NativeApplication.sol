@@ -35,8 +35,6 @@ contract H1NativeApplication {
     /**
      * @notice Constructor to initialize contract deployment.
      * @param _FeeContract address of fee contract to pay fees.
-     * @dev For the param walletToCollectFees the deployer
-     * of this wallet should consider a setter for this address in their dApp.
      */
     constructor(address _FeeContract) {
         if (_FeeContract == address(0)) {

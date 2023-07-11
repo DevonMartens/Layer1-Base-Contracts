@@ -357,7 +357,8 @@ contract FeeContract is
     /**
      * @notice `amountPaidToUponNextDistribution` this function allows the
      * ability to view the amount an address is supposed to be paid based on array position.
-     * @param index the number in the array of channels/weights representing the index.
+     * @param index the number representing the position
+     * in the array of channels/weights representing the index.
      */
 
     function amountPaidToUponNextDistribution(
