@@ -61,24 +61,77 @@ contract BackedHRC20 is
         _grantRole(OPERATOR_ROLE, networkOperator);
     }
 
-    /** 
-    * @notice `pause` is a function to pause sending/depositing/withdrawing of tokens from contract.
-    * The `whenNotPaused` modifer will read the contracts state and not allow functions accordingly.
-    * @dev Only operator role can do this given in constructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
-    */
+    /**
+     * @notice `pause` is a function to pause sending/depositing/withdrawing of tokens from contract.
+     * The `whenNotPaused` modifer will read the contracts state and not allow functions accordingly.
+     * @dev Only operator role can do this given in constructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
+     */
 
     function pause() external onlyRole(OPERATOR_ROLE) {
         _pause();
     }
 
     /**
-    * @notice `unpause` allows contract functions with the `whenNotPaused` modifier
-    * to continue to run after the contract was previously paused and allow 
-    * sending/depositing/withdrawing of tokens from contract.
-    */
+     * @notice `unpause` allows contract functions with the `whenNotPaused` modifier
+     * to continue to run after the contract was previously paused and allow
+     * sending/depositing/withdrawing of tokens from contract.
+     */
 
     function unpause() external onlyRole(OPERATOR_ROLE) {
         _unpause();
+    }
+
+       /**
+     * @notice `redeemBackedToken` function to redeem backed tokens for Haven1.
+     * It is managed by the network operator
+     * @param amount number of tokens to be redeemed.
+     * @dev Function does not work when paused.
+     * @dev If  the amount is higher than the balance of the address an error reading "BALANCE_TOO_LOW" will be returned.
+     * @dev Only OPERATOR role can do this given in contructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
+     */
+
+    function redeemBackedToken(uint256 amount) external whenNotPaused {
+        require(
+            balanceOf(msg.sender) >= amount,
+            Errors.INSUFFICIENT_TOKEN_BALANCE
+        );
+        _burn(msg.sender, amount);
+    }
+
+    /**
+     * @notice `burnFrom` this function will be used to provide additional onChain security on Haven1.
+     * The Haven1 Foundation will call it in case of theft or lost keys.
+     * @param target the address that tokens will be burned from.
+     * @param amount the amount of tokens that will be burned.
+     * @dev TThe premise for this function to be called will be a support ticket submitted off chain.
+     * The reason will be emitted in the event.
+     */
+
+    function burnFrom(
+        address target,
+        uint256 amount,
+        string calldata reason
+    ) external onlyRole(OPERATOR_ROLE) {
+        _burn(target, amount);
+        emit TokensBurnedFromAccount(target, amount, reason);
+    }
+
+    /**
+     * @notice `issueBackedToken` this function Function to issue backed tokens for Haven1, managed by the network operator.
+     * @param to address to recieve token.
+     * @param amount number of tokens to be recieved.
+     * @dev Function does not work when paused.
+     * @dev If an address is blacklisted via `setBlackListAddress` it cannot recieve tokens.
+     * @dev If isWhiteListContract is set to true addresses must be whitelisted via `setWhiteListAddress`.
+     * @dev Only THE OPERATOR role can do this an address can obtain that rolein the contructor or
+     * by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
+     */
+
+    function issueBackedToken(
+        address to,
+        uint256 amount
+    ) external whenNotPaused onlyRole(OPERATOR_ROLE) {
+        _mint(to, amount);
     }
 
     /**
@@ -99,11 +152,11 @@ contract BackedHRC20 is
     }
 
     /**
-    * @notice `_approve` overrides ERC-20's function to approve addresses. 
-    * This function does not allow wallets to be approved only contracts.
-    * @param spender is the address being approved to move other wallets tokens.
-    * @param amount the number of tokens they send on behalf of the owner.
-    */
+     * @notice `_approve` overrides ERC-20's function to approve addresses.
+     * This function does not allow wallets to be approved only contracts.
+     * @param spender is the address being approved to move other wallets tokens.
+     * @param amount the number of tokens they send on behalf of the owner.
+     */
 
     function _approve(
         address owner,
@@ -112,59 +165,6 @@ contract BackedHRC20 is
     ) internal virtual override {
         require(isContract(spender) == true, Errors.ONLY_APPROVES_CONTRACTS);
         super._approve(owner, spender, amount);
-    }
-
-    /**
-    * @notice `issueBackedToken` this function Function to issue backed tokens for Haven1, managed by the network operator.
-    * @param to address to recieve token.
-    * @param amount number of tokens to be recieved.
-    * @dev Function does not work when paused.
-    * @dev If an address is blacklisted via `setBlackListAddress` it cannot recieve tokens.
-    * @dev If isWhiteListContract is set to true addresses must be whitelisted via `setWhiteListAddress`.
-    * @dev Only THE OPERATOR role can do this an address can obtain that rolein the contructor or 
-    * by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
-    */
-
-    function issueBackedToken(
-        address to,
-        uint256 amount
-    ) external whenNotPaused onlyRole(OPERATOR_ROLE) {
-        _mint(to, amount);
-    }
-
-    /**
-    * @notice `redeemBackedToken` function to redeem backed tokens for Haven1.
-    * It is managed by the network operator
-    * @param amount number of tokens to be redeemed.
-    * @dev Function does not work when paused.
-    * @dev If  the amount is higher than the balance of the address an error reading "BALANCE_TOO_LOW" will be returned.
-    * @dev Only OPERATOR role can do this given in contructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
-    */
-
-    function redeemBackedToken(uint256 amount) external whenNotPaused {
-        require(
-            balanceOf(msg.sender) >= amount,
-            Errors.INSUFFICIENT_TOKEN_BALANCE
-        );
-        _burn(msg.sender, amount);
-    }
-
-    /**
-     * @notice `burnFrom` this function will be used to provide additional onChain security on Haven1. 
-     * The Haven1 Foundation will call it in case of theft or lost keys.
-     * @param target the address that tokens will be burned from.
-     * @param amount the amount of tokens that will be burned.
-     * @dev TThe premise for this function to be called will be a support ticket submitted off chain.
-     * The reason will be emitted in the event.
-     */
-
-    function burnFrom(
-        address target,
-        uint256 amount,
-        string calldata reason
-    ) external onlyRole(OPERATOR_ROLE) {
-        _burn(target, amount);
-        emit TokensBurnedFromAccount(target, amount, reason);
     }
 
     /**
