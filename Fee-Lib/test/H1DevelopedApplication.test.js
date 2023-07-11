@@ -196,8 +196,6 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
   });
   it("H1DevelopedApplication: The function calculateDevFee() should return devFee * USD.", async () => {
     await H1DevelopedApplication.setDevApplicationFee(1);
-    const value = await H1DevelopedApplication.calculateDevFee();
-    console.log(value);
   });
   it("H1DevelopedApplication: The function setDevApplicationFee() should only be callabe by the developerWallet.", async () => {
     await expectRevert(

@@ -14,7 +14,7 @@ contract SimpleStorageWithDevAppFee is H1DevelopedApplication {
         uint256 fee
     ) H1DevelopedApplication(_feeContract, devWallet, fee) {}
 
-    function set(uint x) public payable devApplicationFee {
+    function set(uint x) external payable devApplicationFee {
         storedData = x;
     }
 

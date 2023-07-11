@@ -49,7 +49,7 @@ contract H1DevelopedApplication {
         devFee = applicationFee;
     }
 
-    // Modifier to send fees to the fee contract and to the developer in contracts.
+    // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier devApplicationFee() {
         if (msg.value < calculateDevFee() && calculateDevFee() > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
@@ -67,7 +67,7 @@ contract H1DevelopedApplication {
         _;
     }
 
-    // Modifier to send fees to the fee contract and to the developer in contracts.
+    // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier devApplicationFeeWithPayment(uint256 H1PaymentToFunction) {
         if (msg.value < calculateDevFee() && calculateDevFee() > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
