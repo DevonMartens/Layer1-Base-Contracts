@@ -213,7 +213,7 @@ contract ValidatorRewards is
     }
 
     /**
-   @notice `dispersed` is the getter for the amount of Wrapped H1 already dispersed to a payee.
+   @notice `dispersed` is the getter for the amount of wrapped H1 already dispersed to a payee.
    @param account is the account to check the share amount.
    */
     function dispersed(address account) public view returns (uint256) {
@@ -229,7 +229,7 @@ contract ValidatorRewards is
     }
 
     /**
-   @notice `releasable` is the getter for the amount of validator's Wrapped H1 in contract.
+   @notice `releasable` is the getter for the amount of validator's wrapped H1 in contract.
    @param account the account to check the amount of total received and dispersed amount.
    */
     function releasable(address account) public view returns (uint256) {
@@ -238,7 +238,7 @@ contract ValidatorRewards is
     }
 
     /**
-     * @notice `disperseSinglePaymentToValidator` triggers a transfer to a single `account` of the amount of Wrapped H1 they are owed,
+     * @notice `disperseSinglePaymentToValidator` triggers a transfer to a single `account` of the amount of wrapped H1 they are owed,
      * according to their percentage of the total shares and their previous withdrawals.
      * @param account the account to check the amount of total received and dispersed amount.
      */
@@ -277,7 +277,7 @@ contract ValidatorRewards is
     }
 
     /**
-   @notice `isTheAddressInTheValidatorsArray` This view function checks if the address is in the validatorList array.
+   @notice `isTheAddressInTheValidatorsArray` this view function checks if the address is in the validatorList array.
    @param validator the address for in the validatorsList.
    @dev It is used in functions above to ensure no duplicate addresses are added to the validatorList.
    */
