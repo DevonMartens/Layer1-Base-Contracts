@@ -227,11 +227,18 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     SimpleStorageWithDevAppFee.set(1, { value: 1 });
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
   });
-  it("H1DevelopedApplication: The imported modifer should revert if transfer to fee contract fails.", async () => {
+  it("H1DevelopedApplication: The imported devApplicationFee( modifer should revert if transfer to fee contract fails.", async () => {
     await BadFeeContract.setAgainFee();
     await expectRevert(SimpleStorageBadFeeContract.set(1, { value: 1 }), "112");
   });
-  it("H1DevelopedApplication: The modifer devapplicationFee() should cause a revert if transfer to the developer wallet fails.", async () => {
+  it("H1DevelopedApplication: The modifer devApplicationFee() should cause a revert if transfer to the developer wallet fails.", async () => {
     await expectRevert(SimpleStorageBadDevWallet.set(1, { value: 1 }), "112");
+  });
+  it("H1DevelopedApplication: The imported devApplicationFeeWithPayment modifer should revert if transfer to fee contract fails.", async () => {
+    await BadFeeContract.setAgainFee();
+    await expectRevert(SimpleStorageBadFeeContract.setAndPayForIt(1, { value: 1 }), "112");
+  });
+  it("H1DevelopedApplication: The modifer devApplicationFeeWithPayment() should cause a revert if transfer to the developer wallet fails.", async () => {
+    await expectRevert(SimpleStorageBadDevWallet.setAndPayForIt(1, { value: 1 }), "112");
   });
 });

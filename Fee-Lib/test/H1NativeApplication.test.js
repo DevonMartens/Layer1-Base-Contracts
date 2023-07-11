@@ -108,6 +108,11 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     await BadFeeContract.setAgainFee();
     await expectRevert(SimpleStorageBadFeeContract.set(1, { value: 1 }), "112");
   });
+  //
+  it("H1NativeApplication Contract: Functions using the modifier applicationFeeWithPayment() will revert if transfer to fee library fails", async () => {
+    await BadFeeContract.setAgainFee();
+    await expectRevert(SimpleStorageBadFeeContract.setAndPayForIt(1, { value: 1 }), "112");
+  });
   it("H1NativeApplication Contract: The modifer applicationFee() disperse ether to the Fee Contract.", async () => {
     await OracleContract.setPriceAverage(TEN_H1);
     await Address3Sig.sendTransaction({
