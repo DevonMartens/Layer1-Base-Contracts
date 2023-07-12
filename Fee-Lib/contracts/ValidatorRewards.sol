@@ -26,13 +26,13 @@ contract ValidatorRewards is
      * @dev The event is triggered during the `addValidator` function.
      * It emits the validator address and their total shares.
      */
-    event ValidatorAdded(address account, uint256 shares);
+    event ValidatorAdded(address indexed account, uint256 indexed shares);
 
     /**
      * @dev The event is triggered during the `adjustValidatorShares` function.
      * It emits the validator address and the new number of thier shares.
      */
-    event SharesAdjusted(address validator, uint256 shares);
+    event SharesAdjusted(address indexed validator, uint256 indexed shares);
 
     /**
      * @dev The event is triggered during the `removeValidator` function.
@@ -40,9 +40,9 @@ contract ValidatorRewards is
      * the new total shares for the contract.
      */
     event ValidatorRemoved(
-        address account,
-        uint256 shares,
-        uint256 newTotalSharesAmount
+        address indexed account,
+        uint256 indexed shares,
+        uint256 indexed newTotalSharesAmount
     );
 
     /**

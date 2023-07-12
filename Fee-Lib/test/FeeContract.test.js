@@ -118,7 +118,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       );
       expect(await FeeContract.getWeights()).to.deep.equal(SingleWeightArray);
     });
-    it("Fee Contract:: The values passed into the contructor for oracle, total contract shares, and lastDistribution should match the values recieved from the view functions getOracleAddress and getOracleAddress.", async () => {
+    it("Fee Contract: The values passed into the contructor for oracle, total contract shares, and lastDistribution should match the values recieved from the view functions getOracleAddress and getOracleAddress.", async () => {
       //gets oracle from Fee contract and ensures it is equal to Address2 the original inpul
       expect(await FeeContract.getOracleAddress()).to.equal(
         FeeOracleContract.address

@@ -26,6 +26,16 @@ contract FeeContract is
     AccessControlUpgradeable,
     UUPSUpgradeable
 {
+
+    /**
+     * @dev The event is triggered during the `receive` function.
+     * It emits the time, the address sending the funds, and amount payed.
+     */
+    event FeesReceived(
+        uint256 indexed timestamp,
+        address indexed from,
+        uint256 indexed amount
+    );
     
     /**
      * @dev The event is triggered during the `distributeFeesToChannels` function.
@@ -140,7 +150,9 @@ contract FeeContract is
     /**
     @notice `receive` gives the contract the ability to receive H1 from external addresses msg.data must be empty.
     */
-    receive() external payable {}
+    receive() external payable {
+        emit FeesReceived(block.timestamp, tx.origin, msg.value);
+    }
 
 
     /**
