@@ -17,6 +17,13 @@ interface IFeeContract {
 
     function getFee() external view returns (uint256);
 
+    //This function will need to be added to the fee contract, it returns lastDistribution + epoch time
+    function nextResetTime() external view returns (uint256);
+    
+
+    //this function will need to update 'nextResetTime' on the fee contract
+    function updateFee() external;
+
 }
 
 contract H1DevelopedApplication {
@@ -29,6 +36,11 @@ contract H1DevelopedApplication {
 
     // Storage variable for the fee set by the developer.
     uint256 devFee;
+
+    // new variables
+    uint256 public _fee;
+    
+    uint256 public _requiredFeeResetTime;
 
     /**
      * @notice Constructor to initialize contract deployment.
@@ -44,6 +56,8 @@ contract H1DevelopedApplication {
         if (_FeeContract == address(0)) {
             revert(Errors.INVALID_ADDRESS);
         }
+        _requiredFeeResetTime = IFeeContract(_FeeContract).nextResetTime();
+        _fee = IFeeContract(_FeeContract).getFee();
         FeeContract = _FeeContract;
         developerWallet = payable(walletToCollectFees);
         devFee = applicationFee;
@@ -71,6 +85,16 @@ contract H1DevelopedApplication {
     modifier devApplicationFeeWithPayment(uint256 H1PaymentToFunction) {
         if (msg.value < calculateDevFee() && calculateDevFee() > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
+        }
+         if (_requiredFeeResetTime < block.timestamp) {
+
+             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+             if (updatedResetTime == _requiredFeeResetTime) {
+                IFeeContract(FeeContract).updateFee();
+             }
+             _fee = IFeeContract(FeeContract).getFee();
+             _requiredFeeResetTime = updatedResetTime;
+        
         }
         (bool success, ) = FeeContract.call{value: getHavenFee()}("");
         require(success, Errors.TRANSFER_FAILED);
