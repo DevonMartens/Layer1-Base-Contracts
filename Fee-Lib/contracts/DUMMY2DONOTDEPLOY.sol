@@ -71,12 +71,7 @@ contract FeeQuery {
     @dev The required reset means the fee must be updated every 24 hours.
     */
     function getFee() public returns (uint256) {
-        if (requiredReset < block.timestamp) {
-           uint256 newFee = resetFee();
-            return newFee;
-        } else {
             return fee;
-        }
     }
 
       /**
@@ -145,7 +140,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
         mockAddress2 = networkOperator;
         lastDistribution = block.timestamp;
         epochLength = 86400;
-        requiredReset = block.timestamp + 86400;
+        networkFeeResetTimestamp = block.timestamp + 86400;
         oracle = _oracle;
         for (uint i = 0; i < _channels.length; i++) {
             CONTRACT_SHARES += _weights[i];
@@ -377,9 +372,17 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
    @notice Function to consult oracle to get fee amount.
    */
 
-    // function queryOracle() public view returns (uint feeAmount) {
-    //     return (IFeeOracle(oracle).consult());
-    // }
+   function updateFee() external returns(uint256) {
+        fee = queryOracle();
+        networkFeeResetTimestamp += 86400;
+        uint rebateValue = queryOracle();
+        
+    }
+
+    uint256 networkFeeResetTimestamp;
+    function nextResetTime() public view returns (uint256){
+        return networkFeeResetTimestamp;
+    }
 
     /**
    @notice Function to consult oracle to update.

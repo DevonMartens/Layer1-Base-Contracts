@@ -76,7 +76,6 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
       [
-        1,
         OracleContract.address,
         ValidatorArray,
         weightArray,
@@ -182,7 +181,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
       to: FeeContract.address,
       value: SIX_H1,
     });
-    await FeeContract.distributeFeesToChannels();
+    await FeeContract.updateFee();
     await expectRevert(SimpleStorageWithDevAppFee.set(1, { value: 99 }), "125");
     await SimpleStorageWithDevAppFee.set(1, { value: 100 });
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);

@@ -84,7 +84,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     FeeContractWith3Validators = await upgrades.deployProxy(
       FeeContractFactory,
       [
-        1,
         FeeOracleContract.address,
         ThreeValidatorArray,
         ThreeWeightsArray,
@@ -96,7 +95,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
       [
-        1,
         FeeOracleContract.address,
         ContractDeployerArray,
         SingleWeightArray,
@@ -131,7 +129,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     it("Fee Contract: The initalize function should only be called upon deployment.", async () => {
       await expectRevert(
         FeeContract.initialize(
-          1,
           ContractDeployer,
           ContractDeployerArray,
           SingleWeightArray,
@@ -283,8 +280,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       FeeContractWithMaxAddressesAndWeights = await upgrades.deployProxy(
         FeeContractFactory,
         [
-          1,
-          Address2,
+          FeeOracleContract.address,
           max10ArrayChannel,
           max10ArrayWeight,
           ContractDeployer,
@@ -308,8 +304,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       NinePositionArrayFeeContract = await upgrades.deployProxy(
         FeeContractFactory,
         [
-          1,
-          Address2,
+          FeeOracleContract.address,
           NinePositionsArrayOfChannels,
           NinePositionsArrayOfWeights,
           ContractDeployer,
@@ -338,7 +333,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         upgrades.deployProxy(
           FeeContractFactory,
           [
-            1,
             ContractDeployer,
             oversizedAddressArray,
             oversizedWieghtsArray,
@@ -454,7 +448,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         upgrades.deployProxy(
           FeeContractFactory,
           [
-            1,
             Address2,
             max10ArrayChannel,
             max10ArrayWeight,
@@ -714,12 +707,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });
-    it("Fee Contract: updateFee() should adjust the fee to mirror the oracle.", async () => {
-      await expectRevert(
-        FeeContract.connect(Address3SendsH1).updateFee(),
-        `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
-      );
-    });
     it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to adjust channels.", async () => {
       await expectRevert(
         FeeContract.connect(Address3SendsH1).adjustChannel(Address3, Address4, 75),
@@ -786,8 +773,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const FeeContractHasADifferentUpgrader = await upgrades.deployProxy(
         FeeContractFactory,
         [
-          1,
-          Address2,
+          FeeOracleContract.address,
           ContractDeployerArray,
           SingleWeightArray,
           Address2,
@@ -820,7 +806,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const FeeContractForTest = await upgrades.deployProxy(
         FeeContract,
         [
-          1,
           DummyContract.address,
           InputArray,
           NumberArray,
@@ -840,7 +825,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const FeeContractForTest = await upgrades.deployProxy(
         FeeContract,
         [
-          1,
           DummyContract.address,
           InputArray,
           NumberArray,
@@ -864,7 +848,6 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const FeeContractForTest = await upgrades.deployProxy(
         FeeContract,
         [
-          1,
           DummyContract.address,
           InputArray,
           NumberArray,

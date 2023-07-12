@@ -108,6 +108,9 @@ contract FeeContract is
     // The time of last fee distribution.
     uint256 private lastDistribution;
 
+    // The timestamp in which the fee needs to be reset accross the network.
+    uint256 private networkFeeResetTimestamp;
+
     // Role to control the contract.
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
@@ -122,7 +125,6 @@ contract FeeContract is
     @dev There cannot be more than ten channels.
     */
     function initialize(
-        uint256 _fee,
         address _oracle,
         address[] memory _channels,
         uint8[] memory _weights,
@@ -136,9 +138,10 @@ contract FeeContract is
         if (_channels.length > 10 || _weights.length > 10) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
-        fee = _fee;
+        fee = IFeeOracle(_oracle).consult();
         lastDistribution = block.timestamp;
         epochLength = 86400;
+        networkFeeResetTimestamp = block.timestamp + 86400;
         oracle = _oracle;
         for (uint i = 0; i < _channels.length; i++) {
             CONTRACT_SHARES += _weights[i];
@@ -270,8 +273,6 @@ contract FeeContract is
                 emit FeesDistributed(block.timestamp, channels[i], share);
             }
             lastDistribution = block.timestamp;
-            fee = queryOracle();
-            emit FeeReset(fee);
             _refreshOracle();
         } else {
             revert(Errors.HOLD_TIME_IS_24_HOURS);
@@ -302,12 +303,21 @@ contract FeeContract is
     }
 
     /**
-    @notice `updateFee` is a setter function for admin to call on the fee function to reset it.
-    @dev this would be useful should the fee change drastically.
+    * @notice `updateFee` updates the networkFeeResetTimestamp and the fee.
+    * @dev It can be called by other wallets but will be called by a H1Developed 
+    * or Native application every 24 hours.
     */
-    function updateFee() external onlyRole(OPERATOR_ROLE) {
+    function updateFee() public {
         fee = queryOracle();
+        networkFeeResetTimestamp = 86400 + networkFeeResetTimestamp;
+        uint rebateValue = queryOracle();
+        (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(
+                ""
+        );
+        emit FeeReset(fee);
+        
     }
+    
 
     /**
     @notice `setOracle` this setter function to adjust oracle address.
@@ -319,10 +329,18 @@ contract FeeContract is
     }
 
     /**
-    @notice `getFee` function consults the fee contract to get the fee.
+    @notice `nextResetTime` function returns the networkFeeResetTimestamp.
+    */
+    function nextResetTime() public view returns (uint256){
+        return networkFeeResetTimestamp;
+    }
+
+    /**
+    * @notice `getFee` function returns the fee value updated by
+    * oracle at least every 24 hours.
     */
     function getFee() public view returns (uint256) {
-            return fee;
+            return IFeeOracle(oracle).consult();
     }
 
     /**

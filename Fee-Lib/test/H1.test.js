@@ -69,7 +69,6 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     FeeContract = await upgrades.deployProxy(
       FeeContractFactory,
       [
-        1,
         OracleContract.address,
         ValidatorArray,
         weightArray,
@@ -112,6 +111,7 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
   it("H1NativeApplication Contract: Functions using the modifier applicationFeeWithPayment() will revert if transfer to fee library fails", async () => {
     await BadFeeContract.setAgainFee();
     await expectRevert(SimpleStorageBadFeeContract.setAndPayForIt(1, { value: 1 }), "112");
+   
   });
   it("H1NativeApplication Contract: The modifer applicationFee() disperse ether to the Fee Contract.", async () => {
     await OracleContract.setPriceAverage(TEN_H1);
@@ -119,15 +119,17 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
       to: FeeContract.address,
       value: TEN_H1,
     });
-    // to refresh
-    await FeeContract.distributeFeesToChannels();
-
+    await time.increase(time.duration.days(2));
     const TEN_H1_STRING = TEN_H1.toString();
+    //reading as 1 here
+    await SimpleStorageWithFeeDeployed.set(1, {value: TEN_H1})
     await expect(
       SimpleStorageWithFeeDeployed.connect(Address3Sig).set(1, {
         value: TEN_H1,
       })
     ).to.changeEtherBalance(FeeContractSignerForBalanceChecks, TEN_H1_STRING);
+
+    
   });
   it("H1NativeApplication Contract: Contracts importing H1NativeApplication will require the correct Fee to execute functions with the applicationFee() modifer.", async () => {
     // await SimpleStorageWithFeeDeployed.set(1);
@@ -138,14 +140,13 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
   it("H1NativeApplication: The modifer applicationFee() should still work after 24 hours.", async () => {
     await OracleContract.setPriceAverage(ONE_H1);
 
-    await time.increase(time.duration.days(1));
+    
     //send fees to contract then call function to disperse
     await Address3Sig.sendTransaction({
       to: FeeContract.address,
       value: TEN_H1,
     });
-    // to refresh oracle
-    await FeeContract.distributeFeesToChannels();
+    await time.increase(time.duration.days(1));
     // txn reflects new price
     await SimpleStorageWithFeeDeployed.set(1, { value: ONE_H1 });
     //not enough H1
