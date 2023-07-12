@@ -29,17 +29,18 @@ interface IFeeContract {
 contract H1DevelopedApplication {
     
     // Storage for fee contract address.
-    address public FeeContract;
+    address private FeeContract;
 
     // Address storage for developer wallet.
     address developerWallet;
 
     // Storage variable for the fee set by the developer.
-    uint256 devFee;
+    uint256 private devFee;
 
-    // new variables
-    uint256 public _fee;
-    
+    // Storage Variable for baseFee 
+    uint256 private baseFee;
+
+    // Storage variable for when the contract state must be updated.
     uint256 public _requiredFeeResetTime;
 
     /**
@@ -57,10 +58,10 @@ contract H1DevelopedApplication {
             revert(Errors.INVALID_ADDRESS);
         }
         _requiredFeeResetTime = IFeeContract(_FeeContract).nextResetTime();
-        _fee = IFeeContract(_FeeContract).getFee();
         FeeContract = _FeeContract;
         developerWallet = payable(walletToCollectFees);
-        devFee = applicationFee;
+        devFee = applicationFee * IFeeContract(_FeeContract).getFee();
+        baseFee = applicationFee;
     }
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
@@ -68,11 +69,22 @@ contract H1DevelopedApplication {
         if (msg.value < calculateDevFee() && calculateDevFee() > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
-        (bool success, ) = FeeContract.call{value: getHavenFee()}("");
+        if (_requiredFeeResetTime < block.timestamp) {
+
+             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+             if (updatedResetTime == _requiredFeeResetTime) {
+                IFeeContract(FeeContract).updateFee();
+             }
+             uint256 feeInUSD = IFeeContract(FeeContract).getFee();
+             devFee = feeInUSD * baseFee;
+             _requiredFeeResetTime = updatedResetTime;
+        
+        }
+        (bool success, ) = FeeContract.call{value: devFee / 10}("");
         require(success, Errors.TRANSFER_FAILED);
-        bool sent = payable(developerWallet).send(getDeveloperPayment());
+        bool sent = payable(developerWallet).send(devFee / 10 * 9);
         require(sent, Errors.TRANSFER_FAILED);
-        if (msg.value - calculateDevFee() > 0) {
+        if (msg.value - devFee > 0) {
             uint256 overflow = (msg.value - callFee());
             (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
                 ""
@@ -92,16 +104,17 @@ contract H1DevelopedApplication {
              if (updatedResetTime == _requiredFeeResetTime) {
                 IFeeContract(FeeContract).updateFee();
              }
-             _fee = IFeeContract(FeeContract).getFee();
+             uint256 feeInUSD = IFeeContract(FeeContract).getFee();
+             devFee = feeInUSD * baseFee;
              _requiredFeeResetTime = updatedResetTime;
         
         }
-        (bool success, ) = FeeContract.call{value: getHavenFee()}("");
+        (bool success, ) = FeeContract.call{value: devFee / 10}("");
         require(success, Errors.TRANSFER_FAILED);
-        bool sent = payable(developerWallet).send(getDeveloperPayment());
+        bool sent = payable(developerWallet).send(devFee / 10 * 9);
         require(sent, Errors.TRANSFER_FAILED);
-        if (msg.value - calculateDevFee() - H1PaymentToFunction > 0) {
-            uint256 overflow = (msg.value - callFee() - H1PaymentToFunction);
+        if (msg.value - devFee - H1PaymentToFunction > 0) {
+            uint256 overflow = (msg.value - devFee - H1PaymentToFunction);
             (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
                 ""
             );
@@ -116,28 +129,11 @@ contract H1DevelopedApplication {
     function setDevApplicationFee(uint256 newDevFee) external {
         require(msg.sender == developerWallet, Errors.INVALID_ADDRESS);
         require(callMinimumViableFee() < newDevFee, Errors.INVALID_FEE);
-        devFee = newDevFee;
+        uint256 feeInUSD = IFeeContract(FeeContract).getFee();
+        baseFee = newDevFee;
+        devFee = feeInUSD * newDevFee;
     }
 
-    /**
-     * @notice `getDeveloperPayment` the  function
-     * is to get the fee amount payed to the developer.
-     * @dev It is 90% of the fee balance.
-     */
-    function getDeveloperPayment() public view returns (uint256 developerFee) {
-        uint256 currentFee = calculateDevFee();
-        developerFee = (currentFee / 10) * 9;
-    }
-
-    /**
-    @notice `getHavenFee` gets the fee amount owed to the FeeContract.
-    @dev It is 10% of the fee balance.
-    */
-
-    function getHavenFee() public view returns (uint256 havenOneFee) {
-        uint256 currentFee = calculateDevFee();
-        havenOneFee = currentFee / 10;
-    }
 
     /**
     @notice `calculateDevFee` consults the oracle and gets the fee back in USD.
