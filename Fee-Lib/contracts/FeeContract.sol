@@ -325,6 +325,11 @@ contract FeeContract is
             return fee;
     }
 
+    /**
+    @notice `_findIndexPosition` this view function checks if the address to obtain the index in the array.
+    @dev It is used to change the arrays of weights and channels.
+    */
+
     function _findIndexPosition(
         address channel
     ) public view returns (uint256) {
