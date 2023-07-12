@@ -357,7 +357,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()
       ).to.equal(30);
       await FeeContractWithMaxAddressesAndWeights.adjustChannel(
-        4,
+        ValidatorContract5.address,
         ValidatorContract11.address,
         6
       );
@@ -367,9 +367,9 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       const weightOfChannel5 = await channel5ShouldHaveWeightOf6[1];
       expect(await weightOfChannel5).to.equal(6);
     });
-    it("Fee Contract: The removeChannelAndWeightByIndex function remove wieght, channel and subtract the total contract shares.", async () => {
-      await FeeContractWithMaxAddressesAndWeights.removeChannelAndWeightByIndex(
-        9
+    it("Fee Contract: The removeChannel function remove wieght, channel and subtract the total contract shares.", async () => {
+      await FeeContractWithMaxAddressesAndWeights.removeChannel(
+        ValidatorContract10.address
       );
       const countingArray = [1, 2, 3, 4, 5, 1, 2, 3, 4];
       expect(
@@ -382,9 +382,9 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         await FeeContractWithMaxAddressesAndWeights.getTotalContractShares()
       ).to.equal(25);
     });
-    it("Fee Contract: The removeChannelAndWeightByIndex function remove wieght, channel and subtract the total contract shares from any index.", async () => {
-      await FeeContractWithMaxAddressesAndWeights.removeChannelAndWeightByIndex(
-        1
+    it("Fee Contract: The removeChannel function remove wieght, channel and subtract the total contract shares from any index.", async () => {
+      await FeeContractWithMaxAddressesAndWeights.removeChannel(
+        ValidatorContract2.address
       );
       const countingArray = [1, 3, 4, 5, 1, 2, 3, 4, 5];
       PositionIndexOneGoneArrayOfChannels = [
@@ -411,7 +411,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     it("Fee Contract: The adjustChannel function will revert if you input an existing channel.", async () => {
       await expectRevert(
         FeeContractWithMaxAddressesAndWeights.adjustChannel(
-          4,
+          ValidatorContract.address,
           ValidatorContract.address,
           6
         ),
@@ -430,23 +430,23 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     it("Fee Contract: The adjustChannel function should revert if you input 0.", async () => {
       await expectRevert(
         FeeContractWithMaxAddressesAndWeights.adjustChannel(
-          4,
+          ValidatorContract5.address,
           "0x0000000000000000000000000000000000000000",
           6
         ),
         "123"
       );
     });
-    it("Fee Contract: The adjustChannel function should revert if you input an index greater than 9.", async () => {
-      await expectRevert(
-        FeeContractWithMaxAddressesAndWeights.adjustChannel(
-          17,
-          ValidatorContract11.address,
-          6
-        ),
-        "111"
-      );
-    });
+    // it("Fee Contract: The adjustChannel function should revert if you input an index greater than 9.", async () => {
+    //   await expectRevert(
+    //     FeeContractWithMaxAddressesAndWeights.adjustChannel(
+    //       17,
+    //       ValidatorContract11.address,
+    //       6
+    //     ),
+    //     "111"
+    //   );
+    // });
     it("Fee Contract: The initalize function will fail if you put 6+ weights or addresses.", async () => {
       await max10ArrayWeight.push(4);
 
@@ -722,11 +722,11 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     });
     it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to adjust channels.", async () => {
       await expectRevert(
-        FeeContract.connect(Address3SendsH1).adjustChannel(1, Address4, 75),
+        FeeContract.connect(Address3SendsH1).adjustChannel(Address3, Address4, 75),
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });
-    it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to adjust channels.", async () => {
+    it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to add channels.", async () => {
       await expectRevert(
         FeeContract.connect(Address3SendsH1).addChannel(Address4, 75),
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
@@ -734,7 +734,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     });
     it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to remove channels.", async () => {
       await expectRevert(
-        FeeContract.connect(Address3SendsH1).removeChannelAndWeightByIndex(0),
+        FeeContract.connect(Address3SendsH1).removeChannel(ContractDeployer),
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });

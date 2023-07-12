@@ -183,16 +183,16 @@ contract FeeContract is
 
     /**
      * @notice `adjustChannel` includes the logic to adjust a channel and its weight.
-     * @param _index the index of the channels and weights array.
-     * @param _newChannelAddress the address of the validator replacing the old one.
+     * @param _oldChannelAddress the address of the channels and weights array.
+     * @param _newChannelAddress the address of the channel replacing the old one.
      * @param _newWeight the amount of total shares the new address will receive.
-     * @dev the index to avoid a work around to the 5 channel limit and for 0 address.
+     * @dev the index to avoid a work around to the 10 channel limit and for 0 address.
      * @dev The total weight is tracked by `CONTRACT_SHARES`
      * which we adjust here by subtracting the old number and adding the new.
      */
 
     function adjustChannel(
-        uint8 _index,
+        address _oldChannelAddress,
         address _newChannelAddress,
         uint8 _newWeight
     ) external onlyRole(OPERATOR_ROLE) {
@@ -202,24 +202,23 @@ contract FeeContract is
         ) {
             revert(Errors.INVALID_ADDRESS);
         }
-        if (_index > 10) {
-            revert(Errors.INCORRECT_INDEX);
-        }
-        CONTRACT_SHARES -= weights[_index];
-        weights[_index] = _newWeight;
+        uint256 index = _findIndexPosition(_oldChannelAddress);
+        CONTRACT_SHARES -= weights[index];
+        weights[index] = _newWeight;
         CONTRACT_SHARES += _newWeight;
         emit ChannelAdjusted(_newChannelAddress, _newWeight, CONTRACT_SHARES);
     }
 
     /**
-     * @notice `removeChannelAndWeightByIndex` is the logic to remove a channel and its weight.
-     * @param index the index of the channels and weights array.
+     * @notice `removeChannel` is the logic to remove a channel and its weight.
+     * @param _channel the address being removed.
      * @dev The total weight is tracked by `CONTRACT_SHARES`.
      * which we subtract the value from in the middle of this function.
      */
-    function removeChannelAndWeightByIndex(
-        uint index
+    function removeChannel(
+        address _channel
     ) external onlyRole(OPERATOR_ROLE) {
+        uint256 index =  _findIndexPosition(_channel);
         address removedAddress = channels[index];
         for (uint i = index; i < channels.length - 1; i++) {
             channels[i] = channels[i + 1];
@@ -324,6 +323,16 @@ contract FeeContract is
     */
     function getFee() public view returns (uint256) {
             return fee;
+    }
+
+    function _findIndexPosition(
+        address channel
+    ) public view returns (uint256) {
+        for (uint i = 0; i < channels.length; i++) {
+            if (channels[i] == channel) {
+                return i;
+            }
+    }
     }
 
     /**
