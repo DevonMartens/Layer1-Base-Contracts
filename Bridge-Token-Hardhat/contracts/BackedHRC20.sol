@@ -32,6 +32,38 @@ contract BackedHRC20 is
         string indexed reason
     );
 
+    /**
+     * @dev The event is triggered during the `burnFrom` function.
+     * It includes the account, the amount of tokens, and the reason.
+     */
+
+    event TokensBurnedFromAccount(
+        address indexed account,
+        uint256 indexed amount,
+        string indexed reason
+    );
+
+    /**
+     * @dev The event is triggered during the `redeemBackedToken` function.
+     * It includes the account and the amount of tokens.
+     */
+
+    event TokensRedeemed(
+        address indexed account,
+        uint256 indexed amount,
+    );
+
+    /**
+     * @dev The event is triggered during the `issueBackedToken` function.
+     * It includes the account and the amount of tokens.
+     */
+
+    event TokensIssued(
+        address indexed account,
+        uint256 indexed amount,
+    );
+
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -96,6 +128,7 @@ contract BackedHRC20 is
             Errors.INSUFFICIENT_TOKEN_BALANCE
         );
         _burn(msg.sender, amount);
+        emit TokensRedeemed(msg.sender, amount)
     }
 
     /**
@@ -132,6 +165,7 @@ contract BackedHRC20 is
         uint256 amount
     ) external whenNotPaused onlyRole(OPERATOR_ROLE) {
         _mint(to, amount);
+        emit TokensIssued(to, amount)
     }
 
     /**
