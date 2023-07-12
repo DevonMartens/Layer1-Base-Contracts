@@ -37,19 +37,19 @@ contract H1NativeApplication {
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier applicationFee() {
+         if (msg.value < _fee && _fee > 0) {
+            revert(Errors.INSUFFICIENT_FUNDS);
+        }
         if (_requiredFeeResetTime < block.timestamp) {
 
              uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-            
-         
-        if (updatedResetTime == _requiredFeeResetTime) {
+             if (updatedResetTime == _requiredFeeResetTime) {
                 IFeeContract(FeeContract).updateFee();
-                updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-        }   
-         _fee = IFeeContract(FeeContract).getFee();  
-        _requiredFeeResetTime = updatedResetTime;
+             }
+             _fee = IFeeContract(FeeContract).getFee();
+             _requiredFeeResetTime = updatedResetTime;
+        
         }
-    
         if (msg.value - _fee > 0) {
             uint256 overflow = (msg.value - _fee);
             (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
