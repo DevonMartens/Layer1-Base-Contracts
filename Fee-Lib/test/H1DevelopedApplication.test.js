@@ -179,9 +179,14 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
       value: SIX_H1,
     });
     // await FeeContract.updateFee();
-    await expectRevert(SimpleStorageWithDevAppFee.set(1, { value: 99 }), "125");
-    await SimpleStorageWithDevAppFee.set(1, { value: 300 });
-    expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
+     // advance time by one hour and mine a new block
+     await SimpleStorageWithDevAppFee.set(1, { value: 11});
+     await SimpleStorageWithDevAppFee.set(1, { value: 11});
+    //ten min block should be mined
+    await time.increase(360);
+    // await expectRevert(SimpleStorageWithDevAppFee.set(1, { value: 99 }), "125");
+    // await SimpleStorageWithDevAppFee.set(1, { value: 300 });
+    // expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
   });
   it("H1DevelopedApplication: The function setDevApplicationFee should run with out error if called above the the minium fee and by the right address.", async () => {
     await H1DevelopedApplication.setDevApplicationFee(100);

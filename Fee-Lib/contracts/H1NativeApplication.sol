@@ -38,14 +38,16 @@ contract H1NativeApplication {
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier applicationFee() {
         if (_requiredFeeResetTime < block.timestamp) {
-
-             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-             if (updatedResetTime == _requiredFeeResetTime) {
+        uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+          if (updatedResetTime == _requiredFeeResetTime) {
                 IFeeContract(FeeContract).updateFee();
              }
              _fee = IFeeContract(FeeContract).getFee();
              _requiredFeeResetTime = updatedResetTime;
         
+        }  
+        if(block.number == checkedNumber){
+            _chargeOrginalValidationFees();
         }
         if (msg.value < _fee && _fee > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
@@ -91,6 +93,16 @@ contract H1NativeApplication {
         }
         _;
     }
+
+
+              uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+             if (updatedResetTime == _requiredFeeResetTime) {
+                IFeeContract(FeeContract).updateFee();
+             }
+             _fee = IFeeContract(FeeContract).getFee();
+             _requiredFeeResetTime = updatedResetTime;
+        
+        }
 
     /**
      * @notice Constructor to initialize contract deployment.

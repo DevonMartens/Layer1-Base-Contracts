@@ -37,6 +37,12 @@ contract H1DevelopedApplication {
     // Storage variable for the fee set by the developer.
     uint256 private devFee;
 
+    // Prior fee from last day.
+    uint256 private proirFee;
+
+    // Block number change has occured on.
+    uint256 checkedNumber;
+
     // Storage Variable for baseFee 
     uint256 private baseFee;
 
@@ -70,64 +76,109 @@ contract H1DevelopedApplication {
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier devApplicationFee() {
-
+    
         if (_requiredFeeResetTime < block.timestamp) {
-             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-             
-             if (updatedResetTime == _requiredFeeResetTime) {
-                IFeeContract(FeeContract).updateFee();
-             }
-             
-             devFee = devFee * IFeeContract(FeeContract).getFee();
-             _requiredFeeResetTime = updatedResetTime;
+            _updateValuesForFeeAndReset();
+            _chargeOrginalValidationFees();
         
-        }
+        } 
+        if(block.number == checkedNumber){
+            _chargeOrginalValidationFees();
+        } 
 
-        if (msg.value < devFee && devFee > 0) {
-            revert(Errors.INSUFFICIENT_FUNDS);
-        }
-
-        (bool success, ) = FeeContract.call{value: devFee / 10}("");
-        require(success, Errors.TRANSFER_FAILED);
-        bool sent = payable(developerWallet).send(devFee / 10 * 9);
-        require(sent, Errors.TRANSFER_FAILED);
+        else {
+        _submitFees();
+        // (bool success, ) = FeeContract.call{value: devFee / 10}("");
+        // require(success, Errors.TRANSFER_FAILED);
+        // bool sent = payable(developerWallet).send(devFee / 10 * 9);
+        // require(sent, Errors.TRANSFER_FAILED);
 
         if (msg.value - devFee > 0) {
-            uint256 overflow = (msg.value - devFee);
-            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
-                ""
-            );
+            // uint256 overflow = (msg.value - devFee);
+            // (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+            //     ""
+            // );
+            _returnOverflow();
+        }
         }
         _;
     }
 
+
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier devApplicationFeeWithPayment(uint256 H1PaymentToFunction) {
          if (_requiredFeeResetTime < block.timestamp) {
+            _updateValuesForFeeAndReset();
 
-             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-             if (updatedResetTime == _requiredFeeResetTime) {
-                IFeeContract(FeeContract).updateFee();
-             }
-             uint256 feeInUSD = IFeeContract(FeeContract).getFee();
-             devFee = feeInUSD * baseFee;
-             _requiredFeeResetTime = updatedResetTime;
+            //  uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+            //  if (updatedResetTime == _requiredFeeResetTime) {
+            //     IFeeContract(FeeContract).updateFee();
+            //  }
+            //  uint256 feeInUSD = IFeeContract(FeeContract).getFee();
+            //  devFee = feeInUSD * baseFee;
+            //  _requiredFeeResetTime = updatedResetTime;
         
         }
         if (msg.value < devFee && devFee > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
-        (bool success, ) = FeeContract.call{value: devFee / 10}("");
-        require(success, Errors.TRANSFER_FAILED);
-        bool sent = payable(developerWallet).send(devFee / 10 * 9);
-        require(sent, Errors.TRANSFER_FAILED);
+        _submitFees();
+        // (bool success, ) = FeeContract.call{value: devFee / 10}("");
+        // require(success, Errors.TRANSFER_FAILED);
+        // bool sent = payable(developerWallet).send(devFee / 10 * 9);
+        // require(sent, Errors.TRANSFER_FAILED);
         if (msg.value - devFee - H1PaymentToFunction > 0) {
-            uint256 overflow = (msg.value - devFee - H1PaymentToFunction);
+            _returnOverflow();
+            // uint256 overflow = (msg.value - devFee - H1PaymentToFunction);
+            // (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+            //     ""
+            // );
+        }
+        _;
+    }
+
+    function _returnOverflow() internal {
+            uint256 overflow = (msg.value - devFee);
             (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
                 ""
             );
+    }
+
+    function _chargeOrginalValidationFees() internal {
+        (bool success, ) = FeeContract.call{value: proirFee / 10}("");
+        require(success, Errors.TRANSFER_FAILED);
+        bool sent = payable(developerWallet).send(proirFee / 10 * 9);
+        require(sent, Errors.TRANSFER_FAILED);
+        if (msg.value - proirFee > 0) {
+            uint256 overflow = (msg.value - proirFee);
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+                ""
+            );
+    }
+
+    }
+
+    function _updateValuesForFeeAndReset() internal {
+        uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+             
+             if (updatedResetTime == _requiredFeeResetTime) {
+                IFeeContract(FeeContract).updateFee();
+             }
+            proirFee = devFee;
+            // devFee = baseFee * IFeeContract(FeeContract).getFee();
+             _requiredFeeResetTime = updatedResetTime;
+             checkedNumber = block.number;
+    }
+
+    function _submitFees() internal {
+        if (msg.value < devFee && devFee > 0) {
+            revert(Errors.INSUFFICIENT_FUNDS);
         }
-        _;
+         (bool success, ) = FeeContract.call{value: devFee / 10}("");
+        require(success, Errors.TRANSFER_FAILED);
+        bool sent = payable(developerWallet).send(devFee / 10 * 9);
+        require(sent, Errors.TRANSFER_FAILED);
+
     }
 
     /**
