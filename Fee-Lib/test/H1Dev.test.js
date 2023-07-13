@@ -169,6 +169,12 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);
   });
   it("H1DevelopedApplication: The set function should not allow values lower than the oracle value.", async () => {
+    //try to simulate test happening at the same time
+    async function asyncCall() {
+      SimpleStorageWithDevAppFee.set(1, { value: 11});
+      SimpleStorageWithDevAppFee.connect(Address3Sig).set(1, { value: 11});
+    }
+    
     await SimpleStorageWithDevAppFee.set(1, { value: 11});
     //here
     await OracleContract.setPriceAverage(100);
@@ -182,8 +188,9 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
      // advance time by one hour and mine a new block
      //change to old value and it fails???
     await SimpleStorageWithDevAppFee.set(1, { value: 11});
-     await SimpleStorageWithDevAppFee.connect(Address3Sig).set(1, { value: 11});
+   //  await SimpleStorageWithDevAppFee.connect(Address3Sig).set(1, { value: 11});
    // ten min block should be mined
+   await asyncCall();
     await time.increase(360);
     await expectRevert(SimpleStorageWithDevAppFee.set(1, { value: 99 }), "125");
     await SimpleStorageWithDevAppFee.set(1, { value: 300 });

@@ -94,10 +94,14 @@ contract H1NativeApplication {
              _fee = IFeeContract(FeeContract).getFee();
              _requiredFeeResetTime = updatedResetTime;
                  resetBlock = block.number;
-            
-        
+                 uint256 overflow = (msg.value - priorFee);
+                (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+                ""
+                );
+                (bool success, ) = FeeContract.call{value: priorFee}("");
+                require(success, Errors.TRANSFER_FAILED);
         }
-        if(resetBlock ==  block.number && _requiredFeeResetTime >= block.timestamp) {
+       else if(resetBlock ==  block.number && _requiredFeeResetTime >= block.timestamp) {
             if (msg.value <  priorFee && priorFee > 0) {
                 revert(Errors.INSUFFICIENT_FUNDS);
                 }
