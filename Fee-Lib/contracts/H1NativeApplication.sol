@@ -34,21 +34,40 @@ contract H1NativeApplication {
     
     uint256 public _requiredFeeResetTime;
     
+    uint256 resetBlock;
+
+    uint256 priorFee;
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier applicationFee() {
-        if (_requiredFeeResetTime < block.timestamp) {
-        uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-          if (updatedResetTime == _requiredFeeResetTime) {
+        if (_requiredFeeResetTime <= block.timestamp && resetBlock != block.number) {
+             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+             if (updatedResetTime == _requiredFeeResetTime) {
                 IFeeContract(FeeContract).updateFee();
              }
+             priorFee = _fee;
              _fee = IFeeContract(FeeContract).getFee();
              _requiredFeeResetTime = updatedResetTime;
+             resetBlock = block.number;
         
-        }  
-        if(block.number == checkedNumber){
-            _chargeOrginalValidationFees();
         }
+        if(resetBlock ==  block.number && _requiredFeeResetTime > block.timestamp) {
+            if (msg.value <  priorFee && priorFee > 0) {
+                revert(Errors.INSUFFICIENT_FUNDS);
+                }
+            if (msg.value - priorFee > 0) {
+            uint256 overflow = (msg.value - priorFee);
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+                ""
+                );
+              }
+                (bool success, ) = FeeContract.call{value: priorFee}("");
+                require(success, Errors.TRANSFER_FAILED);
+          
+        }
+        else {
+
+    
         if (msg.value < _fee && _fee > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
@@ -60,6 +79,7 @@ contract H1NativeApplication {
         }
         (bool success, ) = FeeContract.call{value: _fee}("");
         require(success, Errors.TRANSFER_FAILED);
+        }
         _;
     }
 
@@ -73,8 +93,24 @@ contract H1NativeApplication {
              }
              _fee = IFeeContract(FeeContract).getFee();
              _requiredFeeResetTime = updatedResetTime;
+                 resetBlock = block.number;
         
         }
+        if(resetBlock ==  block.number && _requiredFeeResetTime > block.timestamp) {
+            if (msg.value <  priorFee && priorFee > 0) {
+                revert(Errors.INSUFFICIENT_FUNDS);
+                }
+            if (msg.value - priorFee > 0) {
+            uint256 overflow = (msg.value - priorFee);
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+                ""
+                );
+                (bool success, ) = FeeContract.call{value: priorFee}("");
+                require(success, Errors.TRANSFER_FAILED);
+            }
+        }
+        else {
+
            if (msg.value < _fee && _fee > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
@@ -91,18 +127,9 @@ contract H1NativeApplication {
                 ""
             );
         }
+        }
         _;
     }
-
-
-              uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-             if (updatedResetTime == _requiredFeeResetTime) {
-                IFeeContract(FeeContract).updateFee();
-             }
-             _fee = IFeeContract(FeeContract).getFee();
-             _requiredFeeResetTime = updatedResetTime;
-        
-        }
 
     /**
      * @notice Constructor to initialize contract deployment.
@@ -115,6 +142,7 @@ contract H1NativeApplication {
         _requiredFeeResetTime = IFeeContract(_FeeContract).nextResetTime();
         _fee = IFeeContract(_FeeContract).getFee();
         FeeContract = _FeeContract;
+        priorFee = IFeeContract(_FeeContract).getFee();
     }
 
      function callReset() public view returns (uint256) {

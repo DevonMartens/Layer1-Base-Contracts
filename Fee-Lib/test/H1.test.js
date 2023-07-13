@@ -125,7 +125,7 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     //reading as 1 here
     await SimpleStorageWithFeeDeployed.set(1, {value: TEN_H1})
     await expect(
-      SimpleStorageWithFeeDeployed.connect(Address3Sig).set(1, {
+      SimpleStorageWithFeeDeployed.set(1, {
         value: TEN_H1,
       })
     ).to.changeEtherBalance(FeeContractSignerForBalanceChecks, TEN_H1_STRING);
