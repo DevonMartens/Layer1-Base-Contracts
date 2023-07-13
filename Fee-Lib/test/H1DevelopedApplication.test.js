@@ -81,6 +81,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
         weightArray,
         ContractDeployer,
         ContractDeployer,
+        2
       ],
       { initializer: "initialize", kind: "uups" }
     );
@@ -151,11 +152,6 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     const FeeFromFeeContract = await FeeContract.queryOracle();
     expect(FeeFromFeeContract.toString()).to.equal(ONE_H1.toString());
   });
-  it("H1DevelopedApplication: The callFee function should mirror fee contracts address set in the constructor.", async () => {
-    expect(await H1DevelopedApplication.FeeContract()).to.equal(
-      FeeContract.address
-    );
-  });
   it("H1DevelopedApplication: The contract should not deploy if the fee contract address is set to 0.", async () => {
     //use unspecified because cannot estimate gas will be returned
     await expectRevert(
@@ -181,7 +177,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
       to: FeeContract.address,
       value: SIX_H1,
     });
-    await FeeContract.updateFee();
+    // await FeeContract.updateFee();
     await expectRevert(SimpleStorageWithDevAppFee.set(1, { value: 99 }), "125");
     await SimpleStorageWithDevAppFee.set(1, { value: 100 });
     expect(await SimpleStorageWithDevAppFee.get()).to.equal(1);

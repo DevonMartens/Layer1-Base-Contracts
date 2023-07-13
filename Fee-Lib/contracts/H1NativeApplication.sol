@@ -37,9 +37,6 @@ contract H1NativeApplication {
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier applicationFee() {
-         if (msg.value < _fee && _fee > 0) {
-            revert(Errors.INSUFFICIENT_FUNDS);
-        }
         if (_requiredFeeResetTime < block.timestamp) {
 
              uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
@@ -49,6 +46,9 @@ contract H1NativeApplication {
              _fee = IFeeContract(FeeContract).getFee();
              _requiredFeeResetTime = updatedResetTime;
         
+        }
+        if (msg.value < _fee && _fee > 0) {
+            revert(Errors.INSUFFICIENT_FUNDS);
         }
         if (msg.value - _fee > 0) {
             uint256 overflow = (msg.value - _fee);
@@ -63,9 +63,6 @@ contract H1NativeApplication {
 
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier applicationFeeWithPayment(uint256 H1PaymentToFunction) {
-        if (msg.value < _fee && _fee > 0) {
-            revert(Errors.INSUFFICIENT_FUNDS);
-        }
        if (_requiredFeeResetTime < block.timestamp) {
 
              uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
@@ -75,6 +72,9 @@ contract H1NativeApplication {
              _fee = IFeeContract(FeeContract).getFee();
              _requiredFeeResetTime = updatedResetTime;
         
+        }
+           if (msg.value < _fee && _fee > 0) {
+            revert(Errors.INSUFFICIENT_FUNDS);
         }
         if (msg.value - _fee > 0) {
             uint256 overflow = (msg.value - _fee);

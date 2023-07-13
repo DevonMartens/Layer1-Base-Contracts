@@ -74,6 +74,7 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
         weightArray,
         ContractDeployer,
         ContractDeployer,
+        2
       ],
       { initializer: "initialize", kind: "uups" }
     );

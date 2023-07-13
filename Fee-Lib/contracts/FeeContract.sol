@@ -94,7 +94,7 @@ contract FeeContract is
     uint256 private fee;
 
     // Storage for minimum fee.
-    uint256 private minFee;
+    uint256 private minimumFeeAllowedForDevs;
 
     // The total amount that we divide an addresses shares by to compute payments.
     uint8 private CONTRACT_SHARES;
@@ -129,7 +129,8 @@ contract FeeContract is
         address[] memory _channels,
         uint8[] memory _weights,
         address havenFoundation,
-        address networkOperator
+        address networkOperator,
+        uint256 minimumFeeAllowedForBuilders
     ) external initializer {
         __AccessControl_init();
         __UUPSUpgradeable_init();
@@ -138,6 +139,7 @@ contract FeeContract is
         if (_channels.length > 10 || _weights.length > 10) {
             revert(Errors.CONTRACT_LIMIT_REACHED);
         }
+        minimumFeeAllowedForDevs = minimumFeeAllowedForBuilders;
         fee = IFeeOracle(_oracle).consult();
         lastDistribution = block.timestamp;
         epochLength = 86400;
@@ -296,10 +298,10 @@ contract FeeContract is
 
     /**
     @notice `setMinFee` is a setter function to set the minimum fee for developer applications.
-    @param miniumAmount is the lowest amount a developer can charge to run their applications.
+    @param minimumAmount is the lowest amount a developer can charge to run their applications.
     */
-    function setMinFee(uint256 miniumAmount) external onlyRole(OPERATOR_ROLE) {
-        minFee = miniumAmount;
+    function setMinFee(uint256 minimumAmount) external onlyRole(OPERATOR_ROLE) {
+        minimumFeeAllowedForDevs = minimumAmount;
     }
 
     /**
@@ -447,7 +449,7 @@ contract FeeContract is
     @notice `getMinimumAllottedFee` function to retrieve the minimum dev fee allowed for developers.
     */
     function getMinimumAllottedFee() public view returns (uint256) {
-        return minFee;
+        return minimumFeeAllowedForDevs;
     }
 
     /**

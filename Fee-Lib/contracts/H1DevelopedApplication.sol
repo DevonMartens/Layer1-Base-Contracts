@@ -41,7 +41,7 @@ contract H1DevelopedApplication {
     uint256 private baseFee;
 
     // Storage variable for when the contract state must be updated.
-    uint256 public _requiredFeeResetTime;
+    uint256 private _requiredFeeResetTime;
 
     /**
      * @notice Constructor to initialize contract deployment.
@@ -66,26 +66,30 @@ contract H1DevelopedApplication {
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier devApplicationFee() {
-        if (msg.value < calculateDevFee() && calculateDevFee() > 0) {
-            revert(Errors.INSUFFICIENT_FUNDS);
-        }
-        if (_requiredFeeResetTime < block.timestamp) {
 
+        if (_requiredFeeResetTime < block.timestamp) {
              uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+             
              if (updatedResetTime == _requiredFeeResetTime) {
                 IFeeContract(FeeContract).updateFee();
              }
-             uint256 feeInUSD = IFeeContract(FeeContract).getFee();
-             devFee = feeInUSD * baseFee;
+             
+             devFee = devFee * IFeeContract(FeeContract).getFee();
              _requiredFeeResetTime = updatedResetTime;
         
         }
+
+        if (msg.value < devFee && devFee > 0) {
+            revert(Errors.INSUFFICIENT_FUNDS);
+        }
+
         (bool success, ) = FeeContract.call{value: devFee / 10}("");
         require(success, Errors.TRANSFER_FAILED);
         bool sent = payable(developerWallet).send(devFee / 10 * 9);
         require(sent, Errors.TRANSFER_FAILED);
+
         if (msg.value - devFee > 0) {
-            uint256 overflow = (msg.value - callFee());
+            uint256 overflow = (msg.value - devFee);
             (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
                 ""
             );
@@ -95,9 +99,6 @@ contract H1DevelopedApplication {
 
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier devApplicationFeeWithPayment(uint256 H1PaymentToFunction) {
-        if (msg.value < calculateDevFee() && calculateDevFee() > 0) {
-            revert(Errors.INSUFFICIENT_FUNDS);
-        }
          if (_requiredFeeResetTime < block.timestamp) {
 
              uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
@@ -108,6 +109,9 @@ contract H1DevelopedApplication {
              devFee = feeInUSD * baseFee;
              _requiredFeeResetTime = updatedResetTime;
         
+        }
+        if (msg.value < devFee && devFee > 0) {
+            revert(Errors.INSUFFICIENT_FUNDS);
         }
         (bool success, ) = FeeContract.call{value: devFee / 10}("");
         require(success, Errors.TRANSFER_FAILED);
@@ -128,23 +132,32 @@ contract H1DevelopedApplication {
     */
     function setDevApplicationFee(uint256 newDevFee) external {
         require(msg.sender == developerWallet, Errors.INVALID_ADDRESS);
-        require(callMinimumViableFee() < newDevFee, Errors.INVALID_FEE);
         uint256 feeInUSD = IFeeContract(FeeContract).getFee();
+        if(newDevFee < callMinimumViableFee()){
+            revert(Errors.INVALID_FEE);
+        }
         baseFee = newDevFee;
         devFee = feeInUSD * newDevFee;
     }
 
 
     /**
-    @notice `calculateDevFee` consults the oracle and gets the fee back in USD.
+    @notice `getDevFee` returns the devFee for the application.
     */
-    function calculateDevFee() public view returns (uint256 developerFeeFromApplication) {
-        uint256 feeInUSD = IFeeContract(FeeContract).getFee();
-        return feeInUSD * devFee;
+    function getDevFee() public view returns (uint256 developerFeeFromApplication) {
+        return devFee;
     }
 
     /**
-    @notice `callFee` gets the value for H1 in USD.
+    @notice `getRequiredFeeResetTime` returns the devFee for the application.
+    */
+    function getRequiredFeeResetTime() public view returns (uint256 developerFeeFromApplication) {
+        return devFee;
+    }
+
+
+    /**
+    @notice `callFee` gets the value for H1 in USD from the Fee contract.
     */
     function callFee() public view returns (uint256 feeFromFeeContract) {
         return IFeeContract(FeeContract).getFee();

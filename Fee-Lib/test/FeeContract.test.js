@@ -89,6 +89,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         ThreeWeightsArray,
         ContractDeployer,
         ContractDeployer,
+        2
       ],
       { initializer: "initialize", kind: "uups" }
     );
@@ -100,6 +101,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         SingleWeightArray,
         ContractDeployer,
         ContractDeployer,
+        2
       ],
       { initializer: "initialize", kind: "uups" }
     );
@@ -133,7 +135,8 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           ContractDeployerArray,
           SingleWeightArray,
           FeeOracleContract.address,
-          FeeOracleContract.address
+          FeeOracleContract.address,
+          2
         ),
         "Initializable: contract is already initialized"
       );
@@ -285,6 +288,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           max10ArrayWeight,
           ContractDeployer,
           ContractDeployer,
+          2
         ],
         { initializer: "initialize", kind: "uups" }
       );
@@ -309,6 +313,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           NinePositionsArrayOfWeights,
           ContractDeployer,
           ContractDeployer,
+          2
         ],
         { initializer: "initialize", kind: "uups" }
       );
@@ -338,6 +343,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
             oversizedWieghtsArray,
             ContractDeployer,
             ContractDeployer,
+            2
           ],
           {
             initializer: "initialize",
@@ -453,6 +459,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
             max10ArrayWeight,
             ContractDeployer,
             ContractDeployer,
+            2
           ],
           { initializer: "initialize", kind: "uups" }
         ),
@@ -665,7 +672,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
       expect(firstepochLength.toString()).not.to.equal(reset.toString());
     });
     it("Fee Contract: The setMinFee function should change the change the minFee amount.", async () => {
-      expect(await FeeContract.getMinimumAllottedFee()).to.equal(0);
+      expect(await FeeContract.getMinimumAllottedFee()).to.equal(2);
       await FeeContract.setMinFee(1);
       expect(await FeeContract.getMinimumAllottedFee()).to.equal(1);
     });
@@ -778,6 +785,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           SingleWeightArray,
           Address2,
           Address2,
+          2
         ],
         { initializer: "initialize", kind: "uups" }
       );
@@ -811,6 +819,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           NumberArray,
           ContractDeployer,
           ContractDeployer,
+          2
         ],
         { initializer: "initialize", kind: "uups" }
       );
@@ -830,6 +839,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           NumberArray,
           ContractDeployer,
           ContractDeployer,
+          2
         ],
         { initializer: "initialize", kind: "uups" }
       );
@@ -853,6 +863,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           NumberArray,
           ContractDeployer,
           ContractDeployer,
+          2
         ],
         { initializer: "initialize", kind: "uups" }
       );
