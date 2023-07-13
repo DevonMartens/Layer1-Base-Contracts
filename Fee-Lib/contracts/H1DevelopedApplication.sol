@@ -130,7 +130,7 @@ contract H1DevelopedApplication {
 
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier devApplicationFeeWithPayment(uint256 H1PaymentToFunction) {
-         if (_requiredFeeResetTime < block.timestamp && resetBlock != block.number) {
+         if (_requiredFeeResetTime <= block.timestamp && resetBlock != block.number) {
 
              uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
              if (updatedResetTime == _requiredFeeResetTime) {

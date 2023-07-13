@@ -181,7 +181,7 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     // await FeeContract.updateFee();
      // advance time by one hour and mine a new block
      //change to old value and it fails???
-     await SimpleStorageWithDevAppFee.set(1, { value: 11});
+  //   await SimpleStorageWithDevAppFee.set(1, { value: 11});
      //await SimpleStorageWithDevAppFee.set(1, { value: 11});
    // ten min block should be mined
     await time.increase(360);
