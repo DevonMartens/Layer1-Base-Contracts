@@ -115,6 +115,11 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
 
     address private mockAddress2;
 
+
+    function getMinimumAllottedFee() public view returns (uint256){
+        return 2;
+    }
+
     /**
    @notice The initialize is initiating variables during deployment.
    @param _oracle is the address for the oracle that is consulted to determine fees.

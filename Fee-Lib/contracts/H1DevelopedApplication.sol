@@ -57,6 +57,10 @@ contract H1DevelopedApplication {
         if (_FeeContract == address(0)) {
             revert(Errors.INVALID_ADDRESS);
         }
+        uint256 minimumAllottedFee = IFeeContract(_FeeContract).getMinimumAllottedFee(); 
+        if(minimumAllottedFee > applicationFee){
+            revert(Errors.INVALID_FEE);
+        }
         _requiredFeeResetTime = IFeeContract(_FeeContract).nextResetTime();
         FeeContract = _FeeContract;
         developerWallet = payable(walletToCollectFees);
@@ -168,9 +172,6 @@ contract H1DevelopedApplication {
     */
     function callMinimumViableFee() public view returns (uint256) {
         uint256 minFeeFromFeeContract = IFeeContract(FeeContract).getMinimumAllottedFee();
-        if (minFeeFromFeeContract > devFee) {
-            revert(Errors.INVALID_FEE);
-        }
         return minFeeFromFeeContract;
     }
 }

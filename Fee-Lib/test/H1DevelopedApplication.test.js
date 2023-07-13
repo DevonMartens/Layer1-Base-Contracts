@@ -98,23 +98,23 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     H1DevelopedApplication = await H1DevelopedApplicationFactory.deploy(
       FeeContract.address,
       ContractDeployer,
-      1
+      3
     );
     SimpleStorageWithDevAppFee = await SimpleStorageWithDevAppFeeFactory.deploy(
       FeeContract.address,
       ContractDeployer,
-      1
+      3
     );
     SimpleStorageBadFeeContract =
       await SimpleStorageWithDevAppFeeFactory.deploy(
         BadFeeContract.address,
         ContractDeployer,
-        1
+        3
       );
     SimpleStorageBadDevWallet = await SimpleStorageWithDevAppFeeFactory.deploy(
       FeeContract.address,
       BadFeeContract.address,
-      1
+      3
     );
   });
   it("H1DevelopedApplication: The modifer devApplicationFee() should not allow a function to execute if the fee is 0 and no value is sent to the function.", async () => {
@@ -185,12 +185,14 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
   it("H1DevelopedApplication: The function setDevApplicationFee should run with out error if called above the the minium fee and by the right address.", async () => {
     await H1DevelopedApplication.setDevApplicationFee(100);
   });
-  it("H1DevelopedApplication: The function callMinimumViableFee() should revert if the devFee is too low.", async () => {
-    await FeeContract.setMinFee(100);
-    await expectRevert(H1DevelopedApplication.callMinimumViableFee(), "131");
-  });
-  it("H1DevelopedApplication: The function calculateDevFee() should return devFee * USD.", async () => {
-    await H1DevelopedApplication.setDevApplicationFee(1);
+  // it("H1DevelopedApplication: The function callMinimumViableFee() should revert if the devFee is too low.", async () => {
+  //   await FeeContract.setMinFee(100);
+  //   await expectRevert(H1DevelopedApplication.callMinimumViableFee(), "131");
+  // });
+  it("H1DevelopedApplication: The functionsetDevApplicationFee() if the fee is too low.", async () => {
+    await expectRevert(
+      H1DevelopedApplication.setDevApplicationFee(1),"131"
+      );
   });
   it("H1DevelopedApplication: The function setDevApplicationFee() should only be callabe by the developerWallet.", async () => {
     await expectRevert(
