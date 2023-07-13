@@ -181,8 +181,8 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
     // await FeeContract.updateFee();
      // advance time by one hour and mine a new block
      //change to old value and it fails???
-  //   await SimpleStorageWithDevAppFee.set(1, { value: 11});
-     //await SimpleStorageWithDevAppFee.set(1, { value: 11});
+    await SimpleStorageWithDevAppFee.set(1, { value: 11});
+     await SimpleStorageWithDevAppFee.connect(Address3Sig).set(1, { value: 11});
    // ten min block should be mined
     await time.increase(360);
     await expectRevert(SimpleStorageWithDevAppFee.set(1, { value: 99 }), "125");
@@ -217,6 +217,8 @@ describe("H1DevelopedApplication and Imported Modifier devApplicationFee() ", fu
 
     const NINE_H1_STRING = NINE_H1.toString();
     const ONE_H1_STRING = ONE_H1.toString();
+    const devFee = await SimpleStorageWithDevAppFee.getDevFee();
+    console.log(devFee);
     await expect(
       SimpleStorageWithDevAppFee.connect(Address3Sig).set(1, { value: TEN_H1 })
     ).to.changeEtherBalances(

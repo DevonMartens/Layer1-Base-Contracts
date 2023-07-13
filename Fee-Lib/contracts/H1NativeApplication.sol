@@ -85,7 +85,7 @@ contract H1NativeApplication {
 
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier applicationFeeWithPayment(uint256 H1PaymentToFunction) {
-       if (_requiredFeeResetTime < block.timestamp) {
+       if (_requiredFeeResetTime >= block.timestamp) {
 
              uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
              if (updatedResetTime == _requiredFeeResetTime) {
@@ -94,9 +94,10 @@ contract H1NativeApplication {
              _fee = IFeeContract(FeeContract).getFee();
              _requiredFeeResetTime = updatedResetTime;
                  resetBlock = block.number;
+            
         
         }
-        if(resetBlock ==  block.number && _requiredFeeResetTime > block.timestamp) {
+        if(resetBlock ==  block.number && _requiredFeeResetTime >= block.timestamp) {
             if (msg.value <  priorFee && priorFee > 0) {
                 revert(Errors.INSUFFICIENT_FUNDS);
                 }
@@ -120,9 +121,9 @@ contract H1NativeApplication {
                 ""
             );
         }
-        (bool success, ) = FeeContract.call{ value: callFee() }("");
-        require(success, Errors.TRANSFER_FAILED); if (msg.value - callFee() - H1PaymentToFunction > 0) {
-            uint256 overflow = (msg.value - callFee() - H1PaymentToFunction);
+        (bool success, ) = FeeContract.call{ value: _fee }("");
+        require(success, Errors.TRANSFER_FAILED); if (msg.value - _fee - H1PaymentToFunction > 0) {
+            uint256 overflow = (msg.value - _fee - H1PaymentToFunction);
             (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
                 ""
             );
