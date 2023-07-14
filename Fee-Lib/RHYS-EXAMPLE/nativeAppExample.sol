@@ -93,3 +93,17 @@ contract H1NativeApplication {
         return _fee;
     }
 }
+
+
+
+
+
+  /**
+    * @notice `_updateFeeCompletePaidFunction` this function updates the state variables and disperses the priorFee 
+    * the fee before the oracle updates the _fee variable in the contract. 
+    * If there is an excess amount, it is returned to the sender.
+    * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
+    * fee and priorFee is greater than 0.
+    * @param H1PaymentToFunction the amount of H1 the function proceeding the modifier costs.
+    * @param msg.value The amount of value sent with the function call.
+    */

@@ -75,8 +75,6 @@ contract H1DevelopedApplication {
     }
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
-
-    // REset block 0
     modifier devApplicationFee() {
 
         if (_requiredFeeResetTime <= block.timestamp && resetBlock != block.number) {

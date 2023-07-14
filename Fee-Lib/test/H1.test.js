@@ -167,7 +167,8 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     );
   });
   it("H1NativeApplication: The modifer applicationFeeWithPayment() should return extra values.", async () => {
-    await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6 });
+ 
+    await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 11 });
     await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 27 });
   });
   it("H1NativeApplication: The modifer applicationFeeWithPayment() will revert if not enough fees are paid.", async () => {
