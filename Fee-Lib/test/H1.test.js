@@ -116,21 +116,26 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
    
   });
   it("H1NativeApplication Contract: The modifer applicationFee() disperse ether to the Fee Contract.", async () => {
-    await OracleContract.setPriceAverage(TEN_H1);
-    // await Address3Sig.sendTransaction({
-    //   to: FeeContract.address,
-    //   value: TWENTY_H1,
-    // });
+    await OracleContract.setPriceAverage(78797);
+    await Address3Sig.sendTransaction({
+      to: FeeContract.address,
+      value: TWENTY_H1,
+    });
+    ContractDeployerSig  = ethers.provider.getSigner(ContractDeployer);
     await time.increase(time.duration.days(2));
     const TEN_H1_STRING = TEN_H1.toString();
     //reading as 1 here
-     //await SimpleStorageWithFeeDeployed.set(1, {value: TEN_H1})
+    // update fee
+     await SimpleStorageWithFeeDeployed.set(8, {value: TEN_H1})
     await expect(
       SimpleStorageWithFeeDeployed.set(1, {
+      //.connect(Address3Sig)
         value: 89,
       })
     ).to.changeEtherBalance(
-      FeeContractSignerForBalanceChecks, 
+     FeeContractSignerForBalanceChecks, 
+    //ContractDeployerSig,
+   // Address3Sig,
       TEN_H1
       );
 
@@ -154,6 +159,7 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     await time.increase(time.duration.days(1));
     // txn reflects new price
     await SimpleStorageWithFeeDeployed.set(1, { value: ONE_H1 });
+    await time.increase(500);
     //not enough H1
     await expectRevert(
       SimpleStorageWithFeeDeployed.set(1, { value: 343 }),

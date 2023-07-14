@@ -59,9 +59,9 @@ contract H1NativeApplication {
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier applicationFee() {
         if (_requiredFeeResetTime <= block.timestamp) {
-            _updateFeeAndCompleteFunction();
-        }
-        else if(resetBlock ==  block.number && resetBlock > 0) {
+             _updateFeeAndCompleteFunction();
+         }
+         else if(resetBlock ==  block.number && resetBlock > 0) {
             _completeFunctionWithPriorFee();
         }
         else {
@@ -71,18 +71,18 @@ contract H1NativeApplication {
     }
 
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
-    // modifier applicationFeeWithPayment(uint256 H1PaymentToFunction) {
-    //    if (_requiredFeeResetTime >= block.timestamp) {
-    //        _updateFeeCompletePaidFunction(H1PaymentToFunction);
-    //    }
-    //     else if(resetBlock ==  block.number && resetBlock > 0) {
-    //          _completePaidFunctionWithPriorFee(H1PaymentToFunction);
-    //     }
-    //     else {
-    //          _completePaidFunction(H1PaymentToFunction);
-    //     }
-    //     _;
-    // }
+    modifier applicationFeeWithPayment(uint256 H1PaymentToFunction) {
+       if (_requiredFeeResetTime >= block.timestamp) {
+           _updateFeeCompletePaidFunction(H1PaymentToFunction);
+       }
+        else if(resetBlock ==  block.number && resetBlock > 0) {
+             _completePaidFunctionWithPriorFee(H1PaymentToFunction);
+        }
+        else {
+             _completePaidFunction(H1PaymentToFunction);
+        }
+        _;
+    }
 
      function _updateFeeAndCompleteFunction() internal {
             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
@@ -91,22 +91,23 @@ contract H1NativeApplication {
              }
              priorFee = _fee;
              _fee = IFeeContract(FeeContract).getFee();
-             _requiredFeeResetTime = updatedResetTime;
+             _requiredFeeResetTime = IFeeContract(FeeContract).nextResetTime();
              resetBlock = block.number;
+            _completeFunctionWithPriorFee();
 
-            if (msg.value <  priorFee && priorFee > 0) {
-                revert(Errors.INSUFFICIENT_FUNDS);
-            }
-
-
+            // if (msg.value <  priorFee && priorFee > 0) {
+            //     revert(Errors.INSUFFICIENT_FUNDS);
+            // }
+            // (bool success, ) = FeeContract.call{value: priorFee}("");
+            // require(success, Errors.TRANSFER_FAILED);
             // if (msg.value - priorFee > 0) {
             // uint256 overflow = (msg.value - priorFee);
-            // (bool returnOverflow, ) = payable(msg.sender).call{value: overflow}("");
-            // }
+            // (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}("");
+            //  }
 
-            (bool success, ) = FeeContract.call{value: priorFee}("");
-            require(success, Errors.TRANSFER_FAILED);
+
     }
+
 
     function _completeFunctionWithPriorFee() internal {
             if (msg.value <  priorFee && priorFee > 0) {
@@ -116,11 +117,11 @@ contract H1NativeApplication {
             (bool success, ) = FeeContract.call{value: priorFee}("");
             require(success, Errors.TRANSFER_FAILED);
 
-            // if (msg.value - priorFee > 0) {
-            // uint256 overflow = (msg.value - priorFee);
-            // (bool returnOverflow, ) = payable(msg.sender).call{value: overflow}(
-            //     ""
-            //     );
+            if (msg.value - priorFee > 0) {
+            uint256 overflow = (msg.value - priorFee);
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+                ""
+                );
             }
             
 
@@ -135,60 +136,61 @@ contract H1NativeApplication {
         (bool success, ) = FeeContract.call{value: _fee}("");
         require(success, Errors.TRANSFER_FAILED);
 
-        // if (msg.value - _fee > 0) {
-        //     uint256 overflow = (msg.value - _fee);
-        //     (bool returnOverflow, ) = payable(msg.sender).call{value: overflow}(
-        //         ""
-        //     );
-        // }
+        if (msg.value - _fee > 0) {
+            uint256 overflow = (msg.value - _fee);
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+                ""
+            );
+        }
 
     }
 
-    // function _updateFeeCompletePaidFunction(uint256 H1PaymentToFunction) internal {
-    //          uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-    //          if (updatedResetTime == _requiredFeeResetTime) {
-    //             IFeeContract(FeeContract).updateFee();
-    //          }
-    //         if (msg.value <  _fee && _fee > 0) {
-    //             revert(Errors.INSUFFICIENT_FUNDS);
-    //         }
-    //          _fee = IFeeContract(FeeContract).getFee();
-    //          _requiredFeeResetTime = updatedResetTime;
-    //          resetBlock = block.number;
-              
-    //         (bool success, ) = FeeContract.call{value: priorFee}("");
-    //         require(success, Errors.TRANSFER_FAILED);
+    function _updateFeeCompletePaidFunction(uint256 H1PaymentToFunction) internal {
+             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+             if (updatedResetTime == _requiredFeeResetTime) {
+                IFeeContract(FeeContract).updateFee();
+             }
+            if (msg.value <  _fee && _fee > 0) {
+                revert(Errors.INSUFFICIENT_FUNDS);
+            }
+            priorFee = _fee;
+             _fee = IFeeContract(FeeContract).getFee();
+             _requiredFeeResetTime = updatedResetTime;
+             resetBlock = block.number;
 
-    //         // if (msg.value - priorFee > 0) {
-    //         //  uint256 overflow = (msg.value - priorFee);
-    //         //  (bool returnOverflow, ) = payable(msg.sender).call{value: overflow}("");
-    //         // }
-    // }
+            (bool success, ) = FeeContract.call{value: priorFee}("");
+            require(success, Errors.TRANSFER_FAILED);
+            if (msg.value - priorFee > 0) {
+             uint256 overflow = (msg.value - priorFee);
+             (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}("");
+            }
 
-    // function _completePaidFunctionWithPriorFee(uint256 H1PaymentToFunction) internal {
-    //       if (msg.value <  priorFee && priorFee > 0) {
-    //             revert(Errors.INSUFFICIENT_FUNDS);
-    //         }
-    //         (bool success, ) = FeeContract.call{value: priorFee}("");
-    //         require(success, Errors.TRANSFER_FAILED);
+    }
 
-    //         // if (msg.value - priorFee > 0) {
-    //         // uint256 overflow = (msg.value - priorFee - H1PaymentToFunction);
-    //         // (bool returnOverflow, ) = payable(msg.sender).call{value: overflow}("");
-    //         // }
-    // }
+    function _completePaidFunctionWithPriorFee(uint256 H1PaymentToFunction) internal {
+          if (msg.value <  priorFee && priorFee > 0) {
+                revert(Errors.INSUFFICIENT_FUNDS);
+            }
+            (bool success, ) = FeeContract.call{value: priorFee}("");
+            require(success, Errors.TRANSFER_FAILED);
 
-    // function _completePaidFunction(uint256 H1PaymentToFunction) internal {
-    //     if (msg.value < _fee && _fee > 0) {
-    //         revert(Errors.INSUFFICIENT_FUNDS);
-    //     }
-    // //    if (msg.value - _fee - H1PaymentToFunction > 0) {
-    // //         uint256 overflow = (msg.value - _fee - H1PaymentToFunction);
-    // //         (bool returnOverflow, ) = payable(msg.sender).call{value: overflow}("");
-    // //    }
-    //     (bool success, ) = FeeContract.call{ value: _fee }("");
-    //     require(success, Errors.TRANSFER_FAILED); 
-    // }
+            if (msg.value - priorFee > 0) {
+            uint256 overflow = (msg.value - priorFee - H1PaymentToFunction);
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}("");
+            }
+    }
+
+    function _completePaidFunction(uint256 H1PaymentToFunction) internal {
+        if (msg.value < _fee && _fee > 0) {
+            revert(Errors.INSUFFICIENT_FUNDS);
+        }
+       if (msg.value - _fee - H1PaymentToFunction > 0) {
+            uint256 overflow = (msg.value - _fee - H1PaymentToFunction);
+            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}("");
+       }
+        (bool success, ) = FeeContract.call{ value: _fee }("");
+        require(success, Errors.TRANSFER_FAILED); 
+    }
 
     /**
     @notice `callFee` this view function is to get the fee amount from the feeContract.
