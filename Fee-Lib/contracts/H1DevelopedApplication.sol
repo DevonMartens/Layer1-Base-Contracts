@@ -71,8 +71,7 @@ contract H1DevelopedApplication {
         devFee = applicationFee * IFeeContract(_FeeContract).getFee();
         baseFee = applicationFee;
         priorFee = applicationFee;
-        //clunky but assumes 10 days
-        resetBlock = block.number + 71140;
+      
     }
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
@@ -107,22 +106,7 @@ contract H1DevelopedApplication {
             bool sent = payable(developerWallet).send(priorFee / 10 * 9);
             require(sent, Errors.TRANSFER_FAILED);
         }
-        // if(resetBlock == 0){
-        //     if (msg.value <  priorFee && priorFee > 0) {
-        //         revert(Errors.INSUFFICIENT_FUNDS);
-        //         }
-        //     if (msg.value - priorFee > 0) {
-        //     uint256 overflow = (msg.value - priorFee);
-        //     (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
-        //         ""
-        //         );
-        //     }
-        //     (bool success, ) = FeeContract.call{value: priorFee / 10}("");
-        //     require(success, Errors.TRANSFER_FAILED);
-        //     bool sent = payable(developerWallet).send(priorFee / 10 * 9);
-        //     require(sent, Errors.TRANSFER_FAILED);
-        // }
-        else if(resetBlock ==  block.number) {
+        else if(resetBlock ==  block.number && resetBlock > 0) {
             if (msg.value <  priorFee && priorFee > 0) {
                 revert(Errors.INSUFFICIENT_FUNDS);
                 }

@@ -7,6 +7,7 @@ const { time } = require("@nomicfoundation/hardhat-network-helpers");
 ONE_H1 = ethers.utils.parseUnits("1", "ether");
 NINE_H1 = ethers.utils.parseUnits("9", "ether");
 TEN_H1 = ethers.utils.parseUnits("10", "ether");
+TWENTY_H1 = ethers.utils.parseUnits("20", "ether");
 
 describe("H1NativeApplication and Imported Modifier applicationFee()", function () {
   let H1NativeApplicationFactory;
@@ -116,19 +117,22 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
   });
   it("H1NativeApplication Contract: The modifer applicationFee() disperse ether to the Fee Contract.", async () => {
     await OracleContract.setPriceAverage(TEN_H1);
-    await Address3Sig.sendTransaction({
-      to: FeeContract.address,
-      value: TEN_H1,
-    });
+    // await Address3Sig.sendTransaction({
+    //   to: FeeContract.address,
+    //   value: TWENTY_H1,
+    // });
     await time.increase(time.duration.days(2));
     const TEN_H1_STRING = TEN_H1.toString();
     //reading as 1 here
-    await SimpleStorageWithFeeDeployed.set(1, {value: TEN_H1})
+     //await SimpleStorageWithFeeDeployed.set(1, {value: TEN_H1})
     await expect(
       SimpleStorageWithFeeDeployed.set(1, {
-        value: TEN_H1,
+        value: 89,
       })
-    ).to.changeEtherBalance(FeeContractSignerForBalanceChecks, TEN_H1_STRING);
+    ).to.changeEtherBalance(
+      FeeContractSignerForBalanceChecks, 
+      TEN_H1
+      );
 
     
   });
