@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: ISC
 
-// import "./FeeQuery.sol";
 import "./Errors.sol";
 
 pragma solidity ^0.8.0;
@@ -149,22 +148,6 @@ contract H1NativeApplication {
 
     }
 
-  
-    function _updateFeeCompletePaidFunction() internal {
-             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-             if (updatedResetTime == _requiredFeeResetTime) {
-                IFeeContract(FeeContract).updateFee();
-             }
-            if (msg.value <  _fee && _fee > 0) {
-                revert(Errors.INSUFFICIENT_FUNDS);
-            }
-            priorFee = _fee;
-             _fee = IFeeContract(FeeContract).getFee();
-             _requiredFeeResetTime = updatedResetTime;
-             resetBlock = block.number;
-
-    }
-
      /**
     * @notice `_completeFunctionWithPriorFee` this function uses priorFee the fee before the oracle 
     * updates the _fee variable in the contract. 
@@ -186,6 +169,14 @@ contract H1NativeApplication {
             (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}("");
             }
     }
+
+    /**
+    * @notice `_completeFunction` this function uses the _fee variable in the contract to determine 
+    * the payment amounts.
+    * @dev If there is an excess amount, it is returned to the sender.
+    * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
+    * fee and priorFee is greater than 0.
+    */
 
     function _completePaidFunction(uint256 H1PaymentToFunction) internal {
         if (msg.value < _fee && _fee > 0) {

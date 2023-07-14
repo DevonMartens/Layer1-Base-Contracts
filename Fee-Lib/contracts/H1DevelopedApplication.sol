@@ -78,18 +78,7 @@ contract H1DevelopedApplication {
     modifier devApplicationFee() {
 
         if (_requiredFeeResetTime <= block.timestamp && resetBlock != block.number) {
-
-             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-             
-             if (updatedResetTime == _requiredFeeResetTime) {
-                IFeeContract(FeeContract).updateFee();
-             }
-             
-            priorFee = devFee;
-             uint256 feeInUSD = IFeeContract(FeeContract).getFee();
-             devFee = feeInUSD * baseFee;
-             _requiredFeeResetTime = updatedResetTime;
-             resetBlock = block.number;
+            _updatesOracleValues();
             if (msg.value <  priorFee && priorFee > 0) {
                 revert(Errors.INSUFFICIENT_FUNDS);
                 }
@@ -143,16 +132,7 @@ contract H1DevelopedApplication {
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier devApplicationFeeWithPayment(uint256 H1PaymentToFunction) {
          if (_requiredFeeResetTime <= block.timestamp && resetBlock != block.number) {
-
-             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
-             if (updatedResetTime == _requiredFeeResetTime) {
-                IFeeContract(FeeContract).updateFee();
-             }
-             priorFee = devFee;
-             uint256 feeInUSD = IFeeContract(FeeContract).getFee();
-             devFee = feeInUSD * baseFee;
-             _requiredFeeResetTime = updatedResetTime;
-             resetBlock = block.number;
+              _updatesOracleValues();
             if (msg.value <  priorFee && priorFee > 0) {
                 revert(Errors.INSUFFICIENT_FUNDS);
                 }
@@ -234,6 +214,30 @@ contract H1DevelopedApplication {
     */
     function callFee() public view returns (uint256 feeFromFeeContract) {
         return IFeeContract(FeeContract).getFee();
+    }
+
+    /**
+    * @notice This function retrieves the updated reset time from the FeeContract and checks if it matches the required fee reset time.
+    * @dev Internal function to update oracle values and fees.
+    * @dev If the reset times match, the function calls the FeeContract to update the fee.
+    * @dev The priorFee is set to the current devFee value.
+    * @dev The feeInUSD is fetched from the FeeContract, and the devFee is recalculated as feeInUSD multiplied by the baseFee.
+    * @dev The _requiredFeeResetTime is updated to the retrieved updated reset time.
+    * @dev The resetBlock is set to the current block number.
+    */
+
+    function _updatesOracleValues() internal{
+        uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+             
+             if (updatedResetTime == _requiredFeeResetTime) {
+                IFeeContract(FeeContract).updateFee();
+             }
+             
+            priorFee = devFee;
+             uint256 feeInUSD = IFeeContract(FeeContract).getFee();
+             devFee = feeInUSD * baseFee;
+             _requiredFeeResetTime = updatedResetTime;
+             resetBlock = block.number;
     }
 
     /**

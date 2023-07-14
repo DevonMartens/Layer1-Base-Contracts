@@ -107,3 +107,27 @@ contract H1NativeApplication {
     * @param H1PaymentToFunction the amount of H1 the function proceeding the modifier costs.
     * @param msg.value The amount of value sent with the function call.
     */
+
+        /**
+    * @notice `_updateFeeCompletePaidFunction` this function updates the state variables and disperses the priorFee 
+    * the fee before the oracle updates the _fee variable in the contract. 
+    * If there is an excess amount, it is returned to the sender.
+    * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
+    * fee and priorFee is greater than 0.
+    * @param H1PaymentToFunction the amount of H1 the function proceeding the modifier costs.
+    * @param msg.value The amount of value sent with the function call.
+    */
+    function _updateFeeCompletePaidFunction() internal {
+             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
+             if (updatedResetTime == _requiredFeeResetTime) {
+                IFeeContract(FeeContract).updateFee();
+             }
+            if (msg.value <  _fee && _fee > 0) {
+                revert(Errors.INSUFFICIENT_FUNDS);
+            }
+            priorFee = _fee;
+             _fee = IFeeContract(FeeContract).getFee();
+             _requiredFeeResetTime = updatedResetTime;
+             resetBlock = block.number;
+
+    }
