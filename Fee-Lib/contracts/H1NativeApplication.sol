@@ -54,7 +54,7 @@ contract H1NativeApplication {
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier applicationFee() {
         if (_requiredFeeResetTime <= block.timestamp) {
-             _updateFeeAndCompleteFunction();
+             _updatesOracleValues();
         }
          else if(resetBlock ==  block.number && resetBlock > 0) {
             _completeFunctionWithPriorFee();
@@ -68,7 +68,7 @@ contract H1NativeApplication {
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier applicationFeeWithPayment(uint256 H1PaymentToFunction) {
        if (_requiredFeeResetTime >= block.timestamp) {
-           _updateFeeAndCompleteFunction();
+           _updatesOracleValues();
             _completePaidFunctionWithPriorFee(H1PaymentToFunction);
        }
         else if(resetBlock ==  block.number && resetBlock > 0) {
@@ -81,13 +81,13 @@ contract H1NativeApplication {
     }
 
     /**
-    * @notice `_updateFeeAndCompleteFunction` this function updates the state variables and disperses the priorFee 
+    * @notice `_updatesOracleValues` this function updates the state variables and disperses the priorFee 
     * the fee before the oracle updates the _fee variable in the contract. 
     * If there is an excess amount, it is returned to the sender.
     * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
     * fee and priorFee is greater than 0.
     */
-     function _updateFeeAndCompleteFunction() internal {
+     function _updatesOracleValues() internal {
             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
              if (updatedResetTime == _requiredFeeResetTime) {
                 IFeeContract(FeeContract).updateFee();
@@ -147,6 +147,7 @@ contract H1NativeApplication {
         }
 
     }
+
 
      /**
     * @notice `_completeFunctionWithPriorFee` this function uses priorFee the fee before the oracle 
