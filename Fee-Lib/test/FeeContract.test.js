@@ -89,7 +89,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         ThreeWeightsArray,
         ContractDeployer,
         ContractDeployer,
-        2
+        2,
       ],
       { initializer: "initialize", kind: "uups" }
     );
@@ -101,7 +101,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
         SingleWeightArray,
         ContractDeployer,
         ContractDeployer,
-        2
+        2,
       ],
       { initializer: "initialize", kind: "uups" }
     );
@@ -288,7 +288,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           max10ArrayWeight,
           ContractDeployer,
           ContractDeployer,
-          2
+          2,
         ],
         { initializer: "initialize", kind: "uups" }
       );
@@ -313,7 +313,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           NinePositionsArrayOfWeights,
           ContractDeployer,
           ContractDeployer,
-          2
+          2,
         ],
         { initializer: "initialize", kind: "uups" }
       );
@@ -343,7 +343,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
             oversizedWieghtsArray,
             ContractDeployer,
             ContractDeployer,
-            2
+            2,
           ],
           {
             initializer: "initialize",
@@ -459,7 +459,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
             max10ArrayWeight,
             ContractDeployer,
             ContractDeployer,
-            2
+            2,
           ],
           { initializer: "initialize", kind: "uups" }
         ),
@@ -716,7 +716,11 @@ describe("Fee Contract: Testing the initial values to validate expected contract
     });
     it("Fee Contract: Only addresses with OPERATOR_ROLE should be able to adjust channels.", async () => {
       await expectRevert(
-        FeeContract.connect(Address3SendsH1).adjustChannel(Address3, Address4, 75),
+        FeeContract.connect(Address3SendsH1).adjustChannel(
+          Address3,
+          Address4,
+          75
+        ),
         `AccessControl: account ${Address3ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });
@@ -785,7 +789,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           SingleWeightArray,
           Address2,
           Address2,
-          2
+          2,
         ],
         { initializer: "initialize", kind: "uups" }
       );
@@ -819,7 +823,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           NumberArray,
           ContractDeployer,
           ContractDeployer,
-          2
+          2,
         ],
         { initializer: "initialize", kind: "uups" }
       );
@@ -839,7 +843,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           NumberArray,
           ContractDeployer,
           ContractDeployer,
-          2
+          2,
         ],
         { initializer: "initialize", kind: "uups" }
       );
@@ -863,7 +867,7 @@ describe("Fee Contract: Testing the initial values to validate expected contract
           NumberArray,
           ContractDeployer,
           ContractDeployer,
-          2
+          2,
         ],
         { initializer: "initialize", kind: "uups" }
       );

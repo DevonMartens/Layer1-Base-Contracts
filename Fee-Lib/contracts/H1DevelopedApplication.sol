@@ -12,15 +12,16 @@ pragma solidity ^0.8.0;
  */
 
 interface IFeeContract {
-    
+
+    // This function retrieves the minimum value for a devFee allowed by this contract.
     function getMinimumAllottedFee() external view returns (uint256);
 
+    // This function retrieves the value of H1 in USD.
     function getFee() external view returns (uint256);
 
     //This function will need to be added to the fee contract, it returns lastDistribution + epoch time
     function nextResetTime() external view returns (uint256);
     
-
     //this function will need to update 'nextResetTime' on the fee contract
     function updateFee() external;
 
@@ -43,9 +44,11 @@ contract H1DevelopedApplication {
     // Storage variable for when the contract state must be updated.
     uint256 private _requiredFeeResetTime;
 
-    uint256 resetBlock;
+    // The block number in which the fee updated.
+    uint256 private resetBlock;
 
-    uint256 priorFee;
+    // The fee before the oralce updated.
+    uint256 private priorFee;
 
     /**
      * @notice Constructor to initialize contract deployment.
@@ -144,9 +147,9 @@ contract H1DevelopedApplication {
     }
 
     /**
-    * @notice This function retrieves the updated reset time from the FeeContract and checks if it matches the required fee reset time.
-    * @dev Internal function to update oracle values and fees.
-    * @dev If the reset times match, the function calls the FeeContract to update the fee.
+    * @notice `_updatesOracleValues` this function retrieves the updated reset time from the FeeContract and checks
+    * if it matches the required fee reset time.
+    * @dev If the reset times match, the function calls the `FeeContract` to update the fee.
     * @dev The priorFee is set to the current devFee value.
     * @dev The feeInUSD is fetched from the FeeContract, and the devFee is recalculated as feeInUSD multiplied by the baseFee.
     * @dev The _requiredFeeResetTime is updated to the retrieved updated reset time.

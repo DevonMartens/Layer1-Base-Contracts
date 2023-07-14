@@ -12,6 +12,7 @@ pragma solidity ^0.8.0;
 
 interface IFeeContract {
 
+    // This function retrieves the value of H1 in USD.
     function getFee() external view returns (uint256);
 
     //This function will need to be added to the fee contract, it returns lastDistribution + epoch time
@@ -31,11 +32,14 @@ contract H1NativeApplication {
     // new variables
     uint256 public _fee;
     
+    // The timestamp in which the _fee must update.
     uint256 public _requiredFeeResetTime;
     
-    uint256 resetBlock;
+    // The block number in which the fee updated.
+    uint256 private resetBlock;
 
-    uint256 priorFee;
+    // The fee before the oralce updated.
+    uint256 private priorFee;
 
     /**
      * @notice Constructor to initialize contract deployment.
