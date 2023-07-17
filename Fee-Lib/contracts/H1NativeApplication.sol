@@ -53,7 +53,7 @@ contract H1NativeApplication {
         _fee = IFeeContract(_FeeContract).getFee();
         FeeContract = _FeeContract;
         priorFee = IFeeContract(_FeeContract).getFee();
-
+        resetBlock = block.number + 518400;
     }
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
@@ -62,7 +62,8 @@ contract H1NativeApplication {
             _updatesOracleValues();
              _payApplicationWithPriorFee();
         }
-         else if(resetBlock <= block.number && resetBlock > 0) {
+        // two block buffer??? RHYS!
+         else if(resetBlock <= block.number) {
             _payApplicationWithPriorFee();
         }
         else {
@@ -77,7 +78,7 @@ contract H1NativeApplication {
            _updatesOracleValues();
            _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);    
        }
-        else if(resetBlock <= block.number && resetBlock > 0) {
+        else if(resetBlock <= block.number) {
              _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
         }
         else {
