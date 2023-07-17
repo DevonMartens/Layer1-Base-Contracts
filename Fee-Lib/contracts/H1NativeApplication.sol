@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
 
 /*
 @title H1NativeApplication
-@notice This contract has a modifier that ensures fees are sent to the FeeContract.
+@notice This contract has a modifiers to ensure that ensures fees are sent to the FeeContract.
 @dev The primary function of this contract is to be used as an import for native building on Haven.
 */
 
@@ -15,11 +15,11 @@ interface IFeeContract {
     // This function retrieves the value of H1 in USD.
     function getFee() external view returns (uint256);
 
-    //This function will need to be added to the fee contract, it returns lastDistribution + epoch time
+    //This function returns a timestamp that will tell the contract when to update the oracle.
     function nextResetTime() external view returns (uint256);
     
 
-    //this function will need to update 'nextResetTime' on the fee contract
+    // This function updates the fees on the network in the fee contract.
     function updateFee() external;
 
 }
@@ -29,14 +29,14 @@ contract H1NativeApplication {
     // Storage for fee contract address.
     address private FeeContract;
 
-    // new variables
+    // Storage for the fee required to run transactions
     uint256 private _fee;
     
     // The timestamp in which the _fee must update.
     uint256 private _requiredFeeResetTime;
     
     // The block number in which the fee updated.
-    uint256 private resetBlock;
+    uint256 resetBlock;
 
     // The fee before the oralce updated.
     uint256 private priorFee;
@@ -53,15 +53,16 @@ contract H1NativeApplication {
         _fee = IFeeContract(_FeeContract).getFee();
         FeeContract = _FeeContract;
         priorFee = IFeeContract(_FeeContract).getFee();
+
     }
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
     modifier applicationFee() {
-        if (_requiredFeeResetTime <= block.timestamp) {
-             _updatesOracleValues();
+        if(_requiredFeeResetTime <= block.timestamp) {
+            _updatesOracleValues();
              _payApplicationWithPriorFee();
         }
-         else if(resetBlock ==  block.number) {
+         else if(resetBlock <= block.number && resetBlock > 0) {
             _payApplicationWithPriorFee();
         }
         else {
@@ -72,21 +73,20 @@ contract H1NativeApplication {
 
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier applicationFeeWithPaymentToContract(uint256 H1PaymentToFunction) {
-       if (_requiredFeeResetTime >= block.timestamp) {
+       if (_requiredFeeResetTime <= block.timestamp) {
            _updatesOracleValues();
-           _payApplicationWithFeeAndContract(H1PaymentToFunction);    
+           _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);    
        }
-        else if(resetBlock ==  block.number) {
+        else if(resetBlock <= block.number && resetBlock > 0) {
              _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
         }
         else {
-             _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
+             _payApplicationWithFeeAndContract(H1PaymentToFunction);
         }
         _;
     }
-    
     /**
-    * @notice `_updatesOracleValues` this function updates the state variables and disperses the priorFee 
+    * @notice `_updatesOracleValues` this function updates the state variables and disperses the priorFee.
     * the fee before the oracle updates the _fee variable in the contract. 
     * If there is an excess amount, it is returned to the sender.
     * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
@@ -104,7 +104,7 @@ contract H1NativeApplication {
     }
 
     /**
-    * @notice `_completeFunctionWithPriorFee` this function uses priorFee the fee before the oracle 
+    * @notice `_payApplicationWithPriorFee` this function uses priorFee the fee before the oracle 
     * updates the _fee variable in the contract. 
     * the prior fee to the FeeContract.
     * @dev If there is an excess amount, it is returned to the sender.
@@ -112,7 +112,7 @@ contract H1NativeApplication {
     * fee and priorFee is greater than 0.
     */
     function _payApplicationWithPriorFee() internal {
-            if (msg.value <  priorFee && priorFee > 0) {
+            if (msg.value <  priorFee) {
                 revert(Errors.INSUFFICIENT_FUNDS);
             }
 
@@ -137,7 +137,7 @@ contract H1NativeApplication {
 
     function _payApplicationWithFee() internal {
          
-        if (msg.value < _fee && _fee > 0) {
+        if (msg.value < _fee) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
 
@@ -164,17 +164,18 @@ contract H1NativeApplication {
     */
 
     function _payApplicationWithPriorFeeAndContract(uint256 H1PaymentToFunction) internal {
-          if (msg.value <  priorFee && priorFee > 0) {
-                revert(Errors.INSUFFICIENT_FUNDS);
-            }
-            (bool success, ) = FeeContract.call{value: priorFee}("");
-            require(success, Errors.TRANSFER_FAILED);
-
-            if (msg.value - priorFee > 0) {
-            uint256 overflow = (msg.value - priorFee - H1PaymentToFunction);
-            payable(tx.origin).call{value: overflow}("");
-            }
+    if (msg.value < priorFee) {
+        revert(Errors.INSUFFICIENT_FUNDS);
     }
+
+    (bool success, ) = FeeContract.call{value: priorFee}("");
+    require(success, Errors.TRANSFER_FAILED);
+
+    if (msg.value - priorFee - H1PaymentToFunction > 0) {
+        uint256 overflow = msg.value - priorFee - H1PaymentToFunction;
+        payable(tx.origin).call{value: overflow}("");
+    }
+}
 
     /**
     * @notice `_payApplicationWithFeeAndContract` this function uses the _fee variable in the contract to determine 
@@ -185,7 +186,7 @@ contract H1NativeApplication {
     */
 
     function _payApplicationWithFeeAndContract(uint256 H1PaymentToFunction) internal {
-        if (msg.value < _fee && _fee > 0) {
+        if (msg.value < _fee) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
        if (msg.value - _fee - H1PaymentToFunction > 0) {

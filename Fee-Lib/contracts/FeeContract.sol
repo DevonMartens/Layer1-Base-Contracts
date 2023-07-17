@@ -309,11 +309,10 @@ contract FeeContract is
     * @dev It can be called by other wallets but will be called by a H1Developed 
     * or Native application every 24 hours.
     */
-    function updateFee() public {
+    function updateFee() external {
         fee = queryOracle();
         networkFeeResetTimestamp = 86400 + networkFeeResetTimestamp;
         emit FeeReset(fee);
-        
     }
     
 

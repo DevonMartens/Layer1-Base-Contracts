@@ -184,7 +184,7 @@ contract H1DevelopedApplication {
          }
          if (msg.value - priorFee > 0) {
             uint256 overflow = (msg.value - priorFee);
-            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}("");
+            payable(tx.origin).call{value: overflow}("");
         }
         (bool success, ) = FeeContract.call{value: priorFee / 10}("");
         require(success, Errors.TRANSFER_FAILED);
@@ -214,7 +214,7 @@ contract H1DevelopedApplication {
 
         if (msg.value - devFee > 0) {
             uint256 overflow = (msg.value - devFee);
-            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+            payable(tx.origin).call{value: overflow}(
                 ""
             );
         }
@@ -237,7 +237,7 @@ contract H1DevelopedApplication {
                 }
             if (msg.value - priorFee > 0) {
             uint256 overflow = (msg.value - H1PaymentToFunction - priorFee);
-            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+            payable(tx.origin).call{value: overflow}(
                 ""
                 );
             }
@@ -265,7 +265,7 @@ contract H1DevelopedApplication {
                 require(sent, Errors.TRANSFER_FAILED);
                 if (msg.value - devFee - H1PaymentToFunction > 0) {
                     uint256 overflow = (msg.value - devFee - H1PaymentToFunction);
-                    (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}("");
+                    payable(tx.origin).call{value: overflow}("");
                     }
     }
     /**
