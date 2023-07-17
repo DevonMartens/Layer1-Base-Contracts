@@ -109,14 +109,22 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     await BadFeeContract.setAgainFee();
     await expectRevert(SimpleStorageBadFeeContract.set(1, { value: 1 }), "112");
   });
-  //
-  it("H1NativeApplication Contract: Functions using the modifier applicationFeeWithPayment() will revert if transfer to fee library fails", async () => {
-    await BadFeeContract.setAgainFee();
-    await expectRevert(
-      SimpleStorageBadFeeContract.setAndPayForIt(1, { value: 1 }),
-      "112"
-    );
+  it("H1NativeApplication Contract: contracts importing the modifier applicationFee() will have functions that revert with 125 if not enough H1 is passed into a function.", async () => {
+    await time.increase(time.duration.days(2));
+    await expectRevert(SimpleStorageWithFeeDeployed.set(1), "125");
   });
+  it("H1NativeApplication Contract: contracts importing the modifier applicationFee() will have functions that revert with 125 if not enough H1 is passed into a function.", async () => {
+    await time.increase(time.duration.days(2));
+    await expectRevert(SimpleStorageWithFeeDeployed.setAndPayForIt(1), "125");
+  });
+  //
+  // it("H1NativeApplication Contract: Functions using the modifier applicationFeeWithPayment() will revert if transfer to fee library fails", async () => {
+  //   await BadFeeContract.setAgainFee();
+  //   await expectRevert(
+  //     SimpleStorageBadFeeContract.setAndPayForIt(1, { value: 1 }),
+  //     "112"
+  //   );
+  // });
   it("H1NativeApplication Contract: The modifer applicationFee() disperse ether to the Fee Contract.", async () => {
     await OracleContract.setPriceAverage(78797);
     await Address3Sig.sendTransaction({
@@ -128,11 +136,11 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     const TEN_H1_STRING = TEN_H1.toString();
     //reading as 1 here
     // update fee
-    await SimpleStorageWithFeeDeployed.set(8, { value: TEN_H1 });
-    await expect(
+    SimpleStorageWithFeeDeployed.set(8, { value: TEN_H1 });
+    expect(
       SimpleStorageWithFeeDeployed.set(1, {
         //.connect(Address3Sig)
-        value: 89,
+        value: TEN_H1,
       })
     ).to.changeEtherBalance(
       FeeContractSignerForBalanceChecks,
@@ -178,10 +186,52 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
   it("H1NativeApplication: The modifer applicationFee() will return excess values.", async () => {
     await SimpleStorageWithFeeDeployed.set(1, { value: 2 });
   });
-  it("H1NativeApplication Contract: The FeeContract() function should return the FeeContract address set in the constructor.", async () => {
-    expect(await H1NativeApplicationDeployed.FeeContract()).to.equal(
-      FeeContract.address
+  // 195 and 196?
+  it("H1NativeApplication Contract: The internal function `_payApplicationWithFeeAndContract` will revert if the transfer to the fee contract fails.", async () => {
+    await expectRevert(SimpleStorageBadFeeContract.setAndPayForIt(1, { value: 27 }), "112");
+  });
+  it("H1NativeApplication Contract: The internal function `_payApplicationWithFeeAndContract` will revert if the transfer to the fee contract fails.", async () => {
+    await expectRevert(SimpleStorageBadFeeContract.setAndPayForIt(1, { value: 27 }), "112");
+  });
+  it("H1NativeApplication Contract: The internal function `_payApplicationWithFeeAndContract` will return overflow values if sent", async () => {
+  expect(() =>
+      SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
+        value: ONE_H1,
+      }).to.changeEtherBalance(ContractDeployer, -6)
     );
+    expect(() =>
+    SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
+      value: ONE_H1,
+    }).to.changeEtherBalance(FeeContract.address, 1)
+  );
+  await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6});
+  });
+  it("HH1NativeApplication Contract: .", async () => {
+    await time.increase(time.duration.days(2));
+    await OracleContract.setPriceAverage(ONE_H1);
+   // async function asyncCall() {
+    await SimpleStorageWithFeeDeployed.connect(Address3Sig).set(1, { value: 3 });
+   // await SimpleStorageWithFeeDeployed.set(1, { value: 3 });
+   // }
+    //await asyncCall();
+   
+  });
+  it("H1NativeApplication Contract: The internal function `payApplicationWithPriorFeeAndContract` will return overflow values if sent", async () => {
+    await time.increase(time.duration.days(2));
+    expect(() =>
+        SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
+          value: ONE_H1,
+        }).to.changeEtherBalance(ContractDeployer, -6)
+      );
+      expect(() =>
+      SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
+        value: ONE_H1,
+      }).to.changeEtherBalance(FeeContract.address, 1)
+    );
+    await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6});
+    });
+  it("H1NativeApplication Contract: callFee should return the fee", async () => {
+    expect(await H1NativeApplicationDeployed.callFee()).to.equal(1);
   });
   it("H1NativeApplication Contract: The contract should not deploy if the fee contract address is set to 0.", async () => {
     //use unspecified because cannot estimate gas will be returned

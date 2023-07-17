@@ -33,7 +33,7 @@ contract H1DevelopedApplication {
     address private FeeContract;
 
     // Address storage for developer wallet.
-    address developerWallet;
+    address private developerWallet;
 
     // Storage variable for the fee set by the developer.
     uint256 private devFee;
@@ -84,7 +84,7 @@ contract H1DevelopedApplication {
             _updatesOracleValues();
            _completeFunctionWithPriorFee();
         }
-        else if(resetBlock ==  block.number && resetBlock > 0) {
+        else if(resetBlock ==  block.number) {
             _completeFunctionWithPriorFee();
         }
         else {
@@ -94,13 +94,13 @@ contract H1DevelopedApplication {
     }
 
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
-    modifier devApplicationFeeWithPayment(uint256 H1PaymentToFunction) {
+    modifier devApplicationFeeWithPaymentToContract(uint256 H1PaymentToFunction) {
          if (_requiredFeeResetTime <= block.timestamp && resetBlock != block.number) {
               _updatesOracleValues();
               _completePaidFunctionWithPriorFee(H1PaymentToFunction);
         
         }
-        else if(resetBlock ==  block.number && _requiredFeeResetTime > block.timestamp) {
+        else if(resetBlock ==  block.number) {
           _completePaidFunctionWithPriorFee(H1PaymentToFunction);
         }
         else {

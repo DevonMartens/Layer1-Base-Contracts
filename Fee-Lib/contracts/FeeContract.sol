@@ -312,10 +312,6 @@ contract FeeContract is
     function updateFee() public {
         fee = queryOracle();
         networkFeeResetTimestamp = 86400 + networkFeeResetTimestamp;
-        uint rebateValue = queryOracle();
-        (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(
-                ""
-        );
         emit FeeReset(fee);
         
     }

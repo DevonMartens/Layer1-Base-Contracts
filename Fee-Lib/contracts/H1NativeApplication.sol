@@ -27,13 +27,13 @@ interface IFeeContract {
 contract H1NativeApplication {
 
     // Storage for fee contract address.
-    address public FeeContract;
+    address private FeeContract;
 
     // new variables
-    uint256 public _fee;
+    uint256 private _fee;
     
     // The timestamp in which the _fee must update.
-    uint256 public _requiredFeeResetTime;
+    uint256 private _requiredFeeResetTime;
     
     // The block number in which the fee updated.
     uint256 private resetBlock;
@@ -59,31 +59,32 @@ contract H1NativeApplication {
     modifier applicationFee() {
         if (_requiredFeeResetTime <= block.timestamp) {
              _updatesOracleValues();
+             _payApplicationWithPriorFee();
         }
-         else if(resetBlock ==  block.number && resetBlock > 0) {
-            _completeFunctionWithPriorFee();
+         else if(resetBlock ==  block.number) {
+            _payApplicationWithPriorFee();
         }
         else {
-           _completeFunction();
+           _payApplicationWithFee();
         }
         _;
     }
 
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
-    modifier applicationFeeWithPayment(uint256 H1PaymentToFunction) {
+    modifier applicationFeeWithPaymentToContract(uint256 H1PaymentToFunction) {
        if (_requiredFeeResetTime >= block.timestamp) {
            _updatesOracleValues();
-            _completePaidFunctionWithPriorFee(H1PaymentToFunction);
+           _payApplicationWithFeeAndContract(H1PaymentToFunction);    
        }
-        else if(resetBlock ==  block.number && resetBlock > 0) {
-             _completePaidFunctionWithPriorFee(H1PaymentToFunction);
+        else if(resetBlock ==  block.number) {
+             _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
         }
         else {
-             _completePaidFunction(H1PaymentToFunction);
+             _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
         }
         _;
     }
-
+    
     /**
     * @notice `_updatesOracleValues` this function updates the state variables and disperses the priorFee 
     * the fee before the oracle updates the _fee variable in the contract. 
@@ -110,7 +111,7 @@ contract H1NativeApplication {
     * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
     * fee and priorFee is greater than 0.
     */
-    function _completeFunctionWithPriorFee() internal {
+    function _payApplicationWithPriorFee() internal {
             if (msg.value <  priorFee && priorFee > 0) {
                 revert(Errors.INSUFFICIENT_FUNDS);
             }
@@ -120,21 +121,21 @@ contract H1NativeApplication {
 
             if (msg.value - priorFee > 0) {
             uint256 overflow = (msg.value - priorFee);
-            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+            payable(tx.origin).call{value: overflow}(
                 ""
                 );
             }
     }
 
     /**
-    * @notice `_completeFunction` this function uses the _fee variable in the contract to determine 
+    * @notice `_payApplicationWithFee` this function uses the _fee variable in the contract to determine 
     * the payment amounts.
     * @dev If there is an excess amount, it is returned to the sender.
     * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
     * fee and priorFee is greater than 0.
     */
 
-    function _completeFunction() internal {
+    function _payApplicationWithFee() internal {
          
         if (msg.value < _fee && _fee > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
@@ -145,7 +146,7 @@ contract H1NativeApplication {
 
         if (msg.value - _fee > 0) {
             uint256 overflow = (msg.value - _fee);
-            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}(
+            payable(tx.origin).call{value: overflow}(
                 ""
             );
         }
@@ -154,7 +155,7 @@ contract H1NativeApplication {
 
 
      /**
-    * @notice `_completeFunctionWithPriorFee` this function uses priorFee the fee before the oracle 
+    * @notice `_payApplicationWithPriorFeeAndContract` this function uses priorFee the fee before the oracle 
     * updates the _fee variable in the contract. 
     * the prior fee to the FeeContract.
     * @dev If there is an excess amount, it is returned to the sender.
@@ -162,7 +163,7 @@ contract H1NativeApplication {
     * fee and priorFee is greater than 0.
     */
 
-    function _completePaidFunctionWithPriorFee(uint256 H1PaymentToFunction) internal {
+    function _payApplicationWithPriorFeeAndContract(uint256 H1PaymentToFunction) internal {
           if (msg.value <  priorFee && priorFee > 0) {
                 revert(Errors.INSUFFICIENT_FUNDS);
             }
@@ -171,25 +172,25 @@ contract H1NativeApplication {
 
             if (msg.value - priorFee > 0) {
             uint256 overflow = (msg.value - priorFee - H1PaymentToFunction);
-            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}("");
+            payable(tx.origin).call{value: overflow}("");
             }
     }
 
     /**
-    * @notice `_completeFunction` this function uses the _fee variable in the contract to determine 
+    * @notice `_payApplicationWithFeeAndContract` this function uses the _fee variable in the contract to determine 
     * the payment amounts.
     * @dev If there is an excess amount, it is returned to the sender.
     * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
     * fee and priorFee is greater than 0.
     */
 
-    function _completePaidFunction(uint256 H1PaymentToFunction) internal {
+    function _payApplicationWithFeeAndContract(uint256 H1PaymentToFunction) internal {
         if (msg.value < _fee && _fee > 0) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
        if (msg.value - _fee - H1PaymentToFunction > 0) {
             uint256 overflow = (msg.value - _fee - H1PaymentToFunction);
-            (bool returnOverflow, ) = payable(tx.origin).call{value: overflow}("");
+            payable(tx.origin).call{value: overflow}("");
        }
         (bool success, ) = FeeContract.call{ value: _fee }("");
         require(success, Errors.TRANSFER_FAILED); 

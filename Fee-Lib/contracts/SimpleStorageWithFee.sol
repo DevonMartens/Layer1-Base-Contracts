@@ -14,7 +14,7 @@ contract SimpleStorageWithFee is H1NativeApplication {
         storedData = x;
     }
 
-    function setAndPayForIt(uint x) external payable applicationFeeWithPayment(5) {
+    function setAndPayForIt(uint x) external payable applicationFeeWithPaymentToContract(5) {
         require(msg.value > 5, "CHEAP");
         storedData = x;
     }
