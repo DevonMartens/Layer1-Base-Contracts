@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">14.75% </span>
+        <span class="strong">13.11% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>9/61</span>
+        <span class='fraction'>8/61</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">8.33% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>3/36</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">24% </span>
+        <span class="strong">20% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>6/25</span>
+        <span class='fraction'>5/25</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">24.1% </span>
+        <span class="strong">20.48% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>20/83</span>
+        <span class='fraction'>17/83</span>
       </div>
     </div>
   </div>
@@ -515,7 +515,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">115×</span>
+<span class="cline-any cline-yes">126×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -523,7 +523,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -582,19 +582,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">57×</span>
+<span class="cline-any cline-yes">63×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">57×</span>
-<span class="cline-any cline-yes">57×</span>
-<span class="cline-any cline-yes">57×</span>
-<span class="cline-any cline-yes">57×</span>
-<span class="cline-any cline-yes">57×</span>
-<span class="cline-any cline-yes">57×</span>
-<span class="cline-any cline-yes">57×</span>
-<span class="cline-any cline-yes">171×</span>
-<span class="cline-any cline-yes">171×</span>
-<span class="cline-any cline-yes">171×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-yes">189×</span>
+<span class="cline-any cline-yes">189×</span>
+<span class="cline-any cline-yes">189×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -822,15 +822,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-yes">63×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1220,10 +1220,10 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
    @notice Function to consult oracle to get fee amount.
    */
 &nbsp;
-   function updateFee() external returns(uint256) {
+<span class="fstat-no" title="function not covered" >   function updateFee() external returns(uint256) {</span>
         fee = queryOracle();
         networkFeeResetTimestamp += 86400;
-        uint rebateValue = queryOracle();
+<span class="cstat-no" title="statement not covered" >        uint rebateValue = queryOracle();</span>
         
     }
 &nbsp;
@@ -1246,7 +1246,7 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 17 2023 20:50:18 GMT+0200 (Central European Summer Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 17 2023 22:11:42 GMT+0200 (Central European Summer Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

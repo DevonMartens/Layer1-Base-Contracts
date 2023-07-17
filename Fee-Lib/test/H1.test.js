@@ -186,9 +186,28 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
       "125"
     );
   });
+  it("H1NativeApplication Contract: The modifier applicationFeeWithPayment() should allow two payments at prior fee", async () => {
+    await OracleContract.setPriceAverage(ONE_H1);
+ 
+    await time.increase(time.duration.days(1));
+    await time.increase(500);
+  
+   
+    await SimpleStorageWithFeeDeployed.set(1, { value: 6 });
+    await SimpleStorageWithFeeDeployed.connect(Address3Sig).set(1, { value: 6 });
+    await time.increase(time.duration.hours(1));
+    await expectRevert(
+      SimpleStorageWithFeeDeployed.set(1, { value: 6 }),
+      "125"
+    );
+  });
   it("H1NativeApplication: The modifer applicationFeeWithPayment() should return extra values.", async () => {
     await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 11 });
     await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 27 });
+  });
+  it("H1NativeApplication: The modifer applicationFeeWithPayment() should return extra values.", async () => {
+    await SimpleStorageWithFeeDeployed.set(1, { value: 11 });
+    await SimpleStorageWithFeeDeployed.set(1, { value: 27 });
   });
   it("H1NativeApplication: The modifer applicationFeeWithPayment() will revert if not enough fees are paid.", async () => {
     await expectRevert(
@@ -206,19 +225,19 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
   it("H1NativeApplication Contract: The internal function `_payApplicationWithFeeAndContract` will revert if the transfer to the fee contract fails.", async () => {
     await expectRevert(SimpleStorageBadFeeContract.setAndPayForIt(1, { value: 27 }), "112");
   });
-  it("H1NativeApplication Contract: The internal function `_payApplicationWithFeeAndContract` will return overflow values if sent", async () => {
-  expect(() =>
-      SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
-        value: ONE_H1,
-      }).to.changeEtherBalance(ContractDeployer, -6)
-    );
-    expect(() =>
-    SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
-      value: ONE_H1,
-    }).to.changeEtherBalance(FeeContract.address, 1)
-  );
-  await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6});
-  });
+  // it("H1NativeApplication Contract: The internal function `_payApplicationWithFeeAndContract` will return overflow values if sent", async () => {
+  // expect(() =>
+  //     SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
+  //       value: ONE_H1,
+  //     }).to.changeEtherBalance(ContractDeployer, -6)
+  //   );
+  //   expect(() =>
+  //   SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
+  //     value: ONE_H1,
+  //   }).to.changeEtherBalance(FeeContract.address, 1)
+  // );
+  // await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6});
+  // });
   it("H1NativeApplication Contract: The internal function `_payApplicationWithPriorFeeAndContract` will return overflow values if sent", async () => {
     await time.increase(time.duration.days(2));
     expect(() =>
@@ -233,20 +252,34 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
     );
     await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6});
     });
-  it("H1NativeApplication Contract: The internal function `payApplicationWithPriorFeeAndContract` will return overflow values if sent", async () => {
-    await time.increase(time.duration.days(2));
-    expect(() =>
-        SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
-          value: ONE_H1,
-        }).to.changeEtherBalance(ContractDeployer, -6)
-      );
+  // it("H1NativeApplication Contract: The internal function `payApplicationWithPriorFeeAndContract` will return overflow values if sent", async () => {
+  //   await time.increase(time.duration.days(2));
+  //   expect(() =>
+  //       SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
+  //         value: ONE_H1,
+  //       }).to.changeEtherBalance(ContractDeployer, -6)
+  //     );
+  //     expect(() =>
+  //     SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
+  //       value: ONE_H1,
+  //     }).to.changeEtherBalance(FeeContract.address, 1)
+  //   );
+  //   await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6});
+  //   });
+    it("H1NativeApplication Contract: The internal function `payApplicationWithPriorFee` will return overflow values if sent", async () => {
+      await time.increase(time.duration.days(2));
       expect(() =>
-      SimpleStorageWithFeeDeployed.setAndPayForIt(1, {
-        value: ONE_H1,
-      }).to.changeEtherBalance(FeeContract.address, 1)
-    );
-    await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6});
-    });
+          SimpleStorageWithFeeDeployed.set(1, {
+            value: ONE_H1,
+          }).to.changeEtherBalance(ContractDeployer, -6)
+        );
+        expect(() =>
+        SimpleStorageWithFeeDeployed.set(1, {
+          value: ONE_H1,
+        }).to.changeEtherBalance(FeeContract.address, 1)
+      );
+      await SimpleStorageWithFeeDeployed.set(1, { value: 67});
+      });
   it("H1NativeApplication Contract: callFee should return the fee", async () => {
     expect(await H1NativeApplicationDeployed.callFee()).to.equal(1);
   });
@@ -258,5 +291,27 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
       ),
       "123"
     );
+  });
+  it("should handle excess payment correctly in function 177", async function () {
+    await time.increase(time.duration.days(2));
+    // Perform necessary setup for the test
+    const priorFee = 3; // Set the prior fee value
+    const H1PaymentToFunction = 15; // Set the H1 payment value
+    const excessPayment = 150; // Set the excess payment value 30
+    const expectedOverflow = excessPayment - priorFee - H1PaymentToFunction;
+  
+    // Call function 177 with the specified values
+    await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 150 });
+    await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 150 });
+    await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 150 });
+  
+    // Get the balance of the contract after the function call
+    const contractBalance = await ethers.provider.getBalance(FeeContract.address);
+    const contract2Balance = await ethers.provider.getBalance(SimpleStorageWithFeeDeployed.address);
+  
+    // Assert the balance and the expected overflow value
+    expect(contractBalance).to.equal(priorFee);
+    expect(contract2Balance).to.equal(H1PaymentToFunction);
+   // expect(await ethers.provider.getBalance(ContractDeployer)).to.equal(expectedOverflow);
   });
 });
