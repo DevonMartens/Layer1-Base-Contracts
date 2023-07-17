@@ -36,7 +36,7 @@ contract H1NativeApplication {
     uint256 private _requiredFeeResetTime;
     
     // The block number in which the fee updated.
-    uint256 resetBlock;
+    uint256 private resetBlock;
 
     // The fee before the oralce updated.
     uint256 private priorFee;
@@ -53,7 +53,7 @@ contract H1NativeApplication {
         _fee = IFeeContract(_FeeContract).getFee();
         FeeContract = _FeeContract;
         priorFee = IFeeContract(_FeeContract).getFee();
-        resetBlock = block.number + 518400;
+        resetBlock = block.number - 1;
     }
 
     // Modifier to send fees to the fee contract and to the developer in contracts for non-payable functions.
@@ -63,7 +63,7 @@ contract H1NativeApplication {
              _payApplicationWithPriorFee();
         }
         // two block buffer??? RHYS!
-         else if(resetBlock <= block.number) {
+         else if(resetBlock >= block.number) {
             _payApplicationWithPriorFee();
         }
         else {
@@ -75,12 +75,12 @@ contract H1NativeApplication {
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier applicationFeeWithPaymentToContract(uint256 H1PaymentToFunction) {
        if (_requiredFeeResetTime <= block.timestamp) {
-           _updatesOracleValues();
-           _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);    
-       }
-        else if(resetBlock <= block.number) {
              _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
+             _updatesOracleValues();
         }
+        else if (resetBlock >= block.number) {
+          _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);    
+       }
         else {
              _payApplicationWithFeeAndContract(H1PaymentToFunction);
         }
@@ -101,7 +101,7 @@ contract H1NativeApplication {
              priorFee = _fee;
              _fee = IFeeContract(FeeContract).getFee();
              _requiredFeeResetTime = IFeeContract(FeeContract).nextResetTime();
-             resetBlock = block.number;
+             resetBlock = block.number + 1;
     }
 
     /**
@@ -165,14 +165,14 @@ contract H1NativeApplication {
     */
 
     function _payApplicationWithPriorFeeAndContract(uint256 H1PaymentToFunction) internal {
-    if (msg.value < priorFee) {
+    if (msg.value < priorFee + H1PaymentToFunction) {
         revert(Errors.INSUFFICIENT_FUNDS);
     }
 
     (bool success, ) = FeeContract.call{value: priorFee}("");
     require(success, Errors.TRANSFER_FAILED);
 
-    if (msg.value - priorFee - H1PaymentToFunction > 0) {
+    if (msg.value > priorFee + H1PaymentToFunction) {
         uint256 overflow = msg.value - priorFee - H1PaymentToFunction;
         payable(tx.origin).call{value: overflow}("");
     }
@@ -190,7 +190,7 @@ contract H1NativeApplication {
         if (msg.value < _fee) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
-       if (msg.value - _fee - H1PaymentToFunction > 0) {
+       if (msg.value > priorFee + H1PaymentToFunction) {
             uint256 overflow = (msg.value - _fee - H1PaymentToFunction);
             payable(tx.origin).call{value: overflow}("");
        }

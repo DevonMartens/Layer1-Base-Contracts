@@ -180,7 +180,7 @@ describe("H1NativeApplication and Imported Modifier applicationFee()", function 
    
     await SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6 });
     await SimpleStorageWithFeeDeployed.connect(Address3Sig).setAndPayForIt(1, { value: 6 });
-   await time.increase(500000);
+    await time.increase(time.duration.hours(1));
     await expectRevert(
       SimpleStorageWithFeeDeployed.setAndPayForIt(1, { value: 6 }),
       "125"
