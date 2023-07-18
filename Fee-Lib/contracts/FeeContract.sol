@@ -63,7 +63,7 @@ contract FeeContract is
      * the new total shares amount of the contract.
      */
     event ChannelAdjusted(
-        address indexed addjustedChannel,
+        address indexed adjustedChannel,
         uint256 indexed newChannelWeight,
         uint256 indexed currentContractShares
     );
@@ -240,12 +240,12 @@ contract FeeContract is
 
     /**
     @notice `setEpoch` is to adjust the length of time between payouts from the contract.
-    @param new_epochLength the length of time between payouts from the contract.
+    @param newEpochLength the length of time between payouts from the contract.
     */
     function setEpoch(
-        uint256 new_epochLength
+        uint256 newEpochLength
     ) external onlyRole(OPERATOR_ROLE) {
-        epochLength = new_epochLength;
+        epochLength = newEpochLength;
     }
 
     /**
@@ -309,7 +309,7 @@ contract FeeContract is
     * @dev It can be called by other wallets but will be called by a H1Developed 
     * or Native application every 24 hours.
     */
-    function updateFee() external {
+    function updateFee() public {
         fee = queryOracle();
         networkFeeResetTimestamp = 86400 + networkFeeResetTimestamp;
         emit FeeReset(fee);
@@ -318,11 +318,11 @@ contract FeeContract is
 
     /**
     @notice `setOracle` this setter function to adjust oracle address.
-    @param _newOracle the new oracle address.
+    @param newOracle the new oracle address.
     */
 
-    function setOracle(address _newOracle) external onlyRole(OPERATOR_ROLE) {
-        oracle = _newOracle;
+    function setOracle(address newOracle) external onlyRole(OPERATOR_ROLE) {
+        oracle = newOracle;
     }
 
     /**
@@ -337,7 +337,7 @@ contract FeeContract is
     * oracle at least every 24 hours.
     */
     function getFee() public view returns (uint256) {
-            return IFeeOracle(oracle).consult();
+            return fee;
     }
 
     /**

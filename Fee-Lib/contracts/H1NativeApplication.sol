@@ -6,20 +6,20 @@ pragma solidity ^0.8.0;
 
 /*
 @title H1NativeApplication
-@notice This contract has a modifiers to ensure that ensures fees are sent to the FeeContract.
-@dev The primary function of this contract is to be used as an import for native building on Haven.
+@notice This contract has a modifiers to ensure that fees are sent to the FeeContract.
+@dev The primary function of this contract is to be used as an import for application building on Haven1.
 */
 
 interface IFeeContract {
 
     // This function retrieves the value of H1 in USD.
-    function getFee() external view returns (uint256);
+    function queryOracle() external view returns (uint256);
 
     //This function returns a timestamp that will tell the contract when to update the oracle.
     function nextResetTime() external view returns (uint256);
     
 
-    // This function updates the fees on the network in the fee contract.
+    // This function updates the fees in fee contract to match the oracle values.
     function updateFee() external;
 
 }
@@ -50,9 +50,9 @@ contract H1NativeApplication {
             revert(Errors.INVALID_ADDRESS);
         }
         _requiredFeeResetTime = IFeeContract(_FeeContract).nextResetTime();
-        _fee = IFeeContract(_FeeContract).getFee();
+        _fee = IFeeContract(_FeeContract).queryOracle();
         FeeContract = _FeeContract;
-        priorFee = IFeeContract(_FeeContract).getFee();
+        priorFee = IFeeContract(_FeeContract).queryOracle();
         resetBlock = block.number - 1;
     }
 
@@ -62,8 +62,7 @@ contract H1NativeApplication {
             _updatesOracleValues();
              _payApplicationWithPriorFee();
         }
-        // two block buffer??? RHYS!
-         else if(resetBlock >= block.number) {
+         else if(resetBlock == block.number) {
             _payApplicationWithPriorFee();
         }
         else {
@@ -78,7 +77,7 @@ contract H1NativeApplication {
              _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
              _updatesOracleValues();
         }
-        else if (resetBlock >= block.number) {
+        else if (resetBlock == block.number) {
           _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);    
        }
         else {
@@ -99,7 +98,7 @@ contract H1NativeApplication {
                 IFeeContract(FeeContract).updateFee();
              }
              priorFee = _fee;
-             _fee = IFeeContract(FeeContract).getFee();
+             _fee = IFeeContract(FeeContract).queryOracle();
              _requiredFeeResetTime = IFeeContract(FeeContract).nextResetTime();
              resetBlock = block.number + 1;
     }
@@ -204,6 +203,6 @@ contract H1NativeApplication {
     */
 
     function callFee() public view returns (uint256) {
-        return IFeeContract(FeeContract).getFee();
+        return IFeeContract(FeeContract).queryOracle();
     }
 }

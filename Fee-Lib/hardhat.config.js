@@ -18,7 +18,17 @@ module.exports = {
 
     docgen: {},
   },
-  // networks: {
+  networks: {
+    hardhat: {
+      mining: {
+        blockGasLimit: 100000000, // Set a high block gas limit
+      },
+    },
+  },
+};
+
+
+
   //   ropsten: {
   //     url: `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`,
   //     accounts: [process.env.PRI_KEY],
@@ -27,4 +37,4 @@ module.exports = {
   // etherscan: {
   //   apiKey: process.env.ETHERSCAN_API_KEY,
   // },
-};
+//};
