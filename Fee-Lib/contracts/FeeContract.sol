@@ -48,7 +48,7 @@ contract FeeContract is
     );
 
     /**
-     * @dev The event is triggered during the addChannel function.
+     * @dev The event is triggered during the `addChannel` function.
      * It emits the address, shares, and total shares of the contract.
      */
     event ChannelAdded(
@@ -162,10 +162,10 @@ contract FeeContract is
 
     /**
      * @notice `addChannel` includes the logic to add a new channel with weight.
-     * @dev We allow 10 contracts per Fee Contract to ensure distribution can
-     * be managed we also don't allow duplicate addresses or zero addresses.
+     * @dev We allow 10 contracts per FeeContract to ensure distribution can
+     * be managed. The check ensures that there are no duplicate addresses or zero addresses.
      * @dev The total weight is tracked by `CONTRACT_SHARES` which we use to
-     * divide each address's shares by sending correct amounts to each channel.
+     * divide each address's shares to then send the correct amounts to each channel.
      */
     function addChannel(
         address _newChannelAddress,
@@ -188,12 +188,11 @@ contract FeeContract is
 
     /**
      * @notice `adjustChannel` includes the logic to adjust a channel and its weight.
-     * @param _oldChannelAddress the address of the channels and weights array.
+     * @param _oldChannelAddress the address of the current channel in the channels and weights array.
      * @param _newChannelAddress the address of the channel replacing the old one.
      * @param _newWeight the amount of total shares the new address will receive.
-     * @dev the index to avoid a work around to the 10 channel limit and for 0 address.
-     * @dev The total weight is tracked by `CONTRACT_SHARES`
-     * which we adjust here by subtracting the old number and adding the new.
+     * @dev The sum of all the channel's weights is tracked by `CONTRACT_SHARES`
+     * which we adjust here by subtracting the old weight number and adding the new one.
      */
 
     function adjustChannel(

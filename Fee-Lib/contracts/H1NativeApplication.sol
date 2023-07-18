@@ -43,7 +43,7 @@ contract H1NativeApplication {
 
     /**
      * @notice Constructor to initialize contract deployment.
-     * @param _FeeContract address of fee contract to pay fees.
+     * @param _FeeContract address of feeContract to pay fees to and obtain network information from.
      */
     constructor(address _FeeContract) {
         if (_FeeContract == address(0)) {
@@ -86,10 +86,11 @@ contract H1NativeApplication {
         _;
     }
     /**
-    * @notice `_updatesOracleValues` this function updates the state variables and disperses the priorFee.
-    * the fee before the oracle updates the _fee variable in the contract. 
+    * @notice `_updatesOracleValues` this function updates the state variables of in this contract
+    * and in the FeeContract if applicable.
+    * The `priorFee` is the fee before the oracle updates the _fee variable in the contract. 
     * If there is an excess amount, it is returned to the sender.
-    * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
+    * @dev This functions throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
     * fee and priorFee is greater than 0.
     */
      function _updatesOracleValues() internal {
