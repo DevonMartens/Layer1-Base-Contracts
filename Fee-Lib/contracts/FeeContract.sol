@@ -318,8 +318,8 @@ contract FeeContract is
 
     /**
     * @notice `updateFee` updates the networkFeeResetTimestamp and the fee.
-    * @dev It can be called by other wallets but will be called by a H1Developed 
-    * or Native application every 24 hours.
+    * @dev It can be called anyone that wants to call it.
+    * H1Developed or Native applications will call it every 24 hours.
     */
     function updateFee() external {
         fee = queryOracle();
@@ -344,7 +344,7 @@ contract FeeContract is
     }
 
     /**
-    @notice `_findIndexPosition` this view function checks if the address to obtain the index in the array.
+    @notice `_findIndexPosition` this view function checks the address to obtain the index in the array.
     @dev It is used to change the arrays of weights and channels.
     */
 

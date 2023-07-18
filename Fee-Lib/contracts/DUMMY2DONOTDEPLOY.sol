@@ -380,7 +380,6 @@ contract HasNoRecieveFunctionForFailedTxns is FeeQuery {
    function updateFee() external returns(uint256) {
         fee = queryOracle();
         networkFeeResetTimestamp += 86400;
-        uint rebateValue = queryOracle();
         
     }
 
