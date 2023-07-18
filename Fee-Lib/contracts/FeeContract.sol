@@ -239,7 +239,7 @@ contract FeeContract is
 
     /**
     @notice `setEpoch` is to adjust the length of time between payouts from the contract.
-    @param newEpochLength the length of time between payouts from the contract.
+    @param newEpochLength the length of the new time between payouts from the contract.
     */
     function setEpoch(
         uint256 newEpochLength
@@ -248,9 +248,10 @@ contract FeeContract is
     }
 
     /**
-    @notice `distributeFeesToChannels` to disburse payment to distribute funds to channels.
-    @dev Function can be called by a wallet every 24 hours.
-    @dev The balance of the contract is distributed to channels and an event is triggered FeesDistributed and the FeeRest event is to decalre the new amount.
+    @notice `distributeFeesToChannels` is to disburse payment by distributing contract held funds to channels.
+    @dev This function can be called every 24 hours.
+    @dev The balance of the contract is distributed to channels and an event is triggered `FeesDistributed` 
+    then the `FeeReset` event is emitted decalring the new fee amount.
     */
 
     function distributeFeesToChannels() external payable {
@@ -281,7 +282,9 @@ contract FeeContract is
     }
 
     /**
-    @notice `forceFeeDistribution` function triggered to force distribution of funds to channels.
+    * @notice `forceFeeDistribution` function triggered to force distribution of funds to channels.
+    * @dev It can only be called by an operator. In case something is wrong with the oracle or funds need to be be
+    * distributed immediately.
     */
 
     function forceFeeDistribution() external payable onlyRole(OPERATOR_ROLE) {
@@ -297,23 +300,11 @@ contract FeeContract is
 
     /**
     @notice `setMinFee` is a setter function to set the minimum fee for developer applications.
-    @param minimumAmount is the lowest amount a developer can charge to run their applications.
+    @param minimumAmount is the lowest amount a developer can charge to run functions in their applications.
     */
     function setMinFee(uint256 minimumAmount) external onlyRole(OPERATOR_ROLE) {
         minimumFeeAllowedForDevs = minimumAmount;
     }
-
-    /**
-    * @notice `updateFee` updates the networkFeeResetTimestamp and the fee.
-    * @dev It can be called by other wallets but will be called by a H1Developed 
-    * or Native application every 24 hours.
-    */
-    function updateFee() public {
-        fee = queryOracle();
-        networkFeeResetTimestamp = 86400 + networkFeeResetTimestamp;
-        emit FeeReset(fee);
-    }
-    
 
     /**
     @notice `setOracle` this setter function to adjust oracle address.
@@ -323,6 +314,19 @@ contract FeeContract is
     function setOracle(address newOracle) external onlyRole(OPERATOR_ROLE) {
         oracle = newOracle;
     }
+
+
+    /**
+    * @notice `updateFee` updates the networkFeeResetTimestamp and the fee.
+    * @dev It can be called by other wallets but will be called by a H1Developed 
+    * or Native application every 24 hours.
+    */
+    function updateFee() external {
+        fee = queryOracle();
+        networkFeeResetTimestamp = 86400 + networkFeeResetTimestamp;
+        emit FeeReset(fee);
+    }
+    
 
     /**
     @notice `nextResetTime` function returns the networkFeeResetTimestamp.
