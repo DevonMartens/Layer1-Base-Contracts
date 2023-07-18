@@ -88,11 +88,13 @@ contract H1NativeApplication {
 
     /**
     * @notice `_updatesOracleValues` this function updates the state variables of this contract
-    * and in the FeeContract if applicable.
-    * The `priorFee` is the fee before the oracle updates the _fee variable in this contract. 
-    * If there is an excess amount, it is returned to the sender.
-    * @dev This functions throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
-    * fee and priorFee is greater than 0.
+    * and in the FeeContract if applicable. The information about the fee and _requiredFeeResetTime 
+    * come from the FeeContract.
+    * @dev The priorFee is the fee before the oracle updates the _fee variable in this contract. 
+    * @dev The  _requiredFeeResetTime is set equal to the FeeContracts next reset time. A day
+    * is added between intervals.
+    * @dev The reset block is set in this function to ensure that the transactions set in the same block are 
+    * equal to the priorFee to ensure transactions pass in the event the fee is larger after updating.
     */
      function _updatesOracleValues() internal {
             uint256 updatedResetTime = IFeeContract(FeeContract).nextResetTime();
@@ -102,16 +104,15 @@ contract H1NativeApplication {
              priorFee = _fee;
              _fee = IFeeContract(FeeContract).queryOracle();
              _requiredFeeResetTime = IFeeContract(FeeContract).nextResetTime();
-             resetBlock = block.number + 1;
+             resetBlock = block.number;
     }
 
     /**
-    * @notice `_payApplicationWithPriorFee` this function uses priorFee the fee before the oracle 
-    * updates the _fee variable in the contract. 
-    * the prior fee to the FeeContract.
-    * @dev If there is an excess amount, it is returned to the sender.
-    * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
-    * fee and priorFee is greater than 0.
+    * @notice `_payApplicationWithPriorFee` this function uses priorFee which is 
+    * the fee before the oracle updates the _fee variable in the contract.
+    * @dev If there is an excess amount of H1, it is returned to the sender.
+    * @dev It throws Errors.INSUFFICIENT_FUNDS if the 
+    * received value is less than the prior fee.
     */
     function _payApplicationWithPriorFee() internal {
             if (msg.value <  priorFee) {
@@ -131,8 +132,8 @@ contract H1NativeApplication {
 
     /**
     * @notice `_payApplicationWithFee` this function uses the _fee variable in the contract to determine 
-    * the payment amounts.
-    * @dev If there is an excess amount, it is returned to the sender.
+    * the payment amounts. The _fee is the current fee value from the oracle updated less than 24 hours ago.
+    * @dev If there is an excess amount of H1 sent, it is returned to the sender.
     * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
     * fee and priorFee is greater than 0.
     */
@@ -159,10 +160,8 @@ contract H1NativeApplication {
      /**
     * @notice `_payApplicationWithPriorFeeAndContract` this function uses priorFee the fee before the oracle 
     * updates the _fee variable in the contract. 
-    * the prior fee to the FeeContract.
-    * @dev If there is an excess amount, it is returned to the sender.
-    * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
-    * fee and priorFee is greater than 0.
+    * @dev If there is an excess amount of H1 sent, it is returned to the sender.
+    * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the priorFee.
     */
 
     function _payApplicationWithPriorFeeAndContract(uint256 H1PaymentToFunction) internal {
@@ -182,7 +181,7 @@ contract H1NativeApplication {
     /**
     * @notice `_payApplicationWithFeeAndContract` this function uses the _fee variable in the contract to determine 
     * the payment amounts.
-    * @dev If there is an excess amount, it is returned to the sender.
+    * @dev If there is an excess amount of H1 sent, it is returned to the sender.
     * @dev It throws Errors.INSUFFICIENT_FUNDS if the received value is less than the prior 
     * fee and priorFee is greater than 0.
     */
