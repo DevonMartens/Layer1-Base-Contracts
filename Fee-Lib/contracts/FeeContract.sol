@@ -29,7 +29,7 @@ contract FeeContract is
 
     /**
      * @dev The event is triggered during the `receive` function.
-     * It emits the time, the address sending the funds, and amount payed.
+     * It emits the time, the address sending the funds, and amount paid.
      */
     event FeesReceived(
         uint256 indexed timestamp,
@@ -96,7 +96,7 @@ contract FeeContract is
     // Storage for minimum fee.
     uint256 private minimumFeeAllowedForDevs;
 
-    // The total amount that we divide an addresses shares by to compute payments.
+    // The total amount that we divide an address's shares by to compute payments.
     uint8 private CONTRACT_SHARES;
 
     // Array of addresses stored for fee distribution.
@@ -108,7 +108,7 @@ contract FeeContract is
     // The time of last fee distribution.
     uint256 private lastDistribution;
 
-    // The timestamp in which the fee needs to be reset accross the network.
+    // The timestamp in which the fee needs to be reset across the network.
     uint256 private networkFeeResetTimestamp;
 
     // Role to control the contract.
@@ -121,7 +121,8 @@ contract FeeContract is
     @param _weights are the amount of shares each channel receives.
     @param havenFoundation the address that can add or revoke address privileges.
     @param networkOperator operator address that manages functions.
-    @dev lastDistribution is the current timestamp fees distributed every 24 hours.
+    @dev lastDistribution is the timestamp that fees were last distributed 
+    * It occurs every 24 hours.
     @dev There cannot be more than ten channels.
     */
     function initialize(
@@ -251,7 +252,7 @@ contract FeeContract is
     @notice `distributeFeesToChannels` is to disburse payment by distributing contract held funds to channels.
     @dev This function can be called every 24 hours.
     @dev The balance of the contract is distributed to channels and an event is triggered `FeesDistributed` 
-    then the `FeeReset` event is emitted decalring the new fee amount.
+    then the `FeeReset` event is emitted declaring the new fee amount.
     */
 
     function distributeFeesToChannels() external payable {
@@ -265,7 +266,7 @@ contract FeeContract is
             );
             require(gasRebate, Errors.GAS_REBATE_FAILED);
 
-            uint amount = address(this).balance;
+            uint256 amount = address(this).balance;
 
             for (uint i = 0; i < channels.length; i++) {
                 uint share = (amount * weights[i]) / CONTRACT_SHARES;
@@ -288,7 +289,7 @@ contract FeeContract is
     */
 
     function forceFeeDistribution() external payable onlyRole(OPERATOR_ROLE) {
-        uint amount = address(this).balance;
+        uint256 amount = address(this).balance;
         for (uint i = 0; i < channels.length; i++) {
             uint share = (amount * weights[i]) / CONTRACT_SHARES;
             (bool success, ) = channels[i].call{value: share}("");
@@ -467,8 +468,10 @@ contract FeeContract is
     }
 
     /**
-    @notice `_authorizeUpgrade` this function to upgrade contract override to protect.
-    @param newImplementation new implementation address.
+    * @notice `_authorizeUpgrade` this function is to upgrade the contract. 
+    * It is overridden to protect the contract from someone who is not authorized
+    * initiating an upgrade.
+    * @param newImplementation new implementation address.
     */
 
     function _authorizeUpgrade(
