@@ -5,7 +5,6 @@ const { time } = require("@nomicfoundation/hardhat-network-helpers");
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
 
-
 const blobForAddress3 =  {
   largeNumbers: [2, 7888693278],
   smallNumbers: [5, 6],
@@ -64,8 +63,7 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
       "tokenONE"
     );
     //time stamp was on mint so this should revert
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    await delay(10000);
+    await time.increase(time.duration.days(2));
     //should revert and not return values 7 seconds past
     await expectRevert(
       VerifiableIdentityPreventsOnExpiry.getUserTypePreventOnExpiry(
@@ -125,8 +123,7 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
       blobForAddress2ExpiresSoon,
       "tokenONE"
     );
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    await delay(8000);
+    await time.increase(time.duration.days(2));
     //should revert and not return values 7 seconds past
     await expectRevert(
       VerifiableIdentityPreventsOnExpiry.getUserLevelPreventOnExpiry(
@@ -143,6 +140,10 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
       smallNumbers: [2, 3],
       strings: ["1",]
     };
+   
+      VerifiableIdentityPreventsOnExpiry.getUserCountryCodePreventOnExpiry(
+        Address2
+      );
 
     await ProofOfIdentityContract.issueIdentity(
       Address2,
@@ -150,8 +151,7 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
       "tokenONE"
     );
     //time stamp was on mint so this should revert
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    await delay(7000);
+    await time.increase(time.duration.days(2));
     //should revert and not return values 7 seconds past
     await expectRevert(
       VerifiableIdentityPreventsOnExpiry.getUserCountryCodePreventOnExpiry(

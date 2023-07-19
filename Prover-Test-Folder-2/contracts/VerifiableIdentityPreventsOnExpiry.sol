@@ -13,7 +13,7 @@ import "./Errors.sol";
  * UserInformationPreventsOnExpiry provides protected functions to ensure a users Account contains in date identity documents.
  */
 
- interface IRoleVerificationPreventOnExpiry {
+ interface IRoleVerification {
 
     struct IdentityBlob {
         uint256[] largeNumbers;
@@ -82,12 +82,9 @@ contract VerifiableIdentityPreventsOnExpiry {
     function getUserCountryCodePreventOnExpiry(
         address account
     ) public view returns (string memory userAccountCountryCode) { 
-        if(getUserExpiry(account) <= block.timestamp){
-            revert(
-                Errors.ID_INVALID_EXPIRED
-                );
-        } else
-        return IRoleVerificationPreventOnExpiry(proofOfIdentityContract).getUserAccountCountryCodePreventOnExpiry(account);
+        return (
+            IRoleVerification(proofOfIdentityContract).getUserAccountCountryCodePreventOnExpiry(account)
+            );
     }
    
 
@@ -100,7 +97,7 @@ contract VerifiableIdentityPreventsOnExpiry {
 
     function getUserExpiry(address account) public view returns (uint256) {
         return (
-            IRoleVerificationPreventOnExpiry(proofOfIdentityContract).getUserAccountExpiry(account)
+            IRoleVerification(proofOfIdentityContract).getUserAccountExpiry(account)
         );
     }
 
@@ -114,14 +111,10 @@ contract VerifiableIdentityPreventsOnExpiry {
     function getUserLevelPreventOnExpiry(
         address account
     ) public view returns (uint8 userAccountLevel) {
-        // if(IRoleVerificationPreventOnExpiry(proofOfIdentityContract)
-        //         .getUserAccountLevelPreventOnExpiry(account) == 0){
-        //             revert(");
-        //         }
-        // return (
-        //     IRoleVerificationPreventOnExpiry(proofOfIdentityContract)
-        //         .getUserAccountLevelPreventOnExpiry(account)
-        // );
+        return (
+            IRoleVerification(proofOfIdentityContract)
+                .getUserAccountLevelPreventOnExpiry(account)
+        );
     }
 
     /**
@@ -135,7 +128,7 @@ contract VerifiableIdentityPreventsOnExpiry {
         address account
     ) public view returns (uint8 userAccountType) {
         return (
-            IRoleVerificationPreventOnExpiry(proofOfIdentityContract)
+            IRoleVerification(proofOfIdentityContract)
                 .getUserAccountTypePreventOnExpiry(account)
         );
     }
