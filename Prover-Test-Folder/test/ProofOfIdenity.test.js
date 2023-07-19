@@ -533,7 +533,9 @@ describe("Proof of Identity Contract", function () {
         .withArgs(Address3, 2);
     });
     it("Proof of Identity Contract: The TokenURIUpdated event should emit in updateTokenURI with the account and tokenId.", async () => {
-      await expect(ProofOfIdentityContract.updateTokenURI(Address2, 1, "NewURI"))
+      await expect(
+        ProofOfIdentityContract.updateTokenURI(Address2, 1, "NewURI")
+      )
         .to.emit(ProofOfIdentityContract, "TokenURIUpdated")
         .withArgs(Address2, 1, "NewURI");
     });

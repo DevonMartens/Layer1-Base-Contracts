@@ -58,9 +58,7 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
     await delay(10000);
     //should revert and not return values 7 seconds past
     await expectRevert(
-      VerifiableIdentityPreventsOnExpiry.getUserAccountTypePreventOnExpiry(
-        Address2
-      ),
+      VerifiableIdentityPreventsOnExpiry.getUserTypePreventOnExpiry(Address2),
       "103"
     );
   });

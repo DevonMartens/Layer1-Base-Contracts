@@ -26,6 +26,7 @@ abstract contract RoleVerification {
         uint256 expiry;
     }
 
+  
     /**
      * @notice `getUserAccountExpiry` function returns only the expiry date from the users account.
      * @param account address of the target user account.

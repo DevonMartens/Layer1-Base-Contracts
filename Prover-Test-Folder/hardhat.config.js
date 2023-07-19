@@ -18,5 +18,5 @@ module.exports = {
       },
     },
   },
- // allowUnlimitedContractSize: true,
+  // allowUnlimitedContractSize: true,
 };
