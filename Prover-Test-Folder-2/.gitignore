@@ -1,0 +1,11 @@
+/cache
+
+node_modules
+.idea
+.env
+frontend
+
+deployments
+
+cache
+artifacts
