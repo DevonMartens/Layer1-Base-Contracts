@@ -2,6 +2,368 @@
   "version": "3.4",
   "log": [
     {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:4",
+        "version": {
+          "withMetadata": "f0071b7dee12c56f6271244a435af4fe910418c493b7ac6aed22bab09d897b3c",
+          "withoutMetadata": "6e9be3b941bd77c1d883434540d951276172a12ec155486743873834bb99da2a",
+          "linkedWithoutMetadata": "6e9be3b941bd77c1d883434540d951276172a12ec155486743873834bb99da2a"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/IRoleVerification.sol:IRoleVerification": {
+        "src": "contracts/IRoleVerification.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getUserAccountExpiry(address)",
+          "getUserAccountIdentityBlob(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/IUserInformation.sol:IUserInformation": {
+        "src": "contracts/IUserInformation.sol:12",
+        "inherit": [
+          "contracts/IRoleVerification.sol:IRoleVerification"
+        ],
+        "libraries": [],
+        "methods": [
+          "getUserAccountCountryCode(address)",
+          "getUserAccountLevel(address)",
+          "getUserAccountType(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/VerifiableIdentity.sol:VerifiableIdentity": {
+        "src": "contracts/VerifiableIdentity.sol:15",
+        "version": {
+          "withMetadata": "24399602c587426972b710e6dee832419e306e13bd56fe516d19ac899a74fc1c",
+          "withoutMetadata": "b77feb35982e8007716bc8bb71783f15b28896f9e907f3cfab523ff4b53a24a9",
+          "linkedWithoutMetadata": "b77feb35982e8007716bc8bb71783f15b28896f9e907f3cfab523ff4b53a24a9"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "getUserCountryCode(address)",
+          "getUserExpiry(address)",
+          "getUserIdentityData(address)",
+          "getUserLevel(address)",
+          "getUserType(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "VerifiableIdentity",
+            "src": "contracts/VerifiableIdentity.sol:16"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "proofOfIdentityContract",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "VerifiableIdentity",
+              "src": "contracts/VerifiableIdentity.sol:22"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
+      "contracts/Errors.sol:Errors": {
+        "src": "contracts/Errors.sol:4",
+        "version": {
+          "withMetadata": "f0071b7dee12c56f6271244a435af4fe910418c493b7ac6aed22bab09d897b3c",
+          "withoutMetadata": "6e9be3b941bd77c1d883434540d951276172a12ec155486743873834bb99da2a",
+          "linkedWithoutMetadata": "6e9be3b941bd77c1d883434540d951276172a12ec155486743873834bb99da2a"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/IRoleVerification.sol:IRoleVerification": {
+        "src": "contracts/IRoleVerification.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getUserAccountExpiry(address)",
+          "getUserAccountIdentityBlob(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/IUserInformation.sol:IUserInformation": {
+        "src": "contracts/IUserInformation.sol:12",
+        "inherit": [
+          "contracts/IRoleVerification.sol:IRoleVerification"
+        ],
+        "libraries": [],
+        "methods": [
+          "getUserAccountCountryCode(address)",
+          "getUserAccountLevel(address)",
+          "getUserAccountType(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/RoleVerification.sol:RoleVerification": {
+        "src": "contracts/RoleVerification.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getUserAccountExpiry(address)",
+          "getUserAccountIdentityBlob(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "identityBlob",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_struct(IdentityBlob)110_storage)",
+              "contract": "RoleVerification",
+              "src": "contracts/RoleVerification.sol:19"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_struct(IdentityBlob)110_storage)": {
+              "label": "mapping(address => struct RoleVerification.IdentityBlob)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_struct(IdentityBlob)110_storage": {
+              "label": "struct RoleVerification.IdentityBlob",
+              "members": [
+                {
+                  "label": "tokenId",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "countryCode",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "userType",
+                  "type": "t_uint8",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "level",
+                  "type": "t_uint8",
+                  "offset": 1,
+                  "slot": "2"
+                },
+                {
+                  "label": "expiry",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "3"
+                }
+              ],
+              "numberOfBytes": "128"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint8": {
+              "label": "uint8",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      },
+      "contracts/VerifiableIdentity.sol:VerifiableIdentity": {
+        "src": "contracts/VerifiableIdentity.sol:15",
+        "version": {
+          "withMetadata": "42668e61f8b48059c97a3b8dba912d3b90c9d9e21b1883cb864490ab5e6841a5",
+          "withoutMetadata": "6073e79d464766193f8049596a7f932c9a07d98de37239e37de53d6b0b3f0ebc",
+          "linkedWithoutMetadata": "6073e79d464766193f8049596a7f932c9a07d98de37239e37de53d6b0b3f0ebc"
+        },
+        "inherit": [
+          "contracts/RoleVerification.sol:RoleVerification"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "getUserCountryCode(address)",
+          "getUserExpiry(address)",
+          "getUserIdentityData(address)",
+          "getUserLevel(address)",
+          "getUserType(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "VerifiableIdentity",
+            "src": "contracts/VerifiableIdentity.sol:16"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "identityBlob",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_struct(IdentityBlob)110_storage)",
+              "contract": "RoleVerification",
+              "src": "contracts/RoleVerification.sol:19"
+            },
+            {
+              "label": "proofOfIdentityContract",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "VerifiableIdentity",
+              "src": "contracts/VerifiableIdentity.sol:22"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_struct(IdentityBlob)110_storage)": {
+              "label": "mapping(address => struct RoleVerification.IdentityBlob)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_struct(IdentityBlob)110_storage": {
+              "label": "struct RoleVerification.IdentityBlob",
+              "members": [
+                {
+                  "label": "tokenId",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "countryCode",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "userType",
+                  "type": "t_uint8",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "level",
+                  "type": "t_uint8",
+                  "offset": 1,
+                  "slot": "2"
+                },
+                {
+                  "label": "expiry",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "3"
+                }
+              ],
+              "numberOfBytes": "128"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint8": {
+              "label": "uint8",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true
+        },
+        "solcVersion": "0.8.2"
+      }
+    },
+    {
       "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:AccessControlUpgradeable": {
         "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:51",
         "inherit": [

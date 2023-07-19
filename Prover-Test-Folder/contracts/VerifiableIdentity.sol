@@ -1,7 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./UserInformation.sol";
+import "./IUserInformation.sol";
+
 
 /**
 * @title VerifiableIdentity
@@ -11,12 +12,14 @@ import "./UserInformation.sol";
 The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
 */
 
-contract VerifiableIdentity is UserInformation {
-    constructor(address proofContract) {
-        VERIFIABLE_IDENTITY = UserInformation(proofContract);
+contract VerifiableIdentity {
+    constructor(address _proofOfIdentityContract) {
+      //  VERIFIABLE_IDENTITY = IUserInformation(_proofOfIdentityContract);
+      proofOfIdentityContract = _proofOfIdentityContract;
     }
 
-    UserInformation private VERIFIABLE_IDENTITY;
+  //  IUserInformation private VERIFIABLE_IDENTITY;
+   address private proofOfIdentityContract;
 
     /**
     @notice getUserCountryCode function returns the country code from the users account
@@ -26,7 +29,7 @@ contract VerifiableIdentity is UserInformation {
     function getUserCountryCode(
         address account
     ) public view returns (string memory userAccountCountryCode) {
-        return (VERIFIABLE_IDENTITY.getUserAccountCountryCode(account));
+        return (IUserInformation(proofOfIdentityContract).getUserAccountCountryCode(account));
     }
 
     /**
@@ -35,7 +38,7 @@ contract VerifiableIdentity is UserInformation {
     */
 
     function getUserExpiry(address account) public view returns (uint256) {
-        return (VERIFIABLE_IDENTITY.getUserAccountExpiry(account));
+        return (IUserInformation(proofOfIdentityContract).getUserAccountExpiry(account));
     }
 
     /**
@@ -45,8 +48,8 @@ contract VerifiableIdentity is UserInformation {
 
     function getUserIdentityData(
         address account
-    ) public view returns (IdentityBlob memory userAccountIdentityBlob) {
-        return (VERIFIABLE_IDENTITY.getUserAccountIdentityBlob(account));
+    ) public view returns (IRoleVerification.IdentityBlob memory) {
+        return (IRoleVerification(proofOfIdentityContract).getUserAccountIdentityBlob(account));
     }
 
     /**
@@ -57,7 +60,7 @@ contract VerifiableIdentity is UserInformation {
     function getUserLevel(
         address account
     ) public view returns (uint8 userAccountLevel) {
-        return (VERIFIABLE_IDENTITY.getUserAccountLevel(account));
+        return (IUserInformation(proofOfIdentityContract).getUserAccountLevel(account));
     }
 
     /**
@@ -68,6 +71,6 @@ contract VerifiableIdentity is UserInformation {
     function getUserType(
         address account
     ) public view returns (uint8 userAccountType) {
-        return (VERIFIABLE_IDENTITY.getUserAccountType(account));
+        return (IUserInformation(proofOfIdentityContract).getUserAccountType(account));
     }
 }

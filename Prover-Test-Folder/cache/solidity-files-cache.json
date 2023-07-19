@@ -804,8 +804,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/VerifiableIdentity.sol": {
-      "lastModificationDate": 1687851719545,
-      "contentHash": "9c0bd046687f4d18fafa94ccb3cd207c",
+      "lastModificationDate": 1689749005150,
+      "contentHash": "f806982974eb0d879059328ab665c7e6",
       "sourceName": "contracts/VerifiableIdentity.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -832,7 +832,7 @@
         }
       },
       "imports": [
-        "./UserInformation.sol"
+        "./IUserInformation.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -1255,6 +1255,82 @@
       ],
       "artifacts": [
         "StorageSlotUpgradeable"
+      ]
+    },
+    "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/IUserInformation.sol": {
+      "lastModificationDate": 1689748951248,
+      "contentHash": "c106be90b9ce0b409cfb7ee6e0c56358",
+      "sourceName": "contracts/IUserInformation.sol",
+      "solcConfig": {
+        "version": "0.8.2",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IRoleVerification.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IUserInformation"
+      ]
+    },
+    "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/IRoleVerification.sol": {
+      "lastModificationDate": 1689748844438,
+      "contentHash": "ca3613faeb88bdbd147de595d8a7287a",
+      "sourceName": "contracts/IRoleVerification.sol",
+      "solcConfig": {
+        "version": "0.8.2",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Errors.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IRoleVerification"
       ]
     }
   }
