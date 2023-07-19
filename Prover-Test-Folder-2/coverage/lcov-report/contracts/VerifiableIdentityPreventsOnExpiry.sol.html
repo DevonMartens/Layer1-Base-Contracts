@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/4</span>
+        <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -30,18 +30,18 @@
         <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">60% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/5</span>
+        <span class='fraction'>3/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">60% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/5</span>
+        <span class='fraction'>3/5</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -275,7 +275,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -290,7 +290,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -306,7 +306,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -395,7 +395,7 @@ contract VerifiableIdentityPreventsOnExpiry {
 <span class="fstat-no" title="function not covered" >    function getUserCountryCodePreventOnExpiry(</span>
         address account
     ) public view returns (string memory userAccountCountryCode) { 
-<span class="cstat-no" title="statement not covered" >        return (</span>
+        return (
             IRoleVerification(proofOfIdentityContract).getUserAccountCountryCodePreventOnExpiry(account)
             );
     }
@@ -408,8 +408,8 @@ contract VerifiableIdentityPreventsOnExpiry {
      * @return userAccountLevel provides the verification level for the specified account passed.
      */
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getUserExpiry(address account) public view returns (uint256) {</span>
-<span class="cstat-no" title="statement not covered" >        return (</span>
+    function getUserExpiry(address account) public view returns (uint256) {
+        return (
             IRoleVerification(proofOfIdentityContract).getUserAccountExpiry(account)
         );
     }
@@ -421,10 +421,10 @@ contract VerifiableIdentityPreventsOnExpiry {
      * @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.
      */
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getUserLevelPreventOnExpiry(</span>
+    function getUserLevelPreventOnExpiry(
         address account
     ) public view returns (uint8 userAccountLevel) {
-<span class="cstat-no" title="statement not covered" >        return (</span>
+        return (
             IRoleVerification(proofOfIdentityContract)
                 .getUserAccountLevelPreventOnExpiry(account)
         );
@@ -437,10 +437,10 @@ contract VerifiableIdentityPreventsOnExpiry {
      * @return userAccountType provides the account type for the specified account passed in the event it has not expired.
      */
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getUserTypePreventOnExpiry(</span>
+    function getUserTypePreventOnExpiry(
         address account
     ) public view returns (uint8 userAccountType) {
-<span class="cstat-no" title="statement not covered" >        return (</span>
+        return (
             IRoleVerification(proofOfIdentityContract)
                 .getUserAccountTypePreventOnExpiry(account)
         );
@@ -451,7 +451,7 @@ contract VerifiableIdentityPreventsOnExpiry {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jul 19 2023 14:29:54 GMT+0200 (Central European Summer Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jul 19 2023 15:16:14 GMT+0200 (Central European Summer Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

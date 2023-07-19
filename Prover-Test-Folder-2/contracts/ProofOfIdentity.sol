@@ -191,7 +191,7 @@ contract ProofOfIdentity is
      * @param score The competency score to be added or updated.
      */
     function establishCompetencyRating(address account, uint8 score) external onlyRole(OPERATOR_ROLE) {
-       identityBlob[account].smallNumbers[2] = score;
+        identityBlob[account].smallNumbers.push(score);
     }
     
 

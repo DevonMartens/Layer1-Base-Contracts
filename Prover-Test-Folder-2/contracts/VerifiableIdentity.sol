@@ -31,6 +31,18 @@ interface IRoleVerification {
         address account
     ) external view returns (uint256 userAccountExpiry);
 
+     /**
+     * @notice `getUserAccountCompetencyRating` gets the competency rating a user
+     * earned testing.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account.
+     */
+
+    function getUserAccountCompetencyRating(
+        address account
+    ) external view returns (uint8);
+
+
     /**
      * @notice `getUserAccountCountryCode` function returns the country code from the users account.
      * @param account address of the target user account.
@@ -69,6 +81,20 @@ contract VerifiableIdentity {
     }
     
     address private proofOfIdentityContract;
+
+     /**
+     * @notice `getUserCompetencyRating` gets the competency rating a user
+     * earned testing.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account.
+     */
+
+    function getUserCompetencyRating(
+        address account
+    ) public view returns (uint8) {
+        return (IRoleVerification(proofOfIdentityContract).getUserAccountCompetencyRating(account));
+    }
+
 
     /**
     @notice getUserCountryCode function returns the country code from the users account

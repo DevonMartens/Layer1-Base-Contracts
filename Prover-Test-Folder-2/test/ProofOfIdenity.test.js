@@ -188,6 +188,11 @@ describe("Proof of Identity Contract", function () {
         await ProofOfIdentityContract.getUserAccountType(Address2)
       ).to.equal(5);
     });
+    //
+    it("Proof of Identity Contract: The establishCompetencyRating function add a number to the smallNumbers array.", async () => {
+      await ProofOfIdentityContract.establishCompetencyRating(Address2, 1);
+      expect(await ProofOfIdentityContract.getUserAccountCompetencyRating(Address2)).to.equal(1); 
+    });
     it("Proof of Identity Contract: The updateIdentity function should alter a previously created identity's account level", async () => {
       expect(
         await ProofOfIdentityContract.getUserAccountLevel(Address2)
@@ -323,6 +328,15 @@ describe("Proof of Identity Contract", function () {
         Address2SignsProofOfIdentityContract.suspendAccountMaintainTokenAndIdentityBlob(
           Address3,
           "hi"
+        ),
+        `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
+      );
+    });
+    it("Proof of Identity Contract: The function `establishCompetencyRating` should only allow a OPERATOR_ROLE address to call it", async () => {
+      await expectRevert(
+        Address2SignsProofOfIdentityContract.establishCompetencyRating(
+          Address3,
+          4
         ),
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
