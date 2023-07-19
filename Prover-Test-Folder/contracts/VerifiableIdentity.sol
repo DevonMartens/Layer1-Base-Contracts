@@ -14,12 +14,10 @@ The official Haven1 ProofOfIdentity.sol deployment address must be passed via th
 
 contract VerifiableIdentity {
     constructor(address _proofOfIdentityContract) {
-      //  VERIFIABLE_IDENTITY = IUserInformation(_proofOfIdentityContract);
       proofOfIdentityContract = _proofOfIdentityContract;
     }
-
-  //  IUserInformation private VERIFIABLE_IDENTITY;
-   address private proofOfIdentityContract;
+    
+    address private proofOfIdentityContract;
 
     /**
     @notice getUserCountryCode function returns the country code from the users account

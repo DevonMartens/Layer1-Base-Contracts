@@ -1,26 +1,24 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./UserInformationPreventsOnExpiry.sol";
+import "./IUserInformationPreventsOnExpiry.sol";
 
 /**
- * @title UserInformationPreventsOnExpiry
+ * @title VerifiableIdentityPreventsOnExpiry
  * @author Haven1 Development Team
  * @notice This contract allows developers to access and utilise Haven1s Proof Of Identity Framework data.
+ * It will revert if a user has expired documents and needs to update their account.
  * @dev Haven1s Proof Of Identity Framework data is available via the imported functions below.
  * The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
  * UserInformationPreventsOnExpiry provides protected functions to ensure a users Account contains in date identity documents.
  */
 
-contract VerifiableIdentityPreventsOnExpiry is UserInformationPreventsOnExpiry {
-    constructor(address proofContract) {
-        VERIFIABLE_IDENTITY_PREVENT_ON_EXPIRY = UserInformationPreventsOnExpiry(
-            proofContract
-        );
+contract VerifiableIdentityPreventsOnExpiry {
+    constructor(address _proofOfIdentityContract) {
+      proofOfIdentityContract = _proofOfIdentityContract;
     }
-
-    UserInformationPreventsOnExpiry
-        private VERIFIABLE_IDENTITY_PREVENT_ON_EXPIRY;
+    
+    address private proofOfIdentityContract;
 
     /**
      * @notice `getUserCountryCodePreventOnExpiry` function returns the country code from the users account.
@@ -33,7 +31,7 @@ contract VerifiableIdentityPreventsOnExpiry is UserInformationPreventsOnExpiry {
         address account
     ) public view returns (string memory userAccountCountryCode) {
         return (
-            VERIFIABLE_IDENTITY_PREVENT_ON_EXPIRY
+            IUserInformationPreventsOnExpiry(proofOfIdentityContract)
                 .getUserAccountCountryCodePreventOnExpiry(account)
         );
     }
@@ -47,7 +45,7 @@ contract VerifiableIdentityPreventsOnExpiry is UserInformationPreventsOnExpiry {
 
     function getUserExpiry(address account) public view returns (uint256) {
         return (
-            VERIFIABLE_IDENTITY_PREVENT_ON_EXPIRY.getUserAccountExpiry(account)
+            IUserInformationPreventsOnExpiry(proofOfIdentityContract).getUserAccountExpiry(account)
         );
     }
 
@@ -60,9 +58,9 @@ contract VerifiableIdentityPreventsOnExpiry is UserInformationPreventsOnExpiry {
 
     function getUserIdentityData(
         address account
-    ) public view returns (IdentityBlob memory userAccountIdentityBlob) {
+    ) public view returns (IRoleVerification.IdentityBlob memory) {
         return (
-            VERIFIABLE_IDENTITY_PREVENT_ON_EXPIRY.getUserAccountIdentityBlob(
+            IUserInformationPreventsOnExpiry(proofOfIdentityContract).getUserAccountIdentityBlob(
                 account
             )
         );
@@ -79,7 +77,7 @@ contract VerifiableIdentityPreventsOnExpiry is UserInformationPreventsOnExpiry {
         address account
     ) public view returns (uint8 userAccountLevel) {
         return (
-            VERIFIABLE_IDENTITY_PREVENT_ON_EXPIRY
+            IUserInformationPreventsOnExpiry(proofOfIdentityContract)
                 .getUserAccountLevelPreventOnExpiry(account)
         );
     }
@@ -95,7 +93,7 @@ contract VerifiableIdentityPreventsOnExpiry is UserInformationPreventsOnExpiry {
         address account
     ) public view returns (uint8 userAccountType) {
         return (
-            VERIFIABLE_IDENTITY_PREVENT_ON_EXPIRY
+            IUserInformationPreventsOnExpiry(proofOfIdentityContract)
                 .getUserAccountTypePreventOnExpiry(account)
         );
     }
