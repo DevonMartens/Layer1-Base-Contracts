@@ -184,6 +184,17 @@ contract ProofOfIdentity is
         emit IdentityUpdated(account, identityBlob[account].largeNumbers[0]);
     }
 
+    /**
+     * @notice `establishCompetencyRating` function allows operators to add or update a competency score for a user's account.
+     * @dev This function can only be called by an address with the OPERATOR_ROLE.
+     * @param account The address of the target user account.
+     * @param score The competency score to be added or updated.
+     */
+    function establishCompetencyRating(address account, uint8 score) external onlyRole(OPERATOR_ROLE) {
+       identityBlob[account].smallNumbers[2] = score;
+    }
+    
+
      /**	
      * @notice `updateTokenURI` function is only callable by operator role, 
      * its purpose is to update the tokenUri of an account.	

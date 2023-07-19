@@ -195,7 +195,7 @@ describe("Proof of Identity Contract", function () {
       //updates account level to 6
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        updateBlobAddress2,
+        updateBlobAddress3,
         "hi"
       );
       //gets new code
@@ -210,7 +210,7 @@ describe("Proof of Identity Contract", function () {
       //updates  the expiry of the account
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        updateBlobAddress2,
+        updateBlobAddress3,
         "hi"
       );
       //gets new expiry
@@ -226,11 +226,11 @@ describe("Proof of Identity Contract", function () {
       ).to.equal(78886932657);
       expect(
         await ProofOfIdentityContract.getUserAccountExpiry(Address3)
-      ).to.equal(78886932657);
+      ).to.equal(78886932625);
       //update Address3 and Address2s expiry
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        updateBlobAddress2,
+        updateBlobAddress3,
         "hi"
       );
       await ProofOfIdentityContract.updateIdentity(
@@ -330,11 +330,8 @@ describe("Proof of Identity Contract", function () {
     it("Proof of Identity Contract: The function updateIdentity should only allow a OPERATOR_ROLE address to call it", async () => {
       await expectRevert(
         Address2SignsProofOfIdentityContract.updateIdentity(
-          Address3,
-          1,
-          2,
-          3,
-          78886932657,
+          ContractDeployer,
+          blobForAddress3,
           "hi"
         ),
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`

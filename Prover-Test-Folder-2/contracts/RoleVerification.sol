@@ -72,6 +72,20 @@ abstract contract RoleVerification {
     ) public view returns (uint8 userAccountType) {
         return (identityBlob[account].smallNumbers[0]);
     }
+
+    /**
+     * @notice `getUserAccountCompetencyRating` gets the competency rating a user
+     * earned testing.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account.
+     */
+
+    function getUserAccountCompetencyRating(
+        address account
+    ) public view returns (uint8) {
+        return (identityBlob[account].smallNumbers[2]);
+    }
+
     /**
      * @notice getUserAccountCountryCode function returns the country code from the users account.
      * @dev function reverts in the event the target account has expired.
@@ -118,6 +132,23 @@ abstract contract RoleVerification {
             revert(Errors.ID_INVALID_EXPIRED);
         }
         return (identityBlob[account].smallNumbers[0]);
+    }
+
+     /**
+     * @notice `getUserAccountCompetencyRatingPreventOnExpiry` gets the competency rating a user
+     * earned testing but access to it is prevented if the identity has expired.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account, if the identity has not expired.
+     * @dev This function reverts if the target account's identity has expired.
+     */
+
+     function getUserAccountCompetencyRatingPreventOnExpiry(
+        address account
+    ) public view returns (uint8) {
+        if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
+            revert(Errors.ID_INVALID_EXPIRED);
+        }
+        return (identityBlob[account].smallNumbers[2]);
     }
 
 }

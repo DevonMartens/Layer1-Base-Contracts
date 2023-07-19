@@ -68,12 +68,12 @@ describe("Verifiable Identity Contract's ability to read the Proof Of Identity c
     expect(
       await ProofOfIdentityContract.getUserAccountCountryCode(Address2)
     ).to.equal("1");
-    expect(await VerifiableIdentity.getUserCountryCode(Address3)).to.equal("4");
+    expect(await VerifiableIdentity.getUserCountryCode(Address3)).to.equal("1");
     //check that the country code is the same in the Verifiable Identity
     expect(
       await ProofOfIdentityContract.getUserAccountCountryCode(Address2)
     ).to.equal("1");
-    expect(await VerifiableIdentity.getUserCountryCode(Address3)).to.equal("4");
+    expect(await VerifiableIdentity.getUserCountryCode(Address3)).to.equal("1");
     //checks against each Address3
     expect(await VerifiableIdentity.getUserCountryCode(Address2)).to.equal(
       await ProofOfIdentityContract.getUserAccountCountryCode(Address2)
