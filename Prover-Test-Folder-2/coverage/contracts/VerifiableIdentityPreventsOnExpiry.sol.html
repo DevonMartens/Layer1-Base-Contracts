@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>4/4</span>
+        <span class='fraction'>5/5</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">60% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>3/5</span>
+        <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">60% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>3/5</span>
+        <span class='fraction'>6/6</span>
       </div>
     </div>
   </div>
@@ -177,7 +177,36 @@
 132
 133
 134
-135</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -246,7 +275,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -259,9 +287,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -289,8 +316,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -376,10 +434,22 @@ import "./Errors.sol";
         address account
     ) external view returns (uint8);
 &nbsp;
+        /**
+     * @notice `getUserCompetencyRatingPreventOnExpiry` gets the competency rating a user
+     * earned testing but access to it is prevented if the identity has expired.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account, if the identity has not expired.
+     * @dev This function reverts if the target account's identity has expired.
+     */
+&nbsp;
+     function getUserAccountCompetencyRatingPreventOnExpiry(
+        address account
+    ) external view returns (uint8);
+&nbsp;
 }
 &nbsp;
 contract VerifiableIdentityPreventsOnExpiry {
-<span class="fstat-no" title="function not covered" >    constructor(address _proofOfIdentityContract) {</span>
+    constructor(address _proofOfIdentityContract) {
       proofOfIdentityContract = _proofOfIdentityContract;
     }
     
@@ -392,7 +462,7 @@ contract VerifiableIdentityPreventsOnExpiry {
      * @return userAccountCountryCode provides the country code for the specified account passed in the event it has not expired.
      */
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getUserCountryCodePreventOnExpiry(</span>
+    function getUserCountryCodePreventOnExpiry(
         address account
     ) public view returns (string memory userAccountCountryCode) { 
         return (
@@ -431,6 +501,23 @@ contract VerifiableIdentityPreventsOnExpiry {
     }
 &nbsp;
     /**
+     * @notice `getUserCompetencyRatingPreventOnExpiry` gets the competency rating a user
+     * earned testing but access to it is prevented if the identity has expired.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account, if the identity has not expired.
+     * @dev This function reverts if the target account's identity has expired.
+     */
+&nbsp;
+     function getUserCompetencyRatingPreventOnExpiry(
+        address account
+    ) public view returns (uint8) {
+        return (
+            IRoleVerification(proofOfIdentityContract)
+                .getUserAccountCompetencyRatingPreventOnExpiry(account)
+        );
+    }
+&nbsp;
+    /**
      * @notice `getUserTypePreventOnExpiry` function returns the account type from the users account.
      * @dev call REVERTS in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
      * @param account address of the target user account.
@@ -451,7 +538,7 @@ contract VerifiableIdentityPreventsOnExpiry {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jul 19 2023 15:16:14 GMT+0200 (Central European Summer Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jul 19 2023 15:28:39 GMT+0200 (Central European Summer Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

@@ -72,7 +72,30 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
       "103"
     );
   });
-  //
+  it("Verifiable Identity Prevents on Expiry Contract: After a token is expired the `getUserCompetencyRatingPreventOnExpir`from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
+    const set = timestamp + 5;
+    // TOKEN INFO: tokenId 1 country code "1" , userType 2 ,level 3, expiry block NOW, tokenURI - tokenONE
+    const blobForAddress2ExpiresSoon =  {
+      largeNumbers: [1, set],
+      smallNumbers: [2, 3],
+      strings: ["1",]
+    };
+    await ProofOfIdentityContract.issueIdentity(
+      Address2,
+      blobForAddress2ExpiresSoon,
+      "tokenONE"
+    );
+    await ProofOfIdentityContract.establishCompetencyRating(Address2, 1);
+    //time stamp was on mint so this should revert
+    await time.increase(time.duration.days(2));
+    //should revert and not return values 7 seconds past
+    await expectRevert(
+      VerifiableIdentityPreventsOnExpiry.getUserCompetencyRatingPreventOnExpiry(
+        Address2
+      ),
+      "103"
+    );
+  });
   it("Verifiable Identity Prevents on Expiry Contract: Verifiable Identity Prevents on Expiry getUserExpiry should get the expiry or revert if expired", async () => {
     const set = timestamp + 5;
     const blobForAddress2ExpiresSoon =  {
@@ -229,4 +252,27 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
       )
     ).to.equal("4");
   });
+  it("Verifiable Identity Prevents on Expiry Contract: After a token is NOT expired the `getUserCompetencyRatingPreventOnExpiry` from the VerifiableIdentityPreventsOnExpiry contract contract should provide accurate information", async () => {
+    // ensures block.timestamp provided is not expired by adding 5000 seconds
+    const notExpiredTimeStamp = timestamp + 50000000;
+    // does not expire soon
+    const blobForAddress3DoesNotExpiresSoon =  {
+      largeNumbers: [1, notExpiredTimeStamp],
+      smallNumbers: [5, 6],
+      strings: ["4",]
+    };
+
+    // TOKEN INFO: tokenId 2 country code "4" , userType 5 ,level 6, expiry block - 78886932789, tokenURI tokenONE
+    await ProofOfIdentityContract.issueIdentity(
+      Address3,
+      blobForAddress3DoesNotExpiresSoon,
+      "tokenTWO"
+    );
+  await ProofOfIdentityContract.establishCompetencyRating(Address3, 1);
+  //should revert and not return values 7 seconds past
+  expect(await 
+    VerifiableIdentityPreventsOnExpiry.getUserCompetencyRatingPreventOnExpiry(
+      Address3
+    )).to.equal(1);
+});
 });

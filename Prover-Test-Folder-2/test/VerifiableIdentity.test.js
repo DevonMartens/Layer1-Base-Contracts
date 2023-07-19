@@ -63,6 +63,10 @@ describe("Verifiable Identity Contract's ability to read the Proof Of Identity c
       ProofOfIdentityContract.address
     );
   });
+  it("Verifiable Identity Contract: The values for `Competency Rating` in a seperate verifiable identity contract should match the values for the original proof of identity.", async () => {
+    await ProofOfIdentityContract.establishCompetencyRating(Address3, 4);
+    expect(await VerifiableIdentity.getUserCompetencyRating(Address3)).to.equal(await ProofOfIdentityContract.getUserAccountCompetencyRating(Address3));
+  });
   it("Verifiable Identity Contract: The values for `country code` in a seperate verifiable identity contract should match the values for the original proof of identity.", async () => {
     //check that the country code is the same in the original proof of identity
     expect(
