@@ -3,6 +3,21 @@ const { ethers, upgrades } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
+
+const blobForAddress2 =  {
+  largeNumbers: [1, 78886932657],
+  smallNumbers: [2, 3],
+  strings: ["1",]
+};
+
+
+const blobForAddress3 =  {
+  largeNumbers: [2, 78886932625],
+  smallNumbers: [2, 3],
+  strings: ["1",]
+};
+
+
 describe("Proof of Identity Contract", function () {
   let ProofOfIdentityContract;
   let ProofOfIdentityFactory;
@@ -48,17 +63,21 @@ describe("Proof of Identity Contract", function () {
     beforeEach(async () => {
       // Issues the second signer address an NFT and assigns it an identity
       // By defaul this is tokenId 1.
+
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        "1",
-        2,
-        3,
-        78886932657,
+        blobForAddress2,
+        "tokenURI"
+      );
+
+      await ProofOfIdentityContract.issueIdentity(
+        Address3,
+        blobForAddress3,
         "tokenURI"
       );
     });
     it("Proof of Identity Contract: The totalSupply should be equal to 1 after a token is minted.", async () => {
-      expect(await ProofOfIdentityContract.totalSupply()).to.equal(1);
+      expect(await ProofOfIdentityContract.totalSupply()).to.equal(2);
     });
     it("Proof of Identity Contract: The issueIdentity function should mint a token to the address it is requested to", async () => {
       //checks that Address2 owns token one
@@ -89,14 +108,6 @@ describe("Proof of Identity Contract", function () {
       ).to.equal(78886932657);
     });
     it("Proof of Identity Contract: The issueIdentity function should create multiple structs and mint multiple tokens", async () => {
-      await ProofOfIdentityContract.issueIdentity(
-        Address3,
-        "1",
-        2,
-        3,
-        78886932625,
-        "tokenURI"
-      );
       //calls expiry in struct to ensure formation
       expect(
         await ProofOfIdentityContract.getUserAccountExpiry(Address2)
@@ -120,10 +131,12 @@ describe("Proof of Identity Contract", function () {
       // country code "1" , userType 2 ,level 3, expiry block, tokenURI
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        "1",
-        2,
-        3,
-        78886932657,
+        blobForAddress2,
+        "tokenURI"
+      );
+      await ProofOfIdentityContract.issueIdentity(
+        Address3,
+       blobForAddress3,
         "tokenURI"
       );
     });
@@ -172,10 +185,7 @@ describe("Proof of Identity Contract", function () {
       //updates account level to 6
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        1,
-        6,
-        6,
-        78886932657,
+       blobForAddress2,
         "hi"
       );
       //gets new code
@@ -190,10 +200,7 @@ describe("Proof of Identity Contract", function () {
       //updates  the expiry of the account
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        1,
-        2,
-        6,
-        78886932658,
+     blobForAddress2,
         "hi"
       );
       //gets new expiry
@@ -202,14 +209,7 @@ describe("Proof of Identity Contract", function () {
       ).to.equal(78886932658);
     });
     it("Proof of Identity Contract: The updateIdentity function should alter a previously created identities enitre struct", async () => {
-      await ProofOfIdentityContract.issueIdentity(
-        Address3,
-        1,
-        2,
-        3,
-        78886932657,
-        "token"
-      );
+  
       //calls expiry in struct to ensure formation was done as expected
       expect(
         await ProofOfIdentityContract.getUserAccountExpiry(Address2)
@@ -262,10 +262,7 @@ describe("Proof of Identity Contract", function () {
       // country code "1" , userType 2 ,level 3, expiry block, tokenURI
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        "1",
-        2,
-        3,
-        78886932657,
+        blobForAddress2,
         "token"
       );
       // getting error messages for accesscontrol errors
@@ -342,11 +339,8 @@ describe("Proof of Identity Contract", function () {
     it("Proof of Identity Contract: The function issueIdentity should only allow a OPERATOR_ROLE address to call it", async () => {
       await expectRevert(
         Address2SignsProofOfIdentityContract.issueIdentity(
-          Address3,
-          1,
-          2,
-          3,
-          78886932657,
+          ContractDeployer,
+          blobForAddress3,
           "hi"
         ),
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
@@ -397,10 +391,7 @@ describe("Proof of Identity Contract", function () {
       // tokenId 1 country code "1" , userType 2 ,level 3, expiry block 78886932657, tokenURI - tokenONE
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        "1",
-        2,
-        3,
-        78886932657,
+        blobForAddress2,
         "tokenONE"
       );
     });
@@ -428,16 +419,13 @@ describe("Proof of Identity Contract", function () {
     });
   });
   describe("Testing custom errors in updateTokenURI, issueIdentity, and updateIdentity to ensure functions revert as expected.", function () {
-    let lessThanCurrentBlockNumber;
+    let lessThanCurrentTimeStampNumber;
     let greaterThanCurrentBlockNumber;
     beforeEach(async () => {
       // Mints tokenid 1 to Address2country code "1" , userType 2 ,level 3, expiry block, tokenURI
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        "1",
-        2,
-        3,
-        78886932657,
+       blobForAddress2,
         "token"
       );
       //get current block from ethers
@@ -447,30 +435,29 @@ describe("Proof of Identity Contract", function () {
         .timestamp;
 
       //passed block
-      lessThanCurrentBlockNumber = currentBlockTimestamp - 50;
+      lessThanCurrentTimeStampNumber = currentBlockTimestamp - 50;
       greaterThanCurrentBlockNumber = currentBlockTimestamp + 50;
     });
     it("Proof of Identity Contract: `issueIdentity` should stop a wallet that has a token from minting another token.", async () => {
       await expectRevert(
         ProofOfIdentityContract.issueIdentity(
           Address2,
-          1,
-          2,
-          3,
-          78886932657,
+          blobForAddress2,
           "token"
         ),
         `100`
       );
     });
     it("Proof of Identity Contract: issueIdentity should not allow expired tokens to be minted.", async () => {
-      await expectRevert(
+      const expiredBlob =  {
+        largeNumbers: [2, lessThanCurrentTimeStampNumber],
+        smallNumbers: [2, 3],
+        strings: ["1",]
+      };
+      await expectRevert(      
         ProofOfIdentityContract.issueIdentity(
           Address3,
-          1,
-          2,
-          3,
-          lessThanCurrentBlockNumber,
+          expiredBlob,
           "token"
         ),
         `103`
@@ -501,10 +488,7 @@ describe("Proof of Identity Contract", function () {
       // Mints tokenid 1 to Address2 country code "1" , userType 2 ,level 3, expiry block, tokenURI
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        "1",
-        2,
-        3,
-        78886932657,
+       blobForAddress2,
         "token"
       );
     });
@@ -521,11 +505,8 @@ describe("Proof of Identity Contract", function () {
     it("Proof of Identity Contract: The event IdentityUpdated should emit in issueIdentity function with an address of the updated token and it's tokenId.", async () => {
       await expect(
         ProofOfIdentityContract.issueIdentity(
-          Address3,
-          "1",
-          2,
-          3,
-          78886932657,
+          ContractDeployer,
+          blobForAddress3,
           "token"
         )
       )
