@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./IUserInformationPreventsOnExpiry.sol";
+import "./Errors.sol";
 
 /**
  * @title VerifiableIdentityPreventsOnExpiry
@@ -12,6 +12,58 @@ import "./IUserInformationPreventsOnExpiry.sol";
  * The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
  * UserInformationPreventsOnExpiry provides protected functions to ensure a users Account contains in date identity documents.
  */
+
+ interface IRoleVerificationPreventOnExpiry {
+
+    struct IdentityBlob {
+        uint256[] largeNumbers;
+        uint8[] smallNumbers;
+        string[] strings;
+    }
+
+     /**
+     * @notice `getUserAccountExpiry` function returns only the expiry date from the users account.
+     * @param account address of the target user account.
+     * @return userAccountExpiry provides the account expiry for the account passed.
+     */
+
+    function getUserAccountExpiry(
+        address account
+    ) external view returns (uint256 userAccountExpiry);
+
+    /**
+     * @notice getUserAccountCountryCode function returns the country code from the users account.
+     * @dev function reverts in the event the target account has expired.
+     * @param account address of the target user account.
+     * @return userAccountCountryCode provides the country code for the specified account passed in the event it has not expired.
+     */
+
+    function getUserAccountCountryCodePreventOnExpiry(
+        address account
+    ) external view returns (string memory userAccountCountryCode);
+
+    /**
+     * @notice `getUserAccountLevelPreventOnExpiry` function returns the verification level from the users account.
+     * @dev function reverts in the event the target account has expired.
+     * @param account address of the target user account.
+     * @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.
+     */
+
+    function getUserAccountLevelPreventOnExpiry(
+        address account
+    ) external view returns (uint8);
+    /**
+     * @notice `getUserAccountTypePreventOnExpiry` function returns the account type from the users account.
+     * @dev function reverts in the event the target account has expired.
+     * @param account address of the target user account.
+     * @return userAccountType provides the account type for the specified account passed in the event it has not expired.
+     */
+
+    function getUserAccountTypePreventOnExpiry(
+        address account
+    ) external view returns (uint8);
+
+}
 
 contract VerifiableIdentityPreventsOnExpiry {
     constructor(address _proofOfIdentityContract) {
@@ -29,12 +81,15 @@ contract VerifiableIdentityPreventsOnExpiry {
 
     function getUserCountryCodePreventOnExpiry(
         address account
-    ) public view returns (string memory userAccountCountryCode) {
-        return (
-            IUserInformationPreventsOnExpiry(proofOfIdentityContract)
-                .getUserAccountCountryCodePreventOnExpiry(account)
-        );
+    ) public view returns (string memory userAccountCountryCode) { 
+        if(getUserExpiry(account) <= block.timestamp){
+            revert(
+                Errors.ID_INVALID_EXPIRED
+                );
+        } else
+        return IRoleVerificationPreventOnExpiry(proofOfIdentityContract).getUserAccountCountryCodePreventOnExpiry(account);
     }
+   
 
     /**
      * @notice `getUserExpiry` function returns only the expiry date from the users account.
@@ -45,24 +100,7 @@ contract VerifiableIdentityPreventsOnExpiry {
 
     function getUserExpiry(address account) public view returns (uint256) {
         return (
-            IUserInformationPreventsOnExpiry(proofOfIdentityContract).getUserAccountExpiry(account)
-        );
-    }
-
-    /**
-     * @notice `getUserIdentityData` function returns struct IdentityBlob from the users account.
-     * @dev call will NOT REVERT in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
-     * @param account address of the target user account.
-     * @return userAccountIdentityBlob provides the IdentityBlob data for the specified account passed.
-     */
-
-    function getUserIdentityData(
-        address account
-    ) public view returns (IRoleVerification.IdentityBlob memory) {
-        return (
-            IUserInformationPreventsOnExpiry(proofOfIdentityContract).getUserAccountIdentityBlob(
-                account
-            )
+            IRoleVerificationPreventOnExpiry(proofOfIdentityContract).getUserAccountExpiry(account)
         );
     }
 
@@ -76,10 +114,14 @@ contract VerifiableIdentityPreventsOnExpiry {
     function getUserLevelPreventOnExpiry(
         address account
     ) public view returns (uint8 userAccountLevel) {
-        return (
-            IUserInformationPreventsOnExpiry(proofOfIdentityContract)
-                .getUserAccountLevelPreventOnExpiry(account)
-        );
+        // if(IRoleVerificationPreventOnExpiry(proofOfIdentityContract)
+        //         .getUserAccountLevelPreventOnExpiry(account) == 0){
+        //             revert(");
+        //         }
+        // return (
+        //     IRoleVerificationPreventOnExpiry(proofOfIdentityContract)
+        //         .getUserAccountLevelPreventOnExpiry(account)
+        // );
     }
 
     /**
@@ -93,7 +135,7 @@ contract VerifiableIdentityPreventsOnExpiry {
         address account
     ) public view returns (uint8 userAccountType) {
         return (
-            IUserInformationPreventsOnExpiry(proofOfIdentityContract)
+            IRoleVerificationPreventOnExpiry(proofOfIdentityContract)
                 .getUserAccountTypePreventOnExpiry(account)
         );
     }

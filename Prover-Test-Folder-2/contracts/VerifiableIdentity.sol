@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./IUserInformation.sol";
 
 
 /**
@@ -11,6 +10,58 @@ import "./IUserInformation.sol";
 * @dev Haven1s Proof Of Identity Framework data becomes available via the imported functions below.
 The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
 */
+
+interface IRoleVerification {
+
+
+    struct IdentityBlob {
+        uint256[] largeNumbers;
+        uint8[] smallNumbers;
+        string[] strings;
+    }
+
+
+    /**
+     * @notice `getUserAccountExpiry` function returns only the expiry date from the users account.
+     * @param account address of the target user account.
+     * @return userAccountExpiry provides the account expiry for the account passed.
+     */
+
+    function getUserAccountExpiry(
+        address account
+    ) external view returns (uint256 userAccountExpiry);
+
+    /**
+     * @notice `getUserAccountCountryCode` function returns the country code from the users account.
+     * @param account address of the target user account.
+     * @return userAccountCountryCode provides the country code for the specified account passed.
+     */
+
+    function getUserAccountCountryCode(
+        address account
+    ) external view returns (string memory userAccountCountryCode);
+
+    /**
+     * @notice `getUserAccountLevel` function returns the verification level from the users account.
+     * @param account address of the target user account.
+     * @return userAccountLevel provides the verification level for the specified account passed.
+     */
+
+    function getUserAccountLevel(
+        address account
+    ) external view returns (uint8 userAccountLevel);
+
+    /**
+     * @notice `getUserAccountType` function returns the account type from the users account.
+     * @param account address of the target user account.
+     * @return userAccountType provides the account type for the specified account passed.
+     */
+
+    function getUserAccountType(
+        address account
+    ) external view returns (uint8 userAccountType);
+
+}
 
 contract VerifiableIdentity {
     constructor(address _proofOfIdentityContract) {
@@ -27,7 +78,7 @@ contract VerifiableIdentity {
     function getUserCountryCode(
         address account
     ) public view returns (string memory userAccountCountryCode) {
-        return (IUserInformation(proofOfIdentityContract).getUserAccountCountryCode(account));
+        return (IRoleVerification(proofOfIdentityContract).getUserAccountCountryCode(account));
     }
 
     /**
@@ -36,18 +87,7 @@ contract VerifiableIdentity {
     */
 
     function getUserExpiry(address account) public view returns (uint256) {
-        return (IUserInformation(proofOfIdentityContract).getUserAccountExpiry(account));
-    }
-
-    /**
-    @notice getUserIdentityData function returns struct IdentityBlob from the users account
-    @param account address of the target user account
-    */
-
-    function getUserIdentityData(
-        address account
-    ) public view returns (IRoleVerification.IdentityBlob memory) {
-        return (IRoleVerification(proofOfIdentityContract).getUserAccountIdentityBlob(account));
+        return (IRoleVerification(proofOfIdentityContract).getUserAccountExpiry(account));
     }
 
     /**
@@ -58,7 +98,7 @@ contract VerifiableIdentity {
     function getUserLevel(
         address account
     ) public view returns (uint8 userAccountLevel) {
-        return (IUserInformation(proofOfIdentityContract).getUserAccountLevel(account));
+        return (IRoleVerification(proofOfIdentityContract).getUserAccountLevel(account));
     }
 
     /**
@@ -69,6 +109,6 @@ contract VerifiableIdentity {
     function getUserType(
         address account
     ) public view returns (uint8 userAccountType) {
-        return (IUserInformation(proofOfIdentityContract).getUserAccountType(account));
+        return (IRoleVerification(proofOfIdentityContract).getUserAccountType(account));
     }
 }

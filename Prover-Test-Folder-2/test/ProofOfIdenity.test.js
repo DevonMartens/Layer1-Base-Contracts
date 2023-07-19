@@ -17,6 +17,17 @@ const blobForAddress3 =  {
   strings: ["1",]
 };
 
+const updateBlobAddress2 =  {
+  largeNumbers: [1, 78886932657],
+  smallNumbers: [2, 3],
+  strings: ["4",]
+};
+
+const updateBlobAddress3 =  {
+  largeNumbers: [2, 78886932658],
+  smallNumbers: [2, 6],
+  strings: ["4",]
+};
 
 describe("Proof of Identity Contract", function () {
   let ProofOfIdentityContract;
@@ -148,10 +159,7 @@ describe("Proof of Identity Contract", function () {
       //updates
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        "4",
-        2,
-        3,
-        78886932657,
+        updateBlobAddress2,
         "hi"
       );
       //gets new code
@@ -165,12 +173,14 @@ describe("Proof of Identity Contract", function () {
         await ProofOfIdentityContract.getUserAccountType(Address2)
       ).to.equal(2);
       //updates
+      const updateBlobAddress2getUserAccountType =  {
+        largeNumbers: [1, 78886932657],
+        smallNumbers: [5, 3],
+        strings: ["4",]
+      };
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        1,
-        5,
-        3,
-        78886932657,
+        updateBlobAddress2getUserAccountType,
         "hi"
       );
       //gets new code
@@ -185,7 +195,7 @@ describe("Proof of Identity Contract", function () {
       //updates account level to 6
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-       blobForAddress2,
+        updateBlobAddress2,
         "hi"
       );
       //gets new code
@@ -200,7 +210,7 @@ describe("Proof of Identity Contract", function () {
       //updates  the expiry of the account
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-     blobForAddress2,
+        updateBlobAddress2,
         "hi"
       );
       //gets new expiry
@@ -220,18 +230,12 @@ describe("Proof of Identity Contract", function () {
       //update Address3 and Address2s expiry
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        1,
-        2,
-        6,
-        78886932658,
+        updateBlobAddress2,
         "hi"
       );
       await ProofOfIdentityContract.updateIdentity(
         Address3,
-        1,
-        2,
-        6,
-        78886932658,
+        updateBlobAddress3,
         "hi"
       );
       //calls expiry in struct to ensure formation was done as expected
@@ -358,10 +362,7 @@ describe("Proof of Identity Contract", function () {
       //tests that Address2 can use her role
       await Address2SignsProofOfIdentityContract.updateIdentity(
         Address2,
-        1,
-        2,
-        3,
-        78886932657,
+        updateBlobAddress2,
         "hi"
       );
     });
@@ -467,10 +468,7 @@ describe("Proof of Identity Contract", function () {
       await expectRevert(
         ProofOfIdentityContract.updateIdentity(
           Address3,
-          1,
-          2,
-          3,
-          greaterThanCurrentBlockNumber,
+          updateBlobAddress3,
           "hi"
         ),
         `101`
@@ -511,7 +509,7 @@ describe("Proof of Identity Contract", function () {
         )
       )
         .to.emit(ProofOfIdentityContract, "IdentityIssued")
-        .withArgs(Address3, 2);
+        .withArgs(ContractDeployer, 2);
     });
     it("Proof of Identity Contract: The TokenURIUpdated event should emit in updateTokenURI with the account and tokenId.", async () => {
       await expect(ProofOfIdentityContract.updateTokenURI(Address2, 1, "NewURI"))
