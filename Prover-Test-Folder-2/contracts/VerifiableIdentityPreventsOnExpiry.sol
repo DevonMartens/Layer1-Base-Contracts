@@ -91,14 +91,13 @@ address account
 */
 
 
-    contract VerifiableIdentityPreventsOnExpiry {
+contract VerifiableIdentityPreventsOnExpiry {
     constructor(address _proofOfIdentityContract) {
-    proofOfIdentityContract = _proofOfIdentityContract;
+        proofOfIdentityContract = _proofOfIdentityContract;
     }
 
     // Storage for the 
     address private proofOfIdentityContract;
-
 
     /**
     * @notice `getUserCountryCodePreventOnExpiry` function returns the country code from the user's account.
@@ -107,16 +106,13 @@ address account
     * @return userAccountCountryCode provides the country code for the specified account passed in the event it has not expired.
     * @dev This function reverts if the target account's identity has expired./
     */
-
-
     function getUserCountryCodePreventOnExpiry(
-    address account
+        address account
     ) public view returns (string memory userAccountCountryCode) {
-    return (
-    IRoleVerification(proofOfIdentityContract).getUserAccountCountryCodePreventOnExpiry(account)
+        return (
+        IRoleVerification(proofOfIdentityContract).getUserAccountCountryCodePreventOnExpiry(account)
     );
     }
-
 
     /**
     * @notice `getUserExpiry` function returns the expiry date from the user's account.
@@ -127,9 +123,9 @@ address account
 
 
     function getUserExpiry(address account) public view returns (uint256) {
-    return (
-    IRoleVerification(proofOfIdentityContract).getUserAccountExpiry(account)
-    );
+        return (
+        IRoleVerification(proofOfIdentityContract).getUserAccountExpiry(account)
+        );
     }
 
 
@@ -145,10 +141,10 @@ address account
     function getUserLevelPreventOnExpiry(
     address account
     ) public view returns (uint8 userAccountLevel) {
-    return (
-    IRoleVerification(proofOfIdentityContract)
-    .getUserAccountLevelPreventOnExpiry(account)
-    );
+        return (
+        IRoleVerification(proofOfIdentityContract)
+        .getUserAccountLevelPreventOnExpiry(account)
+        );
     }
 
 
@@ -159,14 +155,12 @@ address account
     * @return The competency rating for the specified account, if the identity has not expired.
     * @dev This function reverts if the target account's identity has expired.
     */
-
-
     function getUserCompetencyRatingPreventOnExpiry(
-    address account
+        address account
     ) public view returns (uint8) {
     return (
-    IRoleVerification(proofOfIdentityContract)
-    .getUserAccountCompetencyRatingPreventOnExpiry(account)
+        IRoleVerification(proofOfIdentityContract)
+        .getUserAccountCompetencyRatingPreventOnExpiry(account)
     );
     }
 
@@ -178,14 +172,12 @@ address account
     * @return userAccountType provides the account type for the specified account passed in the event it has not expired.
     * @dev This function reverts if the target account's identity has expired.
     */
-
-
     function getUserTypePreventOnExpiry(
-    address account
+        address account
     ) public view returns (uint8 userAccountType) {
     return (
-    IRoleVerification(proofOfIdentityContract)
-    .getUserAccountTypePreventOnExpiry(account)
+        IRoleVerification(proofOfIdentityContract)
+        .getUserAccountTypePreventOnExpiry(account)
     );
     }
     }
