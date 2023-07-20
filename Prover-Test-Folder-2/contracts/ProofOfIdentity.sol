@@ -72,7 +72,7 @@ contract ProofOfIdentity is
         string indexed newURI
     );
     
-    // Tracks tokenIds
+    // Tracks tokenIds  in a counter.
      CountersUpgradeable.Counter private _tokenIdCounter;
 
     // Stores the Quourum Network permissions interface address.
@@ -90,10 +90,9 @@ contract ProofOfIdentity is
     }
 
      /**	
-     * @notice `initalize` function is ran at the time of deployment to support the upgradable proxy, 
-     * it defines the permissions interface and the default admin role for access control or "network operator"	
+     * @notice `initalize` function is run at the time of deployment to support the upgradable proxy, 
+     * it defines the permissions interface and the default admin role for access control or "network operator".
      * @dev The function includes name and symbol to satisfy ERC721 contract requirements.	
-     * `_disableInitializers` called to prevent re-initialization as per OpenZeppelin recommendations.	
      * @param permissionsInterface address of the Quorum permissions interface contract.	
      * @param networkAdmin address of the Network Operator Multisig, to be declared as default admin for access control.	
      * @param networkOperator address that controls operations in the contract
@@ -213,8 +212,10 @@ contract ProofOfIdentity is
     }
 
        /**
-     * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by operator role, it suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account.
-     * @dev To unsuspend an account, a user must lodge a request with the operator, the ability to unsuspend accounts is not provided in this contract and requires intervention to resolve.
+     * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by operator role, it suspends the account via the permissions interface and maintains the tokenID 
+     * and identity blog struct for the targets account.
+     * @dev To unsuspend an account, a user must lodge a request with the operator, the ability to unsuspend accounts 
+     * is not provided in this contract and requires intervention to resolve.
      * @param suspendAddress the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping.
      * @param reason the reason the address is being suspended.
      */
@@ -229,18 +230,17 @@ contract ProofOfIdentity is
     	
     /**	
      * @notice `totalSupply` function allows a call to view the count of issued tokens to monitor overall distribution.	
-     * @return totalSupply provides total supply of tokenIds issued	
+     * @return totalSupply provides total supply of tokenIds issued.	
      */	
     function totalSupply() public view returns (uint256) {	
         return (_tokenIdCounter.current());	
     }
 
-   	
      /**	
-     * @notice `tokenURI` function allows tokenURI to be viewed	
-     * @dev Overrides OpenZeppelins implementation with custom return logic	
-     * @param tokenId is passed to retrieve the mapped URI	
-     * @return tokenUri provides URI for specified tokenId passed	
+     * @notice `tokenURI` function allows tokenURI to be viewed.
+     * @dev Overrides OpenZeppelins implementation with custom return logic.
+     * @param tokenId is passed to retrieve the mapped URI.
+     * @return tokenUri provides URI for specified tokenId passed.
      */	
     function tokenURI(	
         uint256 tokenId	
@@ -264,7 +264,7 @@ contract ProofOfIdentity is
     }
 
     /**	
-     * @dev Overrides OpenZeppelin `transferFrom` implementation to prevent transferring of token	
+     * @dev Overrides OpenZeppelin `transferFrom` implementation to prevent transferring of token.
      */
 
     function safeTransferFrom(
@@ -277,7 +277,7 @@ contract ProofOfIdentity is
 
   	
     /**	
-     * @dev Overrides OpenZeppelin `safeTransferFrom` implementation to prevent transferring of token
+     * @dev Overrides OpenZeppelin `safeTransferFrom` implementation to prevent transferring of token.
      */
 
    function _authorizeUpgrade(address newImplementation)
@@ -287,7 +287,8 @@ contract ProofOfIdentity is
     {}
 
    	/**
-    * @dev Overrides OpenZeppelin `supportsInterface` implementation to ensure the same interfaces can support access control and ERC721.	
+    * @dev Overrides OpenZeppelin `supportsInterface` implementation to ensure the same 
+    * interfaces can support access control and ERC721.	
     */
 
     function supportsInterface(
