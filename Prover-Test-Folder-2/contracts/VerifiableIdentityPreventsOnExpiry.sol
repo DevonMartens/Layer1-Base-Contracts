@@ -91,99 +91,101 @@ address account
 */
 
 
-contract VerifiableIdentityPreventsOnExpiry {
-constructor(address _proofOfIdentityContract) {
-proofOfIdentityContract = _proofOfIdentityContract;
-}
-address private proofOfIdentityContract;
+    contract VerifiableIdentityPreventsOnExpiry {
+    constructor(address _proofOfIdentityContract) {
+    proofOfIdentityContract = _proofOfIdentityContract;
+    }
+
+    // Storage for the 
+    address private proofOfIdentityContract;
 
 
-/**
-* @notice `getUserCountryCodePreventOnExpiry` function returns the country code from the user's account.
-* @dev call reverts in the event the target accounts expiry is less than the current block.timestamp.
-* @param account address of the target user account.
-* @return userAccountCountryCode provides the country code for the specified account passed in the event it has not expired.
-* @dev This function reverts if the target account's identity has expired./
-*/
+    /**
+    * @notice `getUserCountryCodePreventOnExpiry` function returns the country code from the user's account.
+    * @dev call reverts in the event the target accounts expiry is less than the current block.timestamp.
+    * @param account address of the target user account.
+    * @return userAccountCountryCode provides the country code for the specified account passed in the event it has not expired.
+    * @dev This function reverts if the target account's identity has expired./
+    */
 
 
-function getUserCountryCodePreventOnExpiry(
-address account
-) public view returns (string memory userAccountCountryCode) {
-return (
-IRoleVerification(proofOfIdentityContract).getUserAccountCountryCodePreventOnExpiry(account)
-);
-}
+    function getUserCountryCodePreventOnExpiry(
+    address account
+    ) public view returns (string memory userAccountCountryCode) {
+    return (
+    IRoleVerification(proofOfIdentityContract).getUserAccountCountryCodePreventOnExpiry(account)
+    );
+    }
 
 
-/**
-* @notice `getUserExpiry` function returns the expiry date from the user's account.
-* @param account address of the target user account
-* @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.
-* @dev This function reverts if the target account's identity has expired.
-*/
+    /**
+    * @notice `getUserExpiry` function returns the expiry date from the user's account.
+    * @param account address of the target user account
+    * @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.
+    * @dev This function reverts if the target account's identity has expired.
+    */
 
 
-function getUserExpiry(address account) public view returns (uint256) {
-return (
-IRoleVerification(proofOfIdentityContract).getUserAccountExpiry(account)
-);
-}
+    function getUserExpiry(address account) public view returns (uint256) {
+    return (
+    IRoleVerification(proofOfIdentityContract).getUserAccountExpiry(account)
+    );
+    }
 
 
-/**
-* @notice `getUserLevelPreventOnExpiry` function returns the verification level from the user's account.
-* @dev call reverts in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
-* @param account address of the target user account.
-* @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.'
-* @dev This function reverts if the target account's identity has expired.
-*/
+    /**
+    * @notice `getUserLevelPreventOnExpiry` function returns the verification level from the user's account.
+    * @dev call reverts in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
+    * @param account address of the target user account.
+    * @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.'
+    * @dev This function reverts if the target account's identity has expired.
+    */
 
 
-function getUserLevelPreventOnExpiry(
-address account
-) public view returns (uint8 userAccountLevel) {
-return (
-IRoleVerification(proofOfIdentityContract)
-.getUserAccountLevelPreventOnExpiry(account)
-);
-}
+    function getUserLevelPreventOnExpiry(
+    address account
+    ) public view returns (uint8 userAccountLevel) {
+    return (
+    IRoleVerification(proofOfIdentityContract)
+    .getUserAccountLevelPreventOnExpiry(account)
+    );
+    }
 
 
-/**
-* @notice `getUserCompetencyRatingPreventOnExpiry` gets the competency rating a user
-* earned testing but access to it is prevented if the identity has expired.
-* @param account The address of the target user account.
-* @return The competency rating for the specified account, if the identity has not expired.
-* @dev This function reverts if the target account's identity has expired.
-*/
+    /**
+    * @notice `getUserCompetencyRatingPreventOnExpiry` gets the competency rating a user
+    * earned testing but access to it is prevented if the identity has expired.
+    * @param account The address of the target user account.
+    * @return The competency rating for the specified account, if the identity has not expired.
+    * @dev This function reverts if the target account's identity has expired.
+    */
 
 
-function getUserCompetencyRatingPreventOnExpiry(
-address account
-) public view returns (uint8) {
-return (
-IRoleVerification(proofOfIdentityContract)
-.getUserAccountCompetencyRatingPreventOnExpiry(account)
-);
-}
+    function getUserCompetencyRatingPreventOnExpiry(
+    address account
+    ) public view returns (uint8) {
+    return (
+    IRoleVerification(proofOfIdentityContract)
+    .getUserAccountCompetencyRatingPreventOnExpiry(account)
+    );
+    }
 
 
-/**
-* @notice `getUserTypePreventOnExpiry` function returns the account type from the user's account.
-* @dev call reverts in the event the target accounts expiry is less than the current block.timestamp.
-* @param account address of the target user account.
-* @return userAccountType provides the account type for the specified account passed in the event it has not expired.
-* @dev This function reverts if the target account's identity has expired.
-*/
+    /**
+    * @notice `getUserTypePreventOnExpiry` function returns the account type from the user's account.
+    * @dev call reverts in the event the target accounts expiry is less than the current block.timestamp.
+    * @param account address of the target user account.
+    * @return userAccountType provides the account type for the specified account passed in the event it has not expired.
+    * @dev This function reverts if the target account's identity has expired.
+    */
 
 
-function getUserTypePreventOnExpiry(
-address account
-) public view returns (uint8 userAccountType) {
-return (
-IRoleVerification(proofOfIdentityContract)
-.getUserAccountTypePreventOnExpiry(account)
-);
-}
-}
+    function getUserTypePreventOnExpiry(
+    address account
+    ) public view returns (uint8 userAccountType) {
+    return (
+    IRoleVerification(proofOfIdentityContract)
+    .getUserAccountTypePreventOnExpiry(account)
+    );
+    }
+    }
