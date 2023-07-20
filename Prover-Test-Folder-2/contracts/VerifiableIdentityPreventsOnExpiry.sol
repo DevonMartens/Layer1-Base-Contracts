@@ -83,7 +83,7 @@ address account
 /**
 * @title VerifiableIdentityPreventsOnExpiry
 * @author Haven1 Development Team
-* @notice This contract allows developers to access and utilize Haven1s Proof Of Identity Framework data.
+* @notice This contract allows developers to access and to utilize Haven1s Proof Of Identity Framework data.
 * It will revert if a user has expired documents and needs to update their account.
 * @dev Haven1s Proof Of Identity Framework data is available via the imported functions below.
 * The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
@@ -117,7 +117,7 @@ IRoleVerification(proofOfIdentityContract).getUserAccountCountryCodePreventOnExp
 
 
 /**
-* @notice `getUserExpiry` function returnsthe expiry date from the user's account.
+* @notice `getUserExpiry` function returns the expiry date from the user's account.
 * @param account address of the target user account
 * @return userAccountLevel provides the verification level for the specified account passed.
 * @dev This function reverts if the target account's identity has expired.

@@ -95,7 +95,7 @@ address account
 /**
 * @title VerifiableIdentity
 * @author Haven1 Development Team
-* @notice This contract allows developers to access and utilize Haven1s Proof Of Identity Framework data.
+* @notice This contract allows developers to access and to utilize Haven1s Proof Of Identity Framework data.
 * @dev Haven1s Proof Of Identity Framework data becomes available via the imported functions below.
 * The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
 */
@@ -128,9 +128,9 @@ return (IRoleVerification(proofOfIdentityContract).getUserAccountCompetencyRatin
 
 
 /**
-@notice getUserCountryCode function returns the country code from the users account
+@notice `getUserCountryCode` function returns the country code from the users account
 @param account address of the target user account
-@return The country code of a specified account.
+@return userAccountCountryCode of a specified account.
 */
 
 
@@ -142,7 +142,7 @@ return (IRoleVerification(proofOfIdentityContract).getUserAccountCountryCode(acc
 
 
 /**
-@notice getUserExpiry function returns the expiry date from the users account.
+@notice `getUserExpiry` function returns the expiry date from the users account.
 @param account address of the target user account.
 @return The expiry block timestamp of the user's account.
 */
@@ -154,9 +154,9 @@ return (IRoleVerification(proofOfIdentityContract).getUserAccountExpiry(account)
 
 
 /**
-@notice getUserLevel function returns the verification level from the users account.
+@notice `getUserLeve`l function returns the verification level from the users account.
 @param account address of the target user account.
-@return The level of a user's account.
+@return userAccountLevel of a user's account.
 */
 
 
@@ -168,9 +168,9 @@ return (IRoleVerification(proofOfIdentityContract).getUserAccountLevel(account))
 
 
 /**
-@notice getUserType function returns the account type from the users account.
+@notice `getUserType` function returns the account type from the users account.
 @param account address of the target user account.
-@return The type of a account a user owns.
+@return userAccountType of a account a user owns.
 */
 
 
