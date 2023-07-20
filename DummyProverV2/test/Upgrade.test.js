@@ -187,33 +187,30 @@ describe("Proof of Identity Contract: Identity Blob struct after upgrades.", fun
     expect(newUserBlob.userType).to.equal(2);
     expect(oldUserBlob.countryCode).to.equal("1");
     expect(newUserBlob.countryCode).to.equal("1");
-    expect(await NewVerifiableIdentity.getUserName(Address2)).to.equal("REGISTER_NAME");
+    expect(await NewVerifiableIdentity.getUserName(Address2)).to.equal(
+      "REGISTER_NAME"
+    );
   });
   it("The new issueIdentity function should work", async function () {
-       // Upgrade the contract
-       const ProofOfIdentityContractV2 = await upgrades.upgradeProxy(
-        ProofOfIdentityContract.address,
-        NewProofOfIdentityFactory,
-        {
-          kind: "uups",
-        }
-      );
-  
-  const blob =  {
-    tokenId: 2,
-    countryCode: "1",
-    userType: 2,
-    level: 3,
-    expiry: 9087790790797
-  };
-  
-  await ProofOfIdentityContractV2.issueIdentity(
-    
-    Address3,
-    blob,
-    "tokenURI"
-  );
-  //const NewNewVerifiableIdentity
+    // Upgrade the contract
+    const ProofOfIdentityContractV2 = await upgrades.upgradeProxy(
+      ProofOfIdentityContract.address,
+      NewProofOfIdentityFactory,
+      {
+        kind: "uups",
+      }
+    );
+
+    const blob = {
+      tokenId: 2,
+      countryCode: "1",
+      userType: 2,
+      level: 3,
+      expiry: 9087790790797,
+    };
+
+    await ProofOfIdentityContractV2.issueIdentity(Address3, blob, "tokenURI");
+    //const NewNewVerifiableIdentity
     const NewVerifiableIdentityFactory = await ethers.getContractFactory(
       "NewVerifiableIdentity"
     );
@@ -222,8 +219,8 @@ describe("Proof of Identity Contract: Identity Blob struct after upgrades.", fun
       //even though the address would be the same really
       ProofOfIdentityContractV2.address
     );
-  expect(await NewVerifiableIdentity.getUserCountryCode(Address3)).to.equal(
-    "1"
-  );
-});
+    expect(await NewVerifiableIdentity.getUserCountryCode(Address3)).to.equal(
+      "1"
+    );
+  });
 });

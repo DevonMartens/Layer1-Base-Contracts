@@ -26,35 +26,25 @@ describe("Vesting inputs working", function () {
       { initializer: "initialize", kind: "uups" }
     );
     await Vesting.mintEscrowedH1(owner, 5, { value: FIVE_H1 });
-    DEFAULT_ADMIN_ROLE = await Vesting.DEFAULT_ADMIN_ROLE()
+    DEFAULT_ADMIN_ROLE = await Vesting.DEFAULT_ADMIN_ROLE();
   });
   it("upgrades should only be allowed to be called by DEFAULT_ADMIN_ROLE", async function () {
     const EscrowedH1HasADifferentUpgrader = await upgrades.deployProxy(
       Escrow,
-      ["EscrowedH1", "esH1",  alice, alice, year],
+      ["EscrowedH1", "esH1", alice, alice, year],
       { initializer: "initialize", kind: "uups" }
     );
     const FromOwner = owner.toLowerCase();
     await expectRevert(
-      upgrades.upgradeProxy(
-        EscrowedH1HasADifferentUpgrader.address,
-        Escrow,
-        {
-          kind: "uups",
-        }
-      ),
+      upgrades.upgradeProxy(EscrowedH1HasADifferentUpgrader.address, Escrow, {
+        kind: "uups",
+      }),
       `AccessControl: account ${FromOwner} is missing role ${DEFAULT_ADMIN_ROLE}`
     );
   });
   it("initalize should only be called upon deployment", async () => {
     await expectRevert(
-      Vesting.initialize(
-        "DEVON",
-        "RUNS THIS",
-        alice,
-        alice,
-        year
-      ),
+      Vesting.initialize("DEVON", "RUNS THIS", alice, alice, year),
       "Initializable: contract is already initialized"
     );
   });
@@ -452,7 +442,10 @@ describe("Pausing of contract", function () {
     await Vesting.claim(0);
   });
   it("unpausing should only be called by OPERATOR_ROLE", async () => {
-    await expectRevert(Vesting.unpause(), `AccessControl: account ${OWNER} is missing role ${OPERATOR_ROLE}`);
+    await expectRevert(
+      Vesting.unpause(),
+      `AccessControl: account ${OWNER} is missing role ${OPERATOR_ROLE}`
+    );
   });
   it("start vesting will revert with a 110 error role if the caller does not have the tokens", async () => {
     await expectRevert(Vesting.startVesting(15), `110`);

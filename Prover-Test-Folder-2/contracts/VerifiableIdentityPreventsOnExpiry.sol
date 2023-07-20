@@ -103,7 +103,7 @@ address private proofOfIdentityContract;
 * @dev call reverts in the event the target accounts expiry is less than the current block.timestamp.
 * @param account address of the target user account.
 * @return userAccountCountryCode provides the country code for the specified account passed in the event it has not expired.
-* @dev This function reverts if the target account's identity has expired.
+* @dev This function reverts if the target account's identity has expired./
 */
 
 
@@ -119,7 +119,7 @@ IRoleVerification(proofOfIdentityContract).getUserAccountCountryCodePreventOnExp
 /**
 * @notice `getUserExpiry` function returns the expiry date from the user's account.
 * @param account address of the target user account
-* @return userAccountLevel provides the verification level for the specified account passed.
+* @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.
 * @dev This function reverts if the target account's identity has expired.
 */
 
