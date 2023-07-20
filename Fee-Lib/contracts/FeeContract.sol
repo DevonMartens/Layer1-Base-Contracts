@@ -287,8 +287,7 @@ contract FeeContract is
 
     /**
     * @notice `forceFeeDistribution` function triggered to force distribution of funds to channels.
-    * @dev It can only be called by an operator. In case something is wrong with the oracle or funds need to be be
-    * distributed immediately.
+    * @dev It can only be called by an operator. In case the funds need to be distributed immediately.
     */
 
     function forceFeeDistribution() external payable onlyRole(OPERATOR_ROLE) {

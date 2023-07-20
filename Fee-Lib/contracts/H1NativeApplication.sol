@@ -35,7 +35,7 @@ contract H1NativeApplication {
     // The timestamp in which the _fee must update.
     uint256 private _requiredFeeResetTime;
     
-    // The block number in which the fee updated.
+    // The block number in which the fee last updated.
     uint256 private resetBlock;
 
     // The fee before the oralce updated.

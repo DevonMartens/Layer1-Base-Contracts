@@ -38,7 +38,7 @@ contract H1DevelopedApplication {
     // Storage variable for the fee set by the developer.
     uint256 private devFee;
 
-    // Storage Variable for baseFee 
+    // Storage variable for baseFee 
     uint256 private baseFee;
 
     // Storage variable for when the contract state must be updated.

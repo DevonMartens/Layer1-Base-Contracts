@@ -2,15 +2,12 @@
 pragma solidity ^0.8.0;
 
 
-
 /**
-* @title VerifiableIdentity
+* @title IRoleVerification
 * @author Haven1 Development Team
-* @notice This contract allows developers to access and utilise Haven1s Proof Of Identity Framework data.
-* @dev Haven1s Proof Of Identity Framework data becomes available via the imported functions below.
-The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
+* @notice This contract is an interface for the RoleVerification portion of the Proof of Identity
+* it provides VerifiableIdentityPreventsOnExpiry the ability to call these functions.
 */
-
 interface IRoleVerification {
 
 
@@ -74,6 +71,16 @@ interface IRoleVerification {
     ) external view returns (uint8 userAccountType);
 
 }
+
+
+/**
+* @title VerifiableIdentity
+* @author Haven1 Development Team
+* @notice This contract allows developers to access and utilise Haven1s Proof Of Identity Framework data.
+* @dev Haven1s Proof Of Identity Framework data becomes available via the imported functions below.
+* The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
+*/
+
 
 contract VerifiableIdentity {
     constructor(address _proofOfIdentityContract) {
