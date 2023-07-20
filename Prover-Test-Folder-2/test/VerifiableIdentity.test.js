@@ -86,11 +86,6 @@ describe("Verifiable Identity Contract's ability to read the Proof Of Identity c
       await ProofOfIdentityContract.getUserAccountCountryCode(Address3)
     );
   });
-  // it("Verifiable Identity Contract: The identity blobs in the Proof Of IdentityContract and Verifiable Identity should be the same.", async () => {
-  //   expect(
-  //     await ProofOfIdentityContract.getUserAccountIdentityBlob(Address2)
-  //   ).to.deep.equal(await VerifiableIdentity.getUserIdentityData(Address2));
-  // });
   it("Verifiable Identity Contract: The values for `user type` in a seperate verifiable identity contract should match the values for the original proof of identity.", async () => {
     //check that the user type is the same in the original proof of identity
     expect(await ProofOfIdentityContract.getUserAccountType(Address2)).to.equal(
@@ -152,15 +147,4 @@ describe("Verifiable Identity Contract's ability to read the Proof Of Identity c
       await ProofOfIdentityContract.getUserAccountExpiry(Address3)
     );
   });
-  // it("Verifiable Identity Contract: The getUserAccountIdentityBlob function should return the proper values.", async () => {
-  //   const levelBlob = await ProofOfIdentityContract.getUserAccountIdentityBlob(
-  //     Address2
-  //   );
-  //   expect(levelBlob.level).to.equal(3);
-  // });
-  // it("Verifiable Identity Contract: The identity blobs in the Proof Of IdentityContract and Verifiable Identity Prevents on Expiry should be the same.", async () => {
-  //   expect(
-  //     await ProofOfIdentityContract.getUserAccountIdentityBlob(Address2)
-  //   ).to.deep.equal(await VerifiableIdentity.getUserIdentityData(Address2));
-  // });
 });

@@ -18,7 +18,7 @@ const blobForAddress3 =  {
 };
 
 const updateBlobAddress2 =  {
-  largeNumbers: [1, 78886932657],
+  largeNumbers: [1, 78886932653],
   smallNumbers: [2, 3],
   strings: ["4",]
 };
@@ -70,7 +70,7 @@ describe("Proof of Identity Contract", function () {
       expect(await ProofOfIdentityContract.totalSupply()).to.equal(0);
     });
   });
-  describe("Testing the issueIdentity function and that minting happens as expected.", function () {
+  describe("Testing the issueIdentity function and that mintin and producing the struct happens as expected.", function () {
     beforeEach(async () => {
       // Issues the second signer address an NFT and assigns it an identity
       // By defaul this is tokenId 1.
@@ -99,6 +99,14 @@ describe("Proof of Identity Contract", function () {
       expect(
         await ProofOfIdentityContract.getUserAccountCountryCode(Address2)
       ).to.equal("1");
+    });
+    it("Proof of Identity Contract: The issueIdentity function should NOT allow tokens to be minted if the tokenId or smallNumbers[0] is not the next ID on the counter.", async () => {
+      // blobForAddress3 has tokenId which was minted in the beforeEach
+      await expectRevert(ProofOfIdentityContract.issueIdentity(
+        ContractDeployer,
+        blobForAddress3,
+        "tokenURI"
+      ),"107");
     });
     it("Proof of Identity Contract: The issueIdentity function should create an identity blob struct with correct values for userType", async () => {
       // Checks that the User Account Type is the same as the function input
@@ -151,6 +159,29 @@ describe("Proof of Identity Contract", function () {
         "tokenURI"
       );
     });
+    it("Proof of Identity Contract: The issueIdentity function should NOT allow tokens to be updated if the tokenId or smallNumbers[0] is not the next ID is not the same in the new and old struct.", async () => {
+      // blobForAddress2 has the wrong token Id because that is in  address2's token
+      await expectRevert(ProofOfIdentityContract.updateIdentity(
+        Address3,
+        blobForAddress2,
+        "tokenURI"
+      ),"106"
+      );
+    });
+    it("Proof of Identity Contract: The issueIdentity function should NOT allow tokens to be updated if the expiry date has already passed.", async () => {
+      const blobForAddress2WithExpiredTimestamp =  {
+        largeNumbers: [1, 5],
+        smallNumbers: [2, 3],
+        strings: ["1",]
+      };
+      
+      // blobForAddress2 has the wrong token expiry date see above timestamp 5.
+      await expectRevert(ProofOfIdentityContract.updateIdentity(
+        Address2,
+        blobForAddress2WithExpiredTimestamp,
+        "tokenURI"
+      ),"103");
+    });
     it("Proof of Identity Contract: The updateIdentity function should alter a previously created identity's country code", async () => {
       //confirms original country code
       expect(
@@ -193,37 +224,37 @@ describe("Proof of Identity Contract", function () {
       await ProofOfIdentityContract.establishCompetencyRating(Address2, 1);
       expect(await ProofOfIdentityContract.getUserAccountCompetencyRating(Address2)).to.equal(1); 
     });
-    it("Proof of Identity Contract: The updateIdentity function should alter a previously created identity's account level", async () => {
+    it("Proof of Identity Contract: The updateIdentity function should alter a previously created identity's account level.", async () => {
       expect(
         await ProofOfIdentityContract.getUserAccountLevel(Address2)
       ).to.equal(3);
       //updates account level to 6
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        updateBlobAddress3,
+        updateBlobAddress2,
         "hi"
       );
       //gets new code
       expect(
         await ProofOfIdentityContract.getUserAccountLevel(Address2)
-      ).to.equal(6);
+      ).to.equal(3);
     });
-    it("Proof of Identity Contract: The updateIdentity function should alter a previously created identity's expiry date", async () => {
+    it("Proof of Identity Contract: The updateIdentity function should alter a previously created identity's expiry date.", async () => {
       expect(
         await ProofOfIdentityContract.getUserAccountExpiry(Address2)
       ).to.equal(78886932657);
       //updates  the expiry of the account
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        updateBlobAddress3,
+        updateBlobAddress2,
         "hi"
       );
       //gets new expiry
       expect(
         await ProofOfIdentityContract.getUserAccountExpiry(Address2)
-      ).to.equal(78886932658);
+      ).to.equal(78886932653);
     });
-    it("Proof of Identity Contract: The updateIdentity function should alter a previously created identities enitre struct", async () => {
+    it("Proof of Identity Contract: The updateIdentity function should alter a previously created identities enitre struct.", async () => {
   
       //calls expiry in struct to ensure formation was done as expected
       expect(
@@ -235,7 +266,7 @@ describe("Proof of Identity Contract", function () {
       //update Address3 and Address2s expiry
       await ProofOfIdentityContract.updateIdentity(
         Address2,
-        updateBlobAddress3,
+        updateBlobAddress2,
         "hi"
       );
       await ProofOfIdentityContract.updateIdentity(
@@ -246,7 +277,7 @@ describe("Proof of Identity Contract", function () {
       //calls expiry in struct to ensure formation was done as expected
       expect(
         await ProofOfIdentityContract.getUserAccountExpiry(Address2)
-      ).to.equal(78886932658);
+      ).to.equal(78886932653);
       expect(
         await ProofOfIdentityContract.getUserAccountExpiry(Address3)
       ).to.equal(78886932658);

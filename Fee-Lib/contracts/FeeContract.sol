@@ -16,8 +16,11 @@ import "./Errors.sol";
 */
 
 interface IFeeOracle {
+
+    // This function gets the USD value of H1.
     function consult() external view returns (uint256 amountOut);
 
+    // This function refreshes the oracle.
     function refreshOracle() external returns (bool success);
 }
 

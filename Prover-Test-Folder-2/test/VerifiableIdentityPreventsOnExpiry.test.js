@@ -113,25 +113,6 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
       await VerifiableIdentityPreventsOnExpiry.getUserExpiry(Address2)
     ).to.equal(set);
   });
-  // it("Verifiable Identity Prevents on Expiry Contract: The identity blobs in the Proof Of IdentityContract and Verifiable Identity Prevents on Expirey should be the same", async () => {
-  //   const set = timestamp + 5;
-  //   const blobForAddress2ExpiresSoon =  {
-  //     largeNumbers: [1, set],
-  //     smallNumbers: [2, 3],
-  //     strings: ["1",]
-  //   };
-
-  //   await ProofOfIdentityContract.issueIdentity(
-  //     Address2,
-  //     blobForAddress2ExpiresSoon,
-  //     "tokenONE"
-  //   );
-  //   expect(
-  //     await ProofOfIdentityContract.getUserAccountIdentityBlob(Address2)
-  //   ).to.deep.equal(
-  //     await VerifiableIdentityPreventsOnExpiry.getUserIdentityData(Address2)
-  //   );
-  // });
   it("Verifiable Identity Prevents on Expiry Contract: After a token is expired the `getUserAccountLevelPreventOnExpiry` from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
     // current plus 5
     const set = timestamp + 5;

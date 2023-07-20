@@ -141,6 +141,7 @@ contract ProofOfIdentity is
          _tokenIdCounter.increment();
 
         identityBlob[account] = _identityBlob;
+        identityBlob[account].smallNumbers.push(0);
 
         _safeMint(account, _tokenIdCounter.current());
         _tokenURI[_tokenIdCounter.current()] = tokenUri;
@@ -175,7 +176,7 @@ contract ProofOfIdentity is
         string calldata tokenUri
     ) external onlyRole(OPERATOR_ROLE) {
         require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
-        require(_identityBlob.largeNumbers[0] == _identityBlob.largeNumbers[0], Errors.TOKEN_ID_ALREADY_EXISTS);
+        require(_identityBlob.largeNumbers[0] == identityBlob[account].largeNumbers[0], Errors.INVALID_TOKEN_ID);
         require(_identityBlob.largeNumbers[1] > block.timestamp,  Errors.ID_INVALID_EXPIRED);
 
         identityBlob[account] = _identityBlob;
@@ -191,7 +192,7 @@ contract ProofOfIdentity is
      * @param score The competency score to be added or updated.
      */
     function establishCompetencyRating(address account, uint8 score) external onlyRole(OPERATOR_ROLE) {
-        identityBlob[account].smallNumbers.push(score);
+        identityBlob[account].smallNumbers[2] = score;
     }
     
 
