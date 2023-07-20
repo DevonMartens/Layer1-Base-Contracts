@@ -58,11 +58,9 @@ describe("Proof of Identity Contract", function () {
       );
     });
     it("Proof of Identity Contract: The establishCompetencyRating should change the competency rating of a user from 0.", async () => {
-      await ProofOfIdentityContract.establishCompetencyRating(
-        Address2,
-        5
-      );
-      const blobOfAddress2 = await ProofOfIdentityContract.getUserAccountIdentityBlob(Address2);
+      await ProofOfIdentityContract.establishCompetencyRating(Address2, 5);
+      const blobOfAddress2 =
+        await ProofOfIdentityContract.getUserAccountIdentityBlob(Address2);
       const rating = blobOfAddress2.competencyRating;
       expect(rating).to.equal(5);
     });

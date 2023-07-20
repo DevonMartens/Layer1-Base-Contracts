@@ -107,9 +107,7 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
     await time.increase(time.duration.days(2));
     //should revert and not return values 7 seconds past
     await expectRevert(
-      VerifiableIdentityPreventsOnExpiry.getUserLevelPreventOnExpiry(
-        Address2
-      ),
+      VerifiableIdentityPreventsOnExpiry.getUserLevelPreventOnExpiry(Address2),
       "103"
     );
   });
@@ -145,13 +143,14 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
       78886932657,
       "tokenTWO"
     );
-  await ProofOfIdentityContract.establishCompetencyRating(Address3, 1);
-  //should revert and not return values 7 seconds past
-  expect(await 
-    VerifiableIdentityPreventsOnExpiry.getUserCompetencyRatingPreventOnExpiry(
-      Address3
-    )).to.equal(1);
-});
+    await ProofOfIdentityContract.establishCompetencyRating(Address3, 1);
+    //should revert and not return values 7 seconds past
+    expect(
+      await VerifiableIdentityPreventsOnExpiry.getUserCompetencyRatingPreventOnExpiry(
+        Address3
+      )
+    ).to.equal(1);
+  });
   it("Verifiable Identity Prevents on Expiry Contract: After a token is expired the `getUserCountryCodePreventOnExpiry` from the VerifiableIdentityPreventsOnExpiry contract should revert", async () => {
     // current plus 5
     const set = timestamp + 5;

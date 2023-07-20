@@ -7,7 +7,7 @@ import "./IUserInformation.sol";
 /**
 * @title VerifiableIdentity
 * @author Haven1 Development Team
-* @notice This contract allows developers to access and utilise Haven1s Proof Of Identity Framework data.
+* @notice This contract allows developers to access and to utilise Haven1s Proof Of Identity Framework data.
 * @dev Haven1s Proof Of Identity Framework data becomes available via the imported functions below.
 The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
 */
@@ -23,7 +23,7 @@ contract VerifiableIdentity {
      * @notice `getUserCompetencyRating` gets the competency rating a user
      * earned testing.
      * @param account The address of the target user account.
-     * @return The competency rating for the specified account.
+     * @return The competency rating for the specified account account passed in.
      */
 
     function getUserCompetencyRating(
@@ -35,6 +35,7 @@ contract VerifiableIdentity {
     /**
     @notice getUserCountryCode function returns the country code from the users account
     @param account address of the target user account
+    @return userAccountCountryCode provides the country code for the specified account passed in.
     */
 
     function getUserCountryCode(
@@ -44,8 +45,9 @@ contract VerifiableIdentity {
     }
 
     /**
-    @notice getUserExpiry function returns only the expiry date from the users account
-    @param account address of the target user account
+    @notice getUserExpiry function returns the expiry date from the users account.
+    @param account address of the target user account.
+    @return userAccountLevel provides the verification level for the specified account passed.
     */
 
     function getUserExpiry(address account) public view returns (uint256) {
@@ -53,8 +55,9 @@ contract VerifiableIdentity {
     }
 
     /**
-    @notice getUserIdentityData function returns struct IdentityBlob from the users account
-    @param account address of the target user account
+    @notice getUserIdentityData function returns struct IdentityBlob from the users account.
+    @param account address of the target user account.
+    @return userAccountIdentityBlob provides the IdentityBlob data for the specified account passed.
     */
 
     function getUserIdentityData(
@@ -64,8 +67,9 @@ contract VerifiableIdentity {
     }
 
     /**
-    @notice getUserLevel function returns the verification level from the users account
-    @param account address of the target user account
+    @notice getUserLevel function returns the verification level from the users account.
+    @param account address of the target user account.
+    @return uerAccountLevel provides the verification level for the specified account.
     */
 
     function getUserLevel(
@@ -75,8 +79,9 @@ contract VerifiableIdentity {
     }
 
     /**
-    @notice getUserType function returns the account type from the users account
-    @param account address of the target user account
+    @notice getUserType function returns the account type from the users account.
+    @param account address of the target user account.
+    @return userAccountType provides the account type for the specified account passed.
     */
 
     function getUserType(

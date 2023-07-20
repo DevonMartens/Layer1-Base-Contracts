@@ -17,10 +17,10 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 * users on Haven1, storing de-identified data for utilisation across the network
 * @dev Nominated operator role(s) are responsible for authorising and minting 
 * identity NFTs and storing information with registration calldata
-* the contract interacts with the Quroum framework via the network level 
-* permissions interface to approve accounts to transact on the network
+* the contract interacts with the Quorum framework via the network level 
+* permissions interface to approve accounts to transact. On the network
 * the contract imports the OpenZeppelin ERC721 standard, overriding transfer 
-* functions to prevent the Identity NFTs being transferred between accounts
+* functions to prevent the Identity NFTs being transferred between accounts.
 */
 
 contract ProofOfIdentity is
@@ -35,9 +35,9 @@ contract ProofOfIdentity is
 
 
     /** 
-    * @dev The event is triggered during the suspendAccountMaintainTokenAndIdentityBlob function. 
+    * @dev The event is triggered during the `suspendAccountMaintainTokenAndIdentityBlob` function. 
     * It includes the tokenId and the reason. 
-    * This will include temporary susepensions/
+    * This will include temporary susepensions.
     */
 
     event AccountSuspendedTokenMaintained(
@@ -46,8 +46,8 @@ contract ProofOfIdentity is
     );
 
     /** 
-    * @dev The event is triggered when `updateIdentity` is called. 
-    * It emits the account that was updated and the tokenId.
+    * @dev The event is triggered when `isseIdentity` is called. 
+    * It emits the account that was issued an identity and the tokenId.
     */
     event IdentityIssued(
         address indexed account, 
@@ -55,7 +55,7 @@ contract ProofOfIdentity is
         );
 
     /** 
-    * @dev The event is triggered during the updateIdentity when an identity is updated 
+    * @dev The event is triggered during the `updateIdentity` when an identity is updated 
     * it includes the address the token is minted to and the tokenId.
     */
     event IdentityUpdated(
@@ -74,7 +74,7 @@ contract ProofOfIdentity is
         string indexed newURI
     );
     
-    // Tracks tokenIds
+    // Tracks tokenIds in a counter.
      CountersUpgradeable.Counter private _tokenIdCounter;
 
     // Stores the Quourum Network permissions interface address.

@@ -6,7 +6,7 @@ import "./IUserInformationPreventsOnExpiry.sol";
 /**
  * @title VerifiableIdentityPreventsOnExpiry
  * @author Haven1 Development Team
- * @notice This contract allows developers to access and utilise Haven1s Proof Of Identity Framework data.
+ * @notice This contract allows developers to access and to utilise Haven1s Proof Of Identity Framework data.
  * It will revert if a user has expired documents and needs to update their account.
  * @dev Haven1s Proof Of Identity Framework data is available via the imported functions below.
  * The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
@@ -20,7 +20,7 @@ contract VerifiableIdentityPreventsOnExpiry {
     
     address private proofOfIdentityContract;
 
-       /**
+     /**
      * @notice `getUserAccountCompetencyRatingPreventOnExpiry` gets the competency rating a user
      * earned testing but access to it is prevented if the identity has expired.
      * @param account The address of the target user account.
@@ -36,8 +36,8 @@ contract VerifiableIdentityPreventsOnExpiry {
 
     /**
      * @notice `getUserCountryCodePreventOnExpiry` function returns the country code from the users account.
-     * @dev call REVERTS in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
-     * @param account address of the target user account.
+     * @dev The call reverts in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
+     * @param account The address of the target user account.
      * @return userAccountCountryCode provides the country code for the specified account passed in the event it has not expired.
      */
 
@@ -52,9 +52,9 @@ contract VerifiableIdentityPreventsOnExpiry {
 
     /**
      * @notice `getUserExpiry` function returns only the expiry date from the users account.
-     * @dev call will NOT REVERT in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
-     * @param account address of the target user account
-     * @return userAccountLevel provides the verification level for the specified account passed.
+     * @dev The call will not revert in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
+     * @param account The address of the target user account.
+     * @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.
      */
 
     function getUserExpiry(address account) public view returns (uint256) {
@@ -65,9 +65,9 @@ contract VerifiableIdentityPreventsOnExpiry {
 
     /**
      * @notice `getUserIdentityData` function returns struct IdentityBlob from the users account.
-     * @dev call will NOT REVERT in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
-     * @param account address of the target user account.
-     * @return userAccountIdentityBlob provides the IdentityBlob data for the specified account passed.
+     * @dev The call will not revert in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
+     * @param account The address of the target user account.
+     * @return userAccountIdentityBlob provides the IdentityBlob data for the specified account passed in the event it has not expired.
      */
 
     function getUserIdentityData(
@@ -82,8 +82,8 @@ contract VerifiableIdentityPreventsOnExpiry {
 
     /**
      * @notice `getUserLevelPreventOnExpiry` function returns the verification level from the users account.
-     * @dev call REVERTS in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
-     * @param account address of the target user account.
+     * @dev The call reverts in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
+     * @param account The address of the target user account.
      * @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.
      */
 
@@ -98,8 +98,8 @@ contract VerifiableIdentityPreventsOnExpiry {
 
     /**
      * @notice `getUserTypePreventOnExpiry` function returns the account type from the users account.
-     * @dev call REVERTS in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
-     * @param account address of the target user account.
+     * @dev The call reverts in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.
+     * @param account The address of the target user account.
      * @return userAccountType provides the account type for the specified account passed in the event it has not expired.
      */
 
