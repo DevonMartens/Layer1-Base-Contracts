@@ -149,7 +149,8 @@ contract ProofOfIdentity is
             countryCode: countryCode,
             userType: userType,
             level: level,
-            expiry: expiry
+            expiry: expiry,
+            competencyRating: 0
         });
 
         _safeMint(account, _tokenIdCounter.current());
@@ -183,6 +184,7 @@ contract ProofOfIdentity is
         uint8 userType,
         uint8 level,
         uint256 expiry,
+        uint8 competencyRating,
         string calldata tokenUri
     ) external onlyRole(OPERATOR_ROLE) {
         require(balanceOf(account) == 1, Errors.ID_DOES_NOT_EXIST);
@@ -192,10 +194,21 @@ contract ProofOfIdentity is
             countryCode: countryCode,
             userType: userType,
             level: level,
-            expiry: expiry
+            expiry: expiry,
+            competencyRating: competencyRating
         });
         _tokenURI[identityBlob[account].tokenId] = tokenUri;
         emit IdentityUpdated(account, identityBlob[account].tokenId);
+    }
+
+      /**
+     * @notice `establishCompetencyRating` function allows operators to add or update a competency score for a user's account.
+     * @dev This function can only be called by an address with the OPERATOR_ROLE.
+     * @param account The address of the target user account.
+     * @param score The competency score to be added or updated.
+     */
+    function establishCompetencyRating(address account, uint8 score) external onlyRole(OPERATOR_ROLE) {
+        identityBlob[account].competencyRating = score;
     }
 
      /**	

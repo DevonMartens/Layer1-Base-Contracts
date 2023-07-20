@@ -74,6 +74,24 @@ describe("Verifiable Identity Contract's ability to read the Proof Of Identity c
       await ProofOfIdentityContract.getUserAccountCountryCode(Address3)
     );
   });
+  it("Verifiable Identity Contract: The values for `Competency Rating` in a seperate verifiable identity contract should match the values for the original proof of identity.", async () => {
+    await ProofOfIdentityContract.establishCompetencyRating(Address3, 4);
+    expect(await VerifiableIdentity.getUserCompetencyRating(Address3)).to.equal(await ProofOfIdentityContract.getUserAccountCompetencyRating(Address3));
+  });
+  it("Verifiable Identity Contract: The identity blobs in the Proof Of IdentityContract and Verifiable Identity should be the same if a score is given.", async () => {
+    await ProofOfIdentityContract.updateIdentity(
+      Address2,
+      "4",
+      2,
+      3,
+      78886932657,
+      2,
+      "hi"
+    );
+    expect(
+      await ProofOfIdentityContract.getUserAccountIdentityBlob(Address2)
+    ).to.deep.equal(await VerifiableIdentity.getUserIdentityData(Address2));
+  });
   it("Verifiable Identity Contract: The identity blobs in the Proof Of IdentityContract and Verifiable Identity should be the same.", async () => {
     expect(
       await ProofOfIdentityContract.getUserAccountIdentityBlob(Address2)

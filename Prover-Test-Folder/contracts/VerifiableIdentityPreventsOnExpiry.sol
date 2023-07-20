@@ -20,6 +20,20 @@ contract VerifiableIdentityPreventsOnExpiry {
     
     address private proofOfIdentityContract;
 
+       /**
+     * @notice `getUserAccountCompetencyRatingPreventOnExpiry` gets the competency rating a user
+     * earned testing but access to it is prevented if the identity has expired.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account, if the identity has not expired.
+     * @dev This function reverts if the target account's identity has expired.
+     */
+
+     function getUserCompetencyRatingPreventOnExpiry(
+        address account
+    ) public view returns (uint8) {
+        return (IUserInformationPreventsOnExpiry(proofOfIdentityContract).getUserAccountCompetencyRatingPreventOnExpiry(account));
+    }
+
     /**
      * @notice `getUserCountryCodePreventOnExpiry` function returns the country code from the users account.
      * @dev call REVERTS in the event the target accounts IdentityBlob.expiry is less than the current block.timestamp.

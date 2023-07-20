@@ -58,4 +58,21 @@ abstract contract UserInformationPreventsOnExpiry is RoleVerification {
         }
         return (identityBlob[account].userType);
     }
+
+        /**
+     * @notice `getUserAccountCompetencyRatingPreventOnExpiry` gets the competency rating a user
+     * earned testing but access to it is prevented if the identity has expired.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account, if the identity has not expired.
+     * @dev This function reverts if the target account's identity has expired.
+     */
+
+     function getUserAccountCompetencyRatingPreventOnExpiry(
+        address account
+    ) public view returns (uint8) {
+        if (block.timestamp >= identityBlob[account].expiry) {
+            revert(Errors.ID_INVALID_EXPIRED);
+        }
+        return (identityBlob[account].competencyRating);
+    }
 }

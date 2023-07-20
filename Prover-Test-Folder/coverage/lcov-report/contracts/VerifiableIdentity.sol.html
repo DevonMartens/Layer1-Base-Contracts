@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>5/5</span>
+        <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -32,12 +32,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>6/6</span>
+        <span class='fraction'>7/7</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>6/6</span>
+        <span class='fraction'>7/7</span>
       </div>
     </div>
   </div>
@@ -115,7 +115,21 @@
 70
 71
 72
-73</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -130,9 +144,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -163,7 +191,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -190,7 +218,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 &nbsp;
-import "./UserInformation.sol";
+import "./IUserInformation.sol";
+&nbsp;
 &nbsp;
 /**
 * @title VerifiableIdentity
@@ -200,12 +229,25 @@ import "./UserInformation.sol";
 The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
 */
 &nbsp;
-contract VerifiableIdentity is UserInformation {
-    constructor(address proofContract) {
-        VERIFIABLE_IDENTITY = UserInformation(proofContract);
+contract VerifiableIdentity {
+    constructor(address _proofOfIdentityContract) {
+      proofOfIdentityContract = _proofOfIdentityContract;
     }
+    
+    address private proofOfIdentityContract;
 &nbsp;
-    UserInformation private VERIFIABLE_IDENTITY;
+    /**
+     * @notice `getUserCompetencyRating` gets the competency rating a user
+     * earned testing.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account.
+     */
+&nbsp;
+    function getUserCompetencyRating(
+        address account
+    ) public view returns (uint8) {
+        return (IUserInformation(proofOfIdentityContract).getUserAccountCompetencyRating(account));
+    }
 &nbsp;
     /**
     @notice getUserCountryCode function returns the country code from the users account
@@ -215,7 +257,7 @@ contract VerifiableIdentity is UserInformation {
     function getUserCountryCode(
         address account
     ) public view returns (string memory userAccountCountryCode) {
-        return (VERIFIABLE_IDENTITY.getUserAccountCountryCode(account));
+        return (IUserInformation(proofOfIdentityContract).getUserAccountCountryCode(account));
     }
 &nbsp;
     /**
@@ -224,7 +266,7 @@ contract VerifiableIdentity is UserInformation {
     */
 &nbsp;
     function getUserExpiry(address account) public view returns (uint256) {
-        return (VERIFIABLE_IDENTITY.getUserAccountExpiry(account));
+        return (IUserInformation(proofOfIdentityContract).getUserAccountExpiry(account));
     }
 &nbsp;
     /**
@@ -234,8 +276,8 @@ contract VerifiableIdentity is UserInformation {
 &nbsp;
     function getUserIdentityData(
         address account
-    ) public view returns (IdentityBlob memory userAccountIdentityBlob) {
-        return (VERIFIABLE_IDENTITY.getUserAccountIdentityBlob(account));
+    ) public view returns (IRoleVerification.IdentityBlob memory) {
+        return (IRoleVerification(proofOfIdentityContract).getUserAccountIdentityBlob(account));
     }
 &nbsp;
     /**
@@ -246,7 +288,7 @@ contract VerifiableIdentity is UserInformation {
     function getUserLevel(
         address account
     ) public view returns (uint8 userAccountLevel) {
-        return (VERIFIABLE_IDENTITY.getUserAccountLevel(account));
+        return (IUserInformation(proofOfIdentityContract).getUserAccountLevel(account));
     }
 &nbsp;
     /**
@@ -257,7 +299,7 @@ contract VerifiableIdentity is UserInformation {
     function getUserType(
         address account
     ) public view returns (uint8 userAccountType) {
-        return (VERIFIABLE_IDENTITY.getUserAccountType(account));
+        return (IUserInformation(proofOfIdentityContract).getUserAccountType(account));
     }
 }</pre></td></tr>
 </table></pre>
@@ -265,7 +307,7 @@ contract VerifiableIdentity is UserInformation {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 06 2023 02:19:08 GMT-0400 (Eastern Daylight Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 20 2023 11:51:23 GMT+0200 (Central European Summer Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

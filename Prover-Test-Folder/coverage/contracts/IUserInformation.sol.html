@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for contracts/DUMMYDONTDEPLOY.sol</title>
+    <title>Code coverage report for contracts/IUserInformation.sol</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> DUMMYDONTDEPLOY.sol
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> IUserInformation.sol
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/1</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -32,12 +32,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>3/3</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>3/3</span>
+        <span class='fraction'>0/0</span>
       </div>
     </div>
   </div>
@@ -125,55 +125,55 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">67×</span>
-<span class="cline-any cline-yes">67×</span>
-<span class="cline-any cline-yes">67×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.2;
-&nbsp;
-interface IPermissionsInterface {
-    function assignAccountRole(
-        address _account,
-        string calldata _orgId,
-        string calldata _roleId
-    ) external;
-}
-&nbsp;
-contract DummyPermissionsContract is IPermissionsInterface {
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 &nbsp;
 &nbsp;
-    constructor(){}
+import "./IRoleVerification.sol";
 &nbsp;
-    mapping(address =&gt; AccountRole) public _accountRole;
+/**
+@title IUserInformation
+@dev Interface for accessing user information from Haven1's Proof of Identity framework.
+*/
+interface IUserInformation is IRoleVerification {
 &nbsp;
+/*
+@notice `getUserAccountCountryCode` retrieves the country code associated with a user's account.
+@param account The address of the user account.
+*/
 &nbsp;
+function getUserAccountCountryCode(address account) external view returns (string memory userAccountCountryCode);
 &nbsp;
-    struct AccountRole {
-        string orgId;
-        string roleId;
-    }
+/**
+@notice `getUserAccountLevel` retrieves the verification level of a user's account.
+@param account The address of the user account.
+*/
 &nbsp;
-function updateAccountStatus(
-    string calldata reason,
-    address account,
-    uint256 number
-        ) public {}
+function getUserAccountLevel(address account) external view returns (uint8 userAccountLevel);
 &nbsp;
+/**
+@notice `getUserAccountType` retrieves the account type of a user's account.
+@param account The address of the user account.
+*/
 &nbsp;
-function assignAccountRole(
-        address _account,
-        string calldata _orgId,
-        string calldata _roleId
-) public override
-{
-    AccountRole storage accountRole = _accountRole[_account];
-        accountRole.orgId = _orgId;
-        accountRole.roleId = _roleId;
+function getUserAccountType(address account) external view returns (uint8 userAccountType);
 &nbsp;
-}
+ /**
+  * @notice `getUserAccountCompetencyRating` gets the competency rating a user
+  * earned testing.
+  * @param account The address of the target user account..
+  */
+&nbsp;
+    function getUserAccountCompetencyRating(
+        address account
+    ) external view returns (uint8);
 &nbsp;
 }</pre></td></tr>
 </table></pre>

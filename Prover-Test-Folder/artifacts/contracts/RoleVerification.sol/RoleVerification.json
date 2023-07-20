@@ -58,6 +58,11 @@
               "internalType": "uint256",
               "name": "expiry",
               "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "competencyRating",
+              "type": "uint8"
             }
           ],
           "internalType": "struct RoleVerification.IdentityBlob",
@@ -102,6 +107,11 @@
           "internalType": "uint256",
           "name": "expiry",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "competencyRating",
+          "type": "uint8"
         }
       ],
       "stateMutability": "view",

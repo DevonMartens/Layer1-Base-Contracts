@@ -57,6 +57,15 @@ describe("Proof of Identity Contract", function () {
         "tokenURI"
       );
     });
+    it("Proof of Identity Contract: The establishCompetencyRating should change the competency rating of a user from 0.", async () => {
+      await ProofOfIdentityContract.establishCompetencyRating(
+        Address2,
+        5
+      );
+      const blobOfAddress2 = await ProofOfIdentityContract.getUserAccountIdentityBlob(Address2);
+      const rating = blobOfAddress2.competencyRating;
+      expect(rating).to.equal(5);
+    });
     it("Proof of Identity Contract: The totalSupply should be equal to 1 after a token is minted.", async () => {
       expect(await ProofOfIdentityContract.totalSupply()).to.equal(1);
     });
@@ -139,6 +148,7 @@ describe("Proof of Identity Contract", function () {
         2,
         3,
         78886932657,
+        2,
         "hi"
       );
       //gets new code
@@ -158,6 +168,7 @@ describe("Proof of Identity Contract", function () {
         5,
         3,
         78886932657,
+        2,
         "hi"
       );
       //gets new code
@@ -176,6 +187,7 @@ describe("Proof of Identity Contract", function () {
         6,
         6,
         78886932657,
+        2,
         "hi"
       );
       //gets new code
@@ -194,6 +206,7 @@ describe("Proof of Identity Contract", function () {
         2,
         6,
         78886932658,
+        2,
         "hi"
       );
       //gets new expiry
@@ -224,6 +237,7 @@ describe("Proof of Identity Contract", function () {
         2,
         6,
         78886932658,
+        2,
         "hi"
       );
       await ProofOfIdentityContract.updateIdentity(
@@ -232,6 +246,7 @@ describe("Proof of Identity Contract", function () {
         2,
         6,
         78886932658,
+        2,
         "hi"
       );
       //calls expiry in struct to ensure formation was done as expected
@@ -334,7 +349,8 @@ describe("Proof of Identity Contract", function () {
           2,
           3,
           78886932657,
-          "hi"
+          2,
+          "2"
         ),
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
@@ -368,6 +384,7 @@ describe("Proof of Identity Contract", function () {
         2,
         3,
         78886932657,
+        2,
         "hi"
       );
     });
@@ -389,6 +406,16 @@ describe("Proof of Identity Contract", function () {
           Address2
         ),
         `AccessControl: account ${ContractDeployerErrorMessageForAccessControl} is missing role ${DEFAULT_ADMIN_ROLE}`
+      );
+    });
+    //establishCompetencyRating
+    it("Proof of Identity Contract: The `establishCompetencyRating` should only be called by the OPERATOR_ROLE", async () => {
+      await expectRevert(
+        ProofOfIdentityHasADifferentUpgraderAndAdmin.establishCompetencyRating(
+          Address2,
+          1
+        ),
+        `AccessControl: account ${ContractDeployerErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });
   });
@@ -484,6 +511,7 @@ describe("Proof of Identity Contract", function () {
           2,
           3,
           greaterThanCurrentBlockNumber,
+          2,
           "hi"
         ),
         `101`

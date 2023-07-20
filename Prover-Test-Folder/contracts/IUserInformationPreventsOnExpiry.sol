@@ -39,4 +39,16 @@ function getUserAccountLevelPreventOnExpiry(address account) external view retur
 
 function getUserAccountTypePreventOnExpiry(address account) external view returns (uint8);
 
+   /**
+     * @notice `getUserCompetencyRatingPreventOnExpiry` gets the competency rating a user
+     * earned testing but access to it is prevented if the identity has expired.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account, if the identity has not expired.
+     * @dev This function reverts if the target account's identity has expired.
+     */
+
+     function getUserAccountCompetencyRatingPreventOnExpiry(
+        address account
+    ) external view returns (uint8);
+
 }

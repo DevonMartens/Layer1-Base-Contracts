@@ -20,6 +20,19 @@ contract VerifiableIdentity {
     address private proofOfIdentityContract;
 
     /**
+     * @notice `getUserCompetencyRating` gets the competency rating a user
+     * earned testing.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account.
+     */
+
+    function getUserCompetencyRating(
+        address account
+    ) public view returns (uint8) {
+        return (IUserInformation(proofOfIdentityContract).getUserAccountCompetencyRating(account));
+    }
+
+    /**
     @notice getUserCountryCode function returns the country code from the users account
     @param account address of the target user account
     */

@@ -11,6 +11,25 @@
           "type": "address"
         }
       ],
+      "name": "getUserAccountCompetencyRating",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
       "name": "getUserAccountCountryCode",
       "outputs": [
         {
@@ -77,6 +96,11 @@
               "internalType": "uint256",
               "name": "expiry",
               "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "competencyRating",
+              "type": "uint8"
             }
           ],
           "internalType": "struct RoleVerification.IdentityBlob",
@@ -159,6 +183,11 @@
           "internalType": "uint256",
           "name": "expiry",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "competencyRating",
+          "type": "uint8"
         }
       ],
       "stateMutability": "view",

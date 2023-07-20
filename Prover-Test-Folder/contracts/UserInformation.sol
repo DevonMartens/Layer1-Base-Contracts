@@ -11,6 +11,21 @@ import "./RoleVerification.sol";
  */
 
 abstract contract UserInformation is RoleVerification {
+    
+     /**
+     * @notice `getUserAccountCompetencyRating` gets the competency rating a user
+     * earned testing.
+     * @param account The address of the target user account.
+     * @return The competency rating for the specified account.
+     */
+
+    function getUserAccountCompetencyRating(
+        address account
+    ) public view returns (uint8) {
+        return (identityBlob[account].competencyRating);
+    }
+    
+    
     /**
      * @notice `getUserAccountCountryCode` function returns the country code from the users account.
      * @param account address of the target user account.

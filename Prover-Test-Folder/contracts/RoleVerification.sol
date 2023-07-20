@@ -24,6 +24,7 @@ abstract contract RoleVerification {
         uint8 userType;
         uint8 level;
         uint256 expiry;
+        uint8 competencyRating;
     }
 
   

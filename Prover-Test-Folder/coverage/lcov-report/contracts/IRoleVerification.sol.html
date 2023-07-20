@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for contracts/DUMMYDONTDEPLOY.sol</title>
+    <title>Code coverage report for contracts/IRoleVerification.sol</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> DUMMYDONTDEPLOY.sol
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> IRoleVerification.sol
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/1</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -32,12 +32,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>3/3</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>3/3</span>
+        <span class='fraction'>0/0</span>
       </div>
     </div>
   </div>
@@ -87,7 +87,12 @@
 42
 43
 44
-45</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+45
+46
+47
+48
+49
+50</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -125,56 +130,66 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">67×</span>
-<span class="cline-any cline-yes">67×</span>
-<span class="cline-any cline-yes">67×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.0;
 &nbsp;
-interface IPermissionsInterface {
-    function assignAccountRole(
-        address _account,
-        string calldata _orgId,
-        string calldata _roleId
-    ) external;
-}
+import "./Errors.sol";
 &nbsp;
-contract DummyPermissionsContract is IPermissionsInterface {
+/**
+ * @title IRoleVerification interface for RoleVerification.
+ * @author Haven1 Development Team.
+ * @notice This contract outlines the base layer of Haven1s provable identity framework.
+ * @dev The function of this contract is to establish and return a users account level "identity blob".
+ */
 &nbsp;
+interface IRoleVerification {
+    /**
+     * @notice A mapping that maps account addresses to IdentityBlob struct storage.
+     */
 &nbsp;
-    constructor(){}
-&nbsp;
-    mapping(address =&gt; AccountRole) public _accountRole;
-&nbsp;
-&nbsp;
-&nbsp;
-    struct AccountRole {
-        string orgId;
-        string roleId;
+    /**
+     * @notice The struct representing the user's identity blob.
+     */
+    struct IdentityBlob {
+        uint256 tokenId;
+        string countryCode;
+        uint8 userType;
+        uint8 level;
+        uint256 expiry;
+        uint8 competencyRating;
     }
 &nbsp;
-function updateAccountStatus(
-    string calldata reason,
-    address account,
-    uint256 number
-        ) public {}
+    /**
+     * @notice `getUserAccountExpiry` function returns only the expiry date from the users account.
+     * @param account address of the target user account.
+     * @return userAccountExpiry provides the account expiry for the account passed.
+     */
+&nbsp;
+    function getUserAccountExpiry(
+        address account
+    ) external view returns (uint256 userAccountExpiry);
 &nbsp;
 &nbsp;
-function assignAccountRole(
-        address _account,
-        string calldata _orgId,
-        string calldata _roleId
-) public override
-{
-    AccountRole storage accountRole = _accountRole[_account];
-        accountRole.orgId = _orgId;
-        accountRole.roleId = _roleId;
+    /**
+     * @notice `getUserAccountIdentityBlob` function returns struct IdentityBlob from the users account.
+     * @param account address of the target user account.
+     * @return userIdentityBlob provides the IdentityBlob struct for the account passed.
+     */
 &nbsp;
-}
-&nbsp;
+    function getUserAccountIdentityBlob(
+        address account
+    ) external view returns (IdentityBlob memory userIdentityBlob);
 }</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
