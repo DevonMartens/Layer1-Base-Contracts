@@ -1,19 +1,17 @@
 const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
 
-const blobForAddress2 =  {
+const blobForAddress2 = {
   largeNumbers: [1, 78886932657],
   smallNumbers: [2, 3],
-  strings: ["1",]
+  strings: ["1"],
 };
 
-
-const blobForAddress3 =  {
+const blobForAddress3 = {
   largeNumbers: [2, 7888693278],
   smallNumbers: [5, 6],
-  strings: ["1",]
+  strings: ["1"],
 };
-
 
 describe("Verifiable Identity Contract's ability to read the Proof Of Identity contract's identity blob.", function () {
   let ProofOfIdentityContract;
@@ -65,7 +63,9 @@ describe("Verifiable Identity Contract's ability to read the Proof Of Identity c
   });
   it("Verifiable Identity Contract: The values for `Competency Rating` in a seperate verifiable identity contract should match the values for the original proof of identity.", async () => {
     await ProofOfIdentityContract.establishCompetencyRating(Address3, 4);
-    expect(await VerifiableIdentity.getUserCompetencyRating(Address3)).to.equal(await ProofOfIdentityContract.getUserAccountCompetencyRating(Address3));
+    expect(await VerifiableIdentity.getUserCompetencyRating(Address3)).to.equal(
+      await ProofOfIdentityContract.getUserAccountCompetencyRating(Address3)
+    );
   });
   it("Verifiable Identity Contract: The values for `country code` in a seperate verifiable identity contract should match the values for the original proof of identity.", async () => {
     //check that the country code is the same in the original proof of identity
