@@ -7,10 +7,12 @@ import "./Errors.sol";
  * @title RoleVerification
  * @author Haven1 Development Team
  * @notice This contract outlines the base layer of Haven1s provable identity framework
- * @dev The function of this contract is to establish and return a users account level "identity blob" for use within the identity framework
+ * @dev The function of this contract is to establish and return a users account level "identity blob" 
+ * for use within the identity framework
  */
 
 abstract contract RoleVerification {
+
     /**
      * @notice public mapping `identityBlob` maps account addresses to identityBlob struct storage.
      * @dev identityBlob is utilised through inheritence of ProofOfIdentity.sol and therefore must remain public.
@@ -18,6 +20,7 @@ abstract contract RoleVerification {
 
     mapping(address => IdentityBlob) public identityBlob;
 
+    // Storage for user identity data.
     struct IdentityBlob {
         uint256 tokenId;
         string countryCode;

@@ -31,6 +31,8 @@ contract ProofOfIdentity is
     AccessControlUpgradeable,
     UUPSUpgradeable
 {
+
+    // Tells the contract to use the counters library in counters upgradeable.
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
 
@@ -77,7 +79,7 @@ contract ProofOfIdentity is
     // Tracks tokenIds in a counter.
      CountersUpgradeable.Counter private _tokenIdCounter;
 
-    // Stores the Quourum Network permissions interface address.
+    // Stores the Quorum Network permissions interface address.
     IPermissionsInterface private _permissionsInterface;
 	
     // Maps tokenId to custom URI.
@@ -93,12 +95,11 @@ contract ProofOfIdentity is
 
      /**	
      * @notice `initalize` function is ran at the time of deployment to support the upgradable proxy, 
-     * it defines the permissions interface and the default admin role for access control or "network operator"	
-     * @dev The function includes name and symbol to satisfy ERC721 contract requirements.	
-     * `_disableInitializers` called to prevent re-initialization as per OpenZeppelin recommendations.	
+     * it defines the permissions interface and the default admin role for access control or "network operator".
+     * @dev The function includes name and symbol to satisfy ERC721 contract requirements.
      * @param permissionsInterface address of the Quorum permissions interface contract.	
      * @param networkAdmin address of the Network Operator Multisig, to be declared as default admin for access control.	
-     * @param networkOperator address that controls operations in the contract
+     * @param networkOperator address that controls operations in the contract.
      */
     function initialize(
         address permissionsInterface,

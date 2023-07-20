@@ -6,11 +6,13 @@ import "./RoleVerification.sol";
 /**
  * @title UserInformationPreventsOnExpiry
  * @author Haven1 Development Team
- * @notice This contract allows developers to utilise Haven1s Proof Of Identity Framework to enforce in date identity documents for access to functions.
+ * @notice This contract allows developers to utilise Haven1s Proof Of Identity Framework 
+ * to enforce in date identity documents for access to functions.
  * @dev UserInformationPreventsOnExpiry is accessible by importing VerifiableIdentityPreventsOnExpiry.sol.
  */
 
 abstract contract UserInformationPreventsOnExpiry is RoleVerification {
+
     /**
      * @notice getUserAccountCountryCode function returns the country code from the users account.
      * @dev function reverts in the event the target account has expired.
@@ -60,7 +62,7 @@ abstract contract UserInformationPreventsOnExpiry is RoleVerification {
     }
 
         /**
-     * @notice `getUserAccountCompetencyRatingPreventOnExpiry` gets the competency rating a user
+     * @notice `getUserAccountCompetencyRatingPreventOnExpiry` gets the competency rating a user.
      * earned testing but access to it is prevented if the identity has expired.
      * @param account The address of the target user account.
      * @return The competency rating for the specified account, if the identity has not expired.
