@@ -277,20 +277,6 @@ contract ProofOfIdentity is
         require(from == address(0), Errors.ID_NOT_TRANSFERABLE);
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
-
-    /**	
-     * @dev Overrides OpenZeppelin `transferFrom` 
-     * implementation to prevent transferring of token.	
-     */
-
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public pure override {
-        revert(Errors.ID_NOT_TRANSFERABLE);
-    }
-
   	
     /**	
      * @dev Overrides OpenZeppelin `safeTransferFrom` implementation 

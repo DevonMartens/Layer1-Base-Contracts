@@ -438,18 +438,25 @@ describe("Proof of Identity Contract", function () {
         78886932657,
         "tokenONE"
       );
-
       await expectRevert(
         ProofOfIdentityContract.transferFrom(ContractDeployer, Address3, 2),
         "102"
       );
     });
     it("Proof of Identity Contract: ERC721 Overrides should not Allow safeTransferFrom to tranfer the token to another address.", async () => {
+      await ProofOfIdentityContract.issueIdentity(
+        ContractDeployer,
+        "1",
+        2,
+        3,
+        78886932657,
+        "tokenONE"
+      );
       await expectRevert(
         ProofOfIdentityContract["safeTransferFrom(address,address,uint256)"](
-          Address3,
+          ContractDeployer,
           Address2,
-          1
+          2
         ),
         "102"
       );
