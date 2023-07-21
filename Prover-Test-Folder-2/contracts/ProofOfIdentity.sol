@@ -283,7 +283,8 @@ contract ProofOfIdentity is
 
 
     /**
-    * @dev Overrides OpenZeppelin `safeTransferFrom` implementation to prevent transferring of token.
+    * @dev Overrides OpenZeppelin `_authorizeUpgrade` in order to ensure only the 
+    * operator role can upgrade the contracts.
     */
     function _authorizeUpgrade(address newImplementation) 
     internal

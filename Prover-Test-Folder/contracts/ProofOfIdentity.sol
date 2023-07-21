@@ -272,16 +272,18 @@ contract ProofOfIdentity is
         return _tokenURI[tokenId];	
     }	
 
-
+     /**
+    * @dev Overrides OpenZeppelin `_beforeTokenTransfer` implementation to prevent transferring of a token.
+    */
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize) internal virtual override {
         require(from == address(0), Errors.ID_NOT_TRANSFERABLE);
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
   	
-    /**	
-     * @dev Overrides OpenZeppelin `safeTransferFrom` implementation 
-     * to prevent transferring of token
-     */
+  /**
+    * @dev Overrides OpenZeppelin `_authorizeUpgrade` in order to ensure only the 
+    * operator role can upgrade the contracts.
+    */
 
    function _authorizeUpgrade(address newImplementation)
         internal
