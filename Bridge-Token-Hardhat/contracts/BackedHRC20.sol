@@ -68,15 +68,15 @@ contract BackedHRC20 is
     }
 
     /** 
-    @notice `initalize` function gives variables values when the contract deploys.
-    @param name the name of the token this contract distributes.
-    @param symbol the symbol of the token this contract distributes.
-    @param havenFoundation can remove/add operator roles.
-    @param networkOperator can pause/unpause the contract set to true to allow an address to be whitelisted or false to remove privledges.
-    @dev The `OPERATOR_ROLE can be given after deployment by calling `grantRole(role, address)`
-        Ex: `grantRole(OPERATOR_ROLE, 0x1d2B794563Bf90c6e53B56b215502b8aE4c42fF8)` 
+    * @notice `initalize` function gives variables values when the contract deploys.
+    * @param name the name of the token this contract distributes.
+    * @param symbol the symbol of the token this contract distributes.
+    * @param havenFoundation can remove/add operator roles.
+    * @param networkOperator can pause/unpause the contract set to true to allow an address to be whitelisted 
+    * or false to remove privledges.
+    * @dev The `OPERATOR_ROLE can be given after deployment by calling `grantRole(role, address)`
+    *     Ex: `grantRole(OPERATOR_ROLE, 0x1d2B794563Bf90c6e53B56b215502b8aE4c42fF8)` 
     */
-
     function initialize(
         string memory name,
         string memory symbol,
@@ -111,7 +111,7 @@ contract BackedHRC20 is
         _unpause();
     }
 
-       /**
+    /**
      * @notice `redeemBackedToken` function to redeem backed tokens for Haven1.
      * It is managed by the network operator
      * @param amount number of tokens to be redeemed.
@@ -137,7 +137,6 @@ contract BackedHRC20 is
      * @dev TThe premise for this function to be called will be a support ticket submitted off chain.
      * The reason will be emitted in the event.
      */
-
     function burnFrom(
         address target,
         uint256 amount,
@@ -154,10 +153,9 @@ contract BackedHRC20 is
      * @dev Function does not work when paused.
      * @dev If an address is blacklisted via `setBlackListAddress` it cannot recieve tokens.
      * @dev If isWhiteListContract is set to true addresses must be whitelisted via `setWhiteListAddress`.
-     * @dev Only THE OPERATOR role can do this an address can obtain that rolein the contructor or
-     * by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
+     * @dev Only THE OPERATOR role can do this an address can obtain that role in the initialize
+     * function or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
      */
-
     function issueBackedToken(
         address to,
         uint256 amount
@@ -167,12 +165,11 @@ contract BackedHRC20 is
     }
 
     /**
-    @notice `isContract` this function checks an address to ensure it is a contract NOT a wallet.
+    @notice `isContract` this function checks an address to ensure it is a contract not a wallet.
     @param _addr the address to be checked for if it is a contract or not.
     @dev It returns true if the input is a contract.
     @dev Used to override approvals and increase allowance.
     */
-
     function isContract(
         address _addr
     ) public view returns (bool isItAContract) {
@@ -189,7 +186,6 @@ contract BackedHRC20 is
      * @param spender is the address being approved to move other wallets tokens.
      * @param amount the number of tokens they send on behalf of the owner.
      */
-
     function _approve(
         address owner,
         address spender,
@@ -203,7 +199,6 @@ contract BackedHRC20 is
     @notice `_authorizeUpgrade` function to upgrade contract override to protect.
     @param newImplementation new implementation address.
     */
-
     function _authorizeUpgrade(
         address newImplementation
     ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
@@ -215,7 +210,6 @@ contract BackedHRC20 is
     @param amount number of tokens to be sent.
     @dev Function does not work when paused.
     */
-
     function _beforeTokenTransfer(
         address from,
         address to,
