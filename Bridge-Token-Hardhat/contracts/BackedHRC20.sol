@@ -10,6 +10,15 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 import "./Errors.sol";
 
+
+/**
+* @title BackedHRC20
+* @author Haven1 Development Team
+* @notice This contract serves a vital purpose in facilitating token 
+* transactions on Haven1 for users who prioritize the security of their cold storage vaults.
+* @dev The core functionality of this contract revolves around minting and burning tokens, 
+* ensuring a seamless experience for users as they deposit and redeem assets on the Haven1 platform.
+*/
 contract BackedHRC20 is
     Initializable,
     ERC20Upgradeable,

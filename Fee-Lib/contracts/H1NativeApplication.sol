@@ -5,9 +5,10 @@ import "./Errors.sol";
 pragma solidity ^0.8.0;
 
 /*
-@title H1NativeApplication
-@notice This contract's purpose is to provide modifiers to functions that ensure fees are sent to the FeeContract.
-@dev The primary function of this contract is to be used as an import for application building on Haven1.
+* @title H1NativeApplication
+* @author Haven1 Development Team
+* @notice This contract's purpose is to provide modifiers to functions that ensure fees are sent to the FeeContract.
+* @dev The primary function of this contract is to be used as an import for application building on Haven1.
 */
 
 interface IFeeContract {

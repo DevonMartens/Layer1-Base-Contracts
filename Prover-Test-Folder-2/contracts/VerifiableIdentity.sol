@@ -107,9 +107,9 @@ contract VerifiableIdentity {
     /**
     @notice `getUserExpiry` function returns the expiry date from the users account.
     @param account address of the target user account.
-    @return The expiry block timestamp of the user's account.
+    @return userAccountExpiry the expiry block timestamp of the user's account.
     */
-    function getUserExpiry(address account) public view returns (uint256) {
+    function getUserExpiry(address account) public view returns (uint256 userAccountExpiry) {
         return (IRoleVerification(proofOfIdentityContract).getUserAccountExpiry(account));
     }
 

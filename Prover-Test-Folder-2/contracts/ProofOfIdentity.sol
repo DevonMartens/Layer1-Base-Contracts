@@ -207,7 +207,7 @@ contract ProofOfIdentity is
     /**
     * @notice `updateTokenURI` function is only callable by operator role,
     * Its purpose is to update the tokenUri of an account.
-    * @param account the account of the tokenUri to update.
+    * @param account the target account of the tokenUri to update.
     * @param tokenUri the URI data to update for the token Id.
     */
     function updateTokenURI(

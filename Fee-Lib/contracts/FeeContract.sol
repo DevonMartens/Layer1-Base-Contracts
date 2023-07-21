@@ -10,9 +10,12 @@ import "./Errors.sol";
 
 
 /**
-@title FeeContract
-@notice This contract collects and distributes application fees from user application transactions.
-@dev The primary function of this contract is to ensure proper distribution from Haven1 applications to distribution channels.
+* @title FeeContract
+* @author Haven1 Development Team
+* @notice This contract collects and distributes application 
+* fees from user application transactions.
+* @dev The primary function of this contract is to ensure 
+* proper distribution from Haven1 applications to distribution channels.
 */
 
 interface IFeeOracle {
