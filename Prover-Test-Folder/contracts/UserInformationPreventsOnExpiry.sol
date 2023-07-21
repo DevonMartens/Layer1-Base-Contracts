@@ -61,7 +61,7 @@ abstract contract UserInformationPreventsOnExpiry is RoleVerification {
         return (identityBlob[account].userType);
     }
 
-        /**
+    /**
      * @notice `getUserAccountCompetencyRatingPreventOnExpiry` gets the competency rating a user.
      * earned testing but access to it is prevented if the identity has expired.
      * @param account The address of the target user account.

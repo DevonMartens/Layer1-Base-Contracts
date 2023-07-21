@@ -11,33 +11,29 @@ import "./IRoleVerification.sol";
 */
 interface IUserInformation is IRoleVerification {
 
-/*
-@notice `getUserAccountCountryCode` retrieves the country code associated with a user's account.
-@param account The address of the user account.
-*/
+    /*
+    @notice `getUserAccountCountryCode` retrieves the country code associated with a user's account.
+    @param account The address of the user account.
+    */
+    function getUserAccountCountryCode(address account) external view returns (string memory userAccountCountryCode);
 
-function getUserAccountCountryCode(address account) external view returns (string memory userAccountCountryCode);
+    /**
+    @notice `getUserAccountLevel` retrieves the verification level of a user's account.
+    @param account The address of the user account.
+    */
+    function getUserAccountLevel(address account) external view returns (uint8 userAccountLevel);
 
-/**
-@notice `getUserAccountLevel` retrieves the verification level of a user's account.
-@param account The address of the user account.
-*/
+    /**
+    @notice `getUserAccountType` retrieves the account type of a user's account.
+    @param account The address of the user account.
+    */
+    function getUserAccountType(address account) external view returns (uint8 userAccountType);
 
-function getUserAccountLevel(address account) external view returns (uint8 userAccountLevel);
-
-/**
-@notice `getUserAccountType` retrieves the account type of a user's account.
-@param account The address of the user account.
-*/
-
-function getUserAccountType(address account) external view returns (uint8 userAccountType);
-
- /**
-  * @notice `getUserAccountCompetencyRating` gets the competency rating a user
-  * earned testing.
-  * @param account The address of the target user account..
-  */
-
+    /**
+    * @notice `getUserAccountCompetencyRating` gets the competency rating a user
+    * earned testing.
+    * @param account The address of the target user account.
+    */
     function getUserAccountCompetencyRating(
         address account
     ) external view returns (uint8);

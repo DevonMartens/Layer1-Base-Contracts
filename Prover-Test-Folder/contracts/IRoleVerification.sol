@@ -11,10 +11,7 @@ import "./Errors.sol";
  */
 
 interface IRoleVerification {
-    /**
-     * @notice A mapping that maps account addresses to IdentityBlob struct storage.
-     */
-
+    
     /**
      * @notice The struct representing the user's identity blob.
      */
@@ -43,7 +40,6 @@ interface IRoleVerification {
      * @param account address of the target user account.
      * @return userIdentityBlob provides the IdentityBlob struct for the account passed.
      */
-
     function getUserAccountIdentityBlob(
         address account
     ) external view returns (IdentityBlob memory userIdentityBlob);

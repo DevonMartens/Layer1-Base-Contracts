@@ -15,7 +15,7 @@ abstract contract RoleVerification {
 
     /**
      * @notice public mapping `identityBlob` maps account addresses to identityBlob struct storage.
-     * @dev identityBlob is utilised through inheritence of ProofOfIdentity.sol and therefore must remain public.
+     * @dev identityBlob is utilised through inheritence of ProofOfIdentity.sol.
      */
 
     mapping(address => IdentityBlob) public identityBlob;

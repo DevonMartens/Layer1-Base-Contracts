@@ -164,7 +164,8 @@ contract ProofOfIdentity is
     /**	
      * @notice `updateIdentity` function is only callable by operator role, 
      * its purpose is to update an identity for changing user details over time.	
-     * @dev the function requires an ID to have been issued to the account, if the account does not have an ID it will revert.	
+     * @dev the function requires an ID to have been issued to the account, 
+     * if the account does not have an ID it will revert.	
      * @param account address of the target user.	
      * @param countryCode is the users region identifier as defined by ISO3 standards - 
      * Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.	
@@ -177,8 +178,6 @@ contract ProofOfIdentity is
      * @param tokenUri is passed to provide a custom URI to the tokenId for future utilisation and 
      * expansion of proof of identity framework.	
      */	
-
-
     function updateIdentity(
         address account,
         string calldata countryCode,
@@ -202,20 +201,23 @@ contract ProofOfIdentity is
         emit IdentityUpdated(account, identityBlob[account].tokenId);
     }
 
-      /**
+    /**
      * @notice `establishCompetencyRating` function allows operators to add or update a competency score for a user's account.
      * @dev This function can only be called by an address with the OPERATOR_ROLE.
      * @param account The address of the target user account.
      * @param score The competency score to be added or updated.
      */
-    function establishCompetencyRating(address account, uint8 score) external onlyRole(OPERATOR_ROLE) {
-        identityBlob[account].competencyRating = score;
+    function establishCompetencyRating(
+        address account, 
+        uint8 score) 
+        external onlyRole(OPERATOR_ROLE) {
+            identityBlob[account].competencyRating = score;
     }
 
      /**	
      * @notice `updateTokenURI` function is only callable by operator role, 
      * its purpose is to update the tokenUri of an account.	
-     * @param account the account of the tokenUri to update.	
+     * @param account the target account of the tokenUri to update.	
      * @param tokenUri the URI data to update for the token Id.	
      */
     function updateTokenURI(
@@ -228,10 +230,14 @@ contract ProofOfIdentity is
         emit TokenURIUpdated(account, tokenId, tokenUri);
     }
 
-       /**
-     * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by operator role, it suspends the account via the permissions interface and maintains the tokenID and identity blog struct for the targets account.
-     * @dev To unsuspend an account, a user must lodge a request with the operator, the ability to unsuspend accounts is not provided in this contract and requires intervention to resolve.
-     * @param suspendAddress the address to suspend via the permissions interface, tokenID is assigned by the _tokenOfHolder mapping.
+    /**
+     * @notice `suspendAccountMaintainTokenAndIdentityBlob` function is only callable by operator role, 
+     * it suspends the account via the permissions interface and maintains the tokenID 
+     * and identity blog struct for the targets account.
+     * @dev To unsuspend an account, a user must lodge a request with the operator, 
+     * the ability to unsuspend accounts is not provided in this contract and requires intervention to resolve.
+     * @param suspendAddress the address to suspend via the permissions interface, 
+     * tokenID is assigned by the _tokenOfHolder mapping.
      * @param reason the reason the address is being suspended.
      */
 
@@ -244,7 +250,8 @@ contract ProofOfIdentity is
     }
     	
     /**	
-     * @notice `totalSupply` function allows a call to view the count of issued tokens to monitor overall distribution.	
+     * @notice `totalSupply` function allows a call to view the count of 
+     * issued tokens to monitor overall distribution.	
      * @return totalSupply provides total supply of tokenIds issued	
      */	
     function totalSupply() public view returns (uint256) {	
@@ -253,10 +260,10 @@ contract ProofOfIdentity is
 
    	
      /**	
-     * @notice `tokenURI` function allows tokenURI to be viewed	
-     * @dev Overrides OpenZeppelins implementation with custom return logic	
-     * @param tokenId is passed to retrieve the mapped URI	
-     * @return tokenUri provides URI for specified tokenId passed	
+     * @notice `tokenURI` function allows tokenURI to be viewed.
+     * @dev Overrides OpenZeppelins implementation with custom return logic.	
+     * @param tokenId is passed to retrieve the mapped URI.	
+     * @return tokenUri provides URI for specified tokenId passed.	
      */	
     function tokenURI(	
         uint256 tokenId	
@@ -280,7 +287,8 @@ contract ProofOfIdentity is
     }
 
     /**	
-     * @dev Overrides OpenZeppelin `transferFrom` implementation to prevent transferring of token	
+     * @dev Overrides OpenZeppelin `transferFrom` 
+     * implementation to prevent transferring of token.	
      */
 
     function safeTransferFrom(
@@ -293,7 +301,8 @@ contract ProofOfIdentity is
 
   	
     /**	
-     * @dev Overrides OpenZeppelin `safeTransferFrom` implementation to prevent transferring of token
+     * @dev Overrides OpenZeppelin `safeTransferFrom` implementation 
+     * to prevent transferring of token
      */
 
    function _authorizeUpgrade(address newImplementation)
@@ -303,7 +312,8 @@ contract ProofOfIdentity is
     {}
 
    	/**
-    * @dev Overrides OpenZeppelin `supportsInterface` implementation to ensure the same interfaces can support access control and ERC721.	
+    * @dev Overrides OpenZeppelin `supportsInterface` implementation to 
+    * ensure the same interfaces can support access control and ERC721.	
     */
 
     function supportsInterface(

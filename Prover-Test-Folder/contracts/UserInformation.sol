@@ -18,7 +18,6 @@ abstract contract UserInformation is RoleVerification {
      * @param account The address of the target user account.
      * @return The competency rating for the specified account.
      */
-
     function getUserAccountCompetencyRating(
         address account
     ) public view returns (uint8) {
@@ -31,7 +30,6 @@ abstract contract UserInformation is RoleVerification {
      * @param account address of the target user account.
      * @return userAccountCountryCode provides the country code for the specified account passed.
      */
-
     function getUserAccountCountryCode(
         address account
     ) public view returns (string memory userAccountCountryCode) {
@@ -43,7 +41,6 @@ abstract contract UserInformation is RoleVerification {
      * @param account address of the target user account.
      * @return userAccountLevel provides the verification level for the specified account passed.
      */
-
     function getUserAccountLevel(
         address account
     ) public view returns (uint8 userAccountLevel) {
@@ -55,7 +52,6 @@ abstract contract UserInformation is RoleVerification {
      * @param account address of the target user account.
      * @return userAccountType provides the account type for the specified account passed.
      */
-
     function getUserAccountType(
         address account
     ) public view returns (uint8 userAccountType) {

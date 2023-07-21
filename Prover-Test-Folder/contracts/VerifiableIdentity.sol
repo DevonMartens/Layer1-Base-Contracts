@@ -44,14 +44,14 @@ contract VerifiableIdentity {
         return (IUserInformation(proofOfIdentityContract).getUserAccountCountryCode(account));
     }
 
-    /**
-    @notice getUserExpiry function returns the expiry date from the users account.
+     /**
+    @notice `getUserExpiry` function returns the expiry date from the users account.
     @param account address of the target user account.
-    @return userAccountLevel provides the verification level for the specified account passed.
-    */
-
-    function getUserExpiry(address account) public view returns (uint256) {
-        return (IUserInformation(proofOfIdentityContract).getUserAccountExpiry(account));
+    @return userAccountExpiry the expiry block timestamp of the user's account.
+    */ 
+   
+    function getUserExpiry(address account) public view returns (uint256 userAccountExpiry) {
+        return (IRoleVerification(proofOfIdentityContract).getUserAccountExpiry(account));
     }
 
     /**
@@ -59,7 +59,6 @@ contract VerifiableIdentity {
     @param account address of the target user account.
     @return userAccountIdentityBlob provides the IdentityBlob data for the specified account passed.
     */
-
     function getUserIdentityData(
         address account
     ) public view returns (IRoleVerification.IdentityBlob memory) {
@@ -69,9 +68,8 @@ contract VerifiableIdentity {
     /**
     @notice getUserLevel function returns the verification level from the users account.
     @param account address of the target user account.
-    @return uerAccountLevel provides the verification level for the specified account.
+    @return userAccountLevel provides the verification level for the specified account.
     */
-
     function getUserLevel(
         address account
     ) public view returns (uint8 userAccountLevel) {
