@@ -273,17 +273,9 @@ contract ProofOfIdentity is
     }	
 
 
-    /**
-     * @dev See {IERC721-transferFrom}.
-     *      The function reverts to keep the token soulbound.
-     */
-
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public pure override (ERC721Upgradeable)  {
-        revert(Errors.ID_NOT_TRANSFERABLE);
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize) internal virtual override {
+        require(from == address(0), Errors.ID_NOT_TRANSFERABLE);
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
 
     /**	

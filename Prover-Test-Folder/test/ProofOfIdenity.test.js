@@ -430,8 +430,17 @@ describe("Proof of Identity Contract", function () {
       );
     });
     it("Proof of Identity Contract: ERC721 Overrides should not Allow transferFrom to tranfer the token to another address.", async () => {
+      await ProofOfIdentityContract.issueIdentity(
+        ContractDeployer,
+        "1",
+        2,
+        3,
+        78886932657,
+        "tokenONE"
+      );
+
       await expectRevert(
-        ProofOfIdentityContract.transferFrom(Address2, Address3, 1),
+        ProofOfIdentityContract.transferFrom(ContractDeployer, Address3, 2),
         "102"
       );
     });
