@@ -14,11 +14,11 @@ import "./Errors.sol";
 abstract contract RoleVerification {
 
     /**
-     * @notice public mapping `identityBlob` maps account addresses to identityBlob struct storage.
+     * @notice internal mapping `identityBlob` maps account addresses to identityBlob struct storage.
      * @dev identityBlob is utilised through inheritence of ProofOfIdentity.sol.
      */
 
-    mapping(address => IdentityBlob) public identityBlob;
+    mapping(address => IdentityBlob) internal identityBlob;
 
     // Storage for user identity data.
     struct IdentityBlob {

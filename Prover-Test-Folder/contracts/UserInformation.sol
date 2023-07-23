@@ -6,7 +6,8 @@ import "./RoleVerification.sol";
 /**
  * @title UserInformation
  * @author Haven1 Development Team
- * @notice This contract is imported by VerifiableIdentity.sol and allows developers to access and utilise Haven1s Proof Of Identity Framework data.
+ * @notice This contract is imported by VerifiableIdentity.sol and allows developers to access and utilise 
+ * Haven1's Proof Of Identity Framework data.
  * @dev UserInformation is accessible by importing VerifiableIdentity.sol.
  */
 
@@ -14,7 +15,7 @@ abstract contract UserInformation is RoleVerification {
     
      /**
      * @notice `getUserAccountCompetencyRating` gets the competency rating a user
-     * earned testing.
+     * earned testing their De-Fi knowledge.
      * @param account The address of the target user account.
      * @return The competency rating for the specified account.
      */
