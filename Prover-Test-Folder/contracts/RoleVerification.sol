@@ -6,9 +6,9 @@ import "./Errors.sol";
 /**
  * @title RoleVerification
  * @author Haven1 Development Team
- * @notice This contract outlines the base layer of Haven1s provable identity framework
- * @dev The function of this contract is to establish and return a users account level "identity blob" 
- * for use within the identity framework
+ * @notice This contract outlines the base layer of Haven1s provable identity framework.
+ * @dev The function of this contract is to establish and return a user's account level "identity blob" 
+ * for use within the identity framework.
  */
 
 abstract contract RoleVerification {
@@ -32,7 +32,7 @@ abstract contract RoleVerification {
 
   
     /**
-     * @notice `getUserAccountExpiry` function returns only the expiry date from the users account.
+     * @notice `getUserAccountExpiry` function returns only the expiry date from the user's account.
      * @param account address of the target user account.
      * @return userAccountExpiry provides the account expiry for the account passed.
      */
@@ -44,7 +44,7 @@ abstract contract RoleVerification {
     }
 
     /**
-     * @notice `getUserAccountIdentityBlob` function returns struct IdentityBlob from the users account.
+     * @notice `getUserAccountIdentityBlob` function returns the struct IdentityBlob as it maps to a target user's account.
      * @param account address of the target user account.
      * @return userIdentityBlob provides the IdentityBlob struct for the account passed.
      */
