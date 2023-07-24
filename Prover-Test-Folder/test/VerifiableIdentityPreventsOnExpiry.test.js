@@ -76,7 +76,7 @@ describe("Testing the the Verifiable Identity Prevents on Expiry output and reve
       await VerifiableIdentityPreventsOnExpiry.getUserExpiry(Address2)
     ).to.equal(set);
   });
-  it("Verifiable Identity Prevents on Expiry Contract: The identity blobs in the Proof Of IdentityContract and Verifiable Identity Prevents on Expirey should be the same", async () => {
+  it("Verifiable Identity Prevents on Expiry Contract: The identity blobs in the Proof Of IdentityContract and Verifiable Identity Prevents on Expiry should be the same", async () => {
     const set = timestamp + 5;
     await ProofOfIdentityContract.issueIdentity(
       Address2,
