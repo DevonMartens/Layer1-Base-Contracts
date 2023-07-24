@@ -55,7 +55,7 @@ describe("Verifiable Identity Contract's ability to read the Proof Of Identity c
       ProofOfIdentityContract.address
     );
   });
-  it("Verifiable Identity Contract: The values for `country code` in a seperate verifiable identity contract should match the values for the original proof of identity.", async () => {
+  it("Verifiable Identity Contract: The values for `country code` in a separate verifiable identity contract should match the values for the original proof of identity.", async () => {
     //check that the country code is the same in the original proof of identity
     expect(
       await ProofOfIdentityContract.getUserAccountCountryCode(Address2)
@@ -74,7 +74,7 @@ describe("Verifiable Identity Contract's ability to read the Proof Of Identity c
       await ProofOfIdentityContract.getUserAccountCountryCode(Address3)
     );
   });
-  it("Verifiable Identity Contract: The values for `Competency Rating` in a seperate verifiable identity contract should match the values for the original proof of identity.", async () => {
+  it("Verifiable Identity Contract: The values for `Competency Rating` in a separate verifiable identity contract should match the values for the original proof of identity.", async () => {
     await ProofOfIdentityContract.establishCompetencyRating(Address3, 4);
     expect(await VerifiableIdentity.getUserCompetencyRating(Address3)).to.equal(
       await ProofOfIdentityContract.getUserAccountCompetencyRating(Address3)
@@ -99,7 +99,7 @@ describe("Verifiable Identity Contract's ability to read the Proof Of Identity c
       await ProofOfIdentityContract.getUserAccountIdentityBlob(Address2)
     ).to.deep.equal(await VerifiableIdentity.getUserIdentityData(Address2));
   });
-  it("Verifiable Identity Contract: The values for `user type` in a seperate verifiable identity contract should match the values for the original proof of identity.", async () => {
+  it("Verifiable Identity Contract: The values for `user type` in a separate verifiable identity contract should match the values for the original proof of identity.", async () => {
     //check that the user type is the same in the original proof of identity
     expect(await ProofOfIdentityContract.getUserAccountType(Address2)).to.equal(
       2
@@ -118,7 +118,7 @@ describe("Verifiable Identity Contract's ability to read the Proof Of Identity c
       await ProofOfIdentityContract.getUserAccountType(Address3)
     );
   });
-  it("Verifiable Identity Contract: The values for `level` in a seperate verifiable identity contract should match the values for the original proof of identity.", async () => {
+  it("Verifiable Identity Contract: The values for `level` in a separate verifiable identity contract should match the values for the original proof of identity.", async () => {
     //check that the level is the same in the original proof of identity
     expect(
       await ProofOfIdentityContract.getUserAccountLevel(Address2)
