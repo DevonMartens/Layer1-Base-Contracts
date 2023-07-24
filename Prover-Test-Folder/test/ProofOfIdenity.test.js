@@ -47,7 +47,7 @@ describe("Proof of Identity Contract", function () {
   describe("Testing the issueIdentity function and that minting happens as expected.", function () {
     beforeEach(async () => {
       // Issues the second signer address an NFT and assigns it an identity
-      // By defaul this is tokenId 1.
+      // By default this is tokenId 1.
       await ProofOfIdentityContract.issueIdentity(
         Address2,
         "1",
@@ -118,7 +118,7 @@ describe("Proof of Identity Contract", function () {
     it("Proof of Identity Contract: The issueIdentity function should create a token with the custom input as it's URI", async () => {
       expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("tokenURI");
     });
-    it("Proof of Identity Contract: The tokenURI function should give an error 101 if the tokenId doesnt exist", async () => {
+    it("Proof of Identity Contract: The tokenURI function should give an error 101 if the tokenId doesn't exist", async () => {
       await expectRevert(ProofOfIdentityContract.tokenURI(1444), "101");
     });
   });
@@ -212,7 +212,7 @@ describe("Proof of Identity Contract", function () {
         await ProofOfIdentityContract.getUserAccountExpiry(Address2)
       ).to.equal(78886932658);
     });
-    it("Proof of Identity Contract: The updateIdentity function should alter a previously created identities enitre struct", async () => {
+    it("Proof of Identity Contract: The updateIdentity function should alter a previously created identities entire struct", async () => {
       await ProofOfIdentityContract.issueIdentity(
         Address3,
         1,
@@ -260,7 +260,7 @@ describe("Proof of Identity Contract", function () {
       expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("tokenURI");
       //updates the tokenURI
       await ProofOfIdentityContract.updateTokenURI(Address2, 1, "Updated");
-      //checks that the token URI has updated to the anticpated URI
+      //checks that the token URI has updated to the anticipated URI
       expect(await ProofOfIdentityContract.tokenURI(1)).to.equal("Updated");
     });
   });
@@ -292,14 +292,14 @@ describe("Proof of Identity Contract", function () {
       secondAddressSigner = await ethers.getSigner(Address2);
       Address2SignsProofOfIdentityContract =
         ProofOfIdentityContract.connect(secondAddressSigner);
-      // Second Proof of Idenity Contract where address 2 is the admin
+      // Second Proof of Identity Contract where address 2 is the admin
       ProofOfIdentityHasADifferentUpgraderAndAdmin = await upgrades.deployProxy(
         ProofOfIdentityFactory,
         [IPermissionsInterfaceDummyInstance.address, Address2, Address2],
         { initializer: "initialize", kind: "uups" }
       );
     });
-    it("Proof of Identity Contract: The initalize should only be called upon deployment.", async () => {
+    it("Proof of Identity Contract: The initialize should only be called upon deployment.", async () => {
       await expectRevert(
         ProofOfIdentityContract.initialize(
           IPermissionsInterfaceDummyInstance.address,
@@ -429,7 +429,7 @@ describe("Proof of Identity Contract", function () {
         "tokenONE"
       );
     });
-    it("Proof of Identity Contract: ERC721 Overrides should not Allow transferFrom to tranfer the token to another address.", async () => {
+    it("Proof of Identity Contract: ERC721 Overrides should not Allow transferFrom to transfer the token to another address.", async () => {
       await ProofOfIdentityContract.issueIdentity(
         ContractDeployer,
         "1",
@@ -443,7 +443,7 @@ describe("Proof of Identity Contract", function () {
         "102"
       );
     });
-    it("Proof of Identity Contract: ERC721 Overrides should not Allow safeTransferFrom to tranfer the token to another address.", async () => {
+    it("Proof of Identity Contract: ERC721 Overrides should not Allow safeTransferFrom to transfer the token to another address.", async () => {
       await ProofOfIdentityContract.issueIdentity(
         ContractDeployer,
         "1",
@@ -472,7 +472,7 @@ describe("Proof of Identity Contract", function () {
     let lessThanCurrentBlockNumber;
     let greaterThanCurrentBlockNumber;
     beforeEach(async () => {
-      // Mints tokenid 1 to Address2country code "1" , userType 2 ,level 3, expiry block, tokenURI
+      // Mints tokenid 1 to Address2 the country code is "1" , userType 2 ,level 3, expiry block, tokenURI
       await ProofOfIdentityContract.issueIdentity(
         Address2,
         "1",
@@ -483,7 +483,7 @@ describe("Proof of Identity Contract", function () {
       );
       //get current block from ethers
       const currentBlock = await ethers.provider.getBlockNumber();
-      // gets current block number to subract from to create one that has already passed regardless of when this test is run
+      // gets current block number to subtract from to create one that has already passed regardless of when this test is run
       let currentBlockTimestamp = (await ethers.provider.getBlock(currentBlock))
         .timestamp;
 
@@ -517,7 +517,7 @@ describe("Proof of Identity Contract", function () {
         `103`
       );
     });
-    it("Proof of Identity Contract: `updateIdentity` should not allow an account that doesnt have a token to updated the identity blob struct.", async () => {
+    it("Proof of Identity Contract: `updateIdentity` should not allow an account that doesn't have a token to the updated the identity blob struct.", async () => {
       await expectRevert(
         ProofOfIdentityContract.updateIdentity(
           Address3,
@@ -531,7 +531,7 @@ describe("Proof of Identity Contract", function () {
         `101`
       );
     });
-    it("Proof of Identity Contract:  `updateTokenURI` should not allow an account's tokenURI to be updated if they dont have an id.", async () => {
+    it("Proof of Identity Contract:  `updateTokenURI` should not allow an account's tokenURI to be updated if they don't have an id.", async () => {
       await expectRevert(
         ProofOfIdentityContract.updateTokenURI(Address3, 2, "token"),
         `101`
@@ -550,7 +550,7 @@ describe("Proof of Identity Contract", function () {
         "token"
       );
     });
-    it("Proof of Identity Contract: The event AccountSuspendedTokenMaintained should emit with the address that is supsepended and reason in the function suspendAccountMaintainTokenAndIdentityBlob.", async () => {
+    it("Proof of Identity Contract: The event AccountSuspendedTokenMaintained should emit with the address that is suspended and reason in the function suspendAccountMaintainTokenAndIdentityBlob.", async () => {
       await expect(
         ProofOfIdentityContract.suspendAccountMaintainTokenAndIdentityBlob(
           Address2,
