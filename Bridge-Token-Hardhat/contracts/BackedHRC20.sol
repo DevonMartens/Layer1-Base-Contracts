@@ -68,12 +68,12 @@ contract BackedHRC20 is
     }
 
     /** 
-    * @notice `initalize` function gives variables values when the contract deploys.
+    * @notice `initialize` function gives values to variables when the contract deploys.
     * @param name the name of the token this contract distributes.
     * @param symbol the symbol of the token this contract distributes.
     * @param havenFoundation can remove/add operator roles.
     * @param networkOperator can pause/unpause the contract set to true to allow an address to be whitelisted 
-    * or false to remove privledges.
+    * or false to remove privileges.
     * @dev The `OPERATOR_ROLE can be given after deployment by calling `grantRole(role, address)`
     *     Ex: `grantRole(OPERATOR_ROLE, 0x1d2B794563Bf90c6e53B56b215502b8aE4c42fF8)` 
     */
@@ -93,7 +93,7 @@ contract BackedHRC20 is
 
     /**
      * @notice `pause` is a function to pause sending/depositing/withdrawing of tokens from contract.
-     * The `whenNotPaused` modifer will read the contracts state and not allow functions accordingly.
+     * The `whenNotPaused` modifier will read the contract's state and not allow functions accordingly.
      * @dev Only operator role can do this given in constructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
      */
 
@@ -104,7 +104,7 @@ contract BackedHRC20 is
     /**
      * @notice `unpause` allows contract functions with the `whenNotPaused` modifier
      * to continue to run after the contract was previously paused and allow
-     * sending/depositing/withdrawing of tokens from contract.
+     * sending/depositing/withdrawing tokens from the contract.
      */
 
     function unpause() external onlyRole(OPERATOR_ROLE) {
@@ -117,7 +117,7 @@ contract BackedHRC20 is
      * @param amount number of tokens to be redeemed.
      * @dev Function does not work when paused.
      * @dev If  the amount is higher than the balance of the address an error reading "BALANCE_TOO_LOW" will be returned.
-     * @dev Only OPERATOR role can do this given in contructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
+     * @dev Only OPERATOR role can do this given in constructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
      */
 
     function redeemBackedToken(uint256 amount) external whenNotPaused {
@@ -148,8 +148,8 @@ contract BackedHRC20 is
 
     /**
      * @notice `issueBackedToken` this function Function to issue backed tokens for Haven1, managed by the network operator.
-     * @param to address to recieve token.
-     * @param amount number of tokens to be recieved.
+     * @param to address to receive the tokens.
+     * @param amount number of tokens to be received.
      * @dev Function does not work when paused.
      * @dev If an address is blacklisted via `setBlackListAddress` it cannot recieve tokens.
      * @dev If isWhiteListContract is set to true addresses must be whitelisted via `setWhiteListAddress`.
