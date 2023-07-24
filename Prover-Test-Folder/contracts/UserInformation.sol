@@ -6,7 +6,7 @@ import "./RoleVerification.sol";
 /**
  * @title UserInformation
  * @author Haven1 Development Team
- * @notice This contract is imported by VerifiableIdentity.sol and allows developers to access and utilise 
+ * @notice This contract is imported by VerifiableIdentity.sol and allows developers to access and utilize 
  * Haven1's Proof Of Identity Framework data.
  * @dev UserInformation is accessible by importing VerifiableIdentity.sol.
  */

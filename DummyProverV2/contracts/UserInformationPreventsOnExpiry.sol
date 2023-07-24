@@ -6,7 +6,7 @@ import "./RoleVerification.sol";
 /**
  * @title UserInformationPreventsOnExpiry
  * @author Haven1 Development Team
- * @notice This contract allows developers to utilise Haven1s Proof Of Identity Framework to enforce in date identity documents for access to functions.
+ * @notice This contract allows developers to utilize Haven1s Proof Of Identity Framework to enforce in date identity documents for access to functions.
  * @dev UserInformationPreventsOnExpiry is accessible by importing VerifiableIdentityPreventsOnExpiry.sol.
  */
 

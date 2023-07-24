@@ -129,7 +129,8 @@ contract ProofOfIdentity is
      * ensuring user documentation is in date if an application chooses to implement.	
      * @param level is passed to assign a KYC level to the user account, by combining the region code and KYC 
      * level we allow for specific regional restrictions to be implemented by developers.	
-     * @param tokenUri is passed to provide a custom URI to the tokenId for future utilisation and expansion of proof of identity framework.	
+     * @param tokenUri is passed to provide a custom URI to the tokenId for future utilisation and expansion 
+     * of proof of identity framework.	
      * @return tokenId the id of the token minted to the account.	
      */
     function issueIdentity(
@@ -272,7 +273,7 @@ contract ProofOfIdentity is
         return _tokenURI[tokenId];	
     }	
 
-     /**
+    /**
     * @dev Overrides OpenZeppelin `_beforeTokenTransfer` implementation to prevent transferring of a token.
     */
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize) internal virtual override {
@@ -280,7 +281,7 @@ contract ProofOfIdentity is
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
   	
-  /**
+    /**
     * @dev Overrides OpenZeppelin `_authorizeUpgrade` in order to ensure only the 
     * operator role can upgrade the contracts.
     */

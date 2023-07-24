@@ -6,7 +6,7 @@ import "./new/NewUserInformation.sol";
 /**
 * @title VerifiableIdentity
 * @author Haven1 Development Team
-* @notice This contract allows developers to access and utilise Haven1s Proof Of Identity Framework data.
+* @notice This contract allows developers to access and utilize Haven1s Proof Of Identity Framework data.
 * @dev Haven1s Proof Of Identity Framework data becomes available via the imported functions below.
 The official Haven1 ProofOfIdentity.sol deployment address must be passed via the constructor.
 */
