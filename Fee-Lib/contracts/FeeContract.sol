@@ -152,7 +152,7 @@ contract FeeContract is
         epochLength = 86400;
         networkFeeResetTimestamp = block.timestamp + 86400;
         oracle = _oracle;
-        for (uint i = 0; i < _channels.length; i++) {
+        for (uint256 i = 0; i < _channels.length; i++) {
             CONTRACT_SHARES += _weights[i];
             channels.push(_channels[i]);
             weights.push(_weights[i]);
@@ -231,13 +231,13 @@ contract FeeContract is
     ) external onlyRole(OPERATOR_ROLE) {
         uint256 index =  _findIndexPosition(_channel);
         address removedAddress = channels[index];
-        for (uint i = index; i < channels.length - 1; i++) {
+        for (uint256 i = index; i < channels.length - 1; i++) {
             channels[i] = channels[i + 1];
         }
         channels.pop();
         CONTRACT_SHARES -= weights[index];
         weights[index] = weights[weights.length - 1];
-        for (uint i = index; i < weights.length - 1; i++) {
+        for (uint256 i = index; i < weights.length - 1; i++) {
             weights[i] = weights[i + 1];
         }
         weights.pop();
@@ -266,7 +266,7 @@ contract FeeContract is
             block.timestamp > lastDistribution + epochLength ||
             hasRole(OPERATOR_ROLE, msg.sender)
         ) {
-            uint rebateValue = queryOracle();
+            uint256 rebateValue = queryOracle();
             (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(
                 ""
             );
@@ -274,8 +274,8 @@ contract FeeContract is
 
             uint256 amount = address(this).balance;
 
-            for (uint i = 0; i < channels.length; i++) {
-                uint share = (amount * weights[i]) / CONTRACT_SHARES;
+            for (uint256 i = 0; i < channels.length; i++) {
+                uint256 share = (amount * weights[i]) / CONTRACT_SHARES;
                 (bool sent, ) = channels[i].call{value: share}("");
                 require(sent, Errors.TRANSFER_FAILED);
 
@@ -295,8 +295,8 @@ contract FeeContract is
 
     function forceFeeDistribution() external payable onlyRole(OPERATOR_ROLE) {
         uint256 amount = address(this).balance;
-        for (uint i = 0; i < channels.length; i++) {
-            uint share = (amount * weights[i]) / CONTRACT_SHARES;
+        for (uint256 i = 0; i < channels.length; i++) {
+            uint256 share = (amount * weights[i]) / CONTRACT_SHARES;
             (bool success, ) = channels[i].call{value: share}("");
             require(success, Errors.TRANSFER_FAILED);
             emit FeesDistributed(block.timestamp, channels[i], share);
@@ -357,7 +357,7 @@ contract FeeContract is
     function _findIndexPosition(
         address channel
     ) public view returns (uint256) {
-        for (uint i = 0; i < channels.length; i++) {
+        for (uint256 i = 0; i < channels.length; i++) {
             if (channels[i] == channel) {
                 return i;
             }
@@ -372,7 +372,7 @@ contract FeeContract is
     function isTheAddressInTheChannelsArray(
         address channel
     ) public view returns (bool) {
-        for (uint i = 0; i < channels.length; i++) {
+        for (uint256 i = 0; i < channels.length; i++) {
             if (channels[i] == channel) {
                 return false;
             }
@@ -460,7 +460,7 @@ contract FeeContract is
     @notice `queryOracle` this function is to consult oracle to get a fee amount.
     */
 
-    function queryOracle() public view returns (uint feeAmount) {
+    function queryOracle() public view returns (uint256 feeAmount) {
         return (IFeeOracle(oracle).consult());
     }
 
