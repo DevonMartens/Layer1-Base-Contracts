@@ -7,15 +7,12 @@ contract FeeOracle  {
 
     uint justKeepAdding;
 
-    // This is the block timestamp that the fee will need to be reset.
     uint256 public requiredReset;
 
 
     function setRequiredReset(uint newReset) external {
         requiredReset = newReset;
     }
-
-    //to check for changes caused by reset fee
 
     function setPriceAverage(uint newPriceAverage) external {
         priceAverage = newPriceAverage;

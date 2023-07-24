@@ -27,12 +27,4 @@ module.exports = {
   },
 };
 
-//   ropsten: {
-//     url: `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`,
-//     accounts: [process.env.PRI_KEY],
-//   },
-// },
-// etherscan: {
-//   apiKey: process.env.ETHERSCAN_API_KEY,
-// },
-//};
+
