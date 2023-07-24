@@ -11,7 +11,7 @@ const web3 = require("web3");
 
 const defaultSender = "0x7102dc57665234F8d68Fcf84F31f45263c59c3b3";
 const defaultKey = process.env["PrivateKey"];
-// second Buidler default account
+// second Builder default account
 const ONE_ETH = ethers.utils.parseUnits("1", "ether");
 
 describe("BackedHRC20 Haven1 Token Contract", async () => {
@@ -36,15 +36,15 @@ describe("BackedHRC20 Haven1 Token Contract", async () => {
   });
   describe("Testing the initial values to validate expected contract state", function () {
     it("Backed HRC20: name & symbol variables should match constructor input for the ERC20 token", async () => {
-      //confirm they are eqaul to the value set in the constructor
+      //confirm they are equal to the value set in the constructor
       expect(await BackedHRC20Contract.name()).to.equal("HAVEN1");
-      //confirm they are eqaul to the value set in the constructor
+      //confirm they are equal to the value set in the constructor
       expect(await BackedHRC20Contract.symbol()).to.equal("HRC20");
     });
     it("Backed HRC20: the amount of tokens minted should equal totalSupply", async () => {
       expect(await BackedHRC20Contract.totalSupply()).to.equal(0);
     });
-    it("Backed HRC20: initalize should only be called upon deployment and afterwards it should not be possible to call", async () => {
+    it("Backed HRC20: initialize should only be called upon deployment and afterwards it should not be possible to call", async () => {
       await expectRevert(
         BackedHRC20Contract.initialize(
           "HAVEN1",
