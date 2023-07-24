@@ -20,7 +20,7 @@ interface IFeeContract {
     function nextResetTime() external view returns (uint256);
     
 
-    // This function updates the fees in fee contract to match the oracle values.
+    // This function updates the fees in the fee contract to match the oracle values.
     function updateFee() external;
 
 }
@@ -36,10 +36,10 @@ contract H1NativeApplication {
     // The timestamp in which the _fee must update.
     uint256 private _requiredFeeResetTime;
     
-    // The block number in which the fee last updated.
+    // The block number in which the fee was last updated.
     uint256 private resetBlock;
 
-    // The fee before the oralce updated.
+    // The fee before the oracle updated.
     uint256 private priorFee;
 
     /**
