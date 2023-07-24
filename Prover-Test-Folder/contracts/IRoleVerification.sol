@@ -27,7 +27,6 @@ interface IRoleVerification {
     /**
      * @notice `getUserAccountExpiry` function returns the expiry date from the users account.
      * @param account address of the target user account.
-     * @return userAccountExpiry provides the account expiry for the account passed.
      */
 
     function getUserAccountExpiry(
@@ -38,7 +37,6 @@ interface IRoleVerification {
     /**
      * @notice `getUserAccountIdentityBlob` function returns struct IdentityBlob from the users account.
      * @param account address of the target user account.
-     * @return userIdentityBlob provides the IdentityBlob struct for the account passed.
      */
     function getUserAccountIdentityBlob(
         address account
