@@ -75,8 +75,8 @@ contract H1NativeApplication {
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier applicationFeeWithPaymentToContract(uint256 H1PaymentToFunction) {
        if (_requiredFeeResetTime <= block.timestamp) {
-             _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
              _updatesOracleValues();
+             _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
         }
         else if (resetBlock == block.number) {
           _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);    
