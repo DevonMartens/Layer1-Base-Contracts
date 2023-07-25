@@ -14,7 +14,7 @@ const defaultKey = process.env["PrivateKey"];
 // second Builder default account
 const ONE_ETH = ethers.utils.parseUnits("1", "ether");
 
-describe("BaseHRC20 Haven1 Token Contract", async () => {
+describe("HRC20 Haven1 Token Contract", async () => {
   let ContractDeployer;
   let Address2;
   let BaseHRC20Factory;
@@ -32,48 +32,48 @@ describe("BaseHRC20 Haven1 Token Contract", async () => {
     Address2SignsBaseHRC20 = BaseHRC20Contract.connect(secondAddressSigner);
   });
   describe("Testing the initial values to validate expected contract state", function () {
-    it("Backed HRC20: name & symbol variables should match constructor input for the ERC20 token", async () => {
+    it("HRC20: name & symbol variables should match constructor input for the ERC20 token", async () => {
       //confirm they are equal to the value set in the constructor
       expect(await BaseHRC20Contract.name()).to.equal("HAVEN1");
       //confirm they are equal to the value set in the constructor
       expect(await BaseHRC20Contract.symbol()).to.equal("HRC20");
     });
-    it("Backed HRC20: the amount of tokens minted should equal totalSupply", async () => {
+    it("HRC20: the amount of tokens minted should equal totalSupply", async () => {
       expect(await BaseHRC20Contract.totalSupply()).to.equal(0);
     });
   });
-  describe("Testing the issueToken, burnFrom, and burnToken functions", function () {
+  describe("Testing the mintToken, burnFrom, and burnToken functions", function () {
     beforeEach(async () => {
       await BaseHRC20Contract.mintToken(ContractDeployer, 900);
       await BaseHRC20Contract.mintToken(Address2, 900);
     });
-    it("Backed HRC20: the mintToken function should mint the correct amount of tokens to the designated wallet assigned when the function is called", async () => {
+    it("HRC20: the mintToken function should mint the correct amount of tokens to the designated wallet assigned when the function is called", async () => {
       expect(await BaseHRC20Contract.balanceOf(ContractDeployer)).to.equal(
         900
       );
       expect(await BaseHRC20Contract.balanceOf(Address2)).to.equal(900);
     });
-    it("Backed HRC20: the burnToken function should burn the correct amount of tokens from the designated wallet", async () => {
+    it("HRC20: the burnToken function should burn the correct amount of tokens from the designated wallet", async () => {
       await BaseHRC20Contract.burnToken(900);
       expect(await BaseHRC20Contract.balanceOf(ContractDeployer)).to.equal(0);
     });
-    it("Backed HRC20: the burnToken function should revert and give the error ERC20: burn amount exceeds balance if a request is made to burn more tokens than the balance of the address", async () => {
+    it("HRC20: the burnToken function should revert and give the error ERC20: burn amount exceeds balance if a request is made to burn more tokens than the balance of the address", async () => {
       await expectRevert(
         BaseHRC20Contract.burnToken(ContractDeployer),
         `ERC20: burn amount exceeds balance`
       );
     });
-    it("Backed HRC20: the burnToken function should burn the correct amount of tokens from the designated wallet", async () => {
+    it("HRC20: the burnToken function should burn the correct amount of tokens from the designated wallet", async () => {
       await Address2SignsBaseHRC20.burnToken(900);
       expect(await BaseHRC20Contract.balanceOf(Address2)).to.equal(0);
     });
-    it("Backed HRC20: the burnToken function should revert and give the error ERC20: burn amount exceeds balance if a request is made to withdraw more than the balance", async () => {
+    it("HRC20: the burnToken function should revert and give the error ERC20: burn amount exceeds balance if a request is made to withdraw more than the balance", async () => {
       await expectRevert(
         Address2SignsBaseHRC20.burnToken(Address2),
         `ERC20: burn amount exceeds balance`
       );
     });
-    it("Backed HRC20: burnFrom function should remove tokens from a wallet", async () => {
+    it("HRC20: burnFrom function should remove tokens from a wallet", async () => {
       await BaseHRC20Contract.burnFrom(Address2, 900, "YOU_STOLE_THAT");
       expect(await BaseHRC20Contract.balanceOf(Address2)).to.equal(0);
     });
@@ -86,19 +86,19 @@ describe("BaseHRC20 Haven1 Token Contract", async () => {
       // pauses contract
       await BaseHRC20Contract.pause();
     });
-    it("Backed HRC20: the pause function should stop all deposits from the mintToken function", async () => {
+    it("HRC20: the pause function should stop all deposits from the mintToken function", async () => {
       await expectRevert(
         BaseHRC20Contract.mintToken(Address2, 900),
         "Pausable: paused"
       );
     });
-    it("Backed HRC20: the pause function should stop all users from calling burnToken", async () => {
+    it("HRC20: the pause function should stop all users from calling burnToken", async () => {
       await expectRevert(
         Address2SignsBaseHRC20.burnToken(450),
         "Pausable: paused"
       );
     });
-    it("Backed HRC20: the pause function should stop all transfers", async () => {
+    it("HRC20: the pause function should stop all transfers", async () => {
       await expectRevert(
         BaseHRC20Contract.transfer(ContractDeployer, 450),
         "Pausable: paused"
@@ -124,7 +124,7 @@ describe("BaseHRC20 Haven1 Token Contract", async () => {
       BaseHRC20HasDifferentAdmins_DEFAULT_ADMIN_ROLE =
         await BaseHRC20HasDifferentAdmins.DEFAULT_ADMIN_ROLE();
     });
-    it("Backed HRC20: only the OPERATOR_ROLE should be able to pause and unpause the contract", async () => {
+    it("HRC20: only the OPERATOR_ROLE should be able to pause and unpause the contract", async () => {
       await expectRevert(
         Address2SignsBaseHRC20.pause(),
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
@@ -136,7 +136,7 @@ describe("BaseHRC20 Haven1 Token Contract", async () => {
       );
       await BaseHRC20Contract.unpause();
     });
-    it("Backed HRC20: the operator role should be able to call pause", async () => {
+    it("HRC20: the operator role should be able to call pause", async () => {
       await expectRevert(
         Address2SignsBaseHRC20.pause(),
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
@@ -144,7 +144,7 @@ describe("BaseHRC20 Haven1 Token Contract", async () => {
       await BaseHRC20Contract.grantRole(OPERATOR_ROLE, Address2);
       await Address2SignsBaseHRC20.pause();
     });
-    it("Backed HRC20: only the operator role should be able to call burnFrom ", async () => {
+    it("HRC20: only the operator role should be able to call burnFrom ", async () => {
       await BaseHRC20Contract.mintToken(ContractDeployer, 70);
       await expectRevert(
         Address2SignsBaseHRC20.burnFrom(
@@ -155,13 +155,13 @@ describe("BaseHRC20 Haven1 Token Contract", async () => {
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });
-    it("Backed HRC20: only the operator role should be able to call mintToken", async () => {
+    it("HRC20: only the operator role should be able to call mintToken", async () => {
       await expectRevert(
         Address2SignsBaseHRC20.mintToken(ContractDeployer, 70),
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
       );
     });
-    it("Backed HRC20: only the DEFAULT_ADMIN_ROLE should be able to grant roles (not the contract deployer)", async () => {
+    it("HRC20: only the DEFAULT_ADMIN_ROLE should be able to grant roles (not the contract deployer)", async () => {
       await expectRevert(
         BaseHRC20HasDifferentAdmins.grantRole(
           OPERATOR_ROLE,
@@ -170,7 +170,7 @@ describe("BaseHRC20 Haven1 Token Contract", async () => {
         `AccessControl: account ${ContractDeployerErrorMessageForAccessControl} is missing role ${BaseHRC20HasDifferentAdmins_DEFAULT_ADMIN_ROLE}`
       );
     });
-    it("Backed HRC20: If a user request to approve another user to move tokens via increaseAllowance the function should revert", async () => {
+    it("HRC20: If a user request to approve another user to move tokens via increaseAllowance the function should revert", async () => {
       await expectRevert(
         BaseHRC20Contract.increaseAllowance(Address2, 8),
         "116"
@@ -179,13 +179,13 @@ describe("BaseHRC20 Haven1 Token Contract", async () => {
         await BaseHRC20Contract.allowance(ContractDeployer, Address2)
       ).to.equal(0);
     });
-    it("Backed HRC20: an address that is not a contract should NOT be allowed to be approved by ERC20 function approve", async () => {
+    it("HRC20: an address that is not a contract should NOT be allowed to be approved by ERC20 function approve", async () => {
       await expectRevert(BaseHRC20Contract.approve(Address2, 8), "116");
       expect(
         await BaseHRC20Contract.allowance(ContractDeployer, Address2)
       ).to.equal(0);
     });
-    it("Backed HRC20: A contract should not be allowed to be approved by the function increaseAllowance", async () => {
+    it("HRC20: A contract should not be allowed to be approved by the function increaseAllowance", async () => {
       await BaseHRC20Contract.increaseAllowance(
         BaseHRC20HasDifferentAdmins.address,
         8
@@ -197,7 +197,7 @@ describe("BaseHRC20 Haven1 Token Contract", async () => {
         )
       ).to.equal(8);
     });
-    it("Backed HRC20: A contract should not be allowed to be approved by the function approve", async () => {
+    it("HRC20: A contract should not be allowed to be approved by the function approve", async () => {
       await BaseHRC20Contract.approve(
         BaseHRC20HasDifferentAdmins.address,
         8
@@ -209,7 +209,7 @@ describe("BaseHRC20 Haven1 Token Contract", async () => {
         )
       ).to.equal(8);
     });
-    it("Backed HRC20: The permit function should not allow contracts to be approved", async () => {
+    it("HRC20: The permit function should not allow contracts to be approved", async () => {
       const provider = hre.ethers.provider;
       const owner = defaultSender;
       const spender = Address2;
