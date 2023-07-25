@@ -14,8 +14,7 @@ import "./Errors.sol";
 * @author Haven1 Development Team
 * @notice This contract serves a vital purpose in facilitating token 
 * transactions on Haven1 for users who prioritize the security of their cold storage vaults.
-* @dev The core functionality of this contract revolves around minting and burning tokens, 
-* ensuring a seamless experience for users as they deposit and redeem assets on the Haven1 platform.
+* @dev The core functionality of this contract is to be an import for developers who wish to build tokens.
 */
 abstract contract HRC20 is ERC20, AccessControl, ERC20Permit, Pausable {
 
@@ -69,11 +68,23 @@ abstract contract HRC20 is ERC20, AccessControl, ERC20Permit, Pausable {
     }
 
 
-    function pause() public onlyRole(OPERATOR_ROLE) {
+    /**
+     * @notice `pause` is a function to pause sending/depositing/withdrawing of tokens from contract.
+     * The `whenNotPaused` modifier will read the contract's state and not allow functions accordingly.
+     * @dev Only operator role can do this given in constructor or by calling grantRole(OPERATOR_ROLE, <ADDRESS>).
+     */
+
+    function pause() external onlyRole(OPERATOR_ROLE) {
         _pause();
     }
 
-    function unpause() public onlyRole(OPERATOR_ROLE) {
+    /**
+     * @notice `unpause` allows contract functions with the `whenNotPaused` modifier
+     * to continue to run after the contract was previously paused and allow
+     * sending/depositing/withdrawing tokens from the contract.
+     */
+
+    function unpause() external onlyRole(OPERATOR_ROLE) {
         _unpause();
     }
 
