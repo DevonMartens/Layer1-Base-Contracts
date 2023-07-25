@@ -127,11 +127,11 @@ contract ProofOfIdentity is
     * ensuring user documentation is in date if an application chooses to implement it.
     * @dev tokenId aka largeNumbers[1] is the tokenId of the users nft.
     * @param smallNumbers is in the struct holding arrays of larger numbers including:
-    * @dev userType aka smallNumbers[0] is passed to assigned an account type - retail (0) or institution (1),
+    * @dev userType aka smallNumbers[1] is passed to assigned an account type - retail (0) or institution (1),
     * by not using an enum we allow for additional classes in the future.
-    * @dev level aka smallNumbers[1] is passed to assign a KYC level to the user account, by combining the region code and KYC
+    * @dev level aka smallNumbers[2] is passed to assign a KYC level to the user account, by combining the region code and KYC
     * level we allow for specific regional restrictions to be implemented by developers.
-    * @dev competencyRating the users understanding of web3 which determines application use.
+    * @dev competencyRating aka smallNumbers[0] the users understanding of web3 which determines application use.
     * @param strings includes: 
     * @dev the countryCode aka strings[0] is the users region identifier as defined by 
     * ISO3 standards - Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.
@@ -142,20 +142,20 @@ contract ProofOfIdentity is
 
     function issueIdentity(
         address account,
-        uint256[] calldata largeNumbers,
-        uint8[] calldata smallNumbers,
-        string[] calldata strings,
+        uint256[] memory largeNumbers,
+        uint8[] memory smallNumbers,
+        string[] memory strings,
         string calldata tokenUri
     ) external onlyRole(OPERATOR_ROLE) returns(uint256) {
         require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
-        require(largeNumbers[0] > block.timestamp, Errors.ID_INVALID_EXPIRED);
+        require(largeNumbers[1] > block.timestamp, Errors.ID_INVALID_EXPIRED);
         _tokenIdCounter.increment();
 
-        uint256 tokenId = _tokenIdCounter.current();
-        tokenId = largeNumbers[1];
-        
-        uint8 competencyRating = 0;
-        competencyRating = smallNumbers[2];
+        uint256 tokenId  = _tokenIdCounter.current();
+        largeNumbers[0] =  tokenId ;
+
+        // uint8 competencyRating = 0;
+        // competencyRating = smallNumbers[0];
 
         identityBlob[account] = IdentityBlob({
             largeNumbers: largeNumbers,
@@ -164,7 +164,7 @@ contract ProofOfIdentity is
         });
 
 
-        _safeMint(account, tokenId );
+        _safeMint(account, tokenId);
         _tokenURI[tokenId ] = tokenUri;
         _permissionsInterface.assignAccountRole(account, "HAVEN1", "VTCALL");
         emit IdentityIssued(account, tokenId );

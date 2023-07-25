@@ -3,17 +3,16 @@ const { ethers, upgrades } = require("hardhat");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
 
-const blobForAddress2 = {
-  largeNumbers: [1, 78886932657],
-  smallNumbers: [2, 3],
-  strings: ["1"],
-};
+const blobForAddress2LargeNumbers = [0, 78886932657];
+const  blobForAddress2SmallNumbers = [0, 2, 3];
+const  blobForAddress2Strings = ["1"];
 
-const blobForAddress3 = {
-  largeNumbers: [2, 78886932625],
-  smallNumbers: [2, 3],
-  strings: ["1"],
-};
+
+//const blobForAddress3 = {
+const blobForAddress3LargeNumbers = [0, 78886932625];
+const blobForAddress3SmallNumbers = [0, 2, 3];
+const blobForAddress3Strings = ["1"];
+
 
 const updateBlobAddress2 = {
   largeNumbers: [1, 78886932653],
@@ -75,13 +74,17 @@ describe("Proof of Identity Contract", function () {
 
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        blobForAddress2,
+        blobForAddress2LargeNumbers,
+        blobForAddress2SmallNumbers,
+        blobForAddress2Strings,
         "tokenURI"
       );
 
       await ProofOfIdentityContract.issueIdentity(
         Address3,
-        blobForAddress3,
+        blobForAddress3LargeNumbers,
+        blobForAddress3SmallNumbers,
+        blobForAddress3Strings,
         "tokenURI"
       );
     });
@@ -98,17 +101,19 @@ describe("Proof of Identity Contract", function () {
         await ProofOfIdentityContract.getUserAccountCountryCode(Address2)
       ).to.equal("1");
     });
-    it("Proof of Identity Contract: The issueIdentity function should NOT allow tokens to be minted if the tokenId or smallNumbers[0] is not the next ID on the counter.", async () => {
-      // blobForAddress3 has tokenId which was minted in the beforeEach
-      await expectRevert(
-        ProofOfIdentityContract.issueIdentity(
-          ContractDeployer,
-          blobForAddress3,
-          "tokenURI"
-        ),
-        "107"
-      );
-    });
+    // it("Proof of Identity Contract: The issueIdentity function should NOT allow tokens to be minted if the tokenId or smallNumbers[0] is not the next ID on the counter.", async () => {
+    //   // blobForAddress3 has tokenId which was minted in the beforeEach
+    //   await expectRevert(
+    //     ProofOfIdentityContract.issueIdentity(
+    //       ContractDeployer,
+    //       blobForAddress3LargeNumbers,
+    //       blobForAddress3SmallNumbers,
+    //       blobForAddress3Strings,
+    //       "tokenURI"
+    //     ),
+    //     "107"
+    //   );
+    // });
     it("Proof of Identity Contract: The issueIdentity function should create an identity blob struct with correct values for userType", async () => {
       // Checks that the User Account Type is the same as the function input
       expect(
@@ -151,12 +156,16 @@ describe("Proof of Identity Contract", function () {
       // country code "1" , userType 2 ,level 3, expiry block, tokenURI
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        blobForAddress2,
+        blobForAddress2LargeNumbers,
+        blobForAddress2SmallNumbers,
+        blobForAddress2Strings,
         "tokenURI"
       );
       await ProofOfIdentityContract.issueIdentity(
         Address3,
-        blobForAddress3,
+        blobForAddress3LargeNumbers,
+        blobForAddress3SmallNumbers,
+        blobForAddress3Strings,
         "tokenURI"
       );
     });
@@ -165,7 +174,9 @@ describe("Proof of Identity Contract", function () {
       await expectRevert(
         ProofOfIdentityContract.updateIdentity(
           Address3,
-          blobForAddress2,
+          blobForAddress2LargeNumbers,
+          blobForAddress2SmallNumbers,
+          blobForAddress2LargeNumbers,
           "tokenURI"
         ),
         "106"
@@ -309,7 +320,9 @@ describe("Proof of Identity Contract", function () {
       // country code "1" , userType 2 ,level 3, expiry block, tokenURI
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        blobForAddress2,
+        blobForAddress2LargeNumbers,
+        blobForAddress2SmallNumbers,
+        blobForAddress2Strings,
         "token"
       );
       // getting error messages for accesscontrol errors
@@ -383,7 +396,9 @@ describe("Proof of Identity Contract", function () {
       await expectRevert(
         Address2SignsProofOfIdentityContract.updateIdentity(
           ContractDeployer,
-          blobForAddress3,
+          blobForAddress3LargeNumbers,
+          blobForAddress3SmallNumbers,
+          blobForAddress3Strings,
           "hi"
         ),
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
@@ -393,7 +408,9 @@ describe("Proof of Identity Contract", function () {
       await expectRevert(
         Address2SignsProofOfIdentityContract.issueIdentity(
           ContractDeployer,
-          blobForAddress3,
+          blobForAddress3LargeNumbers,
+          blobForAddress3SmallNumbers,
+          blobForAddress3Strings,
           "hi"
         ),
         `AccessControl: account ${Address2ErrorMessageForAccessControl} is missing role ${OPERATOR_ROLE}`
@@ -441,7 +458,9 @@ describe("Proof of Identity Contract", function () {
       // tokenId 1 country code "1" , userType 2 ,level 3, expiry block 78886932657, tokenURI - tokenONE
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        blobForAddress2,
+        blobForAddress2LargeNumbers,
+        blobForAddress2SmallNumbers,
+        blobForAddress2Strings,
         "tokenONE"
       );
     });
@@ -475,7 +494,9 @@ describe("Proof of Identity Contract", function () {
       // Mints tokenid 1 to Address2country code "1" , userType 2 ,level 3, expiry block, tokenURI
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        blobForAddress2,
+        blobForAddress2LargeNumbers,
+        blobForAddress2SmallNumbers,
+        blobForAddress2Strings,
         "token"
       );
       //get current block from ethers
@@ -492,7 +513,9 @@ describe("Proof of Identity Contract", function () {
       await expectRevert(
         ProofOfIdentityContract.issueIdentity(
           Address2,
-          blobForAddress2,
+          blobForAddress2LargeNumbers,
+          blobForAddress2SmallNumbers,
+          blobForAddress2Strings,
           "token"
         ),
         `100`
@@ -531,7 +554,9 @@ describe("Proof of Identity Contract", function () {
       // Mints tokenid 1 to Address2 country code "1" , userType 2 ,level 3, expiry block, tokenURI
       await ProofOfIdentityContract.issueIdentity(
         Address2,
-        blobForAddress2,
+        blobForAddress2LargeNumbers,
+        blobForAddress2SmallNumbers,
+        blobForAddress2Strings,
         "token"
       );
     });
@@ -549,7 +574,9 @@ describe("Proof of Identity Contract", function () {
       await expect(
         ProofOfIdentityContract.issueIdentity(
           ContractDeployer,
-          blobForAddress3,
+          blobForAddress3LargeNumbers,
+          blobForAddress3SmallNumbers,
+          blobForAddress3Strings,
           "token"
         )
       )

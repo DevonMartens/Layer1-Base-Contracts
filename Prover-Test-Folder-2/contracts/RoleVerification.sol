@@ -62,7 +62,7 @@ abstract contract RoleVerification {
     function getUserAccountLevel(
         address account
     ) public view returns (uint8 userAccountLevel) {
-        return (identityBlob[account].smallNumbers[1]);
+        return (identityBlob[account].smallNumbers[2]);
     }
 
 
@@ -74,7 +74,7 @@ abstract contract RoleVerification {
     function getUserAccountType(
         address account
     ) public view returns (uint8 userAccountType) {
-        return (identityBlob[account].smallNumbers[0]);
+        return (identityBlob[account].smallNumbers[1]);
     }
 
     /**
@@ -116,7 +116,7 @@ abstract contract RoleVerification {
         if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
         revert(Errors.ID_INVALID_EXPIRED);
     }
-        return (identityBlob[account].smallNumbers[1]);
+        return (identityBlob[account].smallNumbers[2]);
     }
 
 
@@ -134,7 +134,7 @@ abstract contract RoleVerification {
         if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
         revert(Errors.ID_INVALID_EXPIRED);
     }
-        return (identityBlob[account].smallNumbers[0]);
+        return (identityBlob[account].smallNumbers[1]);
     }
 
     /**
