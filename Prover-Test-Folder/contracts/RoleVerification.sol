@@ -13,10 +13,8 @@ import "./Errors.sol";
 
 abstract contract RoleVerification {
 
-    /**
-     * @notice internal mapping `identityBlob` maps account addresses to identityBlob struct storage.
-     * @dev identityBlob is utilised through inheritence of ProofOfIdentity.sol.
-     */
+    // internal mapping `identityBlob` maps account addresses to identityBlob struct storage.
+    // identityBlob is utilised through inheritence of ProofOfIdentity.sol.
 
     mapping(address => IdentityBlob) internal identityBlob;
 

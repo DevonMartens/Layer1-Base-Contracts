@@ -38,8 +38,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/RoleVerification.sol": {
-      "lastModificationDate": 1689934087185,
-      "contentHash": "81c9ee3780ad18d56f3347b32f8796f5",
+      "lastModificationDate": 1690201535609,
+      "contentHash": "f4418d88951ea75383b80b6d31a0506d",
       "sourceName": "contracts/RoleVerification.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -76,8 +76,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/UserInformationPreventsOnExpiry.sol": {
-      "lastModificationDate": 1689933997348,
-      "contentHash": "27ca0982cebc5cb7d1f8066bd24a9f0c",
+      "lastModificationDate": 1690187039558,
+      "contentHash": "e983b11c6f674bf884884d3738db68c8",
       "sourceName": "contracts/UserInformationPreventsOnExpiry.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -114,8 +114,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/VerifiableIdentityPreventsOnExpiry.sol": {
-      "lastModificationDate": 1689880386986,
-      "contentHash": "6a04cdf96a39e27fd0e99600ad655af3",
+      "lastModificationDate": 1690187132916,
+      "contentHash": "e05df8b9aef54f938b26f709394a469f",
       "sourceName": "contracts/VerifiableIdentityPreventsOnExpiry.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -152,8 +152,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/ProofOfIdentity.sol": {
-      "lastModificationDate": 1689969058952,
-      "contentHash": "cd3c909dce511b6329f72169f48f58c4",
+      "lastModificationDate": 1690187298313,
+      "contentHash": "654786aa0c6f7cc41a225a5480d47a64",
       "sourceName": "contracts/ProofOfIdentity.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -233,8 +233,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/UserInformation.sol": {
-      "lastModificationDate": 1689934059252,
-      "contentHash": "998fdf3ed57c65bc795b352bfcd20637",
+      "lastModificationDate": 1690186955845,
+      "contentHash": "9ec02695400c4a48bd09bb0be8c20503",
       "sourceName": "contracts/UserInformation.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -804,8 +804,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/VerifiableIdentity.sol": {
-      "lastModificationDate": 1689933856757,
-      "contentHash": "0e0b5e4277d194412f0b5697ad1dedf7",
+      "lastModificationDate": 1690187045789,
+      "contentHash": "408e2dd1b9ff7fc768aae829744bf284",
       "sourceName": "contracts/VerifiableIdentity.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -1296,8 +1296,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/IRoleVerification.sol": {
-      "lastModificationDate": 1689934408567,
-      "contentHash": "dbc0929ded4aceab3c46b4cc7cc76d16",
+      "lastModificationDate": 1690194684746,
+      "contentHash": "537b9f084da6aa5860498cfb8c584015",
       "sourceName": "contracts/IRoleVerification.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -1334,8 +1334,8 @@
       ]
     },
     "/Users/devonmartens/Haven1/remake/opt2/Contracts-Hardhat-Tests/Prover-Test-Folder/contracts/IUserInformationPreventsOnExpiry.sol": {
-      "lastModificationDate": 1689934249557,
-      "contentHash": "76d518c066d2cda8fb29c2b3d835b997",
+      "lastModificationDate": 1690194873751,
+      "contentHash": "2e05c69f7121968864be328d09dbcefa",
       "sourceName": "contracts/IUserInformationPreventsOnExpiry.sol",
       "solcConfig": {
         "version": "0.8.2",

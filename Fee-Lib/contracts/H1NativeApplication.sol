@@ -191,12 +191,14 @@ contract H1NativeApplication {
         if (msg.value < _fee) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
+        
+        (bool success, ) = FeeContract.call{ value: _fee }("");
+        require(success, Errors.TRANSFER_FAILED); 
+        
        if (msg.value > priorFee + H1PaymentToFunction) {
             uint256 overflow = (msg.value - _fee - H1PaymentToFunction);
             payable(tx.origin).call{value: overflow}("");
        }
-        (bool success, ) = FeeContract.call{ value: _fee }("");
-        require(success, Errors.TRANSFER_FAILED); 
     }
 
     /**

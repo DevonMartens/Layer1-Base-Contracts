@@ -251,7 +251,11 @@
 206
 207
 208
-209</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+209
+210
+211
+212</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -328,7 +332,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13×</span>
 <span class="cline-any cline-yes">5×</span>
-<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -350,14 +354,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
 <span class="cline-any cline-yes">14×</span>
-<span class="cline-any cline-yes">14×</span>
-<span class="cline-any cline-yes">12×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14×</span>
-<span class="cline-any cline-yes">14×</span>
-<span class="cline-any cline-yes">14×</span>
-<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -444,11 +448,11 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7×</span>
-<span class="cline-any cline-yes">6×</span>
-<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7×</span>
-<span class="cline-any cline-yes">7×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -459,6 +463,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: ISC
 &nbsp;
 import "./Errors.sol";
@@ -466,9 +472,10 @@ import "./Errors.sol";
 pragma solidity ^0.8.0;
 &nbsp;
 /*
-@title H1NativeApplication
-@notice This contract's purpose is to provide modifiers to functions that ensure fees are sent to the FeeContract.
-@dev The primary function of this contract is to be used as an import for application building on Haven1.
+* @title H1NativeApplication
+* @author Haven1 Development Team
+* @notice This contract's purpose is to provide modifiers to functions that ensure fees are sent to the FeeContract.
+* @dev The primary function of this contract is to be used as an import for application building on Haven1.
 */
 &nbsp;
 interface IFeeContract {
@@ -480,7 +487,7 @@ interface IFeeContract {
     function nextResetTime() external view returns (uint256);
     
 &nbsp;
-    // This function updates the fees in fee contract to match the oracle values.
+    // This function updates the fees in the fee contract to match the oracle values.
     function updateFee() external;
 &nbsp;
 }
@@ -496,10 +503,10 @@ contract H1NativeApplication {
     // The timestamp in which the _fee must update.
     uint256 private _requiredFeeResetTime;
     
-    // The block number in which the fee updated.
+    // The block number in which the fee was last updated.
     uint256 private resetBlock;
 &nbsp;
-    // The fee before the oralce updated.
+    // The fee before the oracle updated.
     uint256 private priorFee;
 &nbsp;
     /**
@@ -535,8 +542,8 @@ contract H1NativeApplication {
     // Modifier to send fees to the fee contract and to the developer in contracts for payable functions.
     modifier applicationFeeWithPaymentToContract(uint256 H1PaymentToFunction) {
        if (_requiredFeeResetTime &lt;= block.timestamp) {
-             _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
              _updatesOracleValues();
+             _payApplicationWithPriorFeeAndContract(H1PaymentToFunction);
         }
         else <span class="missing-if-branch" title="if path not taken" >I</span>if (resetBlock == block.number) {
 <span class="cstat-no" title="statement not covered" >          _payApplicationWithPriorFeeAndContract(H1PaymentToFunction)</span>;    
@@ -651,12 +658,14 @@ contract H1NativeApplication {
         if (msg.value &lt; _fee) {
             revert(Errors.INSUFFICIENT_FUNDS);
         }
+        
+        (bool success, ) = FeeContract.call{ value: _fee }("");
+        require(success, Errors.TRANSFER_FAILED); 
+        
        if (msg.value &gt; priorFee + H1PaymentToFunction) {
             uint256 overflow = (msg.value - _fee - H1PaymentToFunction);
             payable(tx.origin).call{value: overflow}("");
        }
-        (bool success, ) = FeeContract.call{ value: _fee }("");
-        require(success, Errors.TRANSFER_FAILED); 
     }
 &nbsp;
     /**
@@ -673,7 +682,7 @@ contract H1NativeApplication {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 20 2023 12:17:08 GMT+0200 (Central European Summer Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 24 2023 15:26:54 GMT+0200 (Central European Summer Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

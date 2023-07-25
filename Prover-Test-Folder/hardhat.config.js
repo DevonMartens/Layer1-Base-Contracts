@@ -6,9 +6,11 @@ require("hardhat-gas-reporter");
 require("solidity-coverage");
 require("@nomiclabs/hardhat-solhint");
 require("hardhat-contract-sizer");
+require("solidity-docgen");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
+  docgen: {},
   solidity: {
     version: "0.8.2",
     settings: {
@@ -17,6 +19,5 @@ module.exports = {
         runs: 1000,
       },
     },
-  },
-  // allowUnlimitedContractSize: true,
+  }
 };

@@ -146,8 +146,10 @@ contract ProofOfIdentity is
         require(expiry > block.timestamp, Errors.ID_INVALID_EXPIRED);
          _tokenIdCounter.increment();
 
+        uint256 tokenId = _tokenIdCounter.current();
+
         identityBlob[account] = IdentityBlob({
-            tokenId: _tokenIdCounter.current(),
+            tokenId: tokenId,
             countryCode: countryCode,
             userType: userType,
             level: level,
@@ -155,11 +157,11 @@ contract ProofOfIdentity is
             competencyRating: 0
         });
 
-        _safeMint(account, _tokenIdCounter.current());
-        _tokenURI[_tokenIdCounter.current()] = tokenUri;
+        _safeMint(account, tokenId);
+        _tokenURI[tokenId] = tokenUri;
         _permissionsInterface.assignAccountRole(account, "HAVEN1", "VTCALL");
-        emit IdentityIssued(account, _tokenIdCounter.current());
-        return _tokenIdCounter.current();
+        emit IdentityIssued(account, tokenId);
+        return tokenId;
     }
 
     /**	

@@ -527,7 +527,12 @@
 482
 483
 484
-485</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+485
+486
+487</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -820,7 +825,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-yes">5×</span>
@@ -855,9 +859,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">13×</span>
-<span class="cline-any cline-yes">13×</span>
-<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -865,7 +869,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">424×</span>
+<span class="cline-any cline-yes">426×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -988,7 +992,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">468×</span>
+<span class="cline-any cline-yes">470×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1023,9 +1027,12 @@ import "./Errors.sol";
 &nbsp;
 &nbsp;
 /**
-@title FeeContract
-@notice This contract collects and distributes application fees from user application transactions.
-@dev The primary function of this contract is to ensure proper distribution from Haven1 applications to distribution channels.
+* @title FeeContract
+* @author Haven1 Development Team
+* @notice This contract collects and distributes application 
+* fees from user application transactions.
+* @dev The primary function of this contract is to ensure 
+* proper distribution from Haven1 applications to distribution channels.
 */
 &nbsp;
 interface IFeeOracle {
@@ -1162,7 +1169,7 @@ contract FeeContract is
         epochLength = 86400;
         networkFeeResetTimestamp = block.timestamp + 86400;
         oracle = _oracle;
-        for (uint i = 0; i &lt; _channels.length; i++) {
+        for (uint256 i = 0; i &lt; _channels.length; i++) {
             CONTRACT_SHARES += _weights[i];
             channels.push(_channels[i]);
             weights.push(_weights[i]);
@@ -1241,13 +1248,13 @@ contract FeeContract is
     ) external onlyRole(OPERATOR_ROLE) {
         uint256 index =  _findIndexPosition(_channel);
         address removedAddress = channels[index];
-        for (uint i = index; i &lt; channels.length - 1; i++) {
+        for (uint256 i = index; i &lt; channels.length - 1; i++) {
             channels[i] = channels[i + 1];
         }
         channels.pop();
         CONTRACT_SHARES -= weights[index];
         weights[index] = weights[weights.length - 1];
-        for (uint i = index; i &lt; weights.length - 1; i++) {
+        for (uint256 i = index; i &lt; weights.length - 1; i++) {
             weights[i] = weights[i + 1];
         }
         weights.pop();
@@ -1276,7 +1283,7 @@ contract FeeContract is
             block.timestamp &gt; lastDistribution + epochLength ||
             hasRole(OPERATOR_ROLE, msg.sender)
         ) {
-            uint rebateValue = queryOracle();
+            uint256 rebateValue = queryOracle();
             (bool gasRebate, ) = payable(tx.origin).call{value: rebateValue}(
                 ""
             );
@@ -1284,8 +1291,8 @@ contract FeeContract is
 &nbsp;
             uint256 amount = address(this).balance;
 &nbsp;
-            for (uint i = 0; i &lt; channels.length; i++) {
-                uint share = (amount * weights[i]) / CONTRACT_SHARES;
+            for (uint256 i = 0; i &lt; channels.length; i++) {
+                uint256 share = (amount * weights[i]) / CONTRACT_SHARES;
                 (bool sent, ) = channels[i].call{value: share}("");
                 require(sent, Errors.TRANSFER_FAILED);
 &nbsp;
@@ -1300,14 +1307,13 @@ contract FeeContract is
 &nbsp;
     /**
     * @notice `forceFeeDistribution` function triggered to force distribution of funds to channels.
-    * @dev It can only be called by an operator. In case something is wrong with the oracle or funds need to be be
-    * distributed immediately.
+    * @dev It can only be called by an operator. In case the funds need to be distributed immediately.
     */
 &nbsp;
     function forceFeeDistribution() external payable onlyRole(OPERATOR_ROLE) {
         uint256 amount = address(this).balance;
-        for (uint i = 0; i &lt; channels.length; i++) {
-            uint share = (amount * weights[i]) / CONTRACT_SHARES;
+        for (uint256 i = 0; i &lt; channels.length; i++) {
+            uint256 share = (amount * weights[i]) / CONTRACT_SHARES;
             (bool success, ) = channels[i].call{value: share}("");
             require(success, Errors.TRANSFER_FAILED);
             emit FeesDistributed(block.timestamp, channels[i], share);
@@ -1368,7 +1374,7 @@ contract FeeContract is
     function _findIndexPosition(
         address channel
     ) public view returns (uint256) {
-        for (uint i = 0; i &lt; channels.length; i++) {
+        for (uint256 i = 0; i &lt; channels.length; i++) {
             if (channels[i] == channel) {
                 return i;
             }
@@ -1383,7 +1389,7 @@ contract FeeContract is
     function isTheAddressInTheChannelsArray(
         address channel
     ) public view returns (bool) {
-        for (uint i = 0; i &lt; channels.length; i++) {
+        for (uint256 i = 0; i &lt; channels.length; i++) {
             if (channels[i] == channel) {
                 return false;
             }
@@ -1471,7 +1477,7 @@ contract FeeContract is
     @notice `queryOracle` this function is to consult oracle to get a fee amount.
     */
 &nbsp;
-    function queryOracle() public view returns (uint feeAmount) {
+    function queryOracle() public view returns (uint256 feeAmount) {
         return (IFeeOracle(oracle).consult());
     }
 &nbsp;
@@ -1501,7 +1507,7 @@ contract FeeContract is
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 20 2023 12:17:08 GMT+0200 (Central European Summer Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jul 24 2023 15:26:54 GMT+0200 (Central European Summer Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

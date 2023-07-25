@@ -1,5 +1,5 @@
 {
-  "name": "bridge-token-hardhat",
+  "name": "Prover",
   "version": "1.0.0",
   "description": "",
   "main": "hardhat.config.js",
@@ -23,7 +23,8 @@
     "hardhat-gas-reporter": "^1.0.9",
     "openzeppelin-test-helpers": "^0.5.1",
     "solidity": "^0.0.1",
-    "solidity-coverage": "^0.8.3"
+    "solidity-coverage": "^0.8.3",
+    "solidity-docgen": "^0.6.0-beta.35"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-solhint": "^3.0.1",
