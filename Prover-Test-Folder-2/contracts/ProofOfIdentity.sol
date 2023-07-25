@@ -122,14 +122,19 @@ contract ProofOfIdentity is
     * @dev once identity is minted, the contract will call the permissions interface contract,
     * adding role access via the `assignAccountRole` function.
     * @param account address of the target user.
-    * @param _identityBlob is the struct holding arrays such as countryCode aka strings[0] is the users region identifier
-    * as defined by ISO3 standards - Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.
-    * userType aka smallNumbers[0] is passed to assigned an account type - retail (0) or institution (1),
-    * by not using an enum we allow for additional classes in the future.
-    * expiry aka largeNumbers[1] is passed to assign an expiry time for the documents provided by the operator role,
+    * @param largeNumbers is in the struct holding arrays of larger numbers including:
+    * @dev expiry aka largeNumbers[0] is passed to assign an expiry time for the documents provided by the operator role,
     * ensuring user documentation is in date if an application chooses to implement it.
-    * level aka smallNumbers[2] is passed to assign a KYC level to the user account, by combining the region code and KYC
+    * @dev tokenId aka largeNumbers[1] is the tokenId of the users nft.
+    * @param smallNumbers is in the struct holding arrays of larger numbers including:
+    * @dev userType aka smallNumbers[0] is passed to assigned an account type - retail (0) or institution (1),
+    * by not using an enum we allow for additional classes in the future.
+    * @dev level aka smallNumbers[1] is passed to assign a KYC level to the user account, by combining the region code and KYC
     * level we allow for specific regional restrictions to be implemented by developers.
+    * @dev competencyRating the users understanding of web3 which determines application use.
+    * @param strings includes: 
+    * @dev the countryCode aka strings[0] is the users region identifier as defined by 
+    * ISO3 standards - Visit https://docs.haven1.org/ for a comprehensive list of ISO3 country codes.
     * @param tokenUri is passed to provide a custom URI to the tokenId for future utilization and expansion of proof of identity framework.
     * @return tokenId the id of the token minted to the account.
     */
@@ -148,6 +153,9 @@ contract ProofOfIdentity is
 
         uint256 tokenId = _tokenIdCounter.current();
         tokenId = largeNumbers[1];
+        
+        uint8 competencyRating = 0;
+        competencyRating = smallNumbers[2];
 
         identityBlob[account] = IdentityBlob({
             largeNumbers: largeNumbers,

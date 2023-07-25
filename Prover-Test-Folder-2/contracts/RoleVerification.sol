@@ -30,16 +30,11 @@ abstract contract RoleVerification {
         string[] strings;
     }
 
-
-
-
     /**
     * @notice `getUserAccountExpiry` function returns only the expiry date from the user's account.
     * @param account address of the target user account.
     * @return userAccountExpiry provides the account expiry for the account passed.
     */
-
-
     function getUserAccountExpiry(
         address account
     ) public view returns (uint256 userAccountExpiry) {
