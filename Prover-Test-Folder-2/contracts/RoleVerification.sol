@@ -17,21 +17,17 @@ import "./Errors.sol";
 abstract contract RoleVerification {
 
 
-    /** 
-    * @notice internal mapping `identityBlob` maps account addresses to identityBlob struct storage.
-    * @dev identityBlob is utilized through inheritance of ProofOfIdentity.sol and therefore must remain internal.
-    */
-
-
+    // internal mapping `identityBlob` maps account addresses to identityBlob struct storage.
+    // identityBlob is utilized through inheritance of ProofOfIdentity.sol and therefore must remain internal.
     mapping(address => IdentityBlob) internal identityBlob;
 
 
 
 
     struct IdentityBlob {
-    uint256[] largeNumbers;
-    uint8[] smallNumbers;
-    string[] strings;
+        uint256[] largeNumbers;
+        uint8[] smallNumbers;
+        string[] strings;
     }
 
 
@@ -45,9 +41,9 @@ abstract contract RoleVerification {
 
 
     function getUserAccountExpiry(
-    address account
+        address account
     ) public view returns (uint256 userAccountExpiry) {
-    return (identityBlob[account].largeNumbers[1]);
+        return (identityBlob[account].largeNumbers[1]);
     }
 
 
@@ -56,12 +52,10 @@ abstract contract RoleVerification {
     * @param account address of the target user account.
     * @return userAccountCountryCode provides the country code for the specified account passed.
     */
-
-
     function getUserAccountCountryCode(
-    address account
+        address account
     ) public view returns (string memory userAccountCountryCode) {
-    return (identityBlob[account].strings[0]);
+        return (identityBlob[account].strings[0]);
     }
 
 
@@ -70,12 +64,10 @@ abstract contract RoleVerification {
     * @param account address of the target user account.
     * @return userAccountLevel provides the verification level for the specified account passed.
     */
-
-
     function getUserAccountLevel(
-    address account
+        address account
     ) public view returns (uint8 userAccountLevel) {
-    return (identityBlob[account].smallNumbers[1]);
+        return (identityBlob[account].smallNumbers[1]);
     }
 
 
@@ -84,14 +76,11 @@ abstract contract RoleVerification {
     * @param account address of the target user account.
     * @return userAccountType provides the account type for the specified account passed.
     */
-
-
     function getUserAccountType(
-    address account
+        address account
     ) public view returns (uint8 userAccountType) {
-    return (identityBlob[account].smallNumbers[0]);
+        return (identityBlob[account].smallNumbers[0]);
     }
-
 
     /**
     * @notice `getUserAccountCompetencyRating` gets the competency rating a user
@@ -99,14 +88,11 @@ abstract contract RoleVerification {
     * @param account The address of the target user account.
     * @return The competency rating for the specified account.
     */
-
-
     function getUserAccountCompetencyRating(
-    address account
+        address account
     ) public view returns (uint8) {
-    return (identityBlob[account].smallNumbers[2]);
+        return (identityBlob[account].smallNumbers[2]);
     }
-
 
     /**
     * @notice getUserAccountCountryCode function returns the country code from the users account.
@@ -114,17 +100,14 @@ abstract contract RoleVerification {
     * @param account address of the target user account.
     * @return userAccountCountryCode provides the country code for the specified account passed in the event it has not expired.
     */
-
-
     function getUserAccountCountryCodePreventOnExpiry(
-    address account
+      address account
     ) public view returns (string memory userAccountCountryCode) {
-    if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
-    revert(Errors.ID_INVALID_EXPIRED);
+        if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
+        revert(Errors.ID_INVALID_EXPIRED);
     }
-    return (identityBlob[account].strings[0]);
+        return (identityBlob[account].strings[0]);
     }
-
 
     /**
     * @notice `getUserAccountLevelPreventOnExpiry` function returns the verification level from the user's account.
@@ -132,15 +115,13 @@ abstract contract RoleVerification {
     * @param account address of the target user account.
     * @return userAccountLevel provides the verification level for the specified account passed in the event it has not expired.
     */
-
-
     function getUserAccountLevelPreventOnExpiry(
-    address account
+        address account
     ) public view returns (uint8) {
-    if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
-    revert(Errors.ID_INVALID_EXPIRED);
+        if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
+        revert(Errors.ID_INVALID_EXPIRED);
     }
-    return (identityBlob[account].smallNumbers[1]);
+        return (identityBlob[account].smallNumbers[1]);
     }
 
 
@@ -153,14 +134,13 @@ abstract contract RoleVerification {
 
 
     function getUserAccountTypePreventOnExpiry(
-    address account
+        address account
     ) public view returns (uint8) {
-    if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
-    revert(Errors.ID_INVALID_EXPIRED);
+        if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
+        revert(Errors.ID_INVALID_EXPIRED);
     }
-    return (identityBlob[account].smallNumbers[0]);
+        return (identityBlob[account].smallNumbers[0]);
     }
-
 
     /**
     * @notice `getUserAccountCompetencyRatingPreventOnExpiry` gets the competency rating a user
@@ -169,15 +149,13 @@ abstract contract RoleVerification {
     * @return The competency rating for the specified account, if the identity has not expired.
     * @dev This function reverts if the target account's identity has expired.
     */
-
-
     function getUserAccountCompetencyRatingPreventOnExpiry(
-    address account
+        address account
     ) public view returns (uint8) {
-    if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
-    revert(Errors.ID_INVALID_EXPIRED);
+        if (block.timestamp >= identityBlob[account].largeNumbers[1]) {
+        revert(Errors.ID_INVALID_EXPIRED);
     }
-    return (identityBlob[account].smallNumbers[2]);
+        return (identityBlob[account].smallNumbers[2]);
     }
 
 

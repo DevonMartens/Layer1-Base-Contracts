@@ -10,7 +10,6 @@ import "./RoleVerification.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-
 /**
 * @title Proof of Identity Framework
 * @author Haven1 Development Team
@@ -23,6 +22,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 * the contract imports the OpenZeppelin ERC721 standard, overriding transfer
 * functions to prevent the Identity NFTs being transferred between accounts
 */
+
 
 
 contract ProofOfIdentity is
@@ -137,24 +137,30 @@ contract ProofOfIdentity is
 
     function issueIdentity(
         address account,
-        IdentityBlob memory _identityBlob,
+        uint256[] calldata largeNumbers,
+        uint8[] calldata smallNumbers,
+        string[] calldata strings,
         string calldata tokenUri
     ) external onlyRole(OPERATOR_ROLE) returns(uint256) {
         require(balanceOf(account) == 0, Errors.PREVIOUSLY_VERIFIED);
-        require(_identityBlob.largeNumbers[0] == _tokenIdCounter.current() + 1, Errors.TOKEN_ID_ALREADY_EXISTS);
-        require(_identityBlob.largeNumbers[1] > block.timestamp, Errors.ID_INVALID_EXPIRED);
+        require(largeNumbers[0] > block.timestamp, Errors.ID_INVALID_EXPIRED);
         _tokenIdCounter.increment();
 
+        uint256 tokenId = _tokenIdCounter.current();
+        tokenId = largeNumbers[1];
 
-        identityBlob[account] = _identityBlob;
-        identityBlob[account].smallNumbers.push(0);
+        identityBlob[account] = IdentityBlob({
+            largeNumbers: largeNumbers,
+            smallNumbers: smallNumbers,
+            strings: strings
+        });
 
 
-        _safeMint(account, _tokenIdCounter.current());
-        _tokenURI[_tokenIdCounter.current()] = tokenUri;
+        _safeMint(account, tokenId );
+        _tokenURI[tokenId ] = tokenUri;
         _permissionsInterface.assignAccountRole(account, "HAVEN1", "VTCALL");
-        emit IdentityIssued(account, _tokenIdCounter.current());
-        return _tokenIdCounter.current();
+        emit IdentityIssued(account, tokenId );
+        return tokenId ;
     }
 
 
