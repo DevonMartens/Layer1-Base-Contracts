@@ -1,0 +1,11 @@
+node_modules
+.idea
+.env
+frontend
+deployments
+#Hardhat files
+cache
+artifacts
+coverage
+package-lock.json
+node_modules

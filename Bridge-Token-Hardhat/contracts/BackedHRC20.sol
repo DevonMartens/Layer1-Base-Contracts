@@ -13,7 +13,7 @@ import "./Errors.sol";
 
 /**
 * @title BackedHRC20
-* @author Haven1 Development Team
+* @author Devon
 * @notice This contract serves a vital purpose in facilitating token 
 * transactions on Haven1 for users who prioritize the security of their cold storage vaults.
 * @dev The core functionality of this contract revolves around minting and burning tokens, 

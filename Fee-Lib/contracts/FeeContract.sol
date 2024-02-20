@@ -11,7 +11,7 @@ import "./Errors.sol";
 
 /**
 * @title FeeContract
-* @author Haven1 Development Team
+* @author Devon
 * @notice This contract collects and distributes application 
 * fees from user application transactions.
 * @dev The primary function of this contract is to ensure 
